@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import CustomComponent from './components/CustomComponent';
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <CustomComponent></CustomComponent>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
