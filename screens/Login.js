@@ -26,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.registerButton}>
           <Button
               title="Registrarme como Refugio"
-              onPress={() => navigation.navigate('RegisterUser')}
+              onPress={() => navigation.navigate('RegisterRef')}
           />
         </TouchableOpacity>
       </View>

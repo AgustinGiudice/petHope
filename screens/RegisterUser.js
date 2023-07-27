@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 
-const CreateUserForm = () => {
+const CreateUserForm = ({navigation}) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [telefono, setTelefono] = useState('');
@@ -42,6 +42,10 @@ const CreateUserForm = () => {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.goBackText}>Volver</Text>
+      </TouchableOpacity>
       <Text style={styles.label}>Nombre:</Text>
       <TextInput
         style={styles.input}
