@@ -1,17 +1,61 @@
-import React from 'react';
+import {useState} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const LoginScreen = ({ navigation }) => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+     // Objeto que contiene el correo electrónico y la contraseña para enviar al back
+  const loginData = {
+    email,
+    password,
+  };
+
+  // petición POST al backend para verificar las credenciales del usuario
+  fetch('http://localhost:3000/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("funciona");
+      // Aquí recibes la respuesta del backend.
+      // Si las credenciales son válidas, puedes permitir que el usuario inicie sesión y navegue a otra pantalla.
+      // De lo contrario, puedes mostrar un mensaje de error al usuario.
+    })
+    .catch((error) => {
+      console.error('Error al iniciar sesión:', error);
+      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
+    });
+
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
-      <TextInput style={styles.input} placeholder="Email" />
-      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry={true} />
-      <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.registerButtonText}>Iniciar Sesion</Text>
-      </TouchableOpacity> 
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+      />
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.registerButtonText}>Iniciar Sesión</Text>
+      </TouchableOpacity>
 
       <Text style={styles.registerTextContainer}>
         <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>

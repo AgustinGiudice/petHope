@@ -7,6 +7,7 @@ const CreateUserForm = ({navigation}) => {
   const [apellido, setApellido] = useState('');
   const [telefono, setTelefono] = useState('');
   const [mail, setMail] = useState('');
+  const [pass, setPass] = useState('');
 
   const handleSubmit = () => {
     // Crear un objeto con los datos del usuario
@@ -15,6 +16,7 @@ const CreateUserForm = ({navigation}) => {
       apellido,
       telefono,
       mail,
+      pass
     };
 
     // Realizar la petición POST al backend para guardar los datos del usuario
@@ -33,6 +35,7 @@ const CreateUserForm = ({navigation}) => {
         setApellido('');
         setTelefono('');
         setMail('');
+        setPass('');
       })
       .catch((error) => {
         console.error('Error al guardar el usuario:', error);
@@ -76,6 +79,14 @@ const CreateUserForm = ({navigation}) => {
         placeholder="Email"
         keyboardType="email-address"
       />
+      <Text style={styles.label}>Contraseña:</Text>
+      <TextInput
+        style={styles.input}
+        value={pass}
+        onChangeText={setPass}
+        placeholder="Contraseña"
+      />
+      
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
