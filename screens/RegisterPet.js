@@ -7,41 +7,37 @@ import {
   StyleSheet,
 } from "react-native";
 
-
-const CreateUserForm = ({navigation}) => {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [mail, setMail] = useState('');
-  const [pass, setPass] = useState('');
+const RegisterPet = ({ navigation }) => {
+  const [nombre, setNombre] = useState("");
+  const [edad, setEdad] = useState("");
+  const [nivelCuidado, setNivelCuidado] = useState("");
+  const [pic, setPic] = useState("");
 
   const handleSubmit = () => {
     // Crear un objeto con los datos del usuario
-    const usuarioData = {
+    const petData = {
       nombre,
-      apellido,
-      telefono,
-      mail,
-      pass
+      edad,
+      nivelCuidado,
+      pic,
     };
 
     // Realizar la petición POST al backend para guardar los datos del usuario
-    fetch("http://localhost:3000/api/usuarios", {
+    fetch("http://localhost:3000/api/mascotas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(usuarioData),
+      body: JSON.stringify(petData),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("*********\nRespuesta del backend:", data);
         // Reiniciar los campos del formulario después de guardar los datos
-        setNombre('');
-        setApellido('');
-        setTelefono('');
-        setMail('');
-        setPass('');
+        setNombre("");
+        setEdad("");
+        setNivelCuidado("");
+        setPic("");
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -64,37 +60,28 @@ const CreateUserForm = ({navigation}) => {
         onChangeText={setNombre}
         placeholder="Nombre"
       />
-      <Text style={styles.label}>Apellido:</Text>
+      <Text style={styles.label}>Edad:</Text>
       <TextInput
         style={styles.input}
-        value={apellido}
-        onChangeText={setApellido}
-        placeholder="Apellido"
+        value={edad}
+        onChangeText={setEdad}
+        placeholder="Edad"
       />
-      <Text style={styles.label}>Teléfono:</Text>
+      <Text style={styles.label}>Nivel de Cuidado:</Text>
       <TextInput
         style={styles.input}
-        value={telefono}
-        onChangeText={setTelefono}
-        placeholder="Teléfono"
+        value={nivelCuidado}
+        onChangeText={setNivelCuidado}
+        placeholder="Nivel de cuidado"
         keyboardType="numeric"
       />
-      <Text style={styles.label}>Email:</Text>
+      <Text style={styles.label}>Pic:</Text>
       <TextInput
         style={styles.input}
-        value={mail}
-        onChangeText={setMail}
-        placeholder="Email"
-        keyboardType="email-address"
+        value={pic}
+        onChangeText={setPic}
+        placeholder="Pic"
       />
-      <Text style={styles.label}>Contraseña:</Text>
-      <TextInput
-        style={styles.input}
-        value={pass}
-        onChangeText={setPass}
-        placeholder="Contraseña"
-      />
-      
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
@@ -134,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateUserForm;
+export default RegisterPet;
