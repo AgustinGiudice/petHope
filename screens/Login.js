@@ -3,8 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'rea
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const LoginScreen = ({ navigation }) => {
 
+
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,13 +27,12 @@ const LoginScreen = ({ navigation }) => {
     .then((response) => response.json())
     .then((data) => {
       console.log("funciona");
-      // Aquí recibes la respuesta del backend.
-      // Si las credenciales son válidas, puedes permitir que el usuario inicie sesión y navegue a otra pantalla.
-      // De lo contrario, puedes mostrar un mensaje de error al usuario.
+
+      //manejar cookies o algo parecido y enviarlo a la pantalla principal
     })
     .catch((error) => {
       console.error('Error al iniciar sesión:', error);
-      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
+      
     });
 
   };
@@ -57,20 +57,33 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.registerButtonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
 
+
       <Text style={styles.registerTextContainer}>
         <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
       </Text>
       <View style={styles.registerButtonsContainer}>
         <TouchableOpacity style={styles.registerButton}>
           <Button
-              title="Registrarme como Usuario"
-              onPress={() => navigation.navigate('RegisterUser')}
+            title="Registrarme como Usuario"
+            onPress={() => navigation.navigate("RegisterUser")}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.registerButton}>
           <Button
-              title="Registrarme como Refugio"
-              onPress={() => navigation.navigate('RegisterRef')}
+            title="Registrarme como Refugio"
+            onPress={() => navigation.navigate("RegisterRef")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.registerButton}>
+          <Button
+            title="Mandame al main"
+            onPress={() => navigation.navigate("Matchs")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.registerButton}>
+          <Button
+            title="Agregar Mascota"
+            onPress={() => navigation.navigate("Pet")}
           />
         </TouchableOpacity>
       </View>
@@ -81,26 +94,26 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
-    width: '80%',
+    width: "80%",
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 15,
   },
-  loginButton:{
-    backgroundColor: 'black',
+  loginButton: {
+    backgroundColor: "black",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -110,21 +123,21 @@ const styles = StyleSheet.create({
   registerTextContainer: {
     marginBottom: 20,
     borderTopWidth: 1,
-    borderBottomColor: 'black',
-    paddingTop: 20
+    borderBottomColor: "black",
+    paddingTop: 20,
   },
   registerText: {
-    color: 'Black',
+    color: "Black",
     fontSize: 16,
   },
   registerButtonsContainer: {
-    flexDirection: 'column',
-    gap: 10
+    flexDirection: "column",
+    gap: 10,
   },
   registerButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
