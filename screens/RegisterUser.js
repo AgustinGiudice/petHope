@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,40 @@ import {
   StyleSheet,
 } from "react-native";
 
+import * as Location from "expo-location";
+import MapView from "react-native-maps";
 
-const CreateUserForm = ({navigation}) => {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [mail, setMail] = useState('');
-  const [pass, setPass] = useState('');
+const CreateUserForm = ({ navigation }) => {
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [mail, setMail] = useState("");
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+    })();
+    setLatitude("Waiting..");
+    setLongitude("Waiting..");
+    if (errorMsg) {
+      setLatitude("Ocurrió un error");
+      setLongitude("Ocurrió un error");
+    } else if (location) {
+      setLongitude(location.longitude);
+      setLatitude(location.latitude);
+    }
+  });
 
   const handleSubmit = () => {
     // Crear un objeto con los datos del usuario
@@ -98,6 +125,20 @@ const CreateUserForm = ({navigation}) => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
+
+      <View>
+        <MapView
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          style={styles.map}
+        />
+        <Text>Latitud : {latitude}</Text>
+        <Text>Longitud : {longitude}</Text>
+      </View>
     </View>
   );
 };
@@ -132,6 +173,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  map: {
+    height: 200,
+    
+  }
 });
 
 export default CreateUserForm;

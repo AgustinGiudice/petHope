@@ -12,7 +12,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // SCREENS
 import Login from "./screens/Login";
-import Home from "./screens/home";
+import Home from "./screens/Home";
 import Match from "./screens/Match";
 import RegisterUser from "./screens/RegisterUser";
 import RegisterRef from "./screens/RegisterRef";

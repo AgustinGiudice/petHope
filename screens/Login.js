@@ -6,8 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
 
   const handleLogin = () => {
      // Objeto que contiene el correo electrónico y la contraseña para enviar al back
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   registerText: {
-    color: "Black",
+    color: "black",
     fontSize: 16,
   },
   registerButtonsContainer: {
