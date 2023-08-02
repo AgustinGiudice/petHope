@@ -9,8 +9,8 @@ import {
 } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState(null);
-  const [pass, setPass] = useState(null);
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
 
   const handleSubmit = () => {};
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   registerText: {
-    color: "Black",
+    color: "black",
     fontSize: 16,
   },
   registerButtonsContainer: {
