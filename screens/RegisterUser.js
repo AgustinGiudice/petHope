@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import * as Location from "expo-location";
-import MapView from "react-native-maps";
+// import MapView from "react-native-maps";
 
 const CreateUserForm = ({ navigation }) => {
   const [latitude, setLatitude] = useState("");
@@ -17,6 +17,7 @@ const CreateUserForm = ({ navigation }) => {
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
   const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -126,7 +127,7 @@ const CreateUserForm = ({ navigation }) => {
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
 
-      <View>
+      {/* <View>
         <MapView
           initialRegion={{
             latitude: 37.78825,
@@ -138,7 +139,7 @@ const CreateUserForm = ({ navigation }) => {
         />
         <Text>Latitud : {latitude}</Text>
         <Text>Longitud : {longitude}</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

@@ -50,8 +50,8 @@ const LoginScreen = ({ navigation }) => {
         style={styles.input}
         placeholder="Contraseña"
         secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
+        value={pass}
+        onChangeText={setPass}
       />
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.registerButtonText}>Iniciar Sesión</Text>
