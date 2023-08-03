@@ -8,6 +8,8 @@ import {
 } from "react-native";
 
 import * as Location from "expo-location";
+import { useNavigation } from "@react-navigation/native";
+
 // import MapView from "react-native-maps";
 
 const CreateUserForm = ({ navigation }) => {
@@ -20,6 +22,14 @@ const CreateUserForm = ({ navigation }) => {
   const [pass, setPass] = useState("");
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const [alertMessage, setAlertMessage] = useState("");
+const [isAlertVisible, setIsAlertVisible] = useState(false);
+
+const showAlert = (message) => {
+  setAlertMessage(message);
+  setIsAlertVisible(true);
+};
 
   useEffect(() => {
     (async () => {
@@ -44,6 +54,11 @@ const CreateUserForm = ({ navigation }) => {
   });
 
   const handleSubmit = () => {
+    if (!nombre || !apellido || !telefono || !mail || !pass) {
+      showAlert("Por favor, completa todos los campos.");
+      return;
+    }
+    
     // Crear un objeto con los datos del usuario
     const usuarioData = {
       nombre,
@@ -52,7 +67,7 @@ const CreateUserForm = ({ navigation }) => {
       mail,
       pass
     };
-
+    
     // Realizar la petición POST al backend para guardar los datos del usuario
     fetch("http://localhost:3000/api/usuarios", {
       method: "POST",
@@ -70,6 +85,9 @@ const CreateUserForm = ({ navigation }) => {
         setTelefono('');
         setMail('');
         setPass('');
+
+        navigation.navigate("Home"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
+
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -126,6 +144,18 @@ const CreateUserForm = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Guardar</Text>
       </TouchableOpacity>
+
+      {isAlertVisible && (
+      <View style={styles.alert}>
+        <Text style={styles.alertText}>{alertMessage}</Text>
+        <TouchableOpacity
+          style={styles.alertButton}
+          onPress={() => setIsAlertVisible(false)}
+        >
+          <Text style={styles.alertButtonText}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    )}
 
       {/* <View>
         <MapView
