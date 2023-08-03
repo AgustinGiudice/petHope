@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-    <AuthContextProvider>
+{/* 
       <StatusBar styles="light" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
@@ -61,8 +61,8 @@ export default function App() {
             options={{ headerShown: false }}
             />
         </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContextProvider>
+      </NavigationContainer> */}
+        <Match></Match>
     </>
   );
 }

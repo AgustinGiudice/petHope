@@ -11,6 +11,7 @@ const RegisterPet = ({ navigation }) => {
   const [nombre, setNombre] = useState("");
   const [edad, setEdad] = useState("");
   const [nivelCuidado, setNivelCuidado] = useState("");
+  const [tamanio, setTamanio] = useState("");
   const [pic, setPic] = useState("");
 
   const handleSubmit = () => {
@@ -19,6 +20,7 @@ const RegisterPet = ({ navigation }) => {
       nombre,
       edad,
       nivelCuidado,
+      tamanio,
       pic,
     };
 
@@ -37,6 +39,7 @@ const RegisterPet = ({ navigation }) => {
         setNombre("");
         setEdad("");
         setNivelCuidado("");
+        setTamanio("");
         setPic("");
       })
       .catch((error) => {
@@ -74,6 +77,13 @@ const RegisterPet = ({ navigation }) => {
         onChangeText={setNivelCuidado}
         placeholder="Nivel de cuidado"
         keyboardType="numeric"
+      />
+      <Text style={styles.label}>Tamaño:</Text>
+      <TextInput
+        style={styles.input}
+        value={tamanio}
+        onChangeText={setTamanio}
+        placeholder="Tamaño"
       />
       <Text style={styles.label}>Pic:</Text>
       <TextInput
