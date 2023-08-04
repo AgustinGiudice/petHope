@@ -17,6 +17,7 @@ import Match from "./screens/Match";
 import RegisterUser from "./screens/RegisterUser";
 import RegisterRef from "./screens/RegisterRef";
 import RegisterPet from "./screens/RegisterPet";
+import ShowPets from "./screens/ShowPets";
 
 //CONTEXT
 import { AuthContextProvider } from "./context/AuthContext";
@@ -62,7 +63,7 @@ export default function App() {
             />
         </Stack.Navigator>
       </NavigationContainer> */}
-        <Match></Match>
+        <ShowPets></ShowPets>
     </>
   );
 }
