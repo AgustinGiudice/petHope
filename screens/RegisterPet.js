@@ -8,22 +8,17 @@ import {
 } from "react-native";
 
 const RegisterPet = ({ navigation }) => {
-  const [nombre, setNombre] = useState("");
-  const [edad, setEdad] = useState("");
-  const [nivelCuidado, setNivelCuidado] = useState("");
-  const [tamanio, setTamanio] = useState("");
-  const [pic, setPic] = useState("");
+  const initialPetData = {
+    nombre: "",
+    edad: "",
+    nivelCuidado: "",
+    tamanio: "",
+    pic: "",
+    raza: "",
+  };
+  const [petData, setPetData] = useState(initialPetData);
 
   const handleSubmit = () => {
-    // Crear un objeto con los datos del usuario
-    const petData = {
-      nombre,
-      edad,
-      nivelCuidado,
-      tamanio,
-      pic,
-    };
-
     // Realizar la petición POST al backend para guardar los datos del usuario
     fetch("http://localhost:3000/api/mascotas", {
       method: "POST",
@@ -36,11 +31,7 @@ const RegisterPet = ({ navigation }) => {
       .then((data) => {
         console.log("*********\nRespuesta del backend:", data);
         // Reiniciar los campos del formulario después de guardar los datos
-        setNombre("");
-        setEdad("");
-        setNivelCuidado("");
-        setTamanio("");
-        setPic("");
+        setPetData(initialPetData);
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -59,37 +50,46 @@ const RegisterPet = ({ navigation }) => {
       <Text style={styles.label}>Nombre:</Text>
       <TextInput
         style={styles.input}
-        value={nombre}
-        onChangeText={setNombre}
+        value={petData.nombre}
+        onChangeText={(value) => setPetData({ ...petData, nombre: value })}
         placeholder="Nombre"
       />
       <Text style={styles.label}>Edad:</Text>
       <TextInput
         style={styles.input}
-        value={edad}
-        onChangeText={setEdad}
+        value={petData.edad}
+        onChangeText={(value) => setPetData({ ...petData, edad: value })}
         placeholder="Edad"
       />
       <Text style={styles.label}>Nivel de Cuidado:</Text>
       <TextInput
         style={styles.input}
-        value={nivelCuidado}
-        onChangeText={setNivelCuidado}
+        value={petData.nivelCuidado}
+        onChangeText={(value) =>
+          setPetData({ ...petData, nivelCuidado: value })
+        }
         placeholder="Nivel de cuidado"
         keyboardType="numeric"
       />
       <Text style={styles.label}>Tamaño:</Text>
       <TextInput
         style={styles.input}
-        value={tamanio}
-        onChangeText={setTamanio}
+        value={petData.tamanio}
+        onChangeText={(value) => setPetData({ ...petData, tamanio: value })}
+        placeholder="Tamaño"
+      />
+      <Text style={styles.label}>Raza:</Text>
+      <TextInput
+        style={styles.input}
+        value={petData.raza}
+        onChangeText={(value) => setPetData({ ...petData, raza: value })}
         placeholder="Tamaño"
       />
       <Text style={styles.label}>Pic:</Text>
       <TextInput
         style={styles.input}
-        value={pic}
-        onChangeText={setPic}
+        value={petData.pic}
+        onChangeText={(value) => setPetData({ ...petData, pic: value })}
         placeholder="Pic"
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>

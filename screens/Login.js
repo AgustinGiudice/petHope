@@ -1,40 +1,43 @@
-import {useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
+import { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   const handleLogin = () => {
-     // Objeto que contiene el correo electrónico y la contraseña para enviar al back
-  const loginData = {
-    email,
-    password,
-  };
+    // Objeto que contiene el correo electrónico y la contraseña para enviar al back
+    const loginData = {
+      email,
+      password,
+    };
 
-  // petición POST al backend para verificar las credenciales del usuario
-  fetch('http://localhost:3000/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(loginData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("funciona");
-
-      //manejar cookies o algo parecido y enviarlo a la pantalla principal
+    // petición POST al backend para verificar las credenciales del usuario
+    fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
     })
-    .catch((error) => {
-      console.error('Error al iniciar sesión:', error);
-      
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("funciona");
 
+        //manejar cookies o algo parecido y enviarlo a la pantalla principal
+      })
+      .catch((error) => {
+        console.error("Error al iniciar sesión:", error);
+      });
   };
 
   return (
@@ -57,7 +60,6 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.registerButtonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
 
-
       <Text style={styles.registerTextContainer}>
         <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
       </Text>
@@ -77,7 +79,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.registerButton}>
           <Button
             title="Mandame al main"
-            onPress={() => navigation.navigate("Matchs")}
+            onPress={() => navigation.navigate("ShowPets")}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.registerButton}>

@@ -27,7 +27,6 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-{/* 
       <StatusBar styles="light" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
@@ -35,35 +34,40 @@ export default function App() {
             name="Login"
             component={Login}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="RegisterUser"
             component={RegisterUser}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="RegisterRef"
             component={RegisterRef}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Home"
             component={Home}
             options={{ title: "uHH esto sirve para cambiar titulo" }}
-            />
+          />
           <Stack.Screen
             name="Matchs"
             component={Match}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Pet"
             component={RegisterPet}
             options={{ headerShown: false }}
-            />
+          />
+          <Stack.Screen
+            name="ShowPets"
+            component={ShowPets}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
-      </NavigationContainer> */}
-        <ShowPets></ShowPets>
+      </NavigationContainer>
+      {/* <ShowPets></ShowPets> */}
     </>
   );
 }

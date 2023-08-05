@@ -13,23 +13,28 @@ import { useNavigation } from "@react-navigation/native";
 // import MapView from "react-native-maps";
 
 const CreateUserForm = ({ navigation }) => {
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [mail, setMail] = useState("");
-  const [pass, setPass] = useState("");
+  const initialUserData = {
+    nombre: "",
+    apellido: "",
+    telefono: "",
+    mail: "",
+    pass: "",
+    latitud: null,
+    longitud: null,
+    espacioDisponible: null,
+    aceptaCuidadosEspeciales: false,
+  };
+  const [userData, setUserData] = useState(initialUserData);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   const [alertMessage, setAlertMessage] = useState("");
-const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
-const showAlert = (message) => {
-  setAlertMessage(message);
-  setIsAlertVisible(true);
-};
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setIsAlertVisible(true);
+  };
 
   useEffect(() => {
     (async () => {
@@ -39,55 +44,47 @@ const showAlert = (message) => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
+      let geolocation = await Location.getCurrentPositionAsync({});
+      setLocation(geolocation.coords);
     })();
-    setLatitude("Waiting..");
-    setLongitude("Waiting..");
     if (errorMsg) {
-      setLatitude("Ocurrió un error");
-      setLongitude("Ocurrió un error");
+      console.log(errorMsg);
     } else if (location) {
-      setLongitude(location.longitude);
-      setLatitude(location.latitude);
+      console.log(location); //Necesito saber como hacer para que no se ejecute 2 MILLONES DE VECES!!!!!!!!!!!!
+      setUserData({
+        ...userData,
+        latitud: location.latitude,
+        longitud: location.longitude,
+      });
     }
-  });
+  }, [location]);
 
   const handleSubmit = () => {
-    if (!nombre || !apellido || !telefono || !mail || !pass) {
+    if (
+      !userData.nombre ||
+      !userData.apellido ||
+      !userData.telefono ||
+      !userData.mail ||
+      !userData.pass
+    ) {
       showAlert("Por favor, completa todos los campos.");
       return;
     }
-    
-    // Crear un objeto con los datos del usuario
-    const usuarioData = {
-      nombre,
-      apellido,
-      telefono,
-      mail,
-      pass
-    };
-    
+
     // Realizar la petición POST al backend para guardar los datos del usuario
     fetch("http://localhost:3000/api/usuarios", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(usuarioData),
+      body: JSON.stringify(userData),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("*********\nRespuesta del backend:", data);
         // Reiniciar los campos del formulario después de guardar los datos
-        setNombre('');
-        setApellido('');
-        setTelefono('');
-        setMail('');
-        setPass('');
-
-        navigation.navigate("Home"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
-
+        setUserData(initialUserData);
+        navigation.navigate("ShowPets"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -106,56 +103,62 @@ const showAlert = (message) => {
       <Text style={styles.label}>Nombre:</Text>
       <TextInput
         style={styles.input}
-        value={nombre}
-        onChangeText={setNombre}
+        value={userData.nombre}
+        onChangeText={(value) => setUserData({ ...userData, nombre: value })}
         placeholder="Nombre"
       />
       <Text style={styles.label}>Apellido:</Text>
       <TextInput
         style={styles.input}
-        value={apellido}
-        onChangeText={setApellido}
+        value={userData.apellido}
+        onChangeText={(value) => setUserData({ ...userData, apellido: value })}
         placeholder="Apellido"
       />
       <Text style={styles.label}>Teléfono:</Text>
       <TextInput
         style={styles.input}
-        value={telefono}
-        onChangeText={setTelefono}
+        value={userData.telefono}
+        onChangeText={(value) => setUserData({ ...userData, telefono: value })}
         placeholder="Teléfono"
         keyboardType="numeric"
       />
       <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
-        value={mail}
-        onChangeText={setMail}
+        value={userData.mail}
+        onChangeText={(value) => setUserData({ ...userData, mail: value })}
         placeholder="Email"
         keyboardType="email-address"
       />
       <Text style={styles.label}>Contraseña:</Text>
       <TextInput
         style={styles.input}
-        value={pass}
-        onChangeText={setPass}
+        value={userData.pass}
+        onChangeText={(value) => setUserData({ ...userData, pass: value })}
         placeholder="Contraseña"
       />
-      
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Guardar</Text>
-      </TouchableOpacity>
+
+      {location === null ? (
+        <TouchableOpacity style={styles.button} disabled>
+          <Text style={styles.buttonText}>Guardar</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Guardar</Text>
+        </TouchableOpacity>
+      )}
 
       {isAlertVisible && (
-      <View style={styles.alert}>
-        <Text style={styles.alertText}>{alertMessage}</Text>
-        <TouchableOpacity
-          style={styles.alertButton}
-          onPress={() => setIsAlertVisible(false)}
-        >
-          <Text style={styles.alertButtonText}>OK</Text>
-        </TouchableOpacity>
-      </View>
-    )}
+        <View style={styles.alert}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
+          <TouchableOpacity
+            style={styles.alertButton}
+            onPress={() => setIsAlertVisible(false)}
+          >
+            <Text style={styles.alertButtonText}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* <View>
         <MapView
@@ -206,8 +209,7 @@ const styles = StyleSheet.create({
   },
   map: {
     height: 200,
-    
-  }
+  },
 });
 
 export default CreateUserForm;
