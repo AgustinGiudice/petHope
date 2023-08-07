@@ -4,9 +4,25 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 const ShowPets = () => {
   const [mascotas, setMascotas] = useState([]);
 
+
+  const baseURL = 'http://localhost:3000/api/mascotas'; 
+
+  const queryParams = {
+    longitud:  -77.123456,
+    latitud: 10.987654,   
+    distancia: 10,       
+    cuidadosEspeciales: false, 
+    tipoMascota: 'gato',
+    tamaño: 'chico',   
+    rangoDeEdad: 3
+  };
+
+  // Construye la URL con los parámetros
+  const url = `${baseURL}/${queryParams.longitud}/${queryParams.latitud}/${queryParams.distancia}/${queryParams.cuidadosEspeciales}/${queryParams.tipoMascota}/${queryParams.tamaño}/${queryParams.rangoDeEdad}`;
+
   useEffect(() => {
     // Obtener las mascotas 
-    fetch('http://localhost:3000/api/mascotas')
+    fetch(url)
       .then((response) => response.json())
       .then((data) => setMascotas(data))
       .catch((error) => console.error('Error al obtener mascotas:', error));
