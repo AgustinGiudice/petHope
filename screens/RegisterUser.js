@@ -159,8 +159,8 @@ const CreateUserForm = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-
-      {/* <View>
+{/* 
+       <View>
         <MapView
           initialRegion={{
             latitude: 37.78825,
@@ -172,7 +172,7 @@ const CreateUserForm = ({ navigation }) => {
         />
         <Text>Latitud : {latitude}</Text>
         <Text>Longitud : {longitude}</Text>
-      </View> */}
+      </View>  */}
     </View>
   );
 };
