@@ -13,21 +13,26 @@ const ShowPets = ({ navigation }) => {
   const baseURL = "http://localhost:3000/api/mascotas";
 
   const queryParams = {
-    longitud: -77.123456,
-    latitud: 10.987654,
-    distancia: 10,
-    cuidadosEspeciales: false,
-    tipoMascota: "gato",
+    longitud: -58.411843181870466,
+    latitud: -34.60936964113641,
+    distancia: 2000,
+    cuidadosEspeciales: 0,
+    tipoMascota: "perro",
     tamaño: "chico",
     rangoDeEdad: 3,
   };
 
   // Construye la URL con los parámetros
-  const url = `${baseURL}/${queryParams.longitud}/${queryParams.latitud}/${queryParams.distancia}/${queryParams.cuidadosEspeciales}/${queryParams.tipoMascota}/${queryParams.tamaño}/${queryParams.rangoDeEdad}`;
+  const url = `${baseURL}?longitud=${queryParams.longitud}&?latitud=${queryParams.latitud}?distancia=${queryParams.distancia}&?cuidadosEspeciales=${queryParams.cuidadosEspeciales}&?tipoMascota=${queryParams.tipoMascota}&?tamaño=${queryParams.tamaño}&?randoDeEdad=${queryParams.rangoDeEdad}`;
 
   useEffect(() => {
     // Obtener las mascotas
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((data) => setMascotas(data))
       .catch((error) => console.error("Error al obtener mascotas:", error));
