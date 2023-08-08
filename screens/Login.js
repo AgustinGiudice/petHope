@@ -18,11 +18,11 @@ const LoginScreen = ({ navigation }) => {
     // Objeto que contiene el correo electrónico y la contraseña para enviar al back
     const loginData = {
       email,
-      password,
+      pass,
     };
 
     // petición POST al backend para verificar las credenciales del usuario
-    fetch("http://localhost:3000/api/login", {
+    fetch("http://localhost:3000/api/usuarios/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
