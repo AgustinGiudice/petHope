@@ -50,7 +50,7 @@ const CreateUserForm = ({ navigation }) => {
     if (errorMsg) {
       console.log(errorMsg);
     } else if (location) {
-      console.log(location); //Necesito saber como hacer para que no se ejecute 2 MILLONES DE VECES!!!!!!!!!!!!
+      //console.log(location); //Necesito saber como hacer para que no se ejecute 2 MILLONES DE VECES!!!!!!!!!!!!
       setUserData({
         ...userData,
         latitud: location.latitude,
@@ -159,7 +159,7 @@ const CreateUserForm = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-{/* 
+      {/* 
        <View>
         <MapView
           initialRegion={{

@@ -1,31 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
-const ShowPets = () => {
+const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
 
-
-  const baseURL = 'http://localhost:3000/api/mascotas'; 
+  const baseURL = "http://localhost:3000/api/mascotas";
 
   const queryParams = {
-    longitud:  -77.123456,
-    latitud: 10.987654,   
-    distancia: 10,       
-    cuidadosEspeciales: false, 
-    tipoMascota: 'gato',
-    tamaño: 'chico',   
-    rangoDeEdad: 3
+    longitud: -77.123456,
+    latitud: 10.987654,
+    distancia: 10,
+    cuidadosEspeciales: false,
+    tipoMascota: "gato",
+    tamaño: "chico",
+    rangoDeEdad: 3,
   };
 
   // Construye la URL con los parámetros
   const url = `${baseURL}/${queryParams.longitud}/${queryParams.latitud}/${queryParams.distancia}/${queryParams.cuidadosEspeciales}/${queryParams.tipoMascota}/${queryParams.tamaño}/${queryParams.rangoDeEdad}`;
 
   useEffect(() => {
-    // Obtener las mascotas 
+    // Obtener las mascotas
     fetch(url)
       .then((response) => response.json())
       .then((data) => setMascotas(data))
-      .catch((error) => console.error('Error al obtener mascotas:', error));
+      .catch((error) => console.error("Error al obtener mascotas:", error));
   }, []);
 
   const renderItem = ({ item }) => (
@@ -39,6 +44,12 @@ const ShowPets = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.goBackText}>Volver</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Mascotas Disponibles</Text>
       <FlatList
         data={mascotas}
@@ -53,13 +64,13 @@ const ShowPets = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   listContainer: {
@@ -68,14 +79,26 @@ const styles = StyleSheet.create({
   mascotaItem: {
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
   },
   mascotaNombre: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
+  },
+  goBackButton: {
+    backgroundColor: "gray",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  goBackText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
