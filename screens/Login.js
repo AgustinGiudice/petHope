@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log("funciona");
-
+        navigation.navigate('Home');
         //manejar cookies o algo parecido y enviarlo a la pantalla principal
       })
       .catch((error) => {
