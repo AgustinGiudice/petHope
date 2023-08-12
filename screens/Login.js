@@ -13,15 +13,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-
+  const [error, setError] = useState(""); // Estado para el mensaje de error
   const handleLogin = () => {
-    // Objeto que contiene el correo electrónico y la contraseña para enviar al back
     const loginData = {
       email,
       pass,
     };
 
-    // petición POST al backend para verificar las credenciales del usuario
     fetch("http://localhost:3000/api/usuarios/login", {
       method: "POST",
       headers: {
@@ -31,18 +29,26 @@ const LoginScreen = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("funciona");
-        navigation.navigate('Home');
-        //manejar cookies o algo parecido y enviarlo a la pantalla principal
+        console.log(data);
+
+        if (data.token) {
+          const { usuario, token } = data;
+          navigation.navigate('Home', { usuario, token });
+        } else {
+          setError("Inicio de sesión fallido"); // Establecer mensaje de error
+        }
       })
       .catch((error) => {
         console.error("Error al iniciar sesión:", error);
       });
   };
 
+ 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TextInput
         style={styles.input}
         placeholder="Email"
