@@ -27,7 +27,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <StatusBar styles="light" />
+      {/* <StatusBar styles="light" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
@@ -66,8 +66,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
-      {/* <ShowPets></ShowPets> */}
+      </NavigationContainer> */}
+       <ShowPets></ShowPets> 
     </>
   );
 }

@@ -4,17 +4,18 @@ import { View, Text, TextInput, TouchableOpacity, Picker, Switch, StyleSheet } f
 const RegisterPet = ({ navigation }) => {
   const initialPetData = {
     nombre: "",
-    edad: "cachorro", 
-    nivelCuidado: "1", 
+    edad: 1, 
+    nivelCuidado: 1, 
     cuidadosEspeciales: false,
-    raza: "perro", 
-    tamanio: "chico", 
+    raza: 1, 
+    tamanio: 1, 
     pic: "",
   };
   const [petData, setPetData] = useState(initialPetData);
 
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del usuario
+    console.log("edadddddddddd"+ petData.edad);
     fetch("http://localhost:3000/api/mascotas", {
       method: "POST",
       headers: {
@@ -60,9 +61,9 @@ const RegisterPet = ({ navigation }) => {
           selectedValue={petData.edad}
           onValueChange={(itemValue) => setPetData({ ...petData, edad: itemValue })}
         >
-          <Picker.Item label="Cachorro" value="cachorro" />
-          <Picker.Item label="Juvenil" value="juvenil" />
-          <Picker.Item label="Adulto" value="adulto" />
+          <Picker.Item label="Cachorro" value="1" />
+          <Picker.Item label="Juvenil" value="2" />
+          <Picker.Item label="Adulto" value="3" />
         </Picker>
       </View>
 
@@ -94,8 +95,8 @@ const RegisterPet = ({ navigation }) => {
           selectedValue={petData.raza}
           onValueChange={(itemValue) => setPetData({ ...petData, raza: itemValue })}
         >
-          <Picker.Item label="Perro" value="perro" />
-          <Picker.Item label="Gato" value="gato" />
+          <Picker.Item label="Perro" value="1" />
+          <Picker.Item label="Gato" value="2" />
         </Picker>
       </View>
 
@@ -106,9 +107,9 @@ const RegisterPet = ({ navigation }) => {
           selectedValue={petData.tamanio}
           onValueChange={(itemValue) => setPetData({ ...petData, tamanio: itemValue })}
         >
-          <Picker.Item label="Chico" value="chico" />
-          <Picker.Item label="Medio" value="medio" />
-          <Picker.Item label="Grande" value="grande" />
+          <Picker.Item label="Chico" value="1" />
+          <Picker.Item label="Medio" value="2" />
+          <Picker.Item label="Grande" value="3" />
         </Picker>
       </View>
 

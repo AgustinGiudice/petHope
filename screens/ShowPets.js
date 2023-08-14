@@ -41,9 +41,10 @@ const ShowPets = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
-      <Text>Edad: {item.edad}</Text>
+      <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
+      <Text>Edad: {item.edad === 1 ? "Cachorro": item.edad === 2 ? "Juvenil": "Adulto"}</Text>
       <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
-      <Text>Tamaño: {item.tamanio}</Text>
+      <Text>Tamaño: {item.tamanio === 1 ? "Chico":item.tamanio === 2 ? "Medio" : "Grande"}</Text>
     </View>
   );
 
