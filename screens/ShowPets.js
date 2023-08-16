@@ -13,8 +13,8 @@ const ShowPets = ({ navigation }) => {
   const baseURL = "http://localhost:3000/api/mascotas";
 
   const queryParams = {
-    longitud: -58.411843181870466,
-    latitud: -34.60936964113641,
+    longitud: -58.41184318187,
+    latitud: -34.6093696411,
     distancia: 2000,
     cuidadosEspeciales: 0,
     tipoMascota: "perro",
@@ -23,8 +23,7 @@ const ShowPets = ({ navigation }) => {
   };
 
   // Construye la URL con los parámetros
-  const url = `${baseURL}?longitud=${queryParams.longitud}&?latitud=${queryParams.latitud}?distancia=${queryParams.distancia}&?cuidadosEspeciales=${queryParams.cuidadosEspeciales}&?tipoMascota=${queryParams.tipoMascota}&?tamaño=${queryParams.tamaño}&?randoDeEdad=${queryParams.rangoDeEdad}`;
-
+  const url = `${baseURL}?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -42,9 +41,15 @@ const ShowPets = ({ navigation }) => {
     <View style={styles.mascotaItem}>
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
       <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
-      <Text>Edad: {item.edad === 1 ? "Cachorro": item.edad === 2 ? "Juvenil": "Adulto"}</Text>
+      <Text>
+        Edad:{" "}
+        {item.edad === 1 ? "Cachorro" : item.edad === 2 ? "Juvenil" : "Adulto"}
+      </Text>
       <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
-      <Text>Tamaño: {item.tamanio === 1 ? "Chico":item.tamanio === 2 ? "Medio" : "Grande"}</Text>
+      <Text>
+        Tamaño:{" "}
+        {item.tamanio === 1 ? "Chico" : item.tamanio === 2 ? "Medio" : "Grande"}
+      </Text>
     </View>
   );
 
