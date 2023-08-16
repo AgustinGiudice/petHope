@@ -17,7 +17,7 @@ const ShowPets = ({ navigation }) => {
     latitud: -34.6093696411,
     // latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
     //   longitud: -58.51815,
-    distancia: 12000,
+    distancia: 11820,
     cuidadosEspeciales: 0,
     tipoMascota: "perro",
     tamaño: "chico",
@@ -50,6 +50,7 @@ const ShowPets = ({ navigation }) => {
         {item.edad === 1 ? "Cachorro" : item.edad === 2 ? "Juvenil" : "Adulto"}
       </Text>
       <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
+      <Text>Distancia: {(item.distance / 1000).toFixed(2)} km</Text>
       <Text>
         Tamaño:{" "}
         {item.tamanio === 1 ? "Chico" : item.tamanio === 2 ? "Medio" : "Grande"}
