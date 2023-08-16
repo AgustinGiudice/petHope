@@ -20,6 +20,7 @@ const RegisterRef = ({ navigation }) => {
       contacto,
       latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
       longitud: -58.51815,
+      
     };
 
     // Realizar la petición POST al backend para guardar los datos del refugio

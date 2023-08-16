@@ -15,7 +15,9 @@ const ShowPets = ({ navigation }) => {
   const queryParams = {
     longitud: -58.41184318187,
     latitud: -34.6093696411,
-    distancia: 2000,
+    // latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
+    //   longitud: -58.51815,
+    distancia: 12000,
     cuidadosEspeciales: 0,
     tipoMascota: "perro",
     tamaño: "chico",
@@ -33,7 +35,9 @@ const ShowPets = ({ navigation }) => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setMascotas(data))
+      .then((data) => {
+        setMascotas(data);
+      })
       .catch((error) => console.error("Error al obtener mascotas:", error));
   }, []);
 
