@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 
 const ShowPets = ({ navigation }) => {
@@ -17,11 +18,11 @@ const ShowPets = ({ navigation }) => {
     latitud: -34.6093696411,
     // latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
     //   longitud: -58.51815,
-    distancia: 11820,
-    cuidadosEspeciales: 0,
-    tipoMascota: "perro",
-    tamaño: "chico",
-    rangoDeEdad: 3,
+    distancia: 11000,
+    cuidadosEspeciales: false,
+    tipoMascota: 1,
+    tamaño: 2,
+    rangoDeEdad: 2,
   };
 
   // Construye la URL con los parámetros
@@ -43,6 +44,7 @@ const ShowPets = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
+      <Image source={item.pic} style={styles.mascotaImagen} />
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
       <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
       <Text>
@@ -79,15 +81,15 @@ const ShowPets = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    width: "100%",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   listContainer: {
     padding: 20,
@@ -98,6 +100,11 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
+    textAlign: "center",
+  },
+  mascotaImagen: {
+    width: 400,
+    height: 400,
   },
   mascotaNombre: {
     fontSize: 18,
