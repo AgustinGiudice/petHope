@@ -10,23 +10,22 @@ import {
 
 const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
+  const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
 
   const baseURL = "http://localhost:3000/api/mascotas";
 
   const queryParams = {
     longitud: -58.41184318187,
     latitud: -34.6093696411,
-    // latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
-    //   longitud: -58.51815,
     distancia: 11000,
     cuidadosEspeciales: false,
-    tipoMascota: 1,
+    tipoMascota: 3,
     tamaño: 2,
-    rangoDeEdad: 2,
+    rangoDeEdad: 3,
   };
 
   // Construye la URL con los parámetros
-  const url = `${baseURL}?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}`;
+  const url = `${baseURL}?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -40,7 +39,11 @@ const ShowPets = ({ navigation }) => {
         setMascotas(data);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error));
-  }, []);
+  }, [index]);
+
+  const nextPet = () => {
+    setIndex(index + 1); //Incrementa el numero de Offset para el fetch
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
@@ -75,6 +78,9 @@ const ShowPets = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContainer}
       />
+      <TouchableOpacity style={styles.goBackButton} onPress={() => nextPet()}>
+        <Text style={styles.goBackText}>Siguiente</Text>
+      </TouchableOpacity>
     </View>
   );
 };
