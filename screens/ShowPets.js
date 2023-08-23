@@ -12,12 +12,13 @@ const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
 
-  const baseURL = "http://localhost:3000/api/mascotas";
+  const baseURL =
+    "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
 
   const queryParams = {
     longitud: -58.41184318187,
     latitud: -34.6093696411,
-    distancia: 11000,
+    distancia: 10000,
     cuidadosEspeciales: false,
     tipoMascota: 3,
     tamaño: 2,
@@ -37,6 +38,7 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         setMascotas(data);
+        console.log(data);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error));
   }, [index]);

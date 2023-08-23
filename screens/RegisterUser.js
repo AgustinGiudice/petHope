@@ -72,7 +72,7 @@ const CreateUserForm = ({ navigation }) => {
     }
 
     // Realizar la petición POST al backend para guardar los datos del usuario
-    fetch("http://localhost:3000/api/usuarios", {
+    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

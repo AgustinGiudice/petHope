@@ -1,22 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Picker, Switch, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Picker,
+  Switch,
+  StyleSheet,
+} from "react-native";
 
 const RegisterPet = ({ navigation }) => {
   const initialPetData = {
     nombre: "",
-    edad: 1, 
-    nivelCuidado: 1, 
+    edad: 1,
+    nivelCuidado: 1,
     cuidadosEspeciales: false,
-    raza: 1, 
-    tamanio: 1, 
+    raza: 1,
+    tamanio: 1,
     pic: "",
   };
   const [petData, setPetData] = useState(initialPetData);
 
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del usuario
-    console.log("edadddddddddd"+ petData.edad);
-    fetch("http://localhost:3000/api/mascotas", {
+    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +66,9 @@ const RegisterPet = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={petData.edad}
-          onValueChange={(itemValue) => setPetData({ ...petData, edad: itemValue })}
+          onValueChange={(itemValue) =>
+            setPetData({ ...petData, edad: itemValue })
+          }
         >
           <Picker.Item label="Cachorro" value="1" />
           <Picker.Item label="Juvenil" value="2" />
@@ -72,7 +81,9 @@ const RegisterPet = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={petData.nivelCuidado}
-          onValueChange={(itemValue) => setPetData({ ...petData, nivelCuidado: itemValue })}
+          onValueChange={(itemValue) =>
+            setPetData({ ...petData, nivelCuidado: itemValue })
+          }
         >
           <Picker.Item label="1" value="1" />
           <Picker.Item label="2" value="2" />
@@ -84,7 +95,9 @@ const RegisterPet = ({ navigation }) => {
         <Text style={styles.label}>Requiere cuidados especiales?</Text>
         <Switch
           value={petData.cuidadosEspeciales}
-          onValueChange={(value) => setPetData({ ...petData, cuidadosEspeciales: value })}
+          onValueChange={(value) =>
+            setPetData({ ...petData, cuidadosEspeciales: value })
+          }
         />
       </View>
 
@@ -93,7 +106,9 @@ const RegisterPet = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={petData.raza}
-          onValueChange={(itemValue) => setPetData({ ...petData, raza: itemValue })}
+          onValueChange={(itemValue) =>
+            setPetData({ ...petData, raza: itemValue })
+          }
         >
           <Picker.Item label="Perro" value="1" />
           <Picker.Item label="Gato" value="2" />
@@ -105,7 +120,9 @@ const RegisterPet = ({ navigation }) => {
         <Picker
           style={styles.picker}
           selectedValue={petData.tamanio}
-          onValueChange={(itemValue) => setPetData({ ...petData, tamanio: itemValue })}
+          onValueChange={(itemValue) =>
+            setPetData({ ...petData, tamanio: itemValue })
+          }
         >
           <Picker.Item label="Chico" value="1" />
           <Picker.Item label="Medio" value="2" />

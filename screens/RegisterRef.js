@@ -20,11 +20,10 @@ const RegisterRef = ({ navigation }) => {
       contacto,
       latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
       longitud: -58.51815,
-      
     };
 
     // Realizar la petición POST al backend para guardar los datos del refugio
-    fetch("http://localhost:3000/api/refugios", {
+    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
