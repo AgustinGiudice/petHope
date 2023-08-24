@@ -49,7 +49,7 @@ const ShowPets = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
-      <Image source={item.pic} style={styles.mascotaImagen} />
+    <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
       <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
       <Text>
