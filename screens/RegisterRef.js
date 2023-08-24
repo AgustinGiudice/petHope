@@ -85,7 +85,7 @@ const RegisterRef = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 40,
     backgroundColor: "#fff",
   },
   label: {

@@ -179,7 +179,7 @@ const CreateUserForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 40,
     backgroundColor: "#fff",
   },
   label: {
@@ -201,6 +201,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: "center",
+  },
+  goBackText: {
+    color: "blue",
   },
   buttonText: {
     color: "#fff",

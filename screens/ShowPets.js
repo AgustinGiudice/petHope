@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     width: "100%",
+    flex: 1,
+    paddingVertical: 40,
   },
   title: {
     fontSize: 24,
@@ -111,8 +113,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   mascotaImagen: {
-    width: 400,
-    height: 400,
+    width: 350,
+    height: 350,
   },
   mascotaNombre: {
     fontSize: 18,
