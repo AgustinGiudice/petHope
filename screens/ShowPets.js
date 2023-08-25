@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Dimensions,
 } from "react-native";
+import Menu from "../components/Menu";
 
 const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
@@ -68,18 +70,17 @@ const ShowPets = ({ navigation }) => {
   );
 
   const handleScroll = () => {
-    nextPet();
-    console.log("SCROLLING!!!");
+    const alturaPantalla = Dimensions.get("window").height;
+    console.log(alturaPantalla);
     myRef.current.scrollTo({
-      y: 571 * index,
+      y: alturaPantalla * 0.92,
       animated: true,
     });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mascotas Disponibles</Text>
-      <ScrollView ref={myRef} onScroll={handleScroll}>
+      <ScrollView ref={myRef} onScrollEndDrag={handleScroll} decelerationRate={0.4}>
         <FlatList
           data={mascotas}
           renderItem={renderItem}
@@ -87,36 +88,18 @@ const ShowPets = ({ navigation }) => {
           contentContainerStyle={styles.listContainer}
         />
       </ScrollView>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.goBackButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.buttonText}>Volver</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.goFowardButton}
-          onPress={() => nextPet()}
-        >
-          <Text style={styles.buttonText}>Siguiente</Text>
-        </TouchableOpacity>
-      </View>
+      <Menu />
     </View>
   );
 };
+
+const mainContentHeight = Dimensions.get("window").height * 0.9;
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     backgroundColor: "#fff",
-    height: "100vh",
     paddingTop: 40,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    height: "15%",
   },
   listContainer: {
     paddingHorizontal: 20,
@@ -129,43 +112,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     textAlign: "center",
-    height: "80vh",
     justifyContent: "space-between",
+    height: mainContentHeight,
     minHeight: 450,
   },
   mascotaImagen: {
     width: "100%",
-    height: "50%",
+    height: "80%",
     borderRadius: 5,
-    resizeMode: "center",
+    resizeMode: "cover",
   },
   mascotaNombre: {
     fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 20,
-  },
-  goBackButton: {
-    backgroundColor: "red",
-    borderRadius: 5,
-    paddingVertical: 5,
-    alignItems: "center",
-    width: 100,
-  },
-  goFowardButton: {
-    backgroundColor: "blue",
-    borderRadius: 5,
-    paddingVertical: 5,
-    alignItems: "center",
-    width: 100,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
   },
 });

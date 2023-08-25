@@ -6,20 +6,20 @@ const Menu = () => {
   return (
     <View style={styles.menuContainer}>
       <TouchableOpacity style={styles.button} color="#007bff">
-        <Text>1</Text>
+        <Text>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} color="#007bff">
-        <Text>2</Text>
+        <Text>Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.pawbutton}>
         <FontAwesome name="paw" size={50} />
       </TouchableOpacity>
       <View style={styles.space}></View>
       <TouchableOpacity style={styles.button} color="#007bff">
-        <Text>3</Text>
+        <Text>Settings</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} color="#007bff">
-        <Text>4</Text>
+        <Text>More</Text>
       </TouchableOpacity>
     </View>
   );
@@ -27,19 +27,19 @@ const Menu = () => {
 
 const styles = StyleSheet.create({
   menuContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     overflow: "visible",
     backgroundColor: "#007bff",
-    height: 50,
+    height: 60,
     width: "100%",
     alignItems: "center",
+    position: "absolute",
+    bottom: 0,
   },
   button: {
     paddingVertical: 15,
-    paddingHorizontal: 20
-    ,
+    paddingHorizontal: 20,
   },
   space: {
     width: 75,
