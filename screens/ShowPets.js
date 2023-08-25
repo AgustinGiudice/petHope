@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from "react-native";
 
 const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
 
+  const myRef = useRef();
   const baseURL =
     "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
 
@@ -49,7 +51,7 @@ const ShowPets = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
-    <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
+      <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
       <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
       <Text>
@@ -65,24 +67,40 @@ const ShowPets = ({ navigation }) => {
     </View>
   );
 
+  const handleScroll = () => {
+    nextPet();
+    console.log("SCROLLING!!!");
+    myRef.current.scrollTo({
+      y: 571 * index,
+      animated: true,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Volver</Text>
-      </TouchableOpacity>
       <Text style={styles.title}>Mascotas Disponibles</Text>
-      <FlatList
-        data={mascotas}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-      />
-      <TouchableOpacity style={styles.goBackButton} onPress={() => nextPet()}>
-        <Text style={styles.goBackText}>Siguiente</Text>
-      </TouchableOpacity>
+      <ScrollView ref={myRef} onScroll={handleScroll}>
+        <FlatList
+          data={mascotas}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.listContainer}
+        />
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>Volver</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.goFowardButton}
+          onPress={() => nextPet()}
+        >
+          <Text style={styles.buttonText}>Siguiente</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -90,45 +108,62 @@ const ShowPets = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#fff",
-    width: "100%",
-    flex: 1,
-    paddingVertical: 40,
+    height: "100vh",
+    paddingTop: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    textAlign: "center",
+    height: "15%",
   },
   listContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
   },
   mascotaItem: {
     marginBottom: 20,
+    marginTop: 5,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
     textAlign: "center",
+    height: "80vh",
+    justifyContent: "space-between",
+    minHeight: 450,
   },
   mascotaImagen: {
-    width: 350,
-    height: 350,
+    width: "100%",
+    height: "50%",
+    borderRadius: 5,
+    resizeMode: "center",
   },
   mascotaNombre: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
   },
-  goBackButton: {
-    backgroundColor: "gray",
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
   },
-  goBackText: {
+  goBackButton: {
+    backgroundColor: "red",
+    borderRadius: 5,
+    paddingVertical: 5,
+    alignItems: "center",
+    width: 100,
+  },
+  goFowardButton: {
+    backgroundColor: "blue",
+    borderRadius: 5,
+    paddingVertical: 5,
+    alignItems: "center",
+    width: 100,
+  },
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
