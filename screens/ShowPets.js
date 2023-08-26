@@ -11,9 +11,26 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 
+
+const screenWidth = Dimensions.get('window').width;
+
 const ShowPets = ({ navigation }) => {
+
+  // PRUEBAS
+  const reff = useRef(null);
+
+  //pruebas 2
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatlistRef = useRef(null);
+
+  const scrollToIndex = (index) => {
+    setCurrentIndex(index);
+    flatlistRef.current.scrollToIndex({ animated: true, index });
+  };
+
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
+  const [indexElemento, setIndexElemento] = useState(0);
 
   const myRef = useRef();
   const baseURL =
@@ -42,15 +59,19 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         setMascotas(data);
+        const idToScrollTo = 1;
+        const initialIndex = data.findIndex((item) => item.id === idToScrollTo);
+        setIndexElemento(initialIndex)
         console.log(data);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error));
+
+
   }, [index]);
 
-  const nextPet = () => {
-    setIndex(index + 1); //Incrementa el numero de Offset para el fetch
-  };
 
+
+  // ITEMS QUE RENDERIZAMOS ABAJO 
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
       <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
@@ -69,31 +90,42 @@ const ShowPets = ({ navigation }) => {
     </View>
   );
 
-  const handleScroll = () => {
-    const alturaPantalla = Dimensions.get("window").height;
-    console.log(alturaPantalla);
-    myRef.current.scrollTo({
-      y: alturaPantalla * 0.92,
-      animated: true,
-    });
-  };
+
 
   return (
     <View style={styles.container}>
-      <ScrollView ref={myRef} onScrollEndDrag={handleScroll} decelerationRate={0.4}>
         <FlatList
+          ref={flatlistRef}
+          horizontal
+          pagingEnabled
           data={mascotas}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.listContainer}
+          getItemLayout={(data, index) => ({
+            length: screenWidth,
+            offset: screenWidth * index,
+            index,
+          })}
+          onMomentumScrollEnd={(event) => {
+            const newIndex = Math.round(
+              event.nativeEvent.contentOffset.x / screenWidth
+            );
+            if (newIndex !== currentIndex) {
+              setCurrentIndex(newIndex);
+            }
+          }}
         />
-      </ScrollView>
+      
       <Menu />
     </View>
   );
 };
 
 const mainContentHeight = Dimensions.get("window").height * 0.9;
+
+
+// ESTILOS
 
 const styles = StyleSheet.create({
   container: {
@@ -115,6 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: mainContentHeight,
     minHeight: 450,
+    width: screenWidth,
   },
   mascotaImagen: {
     width: "100%",
