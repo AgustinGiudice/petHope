@@ -76,11 +76,11 @@ const ShowPets = ({ navigation }) => {
   const queryParams = {
     longitud: -58.41184318187,
     latitud: -34.6093696411,
-    distancia: 10000,
+    distancia: 15,
     cuidadosEspeciales: false,
-    tipoMascota: 3,
+    tipoMascota: 1,
     tamaño: 2,
-    rangoDeEdad: 3,
+    rangoDeEdad: 1,
   };
 
   // Construye la URL con los parámetros
