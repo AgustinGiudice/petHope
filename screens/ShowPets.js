@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import Menu from "../components/Menu";
 
@@ -32,6 +33,7 @@ const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [indexElemento, setIndexElemento] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const myRef = useRef();
   // const baseURL =
@@ -100,7 +102,10 @@ const ShowPets = ({ navigation }) => {
         const initialIndex = data.findIndex((item) => item.id === idToScrollTo);
         setIndexElemento(initialIndex);
       })
-      .catch((error) => console.error("Error al obtener mascotas:", error));
+      .catch((error) => console.error("Error al obtener mascotas:", error))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [index]);
 
   //
@@ -141,29 +146,32 @@ const ShowPets = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        ref={flatlistRef}
-        horizontal
-        pagingEnabled
-        data={mascotas}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-        getItemLayout={(data, index) => ({
-          length: screenWidth,
-          offset: screenWidth * index,
-          index,
-        })}
-        onMomentumScrollEnd={(event) => {
-          const newIndex = Math.round(
-            event.nativeEvent.contentOffset.x / screenWidth
-          );
-          if (newIndex !== currentIndex) {
-            setCurrentIndex(newIndex);
-          }
-        }}
-      />
-
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <FlatList
+          ref={flatlistRef}
+          horizontal
+          pagingEnabled
+          data={mascotas}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.listContainer}
+          getItemLayout={(data, index) => ({
+            length: screenWidth,
+            offset: screenWidth * index,
+            index,
+          })}
+          onMomentumScrollEnd={(event) => {
+            const newIndex = Math.round(
+              event.nativeEvent.contentOffset.x / screenWidth
+            );
+            if (newIndex !== currentIndex) {
+              setCurrentIndex(newIndex);
+            }
+          }}
+        />
+      )}
       <Menu />
     </View>
   );
