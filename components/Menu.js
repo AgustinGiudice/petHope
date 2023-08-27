@@ -28,7 +28,7 @@ const Menu = () => {
 const styles = StyleSheet.create({
   menuContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     overflow: "visible",
     backgroundColor: "#007bff",
     height: 60,
@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   button: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
   },
   space: {
     width: 75,

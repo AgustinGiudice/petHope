@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
+import { BASE_URL } from "@env";
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
   Image,
-  ScrollView,
   Dimensions,
 } from "react-native";
 import Menu from "../components/Menu";
 
-
-const screenWidth = Dimensions.get('window').width;
-
 const ShowPets = ({ navigation }) => {
-
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
+  const [screenHeight, setScreenHeight] = useState(
+    Dimensions.get("window").height
+  );
   // PRUEBAS
   const reff = useRef(null);
 
@@ -33,8 +34,44 @@ const ShowPets = ({ navigation }) => {
   const [indexElemento, setIndexElemento] = useState(0);
 
   const myRef = useRef();
-  const baseURL =
-    "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
+  // const baseURL =
+  //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
+
+  //
+  //Meto los estilos adentro del cuerpo de la funciónn para poder usar los useState
+  //
+  const styles = StyleSheet.create({
+    container: {
+      justifyContent: "center",
+      backgroundColor: "#fff",
+      height: screenHeight, //Para que la pantalla siempre ocupe el 100% del dispositivo
+    },
+    mascotaItem: {
+      marginBottom: 20,
+      marginTop: 5,
+      marginHorizontal: 5,
+      borderWidth: 1,
+      borderColor: "#ccc",
+      padding: 10,
+      borderRadius: 5,
+      textAlign: "center",
+      justifyContent: "space-between",
+      height: screenHeight * 0.87,
+      minHeight: 450,
+      width: screenWidth - 10,
+    },
+    mascotaImagen: {
+      width: "100%",
+      height: screenHeight * 0.6,
+      borderRadius: 5,
+      resizeMode: "cover",
+      alignContent: "center",
+    },
+    mascotaNombre: {
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+  });
 
   const queryParams = {
     longitud: -58.41184318187,
@@ -47,7 +84,7 @@ const ShowPets = ({ navigation }) => {
   };
 
   // Construye la URL con los parámetros
-  const url = `${baseURL}?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -61,17 +98,29 @@ const ShowPets = ({ navigation }) => {
         setMascotas(data);
         const idToScrollTo = 1;
         const initialIndex = data.findIndex((item) => item.id === idToScrollTo);
-        setIndexElemento(initialIndex)
-        console.log(data);
+        setIndexElemento(initialIndex);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error));
-
-
   }, [index]);
 
+  //
+  //Funciones para hacer "responsive" el Front
+  //
+  const handleScreenResize = () => {
+    const { width, height } = Dimensions.get("window");
+    setScreenWidth(width);
+    setScreenHeight(height);
+  };
 
+  useEffect(() => {
+    Dimensions.addEventListener("change", handleScreenResize);
 
-  // ITEMS QUE RENDERIZAMOS ABAJO 
+    return () => {
+      Dimensions.removeEventListener("change", handleScreenResize);
+    };
+  }, []);
+
+  // ITEMS QUE RENDERIZAMOS ABAJO
   const renderItem = ({ item }) => (
     <View style={styles.mascotaItem}>
       <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
@@ -90,75 +139,34 @@ const ShowPets = ({ navigation }) => {
     </View>
   );
 
-
-
   return (
     <View style={styles.container}>
-        <FlatList
-          ref={flatlistRef}
-          horizontal
-          pagingEnabled
-          data={mascotas}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-          getItemLayout={(data, index) => ({
-            length: screenWidth,
-            offset: screenWidth * index,
-            index,
-          })}
-          onMomentumScrollEnd={(event) => {
-            const newIndex = Math.round(
-              event.nativeEvent.contentOffset.x / screenWidth
-            );
-            if (newIndex !== currentIndex) {
-              setCurrentIndex(newIndex);
-            }
-          }}
-        />
-      
+      <FlatList
+        ref={flatlistRef}
+        horizontal
+        pagingEnabled
+        data={mascotas}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.listContainer}
+        getItemLayout={(data, index) => ({
+          length: screenWidth,
+          offset: screenWidth * index,
+          index,
+        })}
+        onMomentumScrollEnd={(event) => {
+          const newIndex = Math.round(
+            event.nativeEvent.contentOffset.x / screenWidth
+          );
+          if (newIndex !== currentIndex) {
+            setCurrentIndex(newIndex);
+          }
+        }}
+      />
+
       <Menu />
     </View>
   );
 };
-
-const mainContentHeight = Dimensions.get("window").height * 0.9;
-
-
-// ESTILOS
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    backgroundColor: "#fff",
-    paddingTop: 40,
-  },
-  listContainer: {
-    paddingHorizontal: 20,
-  },
-  mascotaItem: {
-    marginBottom: 20,
-    marginTop: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-    textAlign: "center",
-    justifyContent: "space-between",
-    height: mainContentHeight,
-    minHeight: 450,
-    width: screenWidth,
-  },
-  mascotaImagen: {
-    width: "100%",
-    height: "80%",
-    borderRadius: 5,
-    resizeMode: "cover",
-  },
-  mascotaNombre: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-});
 
 export default ShowPets;
