@@ -18,30 +18,21 @@ const ShowPets = ({ navigation }) => {
   const [screenHeight, setScreenHeight] = useState(
     Dimensions.get("window").height
   );
-  // PRUEBAS
-  const reff = useRef(null);
 
-  //pruebas 2
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatlistRef = useRef(null);
-
-  const scrollToIndex = (index) => {
-    setCurrentIndex(index);
-    flatlistRef.current.scrollToIndex({ animated: true, index });
-  };
-
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
-  const [indexElemento, setIndexElemento] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  // const flatlistRef = useRef(null);
 
-  const myRef = useRef();
+
   // const baseURL =
   //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
 
   //
   //Meto los estilos adentro del cuerpo de la funciónn para poder usar los useState
   //
+
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -98,9 +89,6 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         setMascotas(data);
-        const idToScrollTo = 1;
-        const initialIndex = data.findIndex((item) => item.id === idToScrollTo);
-        setIndexElemento(initialIndex);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
@@ -150,7 +138,7 @@ const ShowPets = ({ navigation }) => {
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
-          ref={flatlistRef}
+          // ref={flatlistRef}
           horizontal
           pagingEnabled
           data={mascotas}
