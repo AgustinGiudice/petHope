@@ -12,18 +12,22 @@ Algoritmo y matcheo :
     Hasta ahora se guarda en el state.
 
     Hay dos ideas: o guardar cada vez que se hace un fetch, o cuando la persona abandona la vista capturar ese evento y hacer un guardado general.
+    
+    😎 react-native-cache
 
-
-    🌹 Animación final en scrolleo y fectch.
-
+    🌹 Animación final en scrolleo y fetch. ( Buscar librería )
 
     🌹 match.js => Que pasa cuando la persona matchea o quiere ver a un animal? Se crea un objeto de la tabla match, se indica cada ID.
+
+        Agregar columna a mascota: contadorMatch
 
     🌹 Crear animación del front en la respuesta del matcheo. (tipo corazon de instagram). => Donde puede ver información de sus "peticiones la persona?
 
     Crear un lugar para ver los "envios de matcheo" o "peticiones" del usuario. (Puede ser un botón en el menú, o un botón en la vista de showPets).
 
+    Hacemos una seccion de "Matcheos realizados" ? Y ponemos el estado: ESPERA - EN CURSO - ETC?
 
+    Hacemos notificaciones? Que queres que digan las notificaciones? Ej: El refugio a aceptado tu petición.
 
 
 
