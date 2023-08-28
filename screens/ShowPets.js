@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "@env";
+import cache from "../hooks/useCache";
 import {
   View,
   Text,
@@ -94,6 +95,7 @@ const ShowPets = ({ navigation }) => {
       .then((data) => {
         setMascotas((prevData) => prevData.concat(data));
         console.log("Cantidad" + mascotas.length);
+        cache.set("vistos", [mascotas.forEach((mascota) => mascota.id)]);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
