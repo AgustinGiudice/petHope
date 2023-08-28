@@ -27,7 +27,7 @@ const ShowPets = ({ navigation }) => {
 
   // const baseURL =
   //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
-
+  //
   //
   //Meto los estilos adentro del cuerpo de la funciónn para poder usar los useState
   //
@@ -63,6 +63,10 @@ const ShowPets = ({ navigation }) => {
     mascotaNombre: {
       fontSize: 18,
       fontWeight: "bold",
+    },
+    loader: {
+      width: "100%",
+      height: "100%",
     },
   });
 
@@ -133,40 +137,41 @@ const ShowPets = ({ navigation }) => {
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <FlatList
-          ref={flatlistRef}
-          horizontal
-          pagingEnabled
-          data={mascotas}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-          getItemLayout={(data, index) => ({
-            length: screenWidth,
-            offset: screenWidth * index,
-            index,
-          })}
-          onMomentumScrollEnd={(event) => {
-            const newIndex = Math.round(
-              event.nativeEvent.contentOffset.x / screenWidth
-            );
-            if (newIndex !== currentIndex) {
-              setCurrentIndex(newIndex);
-            }
-          }}
-          onEndReached={() => {
-            setIndex(index + 2);
-          }}
-        />
-      )}
-      {!isLoading ? <Menu /> : null}
-    </View>
-  );
+  {
+    if (isLoading) {
+      return <ActivityIndicator size="large" style={styles.loader} />;
+    } else {
+      return (
+        <View style={styles.container}>
+          <FlatList
+            ref={flatlistRef}
+            horizontal
+            pagingEnabled
+            data={mascotas}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.listContainer}
+            getItemLayout={(data, index) => ({
+              length: screenWidth,
+              offset: screenWidth * index,
+              index,
+            })}
+            onMomentumScrollEnd={(event) => {
+              const newIndex = Math.round(
+                event.nativeEvent.contentOffset.x / screenWidth
+              );
+              if (newIndex !== currentIndex) {
+                setCurrentIndex(newIndex);
+              }
+            }}
+            onEndReached={() => {
+              setIndex(index + 2);
+            }}
+          />
+          <Menu />
+        </View>
+      );
+    }
+  }
 };
-
 export default ShowPets;
