@@ -23,7 +23,7 @@ const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
-  // const flatlistRef = useRef(null);
+  const flatlistRef = useRef();
 
   // const baseURL =
   //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
@@ -88,7 +88,8 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMascotas(data);
+        setMascotas((prevData) => prevData.concat(data));
+        console.log("Cantidad" + mascotas.length);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
@@ -138,7 +139,7 @@ const ShowPets = ({ navigation }) => {
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
-          // ref={flatlistRef}
+          ref={flatlistRef}
           horizontal
           pagingEnabled
           data={mascotas}
@@ -158,9 +159,12 @@ const ShowPets = ({ navigation }) => {
               setCurrentIndex(newIndex);
             }
           }}
+          onEndReached={() => {
+            setIndex(index + 2);
+          }}
         />
       )}
-      <Menu />
+      {!isLoading ? <Menu /> : null}
     </View>
   );
 };
