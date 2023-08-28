@@ -1,0 +1,35 @@
+Tareas próximas a realizar:
+
+Algoritmo y matcheo :
+
+    🌹 Diseño y botones de la vista de showPets. Que rutas va a tener esa vista? Menú? FIGMA.
+
+    Botones de aceptar y rechazar (Rechazar tiene la misma idea que scroll hacia derecha).
+
+    🌹 Resolver guardado de mascotas ya filtradas (hasta ahora se guarda en el state). En el guardado, obviamente, tiene que indicarse el usuario que buscó. O, en su defecto
+    utilizar la memoria del celular para guardar las mascotas que se van viendo.
+
+    Hasta ahora se guarda en el state.
+
+    Hay dos ideas: o guardar cada vez que se hace un fetch, o cuando la persona abandona la vista capturar ese evento y hacer un guardado general.
+
+
+    🌹 Animación final en scrolleo y fectch.
+
+
+    🌹 match.js => Que pasa cuando la persona matchea o quiere ver a un animal? Se crea un objeto de la tabla match, se indica cada ID.
+
+    🌹 Crear animación del front en la respuesta del matcheo. (tipo corazon de instagram). => Donde puede ver información de sus "peticiones la persona?
+
+    Crear un lugar para ver los "envios de matcheo" o "peticiones" del usuario. (Puede ser un botón en el menú, o un botón en la vista de showPets).
+
+
+
+
+
+
+Formularios:
+
+- Usuario: datos del Power
+- Refugio: datos del refugio
+- Mascota: datos de la mascota (Formulario a parte de vacunas, etc)  => ?? Relación 1 a 1 con la mascota ??
