@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Menu = () => {
@@ -25,6 +31,7 @@ const Menu = () => {
   );
 };
 
+const width = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   menuContainer: {
     flexDirection: "row",
@@ -37,8 +44,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
-  button: {
-  },
   space: {
     width: 75,
   },
@@ -48,6 +53,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 15,
     borderRadius: 50,
+    marginHorizontal: width / 3,
     zIndex: 2,
     bottom: 0,
   },

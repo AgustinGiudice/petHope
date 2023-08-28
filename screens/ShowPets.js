@@ -25,7 +25,6 @@ const ShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   // const flatlistRef = useRef(null);
 
-
   // const baseURL =
   //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
 
@@ -37,10 +36,12 @@ const ShowPets = ({ navigation }) => {
     container: {
       justifyContent: "center",
       backgroundColor: "#fff",
-      height: screenHeight, //Para que la pantalla siempre ocupe el 100% del dispositivo
+      minHeight: screenHeight,
+      paddingTop: 40, //Para que la pantalla siempre ocupe el 100% del dispositivo
+      overflow: "hidden",
+      position: "absolute",
     },
     mascotaItem: {
-      marginBottom: 20,
       marginTop: 5,
       marginHorizontal: 5,
       borderWidth: 1,
@@ -50,7 +51,6 @@ const ShowPets = ({ navigation }) => {
       textAlign: "center",
       justifyContent: "space-between",
       height: screenHeight * 0.87,
-      minHeight: 450,
       width: screenWidth - 10,
     },
     mascotaImagen: {

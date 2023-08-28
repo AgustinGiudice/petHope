@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 const RegisterPet = ({ navigation }) => {
   const initialPetData = {
     nombre: "",
@@ -23,12 +23,23 @@ const RegisterPet = ({ navigation }) => {
 
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del usuario
+
+    const dataFalsa = {
+      nombre: "Animal random",
+      edad: Math.floor(Math.random() * 3 + 1),
+      nivelCuidado: Math.floor(Math.random() * 3 + 1),
+      cuidadosEspeciales: false,
+      raza: Math.floor(Math.random() * 3 + 1),
+      tamanio: Math.floor(Math.random() * 3 + 1),
+      pic: "https://images.pexels.com/photos/4587971/pexels-photo-4587971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    };
+
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(petData),
+      body: JSON.stringify(dataFalsa),
     })
       .then((response) => response.json())
       .then((data) => {
