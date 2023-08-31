@@ -81,7 +81,7 @@ const ShowPets = ({ navigation }) => {
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -168,7 +168,7 @@ const ShowPets = ({ navigation }) => {
               setIndex(index + 2);
             }}
           />
-          <Menu />
+      {!isLoading ? <Menu mascota_id={mascotas[currentIndex].id} /> : null}
         </View>
       );
     }
