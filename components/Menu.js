@@ -7,6 +7,13 @@ import {
   Dimensions,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { loadCachedData } from "../hooks/useCache";
+
+const showData = async () => {
+  const data = await loadCachedData("mascotasVistas");
+
+  console.log(data);
+};
 
 const Menu = () => {
   return (
@@ -24,7 +31,11 @@ const Menu = () => {
       <TouchableOpacity style={styles.button} color="#007bff">
         <Text>Settings</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} color="#007bff">
+      <TouchableOpacity
+        style={styles.button}
+        color="#007bff"
+        onPress={() => showData()}
+      >
         <Text>More</Text>
       </TouchableOpacity>
     </View>

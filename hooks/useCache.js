@@ -1,10 +1,28 @@
-const cache = new Cache({
-  namespace: "myapp",
-  policy: {
-    maxEntries: 50000, // if unspecified, it can have unlimited entries
-    stdTTL: 0, // the standard ttl as number in seconds, default: 0 (unlimited)
-  },
-  backend: AsyncStorage,
-});
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default cache;
+//const [cachedData, setCachedData] = useState("");
+
+const saveDataToCache = async (nombreCache, dataCache) => {
+  try {
+    await AsyncStorage.setItem(nombreCache, dataCache);
+    console.log("Datos guardados en caché");
+  } catch (error) {
+    console.error("Error al guardar en caché:", error);
+  }
+};
+
+const loadCachedData = async (nombreCache) => {
+  try {
+    const cachedData = await AsyncStorage.getItem(nombreCache);
+    if (cachedData !== null) {
+      return cachedData;
+    }
+  } catch (error) {
+    console.error("Error al cargar desde caché:", error);
+  }
+};
+
+module.exports = {
+  saveDataToCache,
+  loadCachedData,
+};

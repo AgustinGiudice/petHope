@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "@env";
-import cache from "../hooks/useCache";
+import { saveDataToCache, loadCachedData } from "../hooks/useCache";
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ const ShowPets = ({ navigation }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
+  const [idMascotasString, setIdMascotasString] = useState("none");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
@@ -77,7 +78,7 @@ const ShowPets = ({ navigation }) => {
     distancia: 15,
     cuidadosEspeciales: false,
     tipoMascota: 1,
-    tamaño: 2,
+    tamaño: 1,
     rangoDeEdad: 1,
   };
 
@@ -95,7 +96,20 @@ const ShowPets = ({ navigation }) => {
       .then((data) => {
         setMascotas((prevData) => prevData.concat(data));
         console.log("Cantidad" + mascotas.length);
-        cache.set("vistos", [mascotas.forEach((mascota) => mascota.id)]);
+
+        const idMascotas = data.map((mascota) => mascota.id);
+
+        setIdMascotasString((prevString) => {
+          const updatedString =
+            prevString === "none"
+              ? idMascotas.join("|")
+              : prevString + "|" + idMascotas.join("|");
+
+          saveDataToCache("mascotasVistas", updatedString); // Guardar en la caché aquí
+
+          return updatedString; // Devolver el valor actualizado
+        });
+
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
