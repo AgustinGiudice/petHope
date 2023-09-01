@@ -96,7 +96,8 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data !== []) {
+        if (data.length > 0) {
+          console.log("ENTRO AL IF")
           setMascotas((prevData) => prevData.concat(data));
           const idMascotas = data.map((mascota) => mascota.id);
           setIdMascotasString((prevString) => {
@@ -110,6 +111,9 @@ const ShowPets = ({ navigation }) => {
             setPetVistos(updatedString);
             return updatedString;
           });
+        } else {
+          console.log("ENTRO AL ELSE")
+          // ANIMACION DE QUE NO HAY MAS MASCOTAS
         }
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
@@ -189,7 +193,7 @@ const ShowPets = ({ navigation }) => {
               }}
             />
           )}
-          <Menu />
+          {!isLoading ? <Menu mascota_id={mascotas[currentIndex].id} /> : null}
         </View>
       );
     }
