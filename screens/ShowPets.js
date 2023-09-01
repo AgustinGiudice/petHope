@@ -22,7 +22,8 @@ const ShowPets = ({ navigation }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
-  const [idMascotasString, setIdMascotasString] = useState("none");
+  const [idMascotasString, setIdMascotasString] = useState("");
+  const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
@@ -77,13 +78,13 @@ const ShowPets = ({ navigation }) => {
     latitud: -34.6093696411,
     distancia: 15,
     cuidadosEspeciales: false,
-    tipoMascota: 1,
+    tipoMascota: 3,
     tamaño: 1,
-    rangoDeEdad: 1,
+    rangoDeEdad: 2,
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -94,22 +95,22 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMascotas((prevData) => prevData.concat(data));
-        console.log("Cantidad" + mascotas.length);
-
-        const idMascotas = data.map((mascota) => mascota.id);
-
-        setIdMascotasString((prevString) => {
-          const updatedString =
-            prevString === "none"
-              ? idMascotas.join("|")
-              : prevString + "|" + idMascotas.join("|");
-
-          saveDataToCache("mascotasVistas", updatedString); // Guardar en la caché aquí
-
-          return updatedString; // Devolver el valor actualizado
-        });
-
+        console.log(data);
+        if (data !== []) {
+          setMascotas((prevData) => prevData.concat(data));
+          const idMascotas = data.map((mascota) => mascota.id);
+          setIdMascotasString((prevString) => {
+            const updatedString =
+              prevString === "" && idMascotas !== ""
+                ? idMascotas.join("|")
+                : idMascotas !== ""
+                ? prevString + "|" + idMascotas.join("|")
+                : prevString;
+            saveDataToCache("mascotasVistas", updatedString);
+            setPetVistos(updatedString);
+            return updatedString;
+          });
+        }
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
@@ -159,31 +160,35 @@ const ShowPets = ({ navigation }) => {
     } else {
       return (
         <View style={styles.container}>
-          <FlatList
-            ref={flatlistRef}
-            horizontal
-            pagingEnabled
-            data={mascotas}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.listContainer}
-            getItemLayout={(data, index) => ({
-              length: screenWidth,
-              offset: screenWidth * index,
-              index,
-            })}
-            onMomentumScrollEnd={(event) => {
-              const newIndex = Math.round(
-                event.nativeEvent.contentOffset.x / screenWidth
-              );
-              if (newIndex !== currentIndex) {
-                setCurrentIndex(newIndex);
-              }
-            }}
-            onEndReached={() => {
-              setIndex(index + 2);
-            }}
-          />
+          {mascotas === [] ? (
+            <Text>No hay mascotas para mostrar</Text>
+          ) : (
+            <FlatList
+              ref={flatlistRef}
+              horizontal
+              pagingEnabled
+              data={mascotas}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+              contentContainerStyle={styles.listContainer}
+              getItemLayout={(data, index) => ({
+                length: screenWidth,
+                offset: screenWidth * index,
+                index,
+              })}
+              onMomentumScrollEnd={(event) => {
+                const newIndex = Math.round(
+                  event.nativeEvent.contentOffset.x / screenWidth
+                );
+                if (newIndex !== currentIndex) {
+                  setCurrentIndex(newIndex);
+                }
+              }}
+              onEndReached={() => {
+                setIndex(index + 1);
+              }}
+            />
+          )}
           <Menu />
         </View>
       );
