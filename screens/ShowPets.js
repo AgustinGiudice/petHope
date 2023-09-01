@@ -8,9 +8,11 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  TextInput
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import Menu from "../components/Menu";
-
+import ButtonFilters from "../components/ButtonFilters";
 const ShowPets = ({ navigation }) => {
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
@@ -68,6 +70,32 @@ const ShowPets = ({ navigation }) => {
       width: "100%",
       height: "100%",
     },
+    buttonFilters:{
+      zIndex: 1,
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: "bold",
+      marginBottom: 5,
+      color:"white",
+      height: 80,
+
+    },
+    input: {
+      height: 40,
+      borderColor: "gray",
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      height: 80,
+
+    },
+    picker: {
+      height: 80,
+      borderColor: "gray",
+      borderWidth: 1,
+      borderRadius: 5,
+    },
   });
 
   const queryParams = {
@@ -78,10 +106,11 @@ const ShowPets = ({ navigation }) => {
     tipoMascota: 1,
     tamaño: 2,
     rangoDeEdad: 1,
+    vistos: 999
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`;
   useEffect(() => {
     // Obtener las mascotas
     fetch(url, {
@@ -143,6 +172,19 @@ const ShowPets = ({ navigation }) => {
     } else {
       return (
         <View style={styles.container}>
+          <View style={styles.buttonFilters}>
+            <ButtonFilters>
+              <Text style={styles.label}>Raza</Text>
+                <Picker style={styles.picker}>
+                <Picker.Item label="Chico" value="1" />
+                </Picker>
+                <Text style={styles.label}>Distancia</Text>
+                <TextInput  style={styles.input}></TextInput>
+            </ButtonFilters>
+          </View>
+          <View style={styles.buttonFilters}>
+          
+          </View>
           <FlatList
             ref={flatlistRef}
             horizontal

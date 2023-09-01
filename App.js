@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { StatusBar } from "react-native-web";
-
+import Constants from 'expo-constants';
 //COMPONENTES SUELTOS
 import CustomComponent from "./components/CustomComponent";
 import HamburguerMenu from "./components/HamburguerMenu";
