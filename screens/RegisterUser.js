@@ -19,8 +19,8 @@ const CreateUserForm = ({ navigation }) => {
     telefono: "",
     mail: "",
     pass: "",
-    latitud: null,
-    longitud: null,
+    latitud: -34.4634938947938,
+    longitud: -58.527161947963336,
     espacioDisponible: null,
     aceptaCuidadosEspeciales: false,
   };
@@ -84,10 +84,11 @@ const CreateUserForm = ({ navigation }) => {
         console.log("*********\nRespuesta del backend:", data);
         // Reiniciar los campos del formulario después de guardar los datos
         setUserData(initialUserData);
-        navigation.navigate("ShowPets"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
+        navigation.navigate("Login"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
+        console.log(userData);
         // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
       });
   };

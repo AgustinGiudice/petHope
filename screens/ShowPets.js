@@ -56,19 +56,6 @@ const ShowPets = ({ navigation }) => {
     buttonFilters:{
       zIndex: 1,
     },
-    label: {
-      color: 'white', // Texto blanco
-      marginBottom: 5,
-    },
-    picker: {
-      backgroundColor: 'white', // Fondo del Picker blanco
-      color: 'black', // Texto del Picker negro
-    },
-    input: {
-      backgroundColor: 'white', // Fondo del TextInput blanco
-      color: 'black', // Texto del TextInput negro
-      padding: 10,
-    },
     sinMascotas: {
       color: "black",
       fontSize: 30,
