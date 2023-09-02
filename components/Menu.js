@@ -103,6 +103,22 @@ const Menu = ({ mascota_id }) => {
         </Animated.View>
       )}
 
+      {showLikeAnimation && (
+        <Animated.View
+          style={[
+            styles.likeAnimation,
+            {
+              bottom: likeAnimationValue.interpolate({
+                inputRange: [0, 1],
+                outputRange: [screenHeight / 2, -100], // Ajusta los valores según tu diseño
+              }),
+            },
+          ]}
+        >
+          <Text style={styles.likeEmoji}>❤️</Text>
+        </Animated.View>
+      )}
+
       <View style={styles.space}></View>
       <TouchableOpacity style={styles.button} color="#007bff">
         <Text>Settings</Text>
@@ -139,6 +155,14 @@ const styles = StyleSheet.create({
     marginHorizontal: width / 3,
     zIndex: 2,
     bottom: 0,
+  },
+  likeAnimation: {
+    position: "absolute",
+    alignSelf: "center",
+  },
+  likeEmoji: {
+    fontSize: 36,
+    color: "red",
   },
   likeAnimation: {
     position: "absolute",
