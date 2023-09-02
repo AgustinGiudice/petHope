@@ -14,6 +14,17 @@ import { Picker } from "@react-native-picker/picker";
 import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
 const ShowPets = ({ navigation }) => {
+
+
+  const [filtros, setFiltros] = useState( { 
+    sexo: 2,
+    distancia: 15,
+    tipoMascota: 3,
+    tamaño: 3,
+    rangoDeEdad: 3,
+  }
+  );
+  console.log("filtros de showpets:" + filtros.tipoMascota );
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width
   );
@@ -74,46 +85,37 @@ const ShowPets = ({ navigation }) => {
       zIndex: 1,
     },
     label: {
-      fontSize: 16,
-      fontWeight: "bold",
+      color: 'white', // Texto blanco
       marginBottom: 5,
-      color:"white",
-      height: 80,
-
-    },
-    input: {
-      height: 40,
-      borderColor: "gray",
-      borderWidth: 1,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      height: 80,
-
     },
     picker: {
-      height: 80,
-      borderColor: "gray",
-      borderWidth: 1,
-      borderRadius: 5,
+      backgroundColor: 'white', // Fondo del Picker blanco
+      color: 'black', // Texto del Picker negro
+    },
+    input: {
+      backgroundColor: 'white', // Fondo del TextInput blanco
+      color: 'black', // Texto del TextInput negro
+      padding: 10,
     },
   });
 
   const queryParams = {
+    sexo: filtros.sexo,
     longitud: -58.41184318187,
     latitud: -34.6093696411,
-    distancia: 15,
+    distancia: filtros.distancia,
     cuidadosEspeciales: false,
-    tipoMascota: 1,
-    tamaño: 2,
-    rangoDeEdad: 1,
+    tipoMascota: filtros.tipoMascota,
+    tamaño: filtros.tamaño,
+    rangoDeEdad: filtros.rangoDeEdad,
     vistos: 999
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`;
   useEffect(() => {
     // Obtener las mascotas
-    fetch(url, {
+    fetch(`${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,14 +124,17 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         setMascotas((prevData) => prevData.concat(data));
-        console.log("Cantidad" + mascotas.length);
+        console.log(data);
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
         setIsLoading(false);
       });
-  }, [index]);
+  }, [filtros, index ]);
 
+  useEffect(()=>{
+    //aca quiero que haga ualgo para que actualize
+  },[filtros]);
   //
   //Funciones para hacer "responsive" el Front
   //
@@ -173,14 +178,7 @@ const ShowPets = ({ navigation }) => {
       return (
         <View style={styles.container}>
           <View style={styles.buttonFilters}>
-            <ButtonFilters>
-              <Text style={styles.label}>Raza</Text>
-                <Picker style={styles.picker}>
-                <Picker.Item label="Chico" value="1" />
-                </Picker>
-                <Text style={styles.label}>Distancia</Text>
-                <TextInput  style={styles.input}></TextInput>
-            </ButtonFilters>
+            <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
           </View>
           <View style={styles.buttonFilters}>
           
@@ -207,7 +205,7 @@ const ShowPets = ({ navigation }) => {
               }
             }}
             onEndReached={() => {
-              setIndex(index + 2);
+              setIndex(index +1);
             }}
           />
           <Menu />
