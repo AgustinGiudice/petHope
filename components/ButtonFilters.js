@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet ,Dimensions } from 'react-native';
-import { Picker } from "@react-native-picker/picker";
-
+import { View, Text, TouchableOpacity, Modal, TextInput,StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import RadioSelector from "./RadioSelector.js"
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const ButtonFilters = ({children}) => {
+const ButtonFilters = ({ children, filtros, setFiltros}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(true);
   };
 
   const closeModal = () => {
@@ -18,25 +17,48 @@ const ButtonFilters = ({children}) => {
   };
 
   return (
-    <View style={styles.containerr}>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.buttonFilterSP} onPress={openModal}>
         <Text style={styles.buttonText}>Filter</Text>
       </TouchableOpacity>
 
-      {modalVisible && (
-        <View style={styles.modalContainer}>
-          {children}
-        </View>
-      )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.modalBackground}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.modalContainer}>
+                {children}
+                <Text style={styles.label}>Distancia</Text>
+                <TextInput style={styles.input} placeholder="Ingrese la distancia" />
+
+                <RadioSelector setFiltros={setFiltros} filtros={filtros} atributo={"tipoMascota"} titulo={"Seleccione Raza"} values={["Perro","Gato", "Ambos"]}></RadioSelector>
+
+                {/* <RadioSelector titulo={"Seleccione Tamaño"} opcion1={"Chico"} opcion2={"Mediano"} opcion3={"Grande"}></RadioSelector>
+                
+                <RadioSelector titulo={"Seleccione Sexo"} opcion1={"Macho"} opcion2={"Hmebra"} opcion3={"Ambos"}></RadioSelector> */}
+                
+                <TouchableOpacity onPress={closeModal}>
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    containerr:{
-        alignItems:"center"
-    },
-    buttonFilterSP: {
+  container: {
+    alignItems: "center",
+  },
+  buttonFilterSP: {
     position: 'absolute',
     top: 1,
     right: 20,
@@ -46,23 +68,21 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   buttonText: {
-    color: '#fff',
+    color: 'black',
   },
-  modalContainer: {
-    position: 'absolute',
-    zIndex:1,
-    marginTop:10,
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscuro
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: '#fff', // Fondo del modal
+    borderRadius: 5,
+    padding: 20,
     width: screenWidth * 0.8,
-    height: screenHeight * 0.8, 
-    backgroundColor: 'rgba(10, 10, 0, 0.85)',
-    borderRadius:5,
+    height: screenHeight * 0.8,
   },
-  contenidoModal: {
-    color: 'white', // Agregamos el estilo para el color del texto
-  },
-  
 });
 
 export default ButtonFilters;

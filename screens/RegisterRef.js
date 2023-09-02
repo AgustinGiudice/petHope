@@ -10,17 +10,23 @@ import {
 const RegisterRef = ({ navigation }) => {
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
-  const [contacto, setContacto] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [mail, setMail] = useState("");
 
   const handleSubmit = () => {
     // Crear un objeto con los datos del refugio
     const refugioData = {
       nombre,
       direccion,
-      contacto,
-      latitud: -34.61, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
-      longitud: -58.51815,
+      telefono,
+      mail,
+      latitud: -34.564979, //coordenadas hardcodeadas para dejar el refugio en devoto... XQ SI
+      longitud: -58.454552,
     };
+
+
+
+
 
     // Realizar la petición POST al backend para guardar los datos del refugio
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios", {
@@ -36,7 +42,8 @@ const RegisterRef = ({ navigation }) => {
         // Reiniciar los campos del formulario después de guardar los datos
         setNombre("");
         setDireccion("");
-        setContacto("");
+        setTelefono("");
+        setMail("");
         navigation.navigate("ShowPets");
       })
       .catch((error) => {
@@ -68,13 +75,20 @@ const RegisterRef = ({ navigation }) => {
         onChangeText={setDireccion}
         placeholder="Dirección"
       />
-      <Text style={styles.label}>Contacto:</Text>
+      <Text style={styles.label}>Telefono:</Text>
       <TextInput
         style={styles.input}
-        value={contacto}
-        onChangeText={setContacto}
-        placeholder="Contacto"
+        value={telefono}
+        onChangeText={setTelefono}
+        placeholder="Telefono"
         keyboardType="numeric"
+      />
+      <Text style={styles.label}>Mail:</Text>
+      <TextInput
+        style={styles.input}
+        value={mail}
+        onChangeText={setMail}
+        placeholder="Mail"
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Guardar</Text>
