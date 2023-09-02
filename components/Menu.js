@@ -4,8 +4,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions, 
-  Animated
+  Dimensions,
+  Animated,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { BASE_URL } from "@env";
@@ -24,29 +24,29 @@ const Menu = ({ mascota_id }) => {
     Dimensions.get("window").height
   );
 
-   // POST 
-   const postLike = async () => {
-      console.log(mascota_id)
-      var url = `${BASE_URL}api/match`;
+  // POST
+  const postLike = async () => {
+    console.log(mascota_id);
+    var url = `${BASE_URL}api/match`;
     try {
-        const response = await fetch(`${BASE_URL}api/match`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            idMascota: mascota_id,
-          }),
-        });
+      const response = await fetch(`${BASE_URL}api/match`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idMascota: mascota_id,
+        }),
+      });
 
-        if (response.ok) {
+      if (response.ok) {
         const data = await response.json();
         console.log("Respuesta del backend:", data);
         setMatchResponse(data); // Actualiza el estado con la respuesta
 
         // Mostrar la animación de "like"
         setShowLikeAnimation(true);
-    
+
         // Iniciar la animación
         Animated.sequence([
           Animated.timing(likeAnimationValue, {
@@ -71,8 +71,6 @@ const Menu = ({ mascota_id }) => {
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
     }
-      
-    
   };
 
   return (
@@ -83,7 +81,10 @@ const Menu = ({ mascota_id }) => {
       <TouchableOpacity style={styles.button} color="#007bff">
         <Text>Profile</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.pawbutton} onPress={() => postLike(mascota_id)}>
+      <TouchableOpacity
+        style={styles.pawbutton}
+        onPress={() => postLike(mascota_id)}
+      >
         <FontAwesome name="paw" size={50} />
       </TouchableOpacity>
       {showLikeAnimation && (

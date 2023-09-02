@@ -6,35 +6,23 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  Dimensions,
   ActivityIndicator,
 } from "react-native";
+import ItemList from "../components/ItemList";
 import Menu from "../components/Menu";
+import { screenHeight, screenWidth } from "../hooks/useScreenResize";
 
 const ShowPets = ({ navigation }) => {
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [screenHeight, setScreenHeight] = useState(
-    Dimensions.get("window").height
-  );
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
-  const [idMascotasString, setIdMascotasString] = useState("");
   const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
 
-  // const baseURL =
-  //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
   //
+  //Meto los estilos adentro del cuerpo de la función para poder usar los useState
   //
-  //Meto los estilos adentro del cuerpo de la funciónn para poder usar los useState
-  //
-
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -43,33 +31,17 @@ const ShowPets = ({ navigation }) => {
       paddingTop: 40, //Para que la pantalla siempre ocupe el 100% del dispositivo
       overflow: "hidden",
       position: "absolute",
-    },
-    mascotaItem: {
-      marginTop: 5,
-      marginHorizontal: 5,
-      borderWidth: 1,
-      borderColor: "#ccc",
-      padding: 10,
-      borderRadius: 5,
-      textAlign: "center",
-      justifyContent: "space-between",
-      height: screenHeight * 0.87,
-      width: screenWidth - 10,
-    },
-    mascotaImagen: {
-      width: "100%",
-      height: screenHeight * 0.6,
-      borderRadius: 5,
-      resizeMode: "cover",
-      alignContent: "center",
-    },
-    mascotaNombre: {
-      fontSize: 18,
-      fontWeight: "bold",
+      minWidth: screenWidth,
+      alignItems: "center",
     },
     loader: {
       width: "100%",
       height: "100%",
+    },
+    sinMascotas: {
+      color: "black",
+      fontSize: 30,
+      fontWeight: "bold",
     },
   });
 
@@ -79,14 +51,16 @@ const ShowPets = ({ navigation }) => {
     distancia: 15,
     cuidadosEspeciales: false,
     tipoMascota: 3,
-    tamaño: 1,
-    rangoDeEdad: 2,
+    tamaño: 3,
+    rangoDeEdad: 3,
   };
 
   // Construye la URL con los parámetros
   const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${queryParams.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
   useEffect(() => {
+    console.log(petVistos);
     // Obtener las mascotas
+
     fetch(url, {
       method: "GET",
       headers: {
@@ -95,24 +69,19 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.length > 0) {
-          console.log("ENTRO AL IF")
           setMascotas((prevData) => prevData.concat(data));
           const idMascotas = data.map((mascota) => mascota.id);
-          setIdMascotasString((prevString) => {
+          setPetVistos((prevString) => {
             const updatedString =
-              prevString === "" && idMascotas !== ""
+              prevString === ""
                 ? idMascotas.join("|")
-                : idMascotas !== ""
-                ? prevString + "|" + idMascotas.join("|")
-                : prevString;
+                : prevString + "|" + idMascotas.join("|");
             saveDataToCache("mascotasVistas", updatedString);
-            setPetVistos(updatedString);
             return updatedString;
           });
         } else {
-          console.log("ENTRO AL ELSE")
+          console.log("No hay más mascotas!");
           // ANIMACION DE QUE NO HAY MAS MASCOTAS
         }
       })
@@ -122,57 +91,23 @@ const ShowPets = ({ navigation }) => {
       });
   }, [index]);
 
-  //
-  //Funciones para hacer "responsive" el Front
-  //
-  const handleScreenResize = () => {
-    const { width, height } = Dimensions.get("window");
-    setScreenWidth(width);
-    setScreenHeight(height);
-  };
-
-  useEffect(() => {
-    Dimensions.addEventListener("change", handleScreenResize);
-
-    return () => {
-      Dimensions.removeEventListener("change", handleScreenResize);
-    };
-  }, []);
-
-  // ITEMS QUE RENDERIZAMOS ABAJO
-  const renderItem = ({ item }) => (
-    <View style={styles.mascotaItem}>
-      <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
-      <Text style={styles.mascotaNombre}>{item.nombre}</Text>
-      <Text>Raza: {item.raza === 1 ? "Perro" : "Gato"}</Text>
-      <Text>
-        Edad:{" "}
-        {item.edad === 1 ? "Cachorro" : item.edad === 2 ? "Juvenil" : "Adulto"}
-      </Text>
-      <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
-      <Text>Distancia: {(item.distance / 1000).toFixed(2)} km</Text>
-      <Text>
-        Tamaño:{" "}
-        {item.tamanio === 1 ? "Chico" : item.tamanio === 2 ? "Medio" : "Grande"}
-      </Text>
-    </View>
-  );
-
   {
     if (isLoading) {
       return <ActivityIndicator size="large" style={styles.loader} />;
     } else {
       return (
         <View style={styles.container}>
-          {mascotas === [] ? (
-            <Text>No hay mascotas para mostrar</Text>
+          {mascotas.length === 0 ? (
+            <Text styles={styles.sinMascotas}>
+              No hay mascotas para mostrar
+            </Text>
           ) : (
             <FlatList
               ref={flatlistRef}
               horizontal
               pagingEnabled
               data={mascotas}
-              renderItem={renderItem}
+              renderItem={ItemList}
               keyExtractor={(item) => item.id.toString()}
               contentContainerStyle={styles.listContainer}
               getItemLayout={(data, index) => ({
@@ -193,7 +128,11 @@ const ShowPets = ({ navigation }) => {
               }}
             />
           )}
-          {!isLoading ? <Menu mascota_id={mascotas[currentIndex].id} /> : null}
+          {!isLoading && mascotas.length !== 0 ? (
+            <Menu mascota_id={mascotas[currentIndex].id} />
+          ) : (
+            <Menu />
+          )}
         </View>
       );
     }

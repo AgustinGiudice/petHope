@@ -1,7 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-//const [cachedData, setCachedData] = useState("");
-
 const saveDataToCache = async (nombreCache, dataCache) => {
   try {
     await AsyncStorage.setItem(nombreCache, dataCache);
@@ -16,6 +14,8 @@ const loadCachedData = async (nombreCache) => {
     const cachedData = await AsyncStorage.getItem(nombreCache);
     if (cachedData !== null) {
       return cachedData;
+    } else {
+      return "none";
     }
   } catch (error) {
     console.error("Error al cargar desde caché:", error);
