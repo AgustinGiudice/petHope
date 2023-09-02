@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "@env";
+import { saveDataToCache, loadCachedData } from "../hooks/useCache";
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  Dimensions,
   ActivityIndicator,
   TextInput
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
+import ItemList from "../components/ItemList";
+import { screenHeight, screenWidth } from "../hooks/useScreenResize";
 const ShowPets = ({ navigation }) => {
 
 
@@ -25,26 +26,17 @@ const ShowPets = ({ navigation }) => {
   }
   );
   console.log("filtros de showpets:" + filtros.tipoMascota );
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [screenHeight, setScreenHeight] = useState(
-    Dimensions.get("window").height
-  );
-
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
+  const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
 
-  // const baseURL =
-  //   "https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas";
   //
+  //Meto los estilos adentro del cuerpo de la función para poder usar los useState
   //
-  //Meto los estilos adentro del cuerpo de la funciónn para poder usar los useState
-  //
-
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -53,29 +45,8 @@ const ShowPets = ({ navigation }) => {
       paddingTop: 40, //Para que la pantalla siempre ocupe el 100% del dispositivo
       overflow: "hidden",
       position: "absolute",
-    },
-    mascotaItem: {
-      marginTop: 5,
-      marginHorizontal: 5,
-      borderWidth: 1,
-      borderColor: "#ccc",
-      padding: 10,
-      borderRadius: 5,
-      textAlign: "center",
-      justifyContent: "space-between",
-      height: screenHeight * 0.87,
-      width: screenWidth - 10,
-    },
-    mascotaImagen: {
-      width: "100%",
-      height: screenHeight * 0.6,
-      borderRadius: 5,
-      resizeMode: "cover",
-      alignContent: "center",
-    },
-    mascotaNombre: {
-      fontSize: 18,
-      fontWeight: "bold",
+      minWidth: screenWidth,
+      alignItems: "center",
     },
     loader: {
       width: "100%",
@@ -97,6 +68,11 @@ const ShowPets = ({ navigation }) => {
       color: 'black', // Texto del TextInput negro
       padding: 10,
     },
+    sinMascotas: {
+      color: "black",
+      fontSize: 30,
+      fontWeight: "bold",
+    },
   });
 
   const queryParams = {
@@ -108,14 +84,16 @@ const ShowPets = ({ navigation }) => {
     tipoMascota: filtros.tipoMascota,
     tamaño: filtros.tamaño,
     rangoDeEdad: filtros.rangoDeEdad,
-    vistos: 999
+ 
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`;
+  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
   useEffect(() => {
+    console.log(petVistos);
     // Obtener las mascotas
-    fetch(`${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=999`, {
+
+    fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -123,34 +101,27 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMascotas((prevData) => prevData.concat(data));
-        console.log(data);
+        if (data.length > 0) {
+          setMascotas((prevData) => prevData.concat(data));
+          const idMascotas = data.map((mascota) => mascota.id);
+          setPetVistos((prevString) => {
+            const updatedString =
+              prevString === ""
+                ? idMascotas.join("|")
+                : prevString + "|" + idMascotas.join("|");
+            saveDataToCache("mascotasVistas", updatedString);
+            return updatedString;
+          });
+        } else {
+          console.log("No hay más mascotas!");
+          // ANIMACION DE QUE NO HAY MAS MASCOTAS
+        }
       })
       .catch((error) => console.error("Error al obtener mascotas:", error))
       .finally(() => {
         setIsLoading(false);
       });
   }, [filtros, index ]);
-
-  useEffect(()=>{
-    //aca quiero que haga ualgo para que actualize
-  },[filtros]);
-  //
-  //Funciones para hacer "responsive" el Front
-  //
-  const handleScreenResize = () => {
-    const { width, height } = Dimensions.get("window");
-    setScreenWidth(width);
-    setScreenHeight(height);
-  };
-
-  useEffect(() => {
-    Dimensions.addEventListener("change", handleScreenResize);
-
-    return () => {
-      Dimensions.removeEventListener("change", handleScreenResize);
-    };
-  }, []);
 
   // ITEMS QUE RENDERIZAMOS ABAJO
   const renderItem = ({ item }) => (
@@ -177,12 +148,20 @@ const ShowPets = ({ navigation }) => {
     } else {
       return (
         <View style={styles.container}>
+          {mascotas.length === 0 ? (
+            <Text styles={styles.sinMascotas}>
+              No hay mascotas para mostrar
+            </Text>
+          ) : (
+          <>
           <View style={styles.buttonFilters}>
             <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
           </View>
+
           <View style={styles.buttonFilters}>
           
           </View>
+          
           <FlatList
             ref={flatlistRef}
             horizontal
@@ -208,7 +187,14 @@ const ShowPets = ({ navigation }) => {
               setIndex(index +1);
             }}
           />
-          <Menu />
+          </>
+          )}
+          {!isLoading && mascotas.length !== 0 ? (
+            <Menu mascota_id={mascotas[currentIndex].id} />
+          ) : (
+            <Menu />
+          )}
+          
         </View>
       );
     }
