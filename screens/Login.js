@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
       pass,
     };
 
-    fetch("http://localhost:3000/api/usuarios/login", {
+    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
