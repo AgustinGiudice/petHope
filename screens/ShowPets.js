@@ -7,27 +7,21 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
-  TextInput,
-  Image
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
 import ItemList from "../components/ItemList";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize";
 const ShowPets = ({ navigation }) => {
-
-
-  const [filtros, setFiltros] = useState( { 
+  const [filtros, setFiltros] = useState({
     sexo: 2,
     distancia: 15,
     tipoMascota: 3,
     tamaño: 3,
     rangoDeEdad: 3,
-  }
-  );
-  console.log("filtros de showpets:" + filtros.tipoMascota );
-  
+  });
+  console.log("filtros de showpets:" + filtros.tipoMascota);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
   const [petVistos, setPetVistos] = useState("");
@@ -42,37 +36,39 @@ const ShowPets = ({ navigation }) => {
     container: {
       justifyContent: "center",
       backgroundColor: "#fff",
-      minHeight: screenHeight,
+      flex: 1,
       paddingTop: 40, //Para que la pantalla siempre ocupe el 100% del dispositivo
       overflow: "hidden",
-      position: "absolute",
+      position: "relative",
       minWidth: screenWidth,
       alignItems: "center",
+      minHeight: screenHeight,
     },
     loader: {
       width: "100%",
       height: "100%",
     },
-    buttonFilters:{
+    buttonFilters: {
       zIndex: 1,
     },
     label: {
-      color: 'white', // Texto blanco
+      color: "white", // Texto blanco
       marginBottom: 5,
     },
     picker: {
-      backgroundColor: 'white', // Fondo del Picker blanco
-      color: 'black', // Texto del Picker negro
+      backgroundColor: "white", // Fondo del Picker blanco
+      color: "black", // Texto del Picker negro
     },
     input: {
-      backgroundColor: 'white', // Fondo del TextInput blanco
-      color: 'black', // Texto del TextInput negro
+      backgroundColor: "white", // Fondo del TextInput blanco
+      color: "black", // Texto del TextInput negro
       padding: 10,
     },
     sinMascotas: {
       color: "black",
       fontSize: 30,
       fontWeight: "bold",
+      flex: 1,
     },
   });
 
@@ -85,7 +81,6 @@ const ShowPets = ({ navigation }) => {
     tipoMascota: filtros.tipoMascota,
     tamaño: filtros.tamaño,
     rangoDeEdad: filtros.rangoDeEdad,
- 
   };
 
   // Construye la URL con los parámetros
@@ -122,8 +117,7 @@ const ShowPets = ({ navigation }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [filtros, index ]);
-
+  }, [filtros, index]);
 
   {
     if (isLoading) {
@@ -136,48 +130,48 @@ const ShowPets = ({ navigation }) => {
               No hay mascotas para mostrar
             </Text>
           ) : (
-          <>
-          <View style={styles.buttonFilters}>
-            <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
-          </View>
+            <>
+              <View style={styles.buttonFilters}>
+                <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
+              </View>
 
-          <View style={styles.buttonFilters}>
-          
-          </View>
-          
-          <FlatList
-            ref={flatlistRef}
-            horizontal
-            pagingEnabled
-            data={mascotas}
-            renderItem={ItemList}
-            keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.listContainer}
-            getItemLayout={(data, index) => ({
-              length: screenWidth,
-              offset: screenWidth * index,
-              index,
-            })}
-            onMomentumScrollEnd={(event) => {
-              const newIndex = Math.round(
-                event.nativeEvent.contentOffset.x / screenWidth
-              );
-              if (newIndex !== currentIndex) {
-                setCurrentIndex(newIndex);
-              }
-            }}
-            onEndReached={() => {
-              setIndex(index +1);
-            }}
-          />
-          </>
+              <View style={styles.buttonFilters}></View>
+
+              <FlatList
+                ref={flatlistRef}
+                horizontal
+                pagingEnabled
+                data={mascotas}
+                renderItem={ItemList}
+                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={styles.listContainer}
+                getItemLayout={(data, index) => ({
+                  length: screenWidth,
+                  offset: screenWidth * index,
+                  index,
+                })}
+                onMomentumScrollEnd={(event) => {
+                  const newIndex = Math.round(
+                    event.nativeEvent.contentOffset.x / screenWidth
+                  );
+                  if (newIndex !== currentIndex) {
+                    setCurrentIndex(newIndex);
+                  }
+                }}
+                onEndReached={() => {
+                  setIndex(index + 1);
+                }}
+              />
+            </>
           )}
           {!isLoading && mascotas.length !== 0 ? (
-            <Menu mascota_id={mascotas[currentIndex].id} />
+            <Menu
+              mascota_id={mascotas[currentIndex].id}
+              navigation={navigation}
+            />
           ) : (
-            <Menu />
+            <Menu navigation={navigation} />
           )}
-          
         </View>
       );
     }

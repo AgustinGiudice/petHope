@@ -11,7 +11,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { BASE_URL } from "@env";
 import { useState, useRef } from "react";
 
-const Menu = ({ mascota_id }) => {
+const Menu = ({ navigation, mascota_id }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
@@ -78,7 +78,11 @@ const Menu = ({ mascota_id }) => {
       <TouchableOpacity style={styles.button} color="#007bff">
         <Text>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} color="#007bff">
+      <TouchableOpacity
+        style={styles.button}
+        color="#007bff"
+        onPress={() => navigation.navigate("Personal")}
+      >
         <Text>Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: "100%",
     alignItems: "center",
-    position: "absolute",
+    position: "relative",
     bottom: 0,
   },
   space: {

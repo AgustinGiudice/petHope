@@ -1,11 +1,5 @@
 import { StyleSheet } from "react-native";
 import { StatusBar } from "react-native-web";
-import Constants from 'expo-constants';
-//COMPONENTES SUELTOS
-import CustomComponent from "./components/CustomComponent";
-import HamburguerMenu from "./components/HamburguerMenu";
-import Menu from "./components/Menu";
-
 // NAVIGATION
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -18,6 +12,7 @@ import RegisterUser from "./screens/RegisterUser";
 import RegisterRef from "./screens/RegisterRef";
 import RegisterPet from "./screens/RegisterPet";
 import ShowPets from "./screens/ShowPets";
+import PersonalData from "./screens/PersonalData";
 
 //CONTEXT
 import { AuthContextProvider } from "./context/AuthContext";
@@ -63,6 +58,11 @@ export default function App() {
           <Stack.Screen
             name="ShowPets"
             component={ShowPets}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Personal"
+            component={PersonalData}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
