@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { StatusBar } from "react-native-web";
 // NAVIGATION
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import Navigation from "./Navigation";
 // SCREENS
 import Login from "./screens/Login";
 import Home from "./screens/Home";
@@ -14,68 +14,17 @@ import RegisterPet from "./screens/RegisterPet";
 import ShowPets from "./screens/ShowPets";
 import PersonalData from "./screens/PersonalData";
 
+//COMPONENTS
+import Menu from "./components/Menu";
+
 //CONTEXT
 import { AuthContextProvider } from "./context/AuthContext";
 
-const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function App({navigation}) {
+  
   return (
-    <>
-      <StatusBar styles="light" />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="RegisterUser"
-            component={RegisterUser}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="RegisterRef"
-            component={RegisterRef}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ title: "uHH esto sirve para cambiar titulo" }}
-          />
-          <Stack.Screen
-            name="Matchs"
-            component={Match}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Pet"
-            component={RegisterPet}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ShowPets"
-            component={ShowPets}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Personal"
-            component={PersonalData}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <Navigation />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -36,7 +36,7 @@ const PersonalData = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <Menu navigation={navigation} />
+      
     </>
   );
 };
