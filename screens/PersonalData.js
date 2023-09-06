@@ -1,15 +1,9 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Menu from "../components/Menu";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize";
+import UploadImageModal from "../components/UploadImageModal";
 
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,10 +13,17 @@ const PersonalData = ({ navigation }) => {
     direccion: "Calle Alegría de los pibes",
     telefono: 1161746234,
     email: "alexismaubertop@gmail.com",
-    pic: null,
-    //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //pic: null,
+    pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   };
 
+  useEffect(() => {});
+
+  const dataList = [
+    { fieldName: "Dirección", fieldData: userData.direccion },
+    { fieldName: "Teléfono", fieldData: userData.telefono },
+    { fieldName: "E-mail", fieldData: userData.email },
+  ];
   const handlePressPic = () => {
     setModalVisible(true);
     console.log("Aca se va a poder modificar una foto");
@@ -30,16 +31,7 @@ const PersonalData = ({ navigation }) => {
 
   return (
     <>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
-      >
-        <View style={styles.modalWindow}>
-          <Text style={styles.textWhite}>Aca van a haber cosas </Text>
-        </View>
-      </Modal>
+      <UploadImageModal visible={modalVisible} setVisible={setModalVisible} />
       <View style={styles.container}>
         <View style={styles.header}>
           {userData.pic === null ? (
@@ -71,51 +63,25 @@ const PersonalData = ({ navigation }) => {
             {userData.nombre} {userData.apellido}
           </Text>
         </View>
-        <View style={styles.row}>
-          <View style={styles.fieldName}>
-            <Text style={styles.textWhite}>Direccion :</Text>
-          </View>
-          <View style={styles.fieldData}>
-            <Text
-              style={styles.textBlack}
-              onPress={() =>
-                console.log("Tocando aca se debería poder editar esto")
-              }
-            >
-              {userData.direccion}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.fieldName}>
-            <Text style={styles.textWhite}>Teléfono :</Text>
-          </View>
-          <View style={styles.fieldData}>
-            <Text
-              style={styles.textBlack}
-              onPress={() =>
-                console.log("Tocando aca se debería poder editar esto")
-              }
-            >
-              {userData.telefono}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.fieldName}>
-            <Text style={styles.textWhite}>E-mail :</Text>
-          </View>
-          <View style={styles.fieldData}>
-            <Text
-              style={styles.textBlack}
-              onPress={() =>
-                console.log("Tocando aca se debería poder editar esto")
-              }
-            >
-              {userData.email}
-            </Text>
-          </View>
-        </View>
+        {dataList.map((data) => {
+          return (
+            <View style={styles.row} key={data.fieldName}>
+              <View style={styles.fieldName}>
+                <Text style={styles.textWhite}>{data.fieldName}</Text>
+              </View>
+              <View style={styles.fieldData}>
+                <Text
+                  style={styles.textBlack}
+                  onPress={() =>
+                    console.log("Tocando aca se debería poder editar esto")
+                  }
+                >
+                  {data.fieldData}
+                </Text>
+              </View>
+            </View>
+          );
+        })}
       </View>
       <Menu navigation={navigation} />
     </>
@@ -128,12 +94,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 5,
-  },
-  modalWindow: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(10,10,10,0.5)",
   },
   header: {
     paddingTop: 40,

@@ -9,8 +9,7 @@ import {
 
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
-
-// import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
@@ -36,6 +35,13 @@ const CreateUserForm = ({ navigation }) => {
     setIsAlertVisible(true);
   };
 
+  const [region, setRegion] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -44,20 +50,17 @@ const CreateUserForm = ({ navigation }) => {
         return;
       }
 
-      let geolocation = await Location.getCurrentPositionAsync({});
-      setLocation(geolocation.coords);
-    })();
-    if (errorMsg) {
-      console.log(errorMsg);
-    } else if (location) {
-      //console.log(location); //Necesito saber como hacer para que no se ejecute 2 MILLONES DE VECES!!!!!!!!!!!!
-      setUserData({
-        ...userData,
-        latitud: location.latitude,
-        longitud: location.longitude,
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+
+      // Configura la región inicial
+      setRegion({
+        ...region,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
       });
-    }
-  }, [location]);
+    })();
+  }, []);
 
   const handleSubmit = () => {
     if (
@@ -160,20 +163,24 @@ const CreateUserForm = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-      {/* 
-       <View>
+
+      {location && (
         <MapView
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
           style={styles.map}
-        />
-        <Text>Latitud : {latitude}</Text>
-        <Text>Longitud : {longitude}</Text>
-      </View>  */}
+          region={region}
+          onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        >
+          <Marker
+            coordinate={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+            }}
+            title="Mi Ubicación"
+            description="Estoy aquí"
+            draggable
+          />
+        </MapView>
+      )}
     </View>
   );
 };
