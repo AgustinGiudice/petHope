@@ -8,32 +8,35 @@ import {
   Button,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState(""); // Estado para el mensaje de error
+
   const handleLogin = () => {
     const loginData = {
       email,
       pass,
     };
 
-    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    })
+    fetch(
+      "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
 
         if (data.token) {
           const { usuario, token } = data;
-          navigation.navigate('Home', { usuario, token });
+          navigation.navigate("Home", { usuario, token });
         } else {
           setError("Inicio de sesión fallido"); // Establecer mensaje de error
         }
@@ -43,12 +46,11 @@ const LoginScreen = ({ navigation }) => {
       });
   };
 
- 
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      
       <TextInput
         style={styles.input}
         placeholder="Email"
