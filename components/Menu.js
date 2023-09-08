@@ -75,8 +75,12 @@ const Menu = ({ navigation, mascota_id }) => {
 
   return (
     <View style={styles.menuContainer}>
-      <TouchableOpacity style={styles.button} color="#007bff">
-        <Text>Home</Text>
+      <TouchableOpacity
+        style={styles.button}
+        color="#007bff"
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text>login</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}

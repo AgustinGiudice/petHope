@@ -83,7 +83,7 @@ const PersonalData = ({ navigation }) => {
           );
         })}
       </View>
-      <Menu navigation={navigation} />
+      
     </>
   );
 };

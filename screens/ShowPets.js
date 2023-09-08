@@ -72,39 +72,40 @@ const ShowPets = ({ navigation }) => {
 
   // Construye la URL con los parámetros
   const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
-  // useEffect(() => {
-  //   console.log(petVistos);
-  //   // Obtener las mascotas
+  useEffect(() => {
+    console.log(petVistos);
+    console.log(url);
+    // Obtener las mascotas
 
-  //   fetch(url, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.length > 0) {
-  //         setMascotas((prevData) => prevData.concat(data));
-  //         const idMascotas = data.map((mascota) => mascota.id);
-  //         setPetVistos((prevString) => {
-  //           const updatedString =
-  //             prevString === ""
-  //               ? idMascotas.join("|")
-  //               : prevString + "|" + idMascotas.join("|");
-  //           saveDataToCache("mascotasVistas", updatedString);
-  //           return updatedString;
-  //         });
-  //       } else {
-  //         console.log("No hay más mascotas!");
-  //         // ANIMACION DE QUE NO HAY MAS MASCOTAS
-  //       }
-  //     })
-  //     .catch((error) => console.error("Error al obtener mascotas:", error))
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, [filtros, index]);
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          setMascotas((prevData) => prevData.concat(data));
+          const idMascotas = data.map((mascota) => mascota.id);
+          setPetVistos((prevString) => {
+            const updatedString =
+              prevString === ""
+                ? idMascotas.join("|")
+                : prevString + "|" + idMascotas.join("|");
+            saveDataToCache("mascotasVistas", updatedString);
+            return updatedString;
+          });
+        } else {
+          console.log("No hay más mascotas!");
+          // ANIMACION DE QUE NO HAY MAS MASCOTAS
+        }
+      })
+      .catch((error) => console.error("Error al obtener mascotas:", error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [filtros, index]);
 
   {
     if (isLoading) {
