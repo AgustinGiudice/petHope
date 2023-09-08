@@ -74,6 +74,7 @@ const ShowPets = ({ navigation }) => {
   const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
   useEffect(() => {
     console.log(petVistos);
+    console.log(url);
     // Obtener las mascotas
 
     fetch(url, {

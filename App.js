@@ -14,6 +14,7 @@ import RegisterPet from "./screens/RegisterPet";
 import ShowPets from "./screens/ShowPets";
 import PersonalData from "./screens/PersonalData";
 
+
 //COMPONENTS
 import Menu from "./components/Menu";
 
@@ -21,7 +22,7 @@ import Menu from "./components/Menu";
 import { AuthContextProvider } from "./context/AuthContext";
 
 
-export default function App({navigation}) {
+export default function App() {
   
   return (
     <Navigation />
