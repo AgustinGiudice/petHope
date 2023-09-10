@@ -6,15 +6,18 @@ import {
   Modal,
   TextInput,
   StyleSheet,
-  Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
-import RadioSelector from "./RadioSelector.js";
+import { screenHeight, screenWidth } from "../hooks/useScreenResize.js";
+import Radio from "./Radio.js";
+import AntDesign from "react-native-vector-icons/AntDesign.js";
 
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
-
-const ButtonFilters = ({ children, filtros, setFiltros }) => {
+const ButtonFilters = ({
+  children,
+  filtros,
+  setFiltros,
+  setIsFilterChanged,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
@@ -47,21 +50,41 @@ const ButtonFilters = ({ children, filtros, setFiltros }) => {
                   style={styles.input}
                   placeholder="Ingrese la distancia"
                 />
-
-                <RadioSelector
-                  setFiltros={setFiltros}
-                  filtros={filtros}
-                  atributo={"tipoMascota"}
-                  titulo={"Seleccione Raza"}
-                  values={["Perro", "Gato", "Ambos"]}
-                ></RadioSelector>
-
-                {/* <RadioSelector titulo={"Seleccione Tamaño"} opcion1={"Chico"} opcion2={"Mediano"} opcion3={"Grande"}></RadioSelector>
-                
-                <RadioSelector titulo={"Seleccione Sexo"} opcion1={"Macho"} opcion2={"Hmebra"} opcion3={"Ambos"}></RadioSelector> */}
-
-                <TouchableOpacity onPress={closeModal}>
-                  <Text style={styles.buttonText}>Cerrar</Text>
+                <Text style={styles.title}>Tipo de animal</Text>
+                <Radio
+                  data={["Perro", "Gato", "Ambos"]}
+                  handleSelect={(value) => {
+                    const formatedValue =
+                      value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
+                    if (formatedValue !== filtros.tipoMascota) {
+                      setFiltros({
+                        ...filtros,
+                        ...(filtros.tipoMascota = formatedValue),
+                      });
+                      setIsFilterChanged(true); //DESPUES SACAR Y PASARLO AL ONPRESS() DE ALGÚN BOTON
+                    }
+                  }}
+                />
+                <Text style={styles.title}>Sexo</Text>
+                <Radio
+                  data={["Macho", "Hembra", "Ambos"]}
+                  handleSelect={(value) => {
+                    const formatedValue =
+                      value === "Macho" ? 1 : value === "Hembra" ? 2 : 3;
+                    if (formatedValue !== filtros.sexo) {
+                      setFiltros({
+                        ...filtros,
+                        ...(filtros.sexo = formatedValue),
+                      });
+                      setIsFilterChanged(true); //DESPUES SACAR Y PASARLO AL ONPRESS() DE ALGÚN BOTON
+                    }
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={closeModal}
+                  style={styles.closeButton}
+                >
+                  <AntDesign name="close" size={23} />
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
@@ -88,6 +111,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "black",
   },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    paddingVertical: 5,
+  },
   modalBackground: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo oscuro
@@ -95,11 +123,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    backgroundColor: "#fff", // Fondo del modal
+    backgroundColor: "#A5D4FF", // Fondo del modal
     borderRadius: 5,
     padding: 20,
     width: screenWidth * 0.8,
     height: screenHeight * 0.8,
+  },
+  closeButton: {
+    position: "absolute",
+    top: 7,
+    right: 7,
   },
 });
 
