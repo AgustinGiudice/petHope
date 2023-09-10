@@ -35,13 +35,14 @@ const ShowPets = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
-      backgroundColor: "#fff",
+      backgroundColor: "#A5D4FF",
       flex: 1,
       overflow: "hidden",
       position: "relative",
       minWidth: screenWidth,
       alignItems: "center",
-      minHeight: screenHeight,
+      minHeight: screenHeight - 60,
+      paddingTop: 40,
     },
     loader: {
       width: "100%",
@@ -156,14 +157,6 @@ const ShowPets = ({ navigation }) => {
                 }}
               />
             </>
-          )}
-          {!isLoading && mascotas.length !== 0 ? (
-            <Menu
-              mascota_id={mascotas[currentIndex].id}
-              navigation={navigation}
-            />
-          ) : (
-            <Menu navigation={navigation} />
           )}
         </View>
       );

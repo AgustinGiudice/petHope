@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize.js";
 import Radio from "./Radio.js";
+import Input from "./Input.js";
 import AntDesign from "react-native-vector-icons/AntDesign.js";
 
 const ButtonFilters = ({
@@ -31,7 +32,7 @@ const ButtonFilters = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.buttonFilterSP} onPress={openModal}>
-        <Text style={styles.buttonText}>Filter</Text>
+        <Text style={styles.buttonText}>Filtros</Text>
       </TouchableOpacity>
 
       <Modal
@@ -44,13 +45,19 @@ const ButtonFilters = ({
           <View style={styles.modalBackground}>
             <TouchableWithoutFeedback onPress={() => {}}>
               <View style={styles.modalContainer}>
-                {children}
-                <Text style={styles.label}>Distancia</Text>
-                <TextInput
+                <Text style={styles.title}>Filtros</Text>
+                <Text style={styles.filterTitle}>Distancia</Text>
+                <Input
                   style={styles.input}
                   placeholder="Ingrese la distancia"
+                  setValue={(value) =>
+                    setFiltros({
+                      ...filtros,
+                      ...(filtros.distancia = value),
+                    })
+                  }
                 />
-                <Text style={styles.title}>Tipo de animal</Text>
+                <Text style={styles.filterTitle}>Tipo de animal</Text>
                 <Radio
                   data={["Perro", "Gato", "Ambos"]}
                   handleSelect={(value) => {
@@ -65,7 +72,7 @@ const ButtonFilters = ({
                     }
                   }}
                 />
-                <Text style={styles.title}>Sexo</Text>
+                <Text style={styles.filterTitle}>Sexo</Text>
                 <Radio
                   data={["Macho", "Hembra", "Ambos"]}
                   handleSelect={(value) => {
@@ -115,6 +122,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     paddingVertical: 5,
+  },
+  filterTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    paddingVertical: 5,
+    color: "#369EFE",
   },
   modalBackground: {
     flex: 1,

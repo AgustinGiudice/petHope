@@ -88,11 +88,11 @@ const MatchesScreen = () => {
                   </Text>
                   <Text style={styles.letraChica}>
                     {getAnimalDescripcion(item.mascota.animal)}{" "}
+                    {getEdadDescripcion(item.mascota.edad)}{" "}
                     {getTamanioDescripcion(item.mascota.tamanio)}
                   </Text>
                   <Text style={styles.letraChica}>
-                    {getSexoDescripcion(item.mascota.sexo)}{" "}
-                    {getEdadDescripcion(item.mascota.edad)}
+                    {getSexoDescripcion(item.mascota.sexo)}
                   </Text>
                 </View>
               </View>
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: "hidden",
     alignItems: "center",
+    paddingTop: 40,
   },
   matchContainer: {
     maxWidth: screenWidth,
