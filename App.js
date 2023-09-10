@@ -21,10 +21,14 @@ import Menu from "./components/Menu";
 //CONTEXT
 import { AuthContextProvider } from "./context/AuthContext";
 
+const stack = createNativeStackNavigator();
 
 export default function App() {
   
   return (
+    // <NavigationContainer>
+    //   <stack.Screen name="Home" component={Navigation} />
+    // </NavigationContainer>
     <Navigation />
   );
 }

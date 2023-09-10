@@ -1,7 +1,10 @@
 import {React, useRef} from "react";
+import { useState } from "react";
+import 'react-native-gesture-handler';
 import { createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons"; // Importa los íconos que desees utilizar
+
 
 // SCREENS
 import LoginScreen from "./screens/Login";
@@ -13,7 +16,7 @@ import RegisterRef from "./screens/RegisterRef"; //este va a ser cambiado por ot
 import RegisterUser from "./screens/RegisterUser"
 import paw from './assets/paw.png';
 import paw2 from './assets/paw2.png';
-
+import OtrasNavegaciones from "./screens/OtrasNavegaciones";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 import { Animated } from "react-native";
 import { Dimensions } from "react-native";
@@ -21,8 +24,11 @@ import { Dimensions } from "react-native";
 const Tab = createBottomTabNavigator();
 
 
-function MyTabs() {
+
+
+function MyTabs({route}) {
     const tabOffsetValue = useRef(new Animated.Value(0)).current;
+    const [routeST, setRouteST] = useState('');
   return (
     <>
     <Tab.Navigator
@@ -44,6 +50,7 @@ function MyTabs() {
             }}
             listeners={({navigation, route}) => ({
                 tabPress: e => {
+                    setRouteST(route.name);
                     Animated.spring(tabOffsetValue, {
                         toValue: 0,
                         useNativeDriver: true
@@ -61,6 +68,7 @@ function MyTabs() {
                 }}
                 listeners={({navigation, route}) => ({
                     tabPress: e => {
+                        setRouteST(route.name);
                         Animated.spring(tabOffsetValue, {
                             toValue: getWidth(),
                             useNativeDriver: true
@@ -82,6 +90,7 @@ function MyTabs() {
                     justifyContent: "center",
                     alignItems:"center",
                     marginBottom:23,
+                    zIndex:999
                 }}>
                     <Image source={focused? paw : paw2} style={{
                         width: 50,
@@ -89,14 +98,21 @@ function MyTabs() {
                     }}></Image>
                 </View>
             </View>
+
           )
         }}
-        listeners={({navigation, route}) => ({
+        listeners={({ navigation, route }) => ({
             tabPress: e => {
-                Animated.spring(tabOffsetValue, {
-                    toValue: getWidth()*2,
-                    useNativeDriver: true
-                }).start();
+                // Agrega una condición para ocultar el Animated.View en la pantalla "Paw"
+                if (route.name == "Paw") {
+                    console.log(route);
+                    setRouteST(route.name);
+                    console.log(routeST);
+                    Animated.spring(tabOffsetValue, {
+                        toValue: getWidth() * 2,
+                        useNativeDriver: true
+                    }).start();
+                }
             }
         })}
         />
@@ -111,6 +127,10 @@ function MyTabs() {
         }}
         listeners={({navigation, route}) => ({
             tabPress: e => {
+                console.log(route);
+                setRouteST(route.name);
+                console.log(routeST);
+                console.log(tabOffsetValue);
                 Animated.spring(tabOffsetValue, {
                     toValue: getWidth() *3,
                     useNativeDriver: true
@@ -120,7 +140,7 @@ function MyTabs() {
         />
         <Tab.Screen
         name="Otro"
-        component={RegisterRef}
+        component={OtrasNavegaciones}
         options={{
             tabBarIcon: ({ size, color }) => (
                 <Ionicons name="ios-menu" size={40} color={color}  />
@@ -128,28 +148,33 @@ function MyTabs() {
             }}
             listeners={({navigation, route}) => ({
                 tabPress: e => {
+                    setRouteST(route.name);
                     Animated.spring(tabOffsetValue, {
                         toValue: getWidth()*4,
                         useNativeDriver: true
+                        
                     }).start();
+                    console.log(tabOffsetValue);
                 }
             })}
             />
     </Tab.Navigator>
     
-    <Animated.View style={{
-        width: getWidth() - 20,
-        left:10,
-        height: 1,
-        backgroundColor: "black",
-        position: "absolute",
-        bottom: 60,
-        
-        transform:[
-            {translateX : tabOffsetValue}
-        ]
-    }}>
-    </Animated.View>
+    {routeST !== "Paw" && (
+                    <Animated.View style={{
+                        width: getWidth() - 20,
+                        left: 10,
+                        height: 2,
+                        backgroundColor: "black",
+                        position: "absolute",
+                        bottom: 0,
+                        zIndex:1,
+                        transform: [
+                            { translateX: tabOffsetValue }
+                        ]
+                    }}>
+                    </Animated.View>
+                )}
 
     </>
   );
