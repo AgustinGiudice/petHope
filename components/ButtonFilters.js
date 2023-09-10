@@ -13,12 +13,7 @@ import Radio from "./Radio.js";
 import Input from "./Input.js";
 import AntDesign from "react-native-vector-icons/AntDesign.js";
 
-const ButtonFilters = ({
-  children,
-  filtros,
-  setFiltros,
-  setIsFilterChanged,
-}) => {
+const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo oscuro
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo oscuro semitransparente
     justifyContent: "center",
     alignItems: "center",
   },

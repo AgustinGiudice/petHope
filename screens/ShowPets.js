@@ -8,7 +8,6 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
 import ItemList from "../components/ItemList";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize";
@@ -26,7 +25,7 @@ const ShowPets = ({ navigation }) => {
   const [mascotas, setMascotas] = useState([]);
   const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
 
   //
