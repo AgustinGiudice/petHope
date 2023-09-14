@@ -15,6 +15,7 @@ import SPButtons from "../components/SPbuttons";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize";
 
 const ShowPets = ({ navigation }) => {
+  
   const [filtros, setFiltros] = useState({
     sexo: 2,
     distancia: 15,

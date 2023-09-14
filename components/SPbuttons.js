@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, componentWillUnmount } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Animated, Dimensions } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BASE_URL } from "@env";
@@ -70,7 +70,7 @@ const SPbuttons = ({mascota_id}) => {
   };
 
   //ANIMACION
-  const [scaleValue] = useState(new Animated.Value(0));
+  const [scaleValue, setScaleValue] = useState(new Animated.Value(0));
   
   useEffect(() => {
         // Iniciar la animación cuando el componente se monta
@@ -79,13 +79,22 @@ const SPbuttons = ({mascota_id}) => {
           duration: 1000, // Duración de la animación en milisegundos
           useNativeDriver: false, // Asegúrate de configurar useNativeDriver en false
         }).start();
-            // Agrega un efecto de limpieza para reiniciar la animación
-        return () => {
+
+        const cleanUp = () => {
+            scaleValue.stopAnimation();
             scaleValue.setValue(0);
-        };
+        }
+
+        // Agrega un efecto de limpieza para reiniciar la animación
+        // return () => {
+        //     setScaleValue(new Animated.Value(0));
+        // };
+        return cleanUp;
+        
   }, []);
+  
        
-    
+
   // Aplicar la escala al estilo del componente
   const containerStyle = {
         ...styles.footerContainer,
