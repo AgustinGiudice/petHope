@@ -46,7 +46,7 @@ function MyTabs({route}) {
         options={{
             tabBarIcon: ({ size, color }) => (
                 <Ionicons name="ios-home" size={size} color={color} />
-                ),
+                ),headerShown:false,
             }}
             listeners={({navigation, route}) => ({
                 tabPress: e => {
@@ -65,6 +65,7 @@ function MyTabs({route}) {
               tabBarIcon: ({ size, color }) => (
                   <Ionicons name="ios-person" size={size} color={color} />
                   ),
+                  headerShown:false,
                 }}
                 listeners={({navigation, route}) => ({
                     tabPress: e => {
@@ -99,7 +100,7 @@ function MyTabs({route}) {
                 </View>
             </View>
 
-          )
+          ),headerShown:false
         }}
         listeners={({ navigation, route }) => ({
             tabPress: e => {
@@ -160,11 +161,25 @@ function MyTabs({route}) {
             />
     </Tab.Navigator>
     
-    {routeST !== "Paw" && (
+    {routeST !== "Paw" ? (
                     <Animated.View style={{
                         width: getWidth() - 20,
                         left: 10,
                         height: 2,
+                        backgroundColor: "black",
+                        position: "absolute",
+                        bottom: 0,
+                        zIndex:1,
+                        transform: [
+                            { translateX: tabOffsetValue }
+                        ]
+                    }}>
+                    </Animated.View>
+                ):(
+                    <Animated.View style={{
+                        width: getWidth() - 20,
+                        left: 10,
+                        height: 0,
                         backgroundColor: "black",
                         position: "absolute",
                         bottom: 0,

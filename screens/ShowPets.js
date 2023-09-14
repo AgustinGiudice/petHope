@@ -11,7 +11,9 @@ import {
 import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
 import ItemList from "../components/ItemList";
+import SPButtons from "../components/SPbuttons";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize";
+
 const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
     sexo: 2,
@@ -57,6 +59,16 @@ const ShowPets = ({ navigation }) => {
       fontWeight: "bold",
       flex: 1,
     },
+    headerItem: {
+      backgroundColor:"#7A5FB5",
+      width:screenWidth,
+      height:150,
+      borderRadius:10,
+      zIndex:10,
+      alignItems: "center",
+      justifyContent: "flex-end",
+      marginBottom:-30
+    }
   });
 
   const queryParams = {
@@ -87,6 +99,7 @@ const ShowPets = ({ navigation }) => {
       .then((data) => {
         if (data.length > 0) {
           setMascotas((prevData) => prevData.concat(data));
+          console.log("log de mascotas"+mascotas);
           const idMascotas = data.map((mascota) => mascota.id);
           setPetVistos((prevString) => {
             const updatedString =
@@ -119,12 +132,14 @@ const ShowPets = ({ navigation }) => {
             </Text>
           ) : (
             <>
-              <View style={styles.buttonFilters}>
-                <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
-              </View>
-
               <View style={styles.buttonFilters}></View>
+              <View style={styles.headerItem}>
+                <View style={styles.buttonFilters}>
+                  <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
+                </View>
 
+                <Text>{mascotas[currentIndex].nombre}</Text>
+              </View>
               <FlatList
                 ref={flatlistRef}
                 horizontal
@@ -141,25 +156,19 @@ const ShowPets = ({ navigation }) => {
                 onMomentumScrollEnd={(event) => {
                   const newIndex = Math.round(
                     event.nativeEvent.contentOffset.x / screenWidth
-                  );
-                  if (newIndex !== currentIndex) {
-                    setCurrentIndex(newIndex);
-                  }
-                }}
-                onEndReached={() => {
-                  setIndex(index + 1);
+                    );
+                    if (newIndex !== currentIndex) {
+                      setCurrentIndex(newIndex);
+                    }
+                  }}
+                  onEndReached={() => {
+                    setIndex(index + 1);
                 }}
               />
+              {!isLoading ? <SPButtons mascota_id={mascotas[currentIndex].id} /> : null}
             </>
           )}
-          {!isLoading && mascotas.length !== 0 ? (
-            <Menu
-              mascota_id={mascotas[currentIndex].id}
-              navigation={navigation}
-            />
-          ) : (
-            <Menu navigation={navigation} />
-          )}
+          
         </View>
       );
     }
