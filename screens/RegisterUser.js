@@ -130,12 +130,8 @@ const CreateUserForm = ({ navigation }) => {
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
-        <Text style={styles.title}>¿Cómo es el lugar donde vivís actualmente?</Text>
-        <Radio data={["Monoambiente", "Departamento", "Casa"]} />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
-        <Radio data={["Desocupado", "Estudiante", "Trabajador/a", "Estudiante y trabajador/a"]} />
+        <Radio data={["Monoambiente", "Departamento", "Casa"]} />
       </RegisterModal>
       {/* <TouchableOpacity
         style={styles.goBackButton}

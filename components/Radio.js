@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Radio = ({ data }) => {
+const Radio = ({ data, handleSelect }) => {
   const [checked, setChecked] = useState(0);
 
   return (
@@ -24,6 +24,7 @@ const Radio = ({ data }) => {
                 <TouchableOpacity
                   onPress={() => {
                     setChecked(key);
+                    handleSelect(item);
                   }}
                   style={styles.btn}
                 >

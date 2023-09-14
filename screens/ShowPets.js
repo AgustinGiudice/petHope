@@ -8,7 +8,6 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import Menu from "../components/Menu";
 import ButtonFilters from "../components/ButtonFilters";
 import ItemList from "../components/ItemList";
 import SPButtons from "../components/SPbuttons";
@@ -23,13 +22,13 @@ const ShowPets = ({ navigation }) => {
     tamaño: 3,
     rangoDeEdad: 3,
   });
-  console.log("filtros de showpets:" + filtros.tipoMascota);
+  const [isFilterChanged, setIsFilterChanged] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
   const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
 
   //
@@ -38,14 +37,14 @@ const ShowPets = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
-      backgroundColor: "#fff",
+      backgroundColor: "#A5D4FF",
       flex: 1,
-      paddingTop: 40, //Para que la pantalla siempre ocupe el 100% del dispositivo
       overflow: "hidden",
       position: "relative",
       minWidth: screenWidth,
       alignItems: "center",
-      minHeight: screenHeight,
+      minHeight: screenHeight - 60,
+      paddingTop: 40,
     },
     loader: {
       width: "100%",
@@ -86,8 +85,6 @@ const ShowPets = ({ navigation }) => {
   // Construye la URL con los parámetros
   const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
   useEffect(() => {
-    console.log(petVistos);
-    console.log(url);
     // Obtener las mascotas
 
     fetch(url, {
@@ -99,8 +96,11 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          setMascotas((prevData) => prevData.concat(data));
-          console.log("log de mascotas"+mascotas);
+          if (!isFilterChanged) {
+            setMascotas((prevData) => prevData.concat(data));
+          } else {
+            setMascotas([]);
+          }
           const idMascotas = data.map((mascota) => mascota.id);
           setPetVistos((prevString) => {
             const updatedString =
@@ -133,6 +133,14 @@ const ShowPets = ({ navigation }) => {
             </Text>
           ) : (
             <>
+              <View style={styles.buttonFilters}>
+                <ButtonFilters
+                  setIsFilterChanged={setIsFilterChanged}
+                  filtros={filtros}
+                  setFiltros={setFiltros}
+                />
+              </View>
+
               <View style={styles.buttonFilters}></View>
               <View style={styles.headerItem}>
                 <View style={styles.buttonFilters}>
@@ -169,7 +177,6 @@ const ShowPets = ({ navigation }) => {
               {!isLoading ? <SPButtons mascota_id={mascotas[currentIndex].id} /> : null}
             </>
           )}
-          
         </View>
       );
     }

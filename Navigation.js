@@ -28,19 +28,20 @@ function MyTabs({route}) {
     const [routeST, setRouteST] = useState('');
   return (
     <>
-    <Tab.Navigator
-      initialRouteName="Login"
-      screenOptions={{
-          tabBarStyle: { backgroundColor: "#7A5FB5" , height: 60}, // Establece el fondo de color violeta claro
+      <Tab.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          tabBarStyle: { backgroundColor: "#7A5FB5", height: 60 }, // Establece el fondo de color violeta claro
           tabBarShowLabel: false, // Oculta las etiquetas de descripción
           tabBarInactiveTintColor: "white", // Color del ícono cuando no está seleccionado
-          tabBarActiveTintColor:"black"
+          tabBarActiveTintColor: "black",
         }}
-        >
-      <Tab.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
+      >
+        <Tab.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
             tabBarIcon: ({ size, color }) => (
                 <Ionicons name="ios-home" size={size} color={color} />
                 ),headerShown:false,
@@ -75,15 +76,17 @@ function MyTabs({route}) {
                 })}
                 />
         <Tab.Screen
-        name="Paw"
-        component={ShowPets}
-        options={{
+          name="Paw"
+          component={ShowPets}
+          options={{
+            headerShown: false,
             tabBarIcon: ({ focused }) => (
-                <View>
-                <View style={{
-                    width:83,
-                    height:83,
-                    backgroundColor:"#5D2CC7",
+              <View>
+                <View
+                  style={{
+                    width: 83,
+                    height: 83,
+                    backgroundColor: "#5D2CC7",
                     borderRadius: 50,
                     justifyContent: "center",
                     alignItems:"center",
@@ -188,13 +191,25 @@ function MyTabs({route}) {
                     </Animated.View>
                 )}
 
+      <Animated.View
+        style={{
+          width: getWidth() - 20,
+          left: 10,
+          height: 1,
+          backgroundColor: "black",
+          position: "absolute",
+          bottom: 60,
+
+          transform: [{ translateX: tabOffsetValue }],
+        }}
+      ></Animated.View>
     </>
   );
 }
 
 function getWidth() {
-    let width = Dimensions.get("window").width
-    return width / 5
+  let width = Dimensions.get("window").width;
+  return width / 5;
 }
 
 export default function Navigation() {
