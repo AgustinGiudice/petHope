@@ -1,13 +1,12 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
-
+import { getAnimalDescripcion, getEdadDescripcion, getTamanioDescripcion, getSexoDescripcion } from "../hooks/getDescripciones";
 const ItemList = ({ item }) => {
   
   return (
     <View style={styles.mascotaItem}>
       <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
       <Text style={styles.mascotaNombre}>{item.nombre}</Text>
-      <Menu mascota_id={item.id} />
       <Text>Raza: {getAnimalDescripcion(item.raza)}</Text>
       <Text>Edad: {getEdadDescripcion(item.edad)}</Text>
       <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
@@ -17,6 +16,7 @@ const ItemList = ({ item }) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   mascotaItem: {
     marginTop: 5,
