@@ -7,13 +7,15 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
+  useWindowDimensions
 } from "react-native";
 import ButtonFilters from "../components/ButtonFilters";
 import ItemList from "../components/ItemList";
 import SPButtons from "../components/SPbuttons";
-import { screenHeight, screenWidth } from "../hooks/useScreenResize";
 
-const ShowPets = ({ navigation }) => {
+const ShowPets = () => {
+
+  const {width, height} = useWindowDimensions();
   
   const [filtros, setFiltros] = useState({
     sexo: 2,
@@ -41,17 +43,14 @@ const ShowPets = ({ navigation }) => {
       flex: 1,
       overflow: "hidden",
       position: "relative",
-      minWidth: screenWidth,
+      minWidth: width,
       alignItems: "center",
-      minHeight: screenHeight - 60,
+      minHeight: height - 60,
       paddingTop: 40,
     },
     loader: {
       width: "100%",
       height: "100%",
-    },
-    buttonFilters: {
-      zIndex: 1,
     },
     sinMascotas: {
       color: "black",
@@ -61,13 +60,31 @@ const ShowPets = ({ navigation }) => {
     },
     headerItem: {
       backgroundColor:"#7A5FB5",
-      width:screenWidth,
-      height:150,
-      borderRadius:10,
+      width:20,
+      height:80,
+      borderRadius:20,
       zIndex:10,
       alignItems: "center",
       justifyContent: "flex-end",
-      marginBottom:-30
+      marginBottom:-30,
+      position: "relative"
+    },
+    headerItem2:{
+      // width: width - width*.1,
+      // height:height - height * .9,
+      width: 1000,
+      height: 1000,
+      backgroundColor: "#7A5FB5",
+      borderRadius: 470,
+      position: "absolute",
+      bottom:-30,
+      alignItems: "center",
+      justifyContent: "flex-end",
+    },
+    containerButtons:{
+      flexDirection:"row",
+      justifyContent:"space-between",
+      marginBottom: 50,
     }
   });
 
@@ -133,21 +150,20 @@ const ShowPets = ({ navigation }) => {
             </Text>
           ) : (
             <>
-              <View style={styles.buttonFilters}>
-                <ButtonFilters
-                  setIsFilterChanged={setIsFilterChanged}
-                  filtros={filtros}
-                  setFiltros={setFiltros}
-                />
-              </View>
-
-              <View style={styles.buttonFilters}></View>
               <View style={styles.headerItem}>
-                <View style={styles.buttonFilters}>
-                  <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
+                <View style={styles.headerItem2}>
+                  <View style={styles.containerButtons}>
+                    <View>
+                      <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
+                    </View>
+                    <View>
+                      <Text>{mascotas[currentIndex].nombre}</Text>
+                    </View>
+                    <View>
+                      <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                    </View>
+                  </View>
                 </View>
-
-                <Text>{mascotas[currentIndex].nombre}</Text>
               </View>
               <FlatList
                 ref={flatlistRef}
@@ -158,13 +174,13 @@ const ShowPets = ({ navigation }) => {
                 keyExtractor={(item) => item.id.toString()}
                 contentContainerStyle={styles.listContainer}
                 getItemLayout={(data, index) => ({
-                  length: screenWidth,
-                  offset: screenWidth * index,
+                  length: width,
+                  offset: width * index,
                   index,
                 })}
                 onMomentumScrollEnd={(event) => {
                   const newIndex = Math.round(
-                    event.nativeEvent.contentOffset.x / screenWidth
+                    event.nativeEvent.contentOffset.x / width
                     );
                     if (newIndex !== currentIndex) {
                       setCurrentIndex(newIndex);
