@@ -23,9 +23,6 @@ import { Dimensions } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-
-
-
 function MyTabs({route}) {
     const tabOffsetValue = useRef(new Animated.Value(0)).current;
     const [routeST, setRouteST] = useState('');
