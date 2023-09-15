@@ -132,18 +132,13 @@ const ShowPets = ({ navigation }) => {
             </Text>
           ) : (
             <>
-              <View style={styles.buttonFilters}>
-                <ButtonFilters
-                  setIsFilterChanged={setIsFilterChanged}
-                  filtros={filtros}
-                  setFiltros={setFiltros}
-                />
-              </View>
-
-              <View style={styles.buttonFilters}></View>
               <View style={styles.headerItem}>
                 <View style={styles.buttonFilters}>
-                  <ButtonFilters filtros={filtros} setFiltros={setFiltros} />
+                  <ButtonFilters
+                    filtros={filtros}
+                    setFiltros={setFiltros}
+                    setIsFilterChanged={setIsFilterChanged}
+                  />
                 </View>
 
                 <Text>{mascotas[currentIndex].nombre}</Text>
