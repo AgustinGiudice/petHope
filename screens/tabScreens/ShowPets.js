@@ -17,7 +17,7 @@ const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
     sexo: 2,
     distancia: 15,
-    tipoMascota: 3,
+    tipoMascota: 1,
     tamaño: 3,
     rangoDeEdad: 3,
   });
@@ -59,14 +59,26 @@ const ShowPets = ({ navigation }) => {
       flex: 1,
     },
     headerItem: {
+      position:"relative",
       backgroundColor: "#7A5FB5",
       width: screenWidth,
-      height: 150,
+      height: 50,
       borderRadius: 10,
       zIndex: 10,
       alignItems: "center",
       justifyContent: "flex-end",
-      marginBottom: -30,
+      // marginBottom: -30,
+    },
+    headerItem2: {
+      position:"absolute",
+      backgroundColor: "red",
+      width: 1100,
+      height: 1100,
+      borderRadius: 490,
+      zIndex: 10,
+      alignItems: "center",
+      justifyContent: "flex-end",
+      bottom:-25
     },
   });
 
@@ -127,12 +139,20 @@ const ShowPets = ({ navigation }) => {
       return (
         <View style={styles.container}>
           {mascotas.length === 0 ? (
-            <Text styles={styles.sinMascotas}>
-              No hay mascotas para mostrar
-            </Text>
+            <>
+                  <ButtonFilters
+                    filtros={filtros}
+                    setFiltros={setFiltros}
+                    setIsFilterChanged={setIsFilterChanged}
+                  />
+                  <Text styles={styles.sinMascotas}>
+                    No hay mascotas para mostrar
+                  </Text>
+            </>
           ) : (
             <>
               <View style={styles.headerItem}>
+              <View style={styles.headerItem2}>
                 <View style={styles.buttonFilters}>
                   <ButtonFilters
                     filtros={filtros}
@@ -140,9 +160,15 @@ const ShowPets = ({ navigation }) => {
                     setIsFilterChanged={setIsFilterChanged}
                   />
                 </View>
-
-                <Text>{mascotas[currentIndex].nombre}</Text>
+                <View>
+                  <Text>{mascotas[currentIndex].nombre}</Text>
+                </View>
+                <View>
+                  <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                </View>
               </View>
+              </View>
+
               <FlatList
                 ref={flatlistRef}
                 horizontal
