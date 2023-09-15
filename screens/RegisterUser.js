@@ -20,15 +20,22 @@ const CreateUserForm = ({ navigation }) => {
     telefono: "",
     mail: "",
     pass: "",
+    repeatPass: "",
     latitud: -34.4634938947938,
     longitud: -58.527161947963336,
     espacioDisponible: null,
     aceptaCuidadosEspeciales: false,
+    tipoAnimal: null,
+    edadPreferida: null,
+    tamanioPreferido: null,
+    tieneNinios: null,
+    tieneMascotas: null,
+    tuvoMascotas: null,
   };
   const [userData, setUserData] = useState(initialUserData);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [indexModal, setIndexModal] = useState(0);
+  const [indexModal, setIndexModal] = useState(1);
 
   const [alertMessage, setAlertMessage] = useState("");
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -66,44 +73,32 @@ const CreateUserForm = ({ navigation }) => {
   }, []);
 
   const handleSubmit = () => {
-    if (
-      !userData.nombre ||
-      !userData.apellido ||
-      !userData.telefono ||
-      !userData.mail ||
-      !userData.pass
-    ) {
-      showAlert("Por favor, completa todos los campos.");
-      return;
-    } else {
-      // Realizar la petición POST al backend para guardar los datos del usuario
-      fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
+    // Realizar la petición POST al backend para guardar los datos del usuario
+    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Reiniciar los campos del formulario después de guardar los datos
+        setUserData(initialUserData);
+        navigation.navigate("Tabs"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("*********\nRespuesta del backend:", data);
-          // Reiniciar los campos del formulario después de guardar los datos
-          setUserData(initialUserData);
-          navigation.navigate("Login"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
-        })
-        .catch((error) => {
-          console.error("Error al guardar el usuario:", error);
-          console.log(userData);
-          // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
-        });
-    }
+      .catch((error) => {
+        console.error("Error al guardar el usuario:", error);
+        console.log(userData);
+        // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
+      });
   };
 
   return (
     <View style={styles.container}>
-      <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
+      {/* <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
         <Text style={styles.title}>¡Bienvenido!</Text>
-      </RegisterModal>
+      </RegisterModal> */}
       <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cómo te llamas?</Text>
         <Input
@@ -130,80 +125,196 @@ const CreateUserForm = ({ navigation }) => {
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
-        <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
+        <Text style={styles.title}>Ingresá una contraseña</Text>
+        <Input
+          value={userData.pass}
+          setValue={setUserData}
+          placeholder="Contraseña"
+          atributo="pass"
+        />
+        <Input
+          value={userData.repeatPass}
+          setValue={setUserData}
+          placeholder="Repetír contraseña"
+          atributo="repeatPass"
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+        <View style={styles.warningContainer} key={99}>
+          <Text style={styles.title}>
+            A continuación te haremos unas preguntas que nos van a permitir
+            encontrar las mascotas ideales para vos
+          </Text>
+          <Text style={styles.warning}>
+            ¡Tené en cuenta que, hasta que no contestes estas preguntas no vas a
+            poder ver mascotas!
+          </Text>
+        </View>
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Cómo es el lugar donde vivís actualmente?
+        </Text>
         <Radio
           data={["Monoambiente", "Departamento", "Casa"]}
           handleSelect={() => console.log()}
         />
       </RegisterModal>
-      {/* <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Volver</Text>
-      </TouchableOpacity>
-      
-      <Text style={styles.label}>Nombre:</Text>
-      <TextInput
-        style={styles.input}
-        value={userData.nombre}
-        onChangeText={(value) => setUserData({ ...userData, nombre: value })}
-        placeholder="Nombre"
-      />
-      <Text style={styles.label}>Apellido:</Text>
-      <TextInput
-        style={styles.input}
-        value={userData.apellido}
-        onChangeText={(value) => setUserData({ ...userData, apellido: value })}
-        placeholder="Apellido"
-      />
-      <Text style={styles.label}>Teléfono:</Text>
-      <TextInput
-        style={styles.input}
-        value={userData.telefono}
-        onChangeText={(value) => setUserData({ ...userData, telefono: value })}
-        placeholder="Teléfono"
-        keyboardType="numeric"
-      />
-      <Text style={styles.label}>Email:</Text>
-      <TextInput
-        style={styles.input}
-        value={userData.mail}
-        onChangeText={(value) => setUserData({ ...userData, mail: value })}
-        placeholder="Email"
-        keyboardType="email-address"
-      />
-      <Text style={styles.label}>Contraseña:</Text>
-      <TextInput
-        style={styles.input}
-        value={userData.pass}
-        onChangeText={(value) => setUserData({ ...userData, pass: value })}
-        placeholder="Contraseña"
-      />
-
-      {location === null ? (
-        <TouchableOpacity style={styles.button} disabled>
-          <Text style={styles.buttonText}>Guardar</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Guardar</Text>
-        </TouchableOpacity>
-      )}
-
-      {isAlertVisible && (
-        <View style={styles.alert}>
-          <Text style={styles.alertText}>{alertMessage}</Text>
-          <TouchableOpacity
-            style={styles.alertButton}
-            onPress={() => setIsAlertVisible(false)}
-          >
-            <Text style={styles.alertButtonText}>OK</Text>
+      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+        <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
+        <Radio
+          data={[
+            "Desocupado/a",
+            "Estudiante",
+            "Trabajador/a",
+            "Estudiante y Trabajador/a",
+          ]}
+          handleSelect={(value) => {
+            console.log(value);
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Tiene experiencia previa con mascotas?
+        </Text>
+        <Radio
+          data={["Si", "No"]}
+          handleSelect={(value) => {
+            const formatedValue = value === "No" ? false : true;
+            setUserData({
+              ...userData,
+              ...(userData.tuvoMascotas = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Tiene alguna preferencia por un tipo de Animal?
+        </Text>
+        <Radio
+          data={["Perro", "Gato", "Indiferente"]}
+          handleSelect={(value) => {
+            const formatedValue =
+              value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
+            setUserData({
+              ...userData,
+              ...(userData.tipoAnimal = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Tiene alguna preferencia de edad para la mascota?
+        </Text>
+        <Radio
+          data={["Cachorro", "Juvenil", "Adulto", "Indistinto"]}
+          handleSelect={(value) => {
+            const formatedValue =
+              value === "Cachorro"
+                ? 1
+                : value === "Juvenil"
+                ? 2
+                : value === "Adulto"
+                ? 3
+                : 4;
+            setUserData({
+              ...userData,
+              ...(userData.edadPreferida = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Tiene alguna preferencia de tamaño para la mascota?
+        </Text>
+        <Radio
+          data={["Pequeño", "Mediano", "Grande", "Indistinto"]}
+          handleSelect={(value) => {
+            const formatedValue =
+              value === "Pequeño"
+                ? 1
+                : value === "Mediano"
+                ? 2
+                : value === "Grande"
+                ? 3
+                : 4;
+            setUserData({
+              ...userData,
+              ...(userData.tamanioPreferido = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
+        <Text style={styles.title}>¿Tiene niños en casa?</Text>
+        <Radio
+          data={[
+            "No",
+            "Si, Menores de 5 años",
+            "Si, entre 12 y 15 años",
+            "Si, mayores de 15 años",
+          ]}
+          handleSelect={(value) => {
+            const formatedValue =
+              value === "No"
+                ? 1
+                : value === "Si, Menores de 5 años"
+                ? 2
+                : value === "Si, entre 12 y 15 años"
+                ? 3
+                : 4;
+            setUserData({
+              ...userData,
+              ...(userData.tieneNinios = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
+        <Text style={styles.title}>¿Tiene otras mascotas en casa?</Text>
+        <Radio
+          data={["Si", "No"]}
+          handleSelect={(value) => {
+            const formatedValue = value === "No" ? false : true;
+            setUserData({
+              ...userData,
+              ...(userData.tieneMascotas = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          ¿Está dispuesto a adoptar una mascota con necesidades especiales o
+          problemas de salud?
+        </Text>
+        <Radio
+          data={["Si", "No"]}
+          handleSelect={(value) => {
+            const formatedValue = value === "No" ? false : true;
+            setUserData({
+              ...userData,
+              ...(userData.aceptaCuidadosEspeciales = formatedValue),
+            });
+          }}
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
+        <View key={33} style={styles.lastContainer}>
+          <Text style={styles.title}>
+            ¡Muchas gracias por contestar las preguntas!
+          </Text>
+          <Text>Ya podes encontrar tu mascota soñada</Text>
+          <TouchableOpacity onPress={handleSubmit}>
+            <Text style={styles.start}>Empezar</Text>
           </TouchableOpacity>
         </View>
-      )}
-
-      {location && (
+      </RegisterModal>
+      {/* {location && (
         <MapView
           style={styles.map}
           region={region}
@@ -229,6 +340,9 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: "#A5D4FF",
     flex: 1,
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 16,
@@ -251,6 +365,18 @@ const styles = StyleSheet.create({
   },
   map: {
     height: 200,
+  },
+  lastContainer: {
+    gap: 20,
+    alignItems: "center",
+  },
+  start: {
+    backgroundColor: "#369EFE",
+    width: 150,
+    padding: 10,
+    borderRadius: 5,
+    textAlign: "center",
+    color: "white",
   },
 });
 
