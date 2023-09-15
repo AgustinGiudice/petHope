@@ -25,12 +25,78 @@ const SPbuttons = ({ mascota_id }) => {
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
 
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [screenHeight, setScreenHeight] = useState(
-    Dimensions.get("window").height
-  );
+  const {width, height} = useWindowDimensions();
+
+  const styles = StyleSheet.create({
+    footerContainer: {
+      width: width - width * 0.1,
+      height: height - height * 0.6,
+      backgroundColor: "#7A5FB5",
+      borderRadius: 200,
+      position: "absolute",
+      bottom: -230,
+      alignItems: "center",
+      justifyContent: "flex-start",
+    },
+    text: {
+      color: "white",
+      fontSize: 30,
+    },
+    buttonsMain: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: 140,
+      marginTop: 15,
+    },
+    buttonsSecondary: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: 270,
+      marginTop: -17,
+    },
+    backIcons: {
+      backgroundColor: "#5D2CC7",
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    backIcons2: {
+      backgroundColor: "#5D2CC7",
+      width: 45,
+      height: 45,
+      borderRadius: 22.5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    pawbutton: {
+        backgroundColor: "#777bf6",
+        position: "absolute",
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        borderRadius: 50,
+        marginHorizontal: width / 3,
+        zIndex: 2,
+        bottom: 0,
+      },
+      likeAnimation: {
+        position: "absolute",
+        alignSelf: "center",
+      },
+      likeEmoji: {
+        fontSize: 36,
+        color: "red",
+      },
+      likeAnimation: {
+        position: "absolute",
+        alignSelf: "center",
+      },
+      likeEmoji: {
+        fontSize: 36,
+        color: "red",
+      },
+  });
 
   // POST
   const postLike = async () => {
@@ -112,6 +178,8 @@ const SPbuttons = ({ mascota_id }) => {
   };
   //FIN ANIMACION
 
+
+
   return (
     <Animated.View style={containerStyle}>
       <View style={styles.buttonsMain}>
@@ -151,82 +219,6 @@ const SPbuttons = ({ mascota_id }) => {
   );
 };
 
-const height = Dimensions.get("window").height;
-const width = Dimensions.get("window").width;
-const styles = StyleSheet.create({
-  footerContainer: {
-    width: 410,
-    height: 400,
-    backgroundColor: "#7A5FB5",
-    borderRadius: 200,
-    position: "absolute",
-    bottom: -220,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  text: {
-    color: "white",
-    fontSize: 30,
-  },
-  buttonsMain: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 140,
-    marginTop: 15,
-  },
-  buttonsSecondary: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 270,
-    marginTop: -17,
-  },
-  backIcons: {
-    backgroundColor: "#5D2CC7",
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  backIcons2: {
-    backgroundColor: "#5D2CC7",
-    width: 45,
-    height: 45,
-    borderRadius: 22.5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  pawbutton: {
-    backgroundColor: "#777bf6",
-    position: "absolute",
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    borderRadius: 50,
-    marginHorizontal: width / 3,
-    zIndex: 2,
-    bottom: 0,
-  },
-  likeAnimation: {
-    position: "absolute",
-    alignSelf: "center",
-  },
-  likeEmoji: {
-    fontSize: 36,
-    color: "red",
-  },
-  likeAnimation: {
-    position: "absolute",
-    alignSelf: "center",
-  },
-  likeEmoji: {
-    fontSize: 36,
-    color: "red",
-  },
-  corazon: {
-    position: "absolute",
-    top: height / 2,
-    left: width / 2,
-  },
-});
+
 
 export default SPbuttons;
