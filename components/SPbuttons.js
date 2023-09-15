@@ -11,7 +11,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
-  Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -25,7 +25,7 @@ const SPbuttons = ({ mascota_id }) => {
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
 
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const styles = StyleSheet.create({
     footerContainer: {
@@ -71,31 +71,31 @@ const SPbuttons = ({ mascota_id }) => {
       alignItems: "center",
     },
     pawbutton: {
-        backgroundColor: "#777bf6",
-        position: "absolute",
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        borderRadius: 50,
-        marginHorizontal: width / 3,
-        zIndex: 2,
-        bottom: 0,
-      },
-      likeAnimation: {
-        position: "absolute",
-        alignSelf: "center",
-      },
-      likeEmoji: {
-        fontSize: 36,
-        color: "red",
-      },
-      likeAnimation: {
-        position: "absolute",
-        alignSelf: "center",
-      },
-      likeEmoji: {
-        fontSize: 36,
-        color: "red",
-      },
+      backgroundColor: "#777bf6",
+      position: "absolute",
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+      borderRadius: 50,
+      marginHorizontal: width / 3,
+      zIndex: 2,
+      bottom: 0,
+    },
+    likeAnimation: {
+      position: "absolute",
+      alignSelf: "center",
+    },
+    likeEmoji: {
+      fontSize: 36,
+      color: "red",
+    },
+    likeAnimation: {
+      position: "absolute",
+      alignSelf: "center",
+    },
+    likeEmoji: {
+      fontSize: 36,
+      color: "red",
+    },
   });
 
   // POST
@@ -178,8 +178,6 @@ const SPbuttons = ({ mascota_id }) => {
   };
   //FIN ANIMACION
 
-
-
   return (
     <Animated.View style={containerStyle}>
       <View style={styles.buttonsMain}>
@@ -218,7 +216,5 @@ const SPbuttons = ({ mascota_id }) => {
     </Animated.View>
   );
 };
-
-
 
 export default SPbuttons;

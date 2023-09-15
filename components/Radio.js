@@ -4,7 +4,6 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const Radio = ({ data, handleSelect }) => {
   const [checked, setChecked] = useState(0);
-
   return (
     <View style={styles.radio}>
       <View style={styles.radio}>
