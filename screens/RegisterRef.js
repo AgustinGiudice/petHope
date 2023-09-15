@@ -24,10 +24,6 @@ const RegisterRef = ({ navigation }) => {
       longitud: -58.454552,
     };
 
-
-
-
-
     // Realizar la petición POST al backend para guardar los datos del refugio
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios", {
       method: "POST",
