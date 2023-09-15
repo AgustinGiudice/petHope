@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -50,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      
+
       <TextInput
         style={styles.input}
         placeholder="Email"

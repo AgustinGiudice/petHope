@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { BASE_URL } from "@env";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import {
   View,
   Text,
@@ -10,13 +13,13 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { screenWidth } from "../hooks/useScreenResize";
+import { screenWidth } from "../../hooks/useScreenResize";
 import {
   getAnimalDescripcion,
   getEdadDescripcion,
   getTamanioDescripcion,
   getSexoDescripcion,
-} from "../hooks/getDescripciones";
+} from "../../hooks/getDescripciones";
 
 const MatchesScreen = () => {
   // Función para manejar la acción de abrir el chat con el refugio
@@ -98,14 +101,8 @@ const MatchesScreen = () => {
               </View>
 
               <View style={styles.containerIcons}>
-                <Image
-                  source={require("../chat.png")} // Reemplaza con la imagen del icono de chat
-                  style={styles.chatIcon}
-                />
-                <Image
-                  source={require("../dots_1.png")} // Reemplaza con la imagen del icono de chat
-                  style={styles.chatIcon}
-                />
+                <MaterialIcons name="chat" size={25} />
+                <MaterialCommunityIcons name="dots-vertical" size={25} />
               </View>
             </View>
           )}
@@ -177,10 +174,6 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "center",
     alignItems: "center",
-  },
-  chatIcon: {
-    width: 25,
-    height: 25,
   },
 });
 

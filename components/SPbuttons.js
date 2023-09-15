@@ -1,11 +1,25 @@
-import React, { useEffect, useState, useRef, componentWillUnmount } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Animated, Dimensions } from "react-native";
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  componentWillUnmount,
+} from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+} from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import * as Animatable from "react-native-animatable";
 import { BASE_URL } from "@env";
+import ExplodingHeart from "./ExplodingHeart";
 
-
-const SPbuttons = ({mascota_id}) => {
-
+const SPbuttons = ({ mascota_id }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
@@ -18,11 +32,10 @@ const SPbuttons = ({mascota_id}) => {
     Dimensions.get("window").height
   );
 
-
   // POST
   const postLike = async () => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA"+mascota_id);
-    
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA" + mascota_id);
+
     var url = `${BASE_URL}api/match`;
     try {
       const response = await fetch(`${BASE_URL}api/match`, {
@@ -71,58 +84,57 @@ const SPbuttons = ({mascota_id}) => {
 
   //ANIMACION
   const [scaleValue, setScaleValue] = useState(new Animated.Value(0));
-  
+
   useEffect(() => {
-        // Iniciar la animación cuando el componente se monta
-        Animated.timing(scaleValue, {
-          toValue: 1, // Escala final
-          duration: 1000, // Duración de la animación en milisegundos
-          useNativeDriver: false, // Asegúrate de configurar useNativeDriver en false
-        }).start();
+    // Iniciar la animación cuando el componente se monta
+    Animated.timing(scaleValue, {
+      toValue: 1, // Escala final
+      duration: 1000, // Duración de la animación en milisegundos
+      useNativeDriver: false, // Asegúrate de configurar useNativeDriver en false
+    }).start();
 
-        const cleanUp = () => {
-            scaleValue.stopAnimation();
-            scaleValue.setValue(0);
-        }
+    const cleanUp = () => {
+      scaleValue.stopAnimation();
+      scaleValue.setValue(0);
+    };
 
-        // Agrega un efecto de limpieza para reiniciar la animación
-        // return () => {
-        //     setScaleValue(new Animated.Value(0));
-        // };
-        return cleanUp;
-        
+    // Agrega un efecto de limpieza para reiniciar la animación
+    // return () => {
+    //     setScaleValue(new Animated.Value(0));
+    // };
+    return cleanUp;
   }, []);
-  
-       
 
   // Aplicar la escala al estilo del componente
   const containerStyle = {
-        ...styles.footerContainer,
-        transform: [{ scale: scaleValue }],
+    ...styles.footerContainer,
+    transform: [{ scale: scaleValue }],
   };
   //FIN ANIMACION
 
   return (
     <Animated.View style={containerStyle}>
       <View style={styles.buttonsMain}>
-        <TouchableOpacity style={styles.backIcons} onPress={() => postLike(mascota_id)}>
+        <TouchableOpacity
+          style={styles.backIcons}
+          onPress={() => postLike(mascota_id)}
+        >
           <AntDesign name="hearto" size={40} color="white" />
         </TouchableOpacity>
-        {showLikeAnimation && (
-        <Animated.View
-          style={[
-            styles.likeAnimation,
-            {
-              bottom: likeAnimationValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [screenHeight / 2, -100], // Ajusta los valores según tu diseño
-              }),
-            },
-          ]}
-        >
-          <Text style={styles.likeEmoji}>❤️</Text>
-        </Animated.View>
-      )}
+        {showLikeAnimation && <ExplodingHeart width={50} status={false} />}
+        {/* <TouchableOpacity>
+          <Animatable.View
+            animation={showLikeAnimation ? "bounceIn" : undefined}
+            duration={500}
+            style={styles.corazon}
+          >
+            <Ionicons
+              name={showLikeAnimation ? "heart" : "heart-outline"}
+              size={showLikeAnimation ? 40 : 0}
+              color={showLikeAnimation ? "red" : "black"}
+            />
+          </Animatable.View>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.backIcons}>
           <AntDesign name="close" size={40} color="white" />
         </TouchableOpacity>
@@ -139,76 +151,82 @@ const SPbuttons = ({mascota_id}) => {
   );
 };
 
+const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
-  const styles = StyleSheet.create({
-    footerContainer: {
-      width: 410,
-      height: 400,
-      backgroundColor: "#7A5FB5",
-      borderRadius: 200,
-      position: "absolute",
-      bottom: -220,
-      alignItems: "center",
-      justifyContent: "flex-start",
-    },
-    text: {
-      color: "white",
-      fontSize: 30,
-    },
-    buttonsMain: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: 140,
-      marginTop: 15,
-    },
-    buttonsSecondary: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: 270,
-      marginTop: -17,
-    },
-    backIcons: {
-      backgroundColor: "#5D2CC7",
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    backIcons2: {
-      backgroundColor: "#5D2CC7",
-      width: 45,
-      height: 45,
-      borderRadius: 22.5,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    pawbutton: {
-        backgroundColor: "#777bf6",
-        position: "absolute",
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        borderRadius: 50,
-        marginHorizontal: width / 3,
-        zIndex: 2,
-        bottom: 0,
-      },
-      likeAnimation: {
-        position: "absolute",
-        alignSelf: "center",
-      },
-      likeEmoji: {
-        fontSize: 36,
-        color: "red",
-      },
-      likeAnimation: {
-        position: "absolute",
-        alignSelf: "center",
-      },
-      likeEmoji: {
-        fontSize: 36,
-        color: "red",
-      },
-  });
+const styles = StyleSheet.create({
+  footerContainer: {
+    width: 410,
+    height: 400,
+    backgroundColor: "#7A5FB5",
+    borderRadius: 200,
+    position: "absolute",
+    bottom: -220,
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  text: {
+    color: "white",
+    fontSize: 30,
+  },
+  buttonsMain: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 140,
+    marginTop: 15,
+  },
+  buttonsSecondary: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 270,
+    marginTop: -17,
+  },
+  backIcons: {
+    backgroundColor: "#5D2CC7",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backIcons2: {
+    backgroundColor: "#5D2CC7",
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  pawbutton: {
+    backgroundColor: "#777bf6",
+    position: "absolute",
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderRadius: 50,
+    marginHorizontal: width / 3,
+    zIndex: 2,
+    bottom: 0,
+  },
+  likeAnimation: {
+    position: "absolute",
+    alignSelf: "center",
+  },
+  likeEmoji: {
+    fontSize: 36,
+    color: "red",
+  },
+  likeAnimation: {
+    position: "absolute",
+    alignSelf: "center",
+  },
+  likeEmoji: {
+    fontSize: 36,
+    color: "red",
+  },
+  corazon: {
+    position: "absolute",
+    top: height / 2,
+    left: width / 2,
+  },
+});
 
 export default SPbuttons;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "@env";
-import { saveDataToCache, loadCachedData } from "../hooks/useCache";
+import { saveDataToCache, loadCachedData } from "../../hooks/useCache";
 import {
   View,
   Text,
@@ -8,13 +8,12 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import ButtonFilters from "../components/ButtonFilters";
-import ItemList from "../components/ItemList";
-import SPButtons from "../components/SPbuttons";
-import { screenHeight, screenWidth } from "../hooks/useScreenResize";
+import ButtonFilters from "../../components/ButtonFilters";
+import ItemList from "../../components/ItemList";
+import SPButtons from "../../components/SPbuttons";
+import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 
 const ShowPets = ({ navigation }) => {
-  
   const [filtros, setFiltros] = useState({
     sexo: 2,
     distancia: 15,
@@ -60,15 +59,15 @@ const ShowPets = ({ navigation }) => {
       flex: 1,
     },
     headerItem: {
-      backgroundColor:"#7A5FB5",
-      width:screenWidth,
-      height:150,
-      borderRadius:10,
-      zIndex:10,
+      backgroundColor: "#7A5FB5",
+      width: screenWidth,
+      height: 150,
+      borderRadius: 10,
+      zIndex: 10,
       alignItems: "center",
       justifyContent: "flex-end",
-      marginBottom:-30
-    }
+      marginBottom: -30,
+    },
   });
 
   const queryParams = {
@@ -165,16 +164,18 @@ const ShowPets = ({ navigation }) => {
                 onMomentumScrollEnd={(event) => {
                   const newIndex = Math.round(
                     event.nativeEvent.contentOffset.x / screenWidth
-                    );
-                    if (newIndex !== currentIndex) {
-                      setCurrentIndex(newIndex);
-                    }
-                  }}
-                  onEndReached={() => {
-                    setIndex(index + 1);
+                  );
+                  if (newIndex !== currentIndex) {
+                    setCurrentIndex(newIndex);
+                  }
+                }}
+                onEndReached={() => {
+                  setIndex(index + 1);
                 }}
               />
-              {!isLoading ? <SPButtons mascota_id={mascotas[currentIndex].id} /> : null}
+              {!isLoading ? (
+                <SPButtons mascota_id={mascotas[currentIndex].id} />
+              ) : null}
             </>
           )}
         </View>
