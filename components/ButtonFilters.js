@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  TextInput,
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -45,12 +44,8 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                 <Input
                   style={styles.input}
                   placeholder="Ingrese la distancia"
-                  setValue={(value) =>
-                    setFiltros({
-                      ...filtros,
-                      ...(filtros.distancia = value),
-                    })
-                  }
+                  setValue={setFiltros}
+                  atributo="distancia"
                 />
                 <Text style={styles.filterTitle}>Tipo de animal</Text>
                 <Radio
@@ -62,7 +57,6 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                       const newFiltro = filtros;
                       newFiltro.tipoMascota = formatedValue;
                       setFiltros(newFiltro);
-                      setIsFilterChanged(true); //DESPUES SACAR Y PASARLO AL ONPRESS() DE ALGÚN BOTON
                     }
                   }}
                 />
@@ -73,14 +67,24 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                     const formatedValue =
                       value === "Macho" ? 1 : value === "Hembra" ? 2 : 3;
                     if (formatedValue !== filtros.sexo) {
-                      setFiltros({
-                        ...filtros,
-                        ...(filtros.sexo = formatedValue),
-                      });
-                      setIsFilterChanged(true); //DESPUES SACAR Y PASARLO AL ONPRESS() DE ALGÚN BOTON
+                      const newFiltro = filtros;
+                      newFiltro.sexo = formatedValue;
+                      setFiltros(newFiltro);
                     }
                   }}
                 />
+                <TouchableOpacity
+                  onPress={() => {
+                    {
+                      console.log(filtros);
+                      closeModal();
+                      setIsFilterChanged(true);
+                    }
+                  }}
+                  style={styles.filtrarButton}
+                >
+                  <Text>Filtrar</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={closeModal}
                   style={styles.closeButton}
@@ -139,6 +143,15 @@ const styles = StyleSheet.create({
   closeButton: {
     position: "absolute",
     top: 7,
+    right: 7,
+  },
+  filtrarButton: {
+    backgroundColor: "#369EFE",
+    color: "white",
+    padding: 10,
+    borderRadius: 5,
+    position: "absolute",
+    bottom: 7,
     right: 7,
   },
 });

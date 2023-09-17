@@ -16,7 +16,7 @@ import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
     sexo: 2,
-    distancia: 15,
+    distancia: 6000,
     tipoMascota: 3,
     tamaño: 3,
     rangoDeEdad: 3,
@@ -82,7 +82,7 @@ const ShowPets = ({ navigation }) => {
   };
 
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${filtros.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -91,7 +91,6 @@ const ShowPets = ({ navigation }) => {
 
   useEffect(() => {
     // Obtener las mascotas
-
     fetch(url, {
       method: "GET",
       headers: {
@@ -100,9 +99,9 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data[0].nombre);
-        console.log(data[0].raza);
         if (data.length > 0) {
+          console.log(data[0].nombre);
+          console.log(data[0].sexo);
           if (!isFilterChanged) {
             setMascotas((prevData) => prevData.concat(data));
           } else {
@@ -119,7 +118,16 @@ const ShowPets = ({ navigation }) => {
             return updatedString;
           });
         } else {
-          console.log("No hay más mascotas!");
+          if (!isFilterChanged) {
+            console.log("No hay más mascotas!");
+            setIndex(1);
+          } else {
+            if (index === 0) {
+              setIndex(1); //Encontrar una forma de no hacer esto, hace peticiones al pedo
+            }
+            setMascotas([]);
+            setIsFilterChanged(false);
+          }
           // ANIMACION DE QUE NO HAY MAS MASCOTAS
         }
       })
@@ -136,9 +144,16 @@ const ShowPets = ({ navigation }) => {
       return (
         <View style={styles.container}>
           {mascotas.length === 0 ? (
-            <Text styles={styles.sinMascotas}>
-              No hay mascotas para mostrar
-            </Text>
+            <View style={styles.buttonFilters}>
+              <Text styles={styles.sinMascotas}>
+                No hay mascotas para mostrar
+              </Text>
+              <ButtonFilters
+                filtros={filtros}
+                setFiltros={setFiltros}
+                setIsFilterChanged={setIsFilterChanged}
+              />
+            </View>
           ) : (
             <>
               <View style={styles.headerItem}>
