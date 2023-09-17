@@ -59,10 +59,9 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                     const formatedValue =
                       value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
                     if (formatedValue !== filtros.tipoMascota) {
-                      setFiltros({
-                        ...filtros,
-                        ...(filtros.tipoMascota = formatedValue),
-                      });
+                      const newFiltro = filtros;
+                      newFiltro.tipoMascota = formatedValue;
+                      setFiltros(newFiltro);
                       setIsFilterChanged(true); //DESPUES SACAR Y PASARLO AL ONPRESS() DE ALGÚN BOTON
                     }
                   }}

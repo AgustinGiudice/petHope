@@ -83,6 +83,12 @@ const ShowPets = ({ navigation }) => {
 
   // Construye la URL con los parámetros
   const url = `${BASE_URL}api/mascotas?longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${queryParams.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+
+  useEffect(() => {
+    setCurrentIndex(0);
+    setIndex(0);
+  }, [isFilterChanged]);
+
   useEffect(() => {
     // Obtener las mascotas
 
@@ -94,11 +100,14 @@ const ShowPets = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data[0].nombre);
+        console.log(data[0].raza);
         if (data.length > 0) {
           if (!isFilterChanged) {
             setMascotas((prevData) => prevData.concat(data));
           } else {
-            setMascotas([]);
+            setMascotas(data);
+            setIsFilterChanged(false);
           }
           const idMascotas = data.map((mascota) => mascota.id);
           setPetVistos((prevString) => {
@@ -118,7 +127,7 @@ const ShowPets = ({ navigation }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [filtros, index]);
+  }, [index]);
 
   {
     if (isLoading) {
