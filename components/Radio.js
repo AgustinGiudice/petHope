@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Radio = ({ data, handleSelect }) => {
-  const [checked, setChecked] = useState(0);
+const Radio = ({ data, handleSelect, defaultValue }) => {
+  const [checked, setChecked] = useState(defaultValue);
   return (
     <View style={styles.radio}>
       <View style={styles.radio}>
         {data.map((item, key) => {
+          console.log(key);
           return (
             <View key={item}>
-              {checked == key ? (
+              {checked == item ? (
                 <TouchableOpacity style={styles.btn}>
                   <MaterialIcons
                     name="radio-button-on"
@@ -22,7 +23,7 @@ const Radio = ({ data, handleSelect }) => {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
-                    setChecked(key);
+                    setChecked(item);
                     handleSelect(item);
                   }}
                   style={styles.btn}

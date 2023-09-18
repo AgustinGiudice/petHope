@@ -49,6 +49,7 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                 />
                 <Text style={styles.filterTitle}>Tipo de animal</Text>
                 <Radio
+                  defaultValue={filtros.tipoMascota}
                   data={["Perro", "Gato", "Ambos"]}
                   handleSelect={(value) => {
                     const formatedValue =
