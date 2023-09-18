@@ -25,8 +25,8 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonFilterSP} onPress={openModal}>
-        <Text style={styles.buttonText}>Filtros</Text>
+      <TouchableOpacity onPress={openModal}>
+      <AntDesign name="bars" size={30} color="black" />
       </TouchableOpacity>
 
       <Modal
@@ -117,13 +117,6 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-  },
-  buttonFilterSP: {
-    position: "absolute",
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
-    zIndex: 1,
   },
   buttonText: {
     color: "black",
