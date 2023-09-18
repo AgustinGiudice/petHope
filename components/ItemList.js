@@ -2,13 +2,19 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { getAnimalDescripcion, getEdadDescripcion, getTamanioDescripcion, getSexoDescripcion } from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import { LinearGradient } from 'expo-linear-gradient';
 const ItemList = ({ item }) => {
   
   return (
     <View style={styles.mascotaItem}>
       <View>
+        <View>
         <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
+        <LinearGradient
+        colors={['rgba(255, 99, 71, 0)', '#000000']}
+        style={styles.gradient}
+        ></LinearGradient>
+        </View>
         <View style={styles.containerDistancia}>
           <AntDesign name="enviromento" size={22} color="white"/>
           <Text style={ styles.itemDistancia}> A {(item.distance / 1000).toFixed(2)} km de distancia.</Text>
@@ -85,6 +91,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin:3,
     color:"white"
+  },
+  gradient: {
+    position:"absolute",
+    width:screenWidth,
+    height: 100,
+    bottom:0,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
