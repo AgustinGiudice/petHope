@@ -27,7 +27,7 @@ const MatchesScreen = ({ navigation }) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
     // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
     console.log("Abriendo chat con refugio", refugio);
-    navigation.navigate('Chat', { refugio: refugio, mascota: mascota });
+    navigation.navigate("Chat", { refugio: refugio, mascota: mascota });
   };
 
   const [matches, setMatches] = useState([]);
@@ -50,12 +50,11 @@ const MatchesScreen = ({ navigation }) => {
       }
       const data = await response.json();
       setMatches(data);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error al obtener los matches:", error);
     } finally {
       setRefreshing(false);
-
     }
   };
 
@@ -107,8 +106,15 @@ const MatchesScreen = ({ navigation }) => {
               </View>
 
               <View style={styles.containerIcons}>
-                <MaterialIcons name="chat" size={25}  onPress={() => handleChatClick(item.refugio, item.mascota )} />
-                <MaterialCommunityIcons name="dots-vertical" size={25} />
+                <MaterialIcons
+                  name="chat"
+                  size={25}
+                  onPress={() => handleChatClick(item.refugio, item.mascota)}
+                />
+                <MaterialCommunityIcons
+                  name="dots-vertical"
+                  size={25}
+                />
               </View>
             </View>
           )}
@@ -118,7 +124,6 @@ const MatchesScreen = ({ navigation }) => {
           onEndReachedThreshold={0.1}
           refreshing={refreshing}
           onRefresh={fetchMatches}
-          
         />
       )}
     </View>
@@ -146,6 +151,7 @@ const styles = StyleSheet.create({
   letraChica: {
     fontSize: 10,
     textAlign: "left",
+    color: "#9A34EA",
   },
   noMatchesText: {
     fontSize: 18,
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   matchItem: {
-    backgroundColor: "#c3c3c3",
+    backgroundColor: "#C69AE8",
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",

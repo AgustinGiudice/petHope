@@ -49,7 +49,13 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                 />
                 <Text style={styles.filterTitle}>Tipo de animal</Text>
                 <Radio
-                  defaultValue={filtros.tipoMascota}
+                  defaultValue={
+                    filtros.tipoMascota === 1
+                      ? "Perro"
+                      : filtros.tipoMascota === 2
+                      ? "Gatos"
+                      : "Ambos"
+                  }
                   data={["Perro", "Gato", "Ambos"]}
                   handleSelect={(value) => {
                     const formatedValue =
@@ -63,6 +69,13 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                 />
                 <Text style={styles.filterTitle}>Sexo</Text>
                 <Radio
+                  defaultValue={
+                    filtros.tipoMascota === 1
+                      ? "Macho"
+                      : filtros.tipoMascota === 2
+                      ? "Hembra"
+                      : "Ambos"
+                  }
                   data={["Macho", "Hembra", "Ambos"]}
                   handleSelect={(value) => {
                     const formatedValue =

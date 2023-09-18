@@ -8,7 +8,6 @@ const Radio = ({ data, handleSelect, defaultValue }) => {
     <View style={styles.radio}>
       <View style={styles.radio}>
         {data.map((item, key) => {
-          console.log(key);
           return (
             <View key={item}>
               {checked == item ? (
