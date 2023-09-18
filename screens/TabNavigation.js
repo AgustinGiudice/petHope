@@ -76,6 +76,7 @@ function MyTabs() {
           name="Paw"
           component={ShowPets}
           options={{
+            unmountOnBlur:true,
             headerShown: false,
             tabBarIcon: ({ focused }) => (
               <View>

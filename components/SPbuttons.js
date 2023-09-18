@@ -34,7 +34,7 @@ const SPbuttons = ({ mascota_id }) => {
       backgroundColor: "#C69AE8",
       borderRadius: 500,
       position: "absolute",
-      bottom: -320,
+      bottom: height - height * 1.37, //aaaaaaa
       alignItems: "center",
       justifyContent: "flex-start",
     },
