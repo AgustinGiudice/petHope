@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  componentWillUnmount,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -17,12 +12,11 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
 import { BASE_URL } from "@env";
-import ExplodingHeart from "./ExplodingHeart";
 
-const SPbuttons = ({ mascota_id }) => {
+
+const SPbuttons = ({ mascota_id, showLikeAnimation, setShowLikeAnimation }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
-  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
 
   const { width, height } = useWindowDimensions();
@@ -187,8 +181,6 @@ const SPbuttons = ({ mascota_id }) => {
         >
           <AntDesign name="hearto" size={40} color="white" />
         </TouchableOpacity>
-        {showLikeAnimation && <ExplodingHeart width={200} />}
-
         <TouchableOpacity style={styles.backIcons}>
           <AntDesign name="close" size={40} color="white" />
         </TouchableOpacity>

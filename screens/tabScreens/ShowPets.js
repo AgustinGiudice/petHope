@@ -12,6 +12,7 @@ import ButtonFilters from "../../components/ButtonFilters";
 import ItemList from "../../components/ItemList";
 import SPButtons from "../../components/SPbuttons";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
+import ExplodingHeart from "../../components/ExplodingHeart";
 
 const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
@@ -22,6 +23,7 @@ const ShowPets = ({ navigation }) => {
     rangoDeEdad: 3,
   });
   const [isFilterChanged, setIsFilterChanged] = useState(false);
+  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
@@ -59,7 +61,7 @@ const ShowPets = ({ navigation }) => {
       flex: 1,
     },
     headerItem: {
-      position:"relative",
+      position: "relative",
       backgroundColor: "#7A5FB5",
       width: screenWidth,
       height: 50,
@@ -70,7 +72,7 @@ const ShowPets = ({ navigation }) => {
       // marginBottom: -30,
     },
     headerItem2: {
-      position:"absolute",
+      position: "absolute",
       backgroundColor: "#C69AE8",
       width: 1300,
       height: 1300,
@@ -78,9 +80,9 @@ const ShowPets = ({ navigation }) => {
       zIndex: 10,
       alignItems: "center",
       justifyContent: "flex-end",
-      bottom:-35,
+      bottom: -35,
       elevation: 10, // Para Android
-      shadowColor: 'black', // Para iOS
+      shadowColor: "black", // Para iOS
       shadowOffset: {
         width: 0,
         height: 2,
@@ -88,17 +90,21 @@ const ShowPets = ({ navigation }) => {
       shadowOpacity: 0.5,
       shadowRadius: 4,
     },
-    headerItemsContenido:{
-      flexDirection:"row",
-      justifyContent:"space-between",
-      width:screenWidth - screenWidth * 0.3,
-      marginBottom:25
+    headerItemsContenido: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: screenWidth - screenWidth * 0.3,
+      marginBottom: 25,
     },
-    namePet:{
-      color:"white",
-      fontWeight:"bold",
-      fontSize:35
-    }
+    namePet: {
+      color: "white",
+      fontWeight: "bold",
+      fontSize: 35,
+    },
+    corazonLike: {
+      position: "absolute",
+      zIndex: 999,
+    },
   });
 
   const queryParams = {
@@ -187,24 +193,29 @@ const ShowPets = ({ navigation }) => {
             </View>
           ) : (
             <>
+              {showLikeAnimation && (
+                <ExplodingHeart style={styles.corazonLike} width={300} />
+              )}
               <View style={styles.headerItem}>
-              <View style={styles.headerItem2}>
-                <View style={styles.headerItemsContenido}>
-                  <View style={styles.buttonFilters}>
-                    <ButtonFilters
-                      filtros={filtros}
-                      setFiltros={setFiltros}
-                      setIsFilterChanged={setIsFilterChanged}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.namePet}>{mascotas[currentIndex].nombre}</Text>
-                  </View>
-                  <View>
-                    <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                <View style={styles.headerItem2}>
+                  <View style={styles.headerItemsContenido}>
+                    <View style={styles.buttonFilters}>
+                      <ButtonFilters
+                        filtros={filtros}
+                        setFiltros={setFiltros}
+                        setIsFilterChanged={setIsFilterChanged}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.namePet}>
+                        {mascotas[currentIndex].nombre}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
               </View>
 
               <FlatList
@@ -233,7 +244,11 @@ const ShowPets = ({ navigation }) => {
                 }}
               />
               {!isLoading ? (
-                <SPButtons mascota_id={mascotas[currentIndex].id} />
+                <SPButtons
+                  mascota_id={mascotas[currentIndex].id}
+                  showLikeAnimation={showLikeAnimation}
+                  setShowLikeAnimation={setShowLikeAnimation}
+                />
               ) : null}
             </>
           )}
