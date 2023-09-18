@@ -29,12 +29,12 @@ const SPbuttons = ({ mascota_id }) => {
 
   const styles = StyleSheet.create({
     footerContainer: {
-      width: width - width * 0.1,
-      height: height - height * 0.6,
-      backgroundColor: "#7A5FB5",
-      borderRadius: 200,
+      width: width - width * 0.05,
+      height: height - height * 0.5,
+      backgroundColor: "#C69AE8",
+      borderRadius: 500,
       position: "absolute",
-      bottom: -230,
+      bottom: height - height * 1.37, //aaaaaaa
       alignItems: "center",
       justifyContent: "flex-start",
     },
@@ -55,7 +55,7 @@ const SPbuttons = ({ mascota_id }) => {
       marginTop: -17,
     },
     backIcons: {
-      backgroundColor: "#5D2CC7",
+      backgroundColor: "#9A34EA",
       width: 60,
       height: 60,
       borderRadius: 30,
@@ -63,7 +63,7 @@ const SPbuttons = ({ mascota_id }) => {
       alignItems: "center",
     },
     backIcons2: {
-      backgroundColor: "#5D2CC7",
+      backgroundColor: "#9A34EA",
       width: 45,
       height: 45,
       borderRadius: 22.5,

@@ -106,8 +106,6 @@ const styles = StyleSheet.create({
   },
   buttonFilterSP: {
     position: "absolute",
-    top: 1,
-    right: 20,
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     paddingVertical: 5,
-    color: "#369EFE",
+    color: "#9A34EA",
   },
   modalBackground: {
     flex: 1,
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    backgroundColor: "#A5D4FF", // Fondo del modal
+    backgroundColor: "#C69AE8", // Fondo del modal
     borderRadius: 5,
     padding: 20,
     width: screenWidth * 0.8,
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
     right: 7,
   },
   filtrarButton: {
-    backgroundColor: "#369EFE",
+    backgroundColor: "#9A34EA",
     color: "white",
     padding: 10,
     borderRadius: 5,

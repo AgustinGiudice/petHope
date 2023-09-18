@@ -16,7 +16,7 @@ const Input = ({ value, setValue, placeholder, atributo }) => {
       }}
       secureTextEntry={atributo === "pass"}
       placeholder={placeholder}
-      placeholderTextColor={"#369EFE"}
+      placeholderTextColor={"#9A34EA"}
     />
   );
 };
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderBottomWidth: 1,
-    borderColor: "#369EFE",
+    borderColor: "#9A34EA",
     paddingHorizontal: 5,
     width: "80%",
   },

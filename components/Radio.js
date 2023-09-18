@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 15,
-    color: "#369EFE",
+    color: "#9A34EA",
   },
   radioBtn: {
-    color: "#369EFE",
+    color: "#9A34EA",
   },
   item: {
-    color: "#369EFE",
+    color: "#9A34EA",
   },
 });
 

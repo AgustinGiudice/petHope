@@ -338,7 +338,7 @@ const CreateUserForm = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 40,
-    backgroundColor: "#A5D4FF",
+    backgroundColor: "#C69AE8",
     flex: 1,
     width: "80%",
     justifyContent: "center",
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   start: {
-    backgroundColor: "#369EFE",
+    backgroundColor: "#9A34EA",
     width: 150,
     padding: 10,
     borderRadius: 5,

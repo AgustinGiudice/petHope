@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text>Ingresar</Text>
+        <Text style={{ color: "white" }}>Ingresar</Text>
       </TouchableOpacity>
 
       <Text
@@ -82,20 +82,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#A5D4FF",
+    backgroundColor: "#C69AE8",
     gap: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#369EFE",
+    color: "#9A34EA",
   },
   inputsContainer: {
     width: "100%",
     alignItems: "center",
   },
   loginButton: {
-    backgroundColor: "#369EFE",
+    backgroundColor: "#9A34EA",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
