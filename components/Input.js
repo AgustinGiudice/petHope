@@ -5,12 +5,15 @@ const Input = ({ value, setValue, placeholder, atributo }) => {
     <TextInput
       style={styles.input}
       value={value}
-      onChangeText={(value) =>
+      onChangeText={(value) => {
+        if (atributo === "distancia") {
+          value = parseInt(value);
+        }
         setValue((prev) => ({
           ...prev,
           [atributo]: value,
-        }))
-      }
+        }));
+      }}
       secureTextEntry={atributo === "pass"}
       placeholder={placeholder}
       placeholderTextColor={"#369EFE"}
