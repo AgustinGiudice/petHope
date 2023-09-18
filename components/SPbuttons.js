@@ -187,20 +187,8 @@ const SPbuttons = ({ mascota_id }) => {
         >
           <AntDesign name="hearto" size={40} color="white" />
         </TouchableOpacity>
-        {showLikeAnimation && <ExplodingHeart width={50} status={false} />}
-        <TouchableOpacity>
-          <Animatable.View
-            animation={showLikeAnimation ? "bounceIn" : undefined}
-            duration={500}
-            style={styles.corazon}
-          >
-            <Ionicons
-              name={showLikeAnimation ? "heart" : "heart-outline"}
-              size={showLikeAnimation ? 100 : 0}
-              color={showLikeAnimation ? "red" : "black"}
-            />
-          </Animatable.View>
-        </TouchableOpacity>
+        {showLikeAnimation && <ExplodingHeart width={200} />}
+
         <TouchableOpacity style={styles.backIcons}>
           <AntDesign name="close" size={40} color="white" />
         </TouchableOpacity>

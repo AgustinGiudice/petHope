@@ -3,7 +3,7 @@ import LottieView from "lottie-react-native";
 import { View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
-const ExplodingHeart = ({ onChange, status, width, containerStyle }) => {
+const ExplodingHeart = ({ onChange, status, width }) => {
   const [isFavorite, setFavorite] = useState(false);
   const [animation, setAnimation] = useState(null);
 
@@ -31,7 +31,6 @@ const ExplodingHeart = ({ onChange, status, width, containerStyle }) => {
       <TouchableOpacity onPress={() => toggleStatus()}>
         <LottieView
           autoPlay
-          loop
           resizeMode="cover"
           style={{ width }}
           ref={(animation) => setAnimation(animation)}
