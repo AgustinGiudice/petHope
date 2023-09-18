@@ -21,54 +21,60 @@ import {
   getSexoDescripcion,
 } from "../../hooks/getDescripciones";
 
-const MatchesScreen = () => {
+const MatchesScreen = ({ navigation }) => {
   // Función para manejar la acción de abrir el chat con el refugio
-  const handleChatClick = (refugioId) => {
+  const handleChatClick = (refugio, mascota) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
     // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
+    console.log("Abriendo chat con refugio", refugio);
+    navigation.navigate('Chat', { refugio: refugio, mascota: mascota });
   };
 
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchMatches = async () => {
+    try {
+      setRefreshing(true);
+
+      const response = await fetch(`${BASE_URL}api/match`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // Aquí puedes agregar otros encabezados si es necesario
+        },
+      });
+      if (!response.ok) {
+        throw new Error("No se pudo obtener la lista de matches.");
+      }
+      const data = await response.json();
+      setMatches(data);
+      console.log(data)
+    } catch (error) {
+      console.error("Error al obtener los matches:", error);
+    } finally {
+      setRefreshing(false);
+
+    }
+  };
 
   useEffect(() => {
-    // Función para cargar los matches del usuario
-    const fetchMatches = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}api/match`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            // Aquí puedes agregar otros encabezados si es necesario
-          },
-        });
-        if (!response.ok) {
-          throw new Error("No se pudo obtener la lista de matches.");
-        }
-        const data = await response.json();
-        setMatches(data);
-      } catch (error) {
-        console.error("Error al obtener los matches:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchMatches();
   }, []);
 
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
       {matches.length === 0 ? (
-        <Text style={styles.noMatchesText}>No hay matches disponibles.</Text>
+        <ActivityIndicator size="large" />
       ) : (
         <FlatList
           data={matches}
@@ -101,13 +107,18 @@ const MatchesScreen = () => {
               </View>
 
               <View style={styles.containerIcons}>
-                <MaterialIcons name="chat" size={25} />
+                <MaterialIcons name="chat" size={25}  onPress={() => handleChatClick(item.refugio, item.mascota )} />
                 <MaterialCommunityIcons name="dots-vertical" size={25} />
               </View>
             </View>
           )}
           keyExtractor={(item) => item.id.toString()}
           style={styles.matchContainer}
+          onEndReached={fetchMatches}
+          onEndReachedThreshold={0.1}
+          refreshing={refreshing}
+          onRefresh={fetchMatches}
+          
         />
       )}
     </View>

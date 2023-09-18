@@ -27,6 +27,13 @@ Algoritmo y matcheo :
 
 
 
+17-9
+
+Agregar un loader al llamado a la api. Hacer que se ejecute cada vez que entras en watchMatches.
+boton a chat.
+chat
+
+
 
 
 Formularios:

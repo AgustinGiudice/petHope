@@ -10,6 +10,7 @@ import paw from "../assets/paw.png";
 import paw2 from "../assets/paw2.png";
 import { View, Image, Animated, useWindowDimensions } from "react-native";
 import OtrasNavegaciones from "./OtrasNavegaciones";
+import MatchNavigation from "./MatchNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -108,13 +109,14 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Matchs"
-          component={WatchMatches}
+          component={MatchNavigation}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="ios-chatbox" size={size} color={color} />
             ),
             tabBarBadge: 16,
+            unmountOnBlur: true
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
