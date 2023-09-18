@@ -43,7 +43,7 @@ const ShowPets = ({ navigation }) => {
       minWidth: screenWidth,
       alignItems: "center",
       minHeight: screenHeight - 60,
-      paddingTop: 40,
+      paddingTop: 60,
     },
     loader: {
       width: "100%",

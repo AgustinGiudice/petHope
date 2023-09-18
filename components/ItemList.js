@@ -6,13 +6,19 @@ const ItemList = ({ item }) => {
   return (
     <View style={styles.mascotaItem}>
       <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
-      <Text style={styles.mascotaNombre}>{item.nombre}</Text>
-      <Text>Raza: {getAnimalDescripcion(item.raza)}</Text>
-      <Text>Edad: {getEdadDescripcion(item.edad)}</Text>
-      <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
-      <Text>Distancia: {(item.distance / 1000).toFixed(2)} km</Text>
-      <Text>Tamaño: {getTamanioDescripcion(item.tamanio)}</Text>
-      <Text>Sexo: {getSexoDescripcion(item.sexo)}</Text>
+      <View  style={styles.dataItem}>
+        {/* <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
+        <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
+        <View style={styles.dataItemArria}>
+          <Text style={styles.tag}>Raza: {getAnimalDescripcion(item.raza)}</Text>
+          <Text style={styles.tag}>Edad: {getEdadDescripcion(item.edad)}</Text>
+          <Text style={styles.tag}>Distancia: {(item.distance / 1000).toFixed(2)} km</Text>
+        </View>
+        <View  style={styles.dataItemArria}>
+          <Text style={styles.tag}>Tamaño: {getTamanioDescripcion(item.tamanio)}</Text>
+          <Text style={styles.tag}>Sexo: {getSexoDescripcion(item.sexo)}</Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -22,11 +28,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 5,
     textAlign: "center",
-    justifyContent: "space-between",
     width: screenWidth ,
     // position:"relative",
     zIndex:1,
-
+    gap:2
   },
   mascotaImagen: {
     width: "100%",
@@ -40,6 +45,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  dataItem:{
+   alignItems:"center"
+  },
+  dataItemArria: {
+    flexDirection:"row"
+  },
+  tag:{
+    textAlign:"center",
+    justifyContent:"center",
+    alignContent:"center",
+    backgroundColor:"#9A34EA",
+    width: 130,
+    height: 25,
+    borderRadius: 5,
+    margin:3,
+    color:"white"
+  }
 });
 
 export default ItemList;
