@@ -27,10 +27,11 @@ function MyTabs() {
       <Tab.Navigator
         initialRouteName="Login"
         screenOptions={{
-          tabBarStyle: { backgroundColor: "#7A5FB5", height: 60 }, // Establece el fondo de color violeta claro
+          tabBarStyle: { backgroundColor: "#C69AE8", height: 60, borderTopWidth: 0 }, // Establece el fondo de color violeta claro
           tabBarShowLabel: false, // Oculta las etiquetas de descripción
           tabBarInactiveTintColor: "white", // Color del ícono cuando no está seleccionado
           tabBarActiveTintColor: "black",
+          
         }}
       >
         <Tab.Screen
@@ -82,7 +83,7 @@ function MyTabs() {
                   style={{
                     width: 83,
                     height: 83,
-                    backgroundColor: "#5D2CC7",
+                    backgroundColor: "#9A34EA",
                     borderRadius: 50,
                     justifyContent: "center",
                     alignItems: "center",

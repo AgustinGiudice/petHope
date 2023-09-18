@@ -92,7 +92,12 @@ const ShowPets = ({ navigation }) => {
       flexDirection:"row",
       justifyContent:"space-between",
       width:screenWidth - screenWidth * 0.3,
-      marginBottom:40
+      marginBottom:25
+    },
+    namePet:{
+      color:"white",
+      fontWeight:"bold",
+      fontSize:35
     }
   });
 
@@ -193,7 +198,7 @@ const ShowPets = ({ navigation }) => {
                     />
                   </View>
                   <View>
-                    <Text>{mascotas[currentIndex].nombre}</Text>
+                    <Text style={styles.namePet}>{mascotas[currentIndex].nombre}</Text>
                   </View>
                   <View>
                     <Text>{mascotas[currentIndex].nivelCuidado}</Text>
