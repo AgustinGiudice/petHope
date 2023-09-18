@@ -36,7 +36,7 @@ const ShowPets = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
-      backgroundColor: "#A5D4FF",
+      backgroundColor: "#eee",
       flex: 1,
       overflow: "hidden",
       position: "relative",

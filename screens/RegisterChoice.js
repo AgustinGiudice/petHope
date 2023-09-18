@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#A5D4FF",
+    backgroundColor: "#C69AE8",
     gap: 20,
   },
   choiceButton: {
-    backgroundColor: "#369EFE",
+    backgroundColor: "#9A34EA",
     borderRadius: 200,
     height: 300,
     width: 300,
