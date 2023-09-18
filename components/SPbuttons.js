@@ -34,7 +34,7 @@ const SPbuttons = ({ mascota_id }) => {
       backgroundColor: "#C69AE8",
       borderRadius: 500,
       position: "absolute",
-      bottom: height - height * 1.36, //aaaaaaa
+      bottom: height - height * 1.365, //aaaaaaa
       alignItems: "center",
       justifyContent: "flex-start",
     },
@@ -188,7 +188,7 @@ const SPbuttons = ({ mascota_id }) => {
           <AntDesign name="hearto" size={40} color="white" />
         </TouchableOpacity>
         {showLikeAnimation && <ExplodingHeart width={50} status={false} />}
-        {/* <TouchableOpacity>
+        <TouchableOpacity>
           <Animatable.View
             animation={showLikeAnimation ? "bounceIn" : undefined}
             duration={500}
@@ -196,11 +196,11 @@ const SPbuttons = ({ mascota_id }) => {
           >
             <Ionicons
               name={showLikeAnimation ? "heart" : "heart-outline"}
-              size={showLikeAnimation ? 40 : 0}
+              size={showLikeAnimation ? 80 : 0}
               color={showLikeAnimation ? "red" : "black"}
             />
           </Animatable.View>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity style={styles.backIcons}>
           <AntDesign name="close" size={40} color="white" />
         </TouchableOpacity>
