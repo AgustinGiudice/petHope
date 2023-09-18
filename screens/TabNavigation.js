@@ -1,4 +1,4 @@
-import { React, useRef } from "react";
+import { React, useRef,useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // Importa los íc
 // SCREENS
@@ -15,6 +15,7 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
+  const [routeST, setRouteST] = useState('');
 
   const { width, height } = useWindowDimensions();
   function getWidth() {
@@ -43,6 +44,7 @@ function MyTabs() {
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
+              setRouteST(route.name);
               Animated.spring(tabOffsetValue, {
                 toValue: 0,
                 useNativeDriver: true,
@@ -61,6 +63,7 @@ function MyTabs() {
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
+              setRouteST(route.name);
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth(),
                 useNativeDriver: true,
@@ -99,6 +102,7 @@ function MyTabs() {
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
+              setRouteST(route.name);
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 2,
                 useNativeDriver: true,
@@ -118,6 +122,7 @@ function MyTabs() {
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
+              setRouteST(route.name);
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 3,
                 useNativeDriver: true,
@@ -136,6 +141,7 @@ function MyTabs() {
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
+              setRouteST(route.name);
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 4,
                 useNativeDriver: true,
@@ -144,19 +150,35 @@ function MyTabs() {
           })}
         />
       </Tab.Navigator>
-
-      <Animated.View
-        style={{
-          width: getWidth() - 20,
-          left: 10,
-          height: 1,
-          backgroundColor: "black",
-          position: "absolute",
-          bottom: 60,
-
+      
+      {routeST !== "Paw" ? (
+        <Animated.View
+          style={{
+            width: getWidth() - 20,
+            left: 10,
+            height: 2,
+            backgroundColor: "black",
+            position: "absolute",
+            bottom: 0,
           transform: [{ translateX: tabOffsetValue }],
-        }}
-      ></Animated.View>
+          }}
+        ></Animated.View>
+      ):(
+        <Animated.View
+          style={{
+            width: getWidth() - 20,
+            left: 10,
+            height: 1,
+            opacity: 0.2,
+            backgroundColor: "black",
+            position: "absolute",
+            bottom: 0,
+            transform: [{ translateX: tabOffsetValue }],
+          }}
+        ></Animated.View>
+      )}
+      
+
     </>
   );
 }

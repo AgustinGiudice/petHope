@@ -71,15 +71,29 @@ const ShowPets = ({ navigation }) => {
     },
     headerItem2: {
       position:"absolute",
-      backgroundColor: "red",
-      width: 1100,
-      height: 1100,
-      borderRadius: 490,
+      backgroundColor: "#C69AE8",
+      width: 1300,
+      height: 1300,
+      borderRadius: 630,
       zIndex: 10,
       alignItems: "center",
       justifyContent: "flex-end",
-      bottom:-25
+      bottom:-35,
+      elevation: 10, // Para Android
+      shadowColor: 'black', // Para iOS
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.5,
+      shadowRadius: 4,
     },
+    headerItemsContenido:{
+      flexDirection:"row",
+      justifyContent:"space-between",
+      width:screenWidth - screenWidth * 0.3,
+      marginBottom:40
+    }
   });
 
   const queryParams = {
@@ -170,18 +184,20 @@ const ShowPets = ({ navigation }) => {
             <>
               <View style={styles.headerItem}>
               <View style={styles.headerItem2}>
-                <View style={styles.buttonFilters}>
-                  <ButtonFilters
-                    filtros={filtros}
-                    setFiltros={setFiltros}
-                    setIsFilterChanged={setIsFilterChanged}
-                  />
-                </View>
-                <View>
-                  <Text>{mascotas[currentIndex].nombre}</Text>
-                </View>
-                <View>
-                  <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                <View style={styles.headerItemsContenido}>
+                  <View style={styles.buttonFilters}>
+                    <ButtonFilters
+                      filtros={filtros}
+                      setFiltros={setFiltros}
+                      setIsFilterChanged={setIsFilterChanged}
+                    />
+                  </View>
+                  <View>
+                    <Text>{mascotas[currentIndex].nombre}</Text>
+                  </View>
+                  <View>
+                    <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                  </View>
                 </View>
               </View>
               </View>

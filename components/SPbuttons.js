@@ -29,12 +29,12 @@ const SPbuttons = ({ mascota_id }) => {
 
   const styles = StyleSheet.create({
     footerContainer: {
-      width: width - width * 0.1,
-      height: height - height * 0.6,
+      width: width - width * 0.05,
+      height: height - height * 0.5,
       backgroundColor: "#7A5FB5",
-      borderRadius: 200,
+      borderRadius: 500,
       position: "absolute",
-      bottom: -230,
+      bottom: -320,
       alignItems: "center",
       justifyContent: "flex-start",
     },

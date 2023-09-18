@@ -106,8 +106,6 @@ const styles = StyleSheet.create({
   },
   buttonFilterSP: {
     position: "absolute",
-    top: 1,
-    right: 20,
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
