@@ -1,6 +1,6 @@
 import { React, useRef,useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons"; // Importa los íc
+import { Ionicons } from "@expo/vector-icons";
 // SCREENS
 import LoginScreen from "./Login";
 import PersonalData from "./tabScreens/PersonalData";
