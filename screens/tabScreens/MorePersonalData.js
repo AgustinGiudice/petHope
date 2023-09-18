@@ -4,7 +4,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import UploadImageModal from "../../components/UploadImageModal";
 
-const PersonalData = ({ navigation }) => {
+const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const userData = {
     nombre: "Alexis",
@@ -189,4 +189,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PersonalData;
+export default MorePersonalData;
