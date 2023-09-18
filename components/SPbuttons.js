@@ -196,7 +196,7 @@ const SPbuttons = ({ mascota_id }) => {
           >
             <Ionicons
               name={showLikeAnimation ? "heart" : "heart-outline"}
-              size={showLikeAnimation ? 40 : 0}
+              size={showLikeAnimation ? 100 : 0}
               color={showLikeAnimation ? "red" : "black"}
             />
           </Animatable.View>

@@ -30,9 +30,8 @@ const ExplodingHeart = ({ onChange, status, width, containerStyle }) => {
     <View>
       <TouchableOpacity onPress={() => toggleStatus()}>
         <LottieView
-          speed={1.5}
-          autoPlay={false}
-          loop={false}
+          autoPlay
+          loop
           resizeMode="cover"
           style={{ width }}
           ref={(animation) => setAnimation(animation)}
