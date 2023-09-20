@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import UploadImageModal from "../../components/UploadImageModal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -91,17 +92,23 @@ const PersonalData = ({ navigation }) => {
         </View>
         <View style={styles.dataContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>
+            <Text>
               {userData.nombre} {userData.apellido}
             </Text>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>{userData.edad}</Text>
+            <Text>{userData.edad}</Text>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>{userData.descripcion}</Text>
+            <Text>{userData.descripcion}</Text>
           </View>
         </View>
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => navigation.navigate("MorePersonalData")}
+        />
       </View>
     </>
   );
@@ -152,8 +159,8 @@ const styles = StyleSheet.create({
     color: "white",
   },
   profilePic: {
-    height: screenHeight / 3,
-    width: screenWidth / 1.5,
+    aspectRatio: 1,
+    width: screenWidth - 100,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -178,14 +185,12 @@ const styles = StyleSheet.create({
     padding: 3,
     alignItems: "center",
   },
-  textWhite: {
-    fontSize: 12,
-    color: "white",
-    fontWeight: "bold",
-  },
-  textBlack: {
-    fontSize: 14,
-    color: "black",
+  arrow: {
+    color: "#9A34EA",
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    borderColor: "#9A34EA",
   },
 });
 

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import UploadImageModal from "../../components/UploadImageModal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,37 +33,12 @@ const MorePersonalData = ({ navigation }) => {
       <UploadImageModal visible={modalVisible} setVisible={setModalVisible} />
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={styles.containerCompletado}>
-            <Text style={styles.textoCompletado}>
-              {userData.completado}% COMPLETADO
-            </Text>
-            <View style={styles.barContainer}>
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 33
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 66
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 99
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-            </View>
-          </View>
+          <FontAwesome
+            name="arrow-left"
+            size={40}
+            style={styles.arrow}
+            onPress={() => navigation.navigate("PersonalData")}
+          />
           {userData.pic === null ? (
             <View style={styles.profilePic}>
               <TouchableOpacity onPress={() => handlePressPic()}>
@@ -74,32 +50,41 @@ const MorePersonalData = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <>
-              <Image source={{ uri: userData.pic }} style={styles.profilePic} />
-              <TouchableOpacity
-                onPress={() => handlePressPic()}
-                style={styles.changePic}
-              >
-                <FontAwesome5
-                  name="user-edit"
-                  size={20}
-                  style={{ color: "#C69AE8" }}
-                />
-              </TouchableOpacity>
-            </>
+            <Image source={{ uri: userData.pic }} style={styles.profilePic} />
           )}
         </View>
         <View style={styles.dataContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>
-              {userData.nombre} {userData.apellido}
-            </Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>{userData.edad}</Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.textBlack}>{userData.descripcion}</Text>
+          <TouchableOpacity
+            onPress={() => handlePressPic()}
+            style={styles.changePic}
+          >
+            <FontAwesome5
+              name="user-edit"
+              size={20}
+              style={{ color: "#9A34EA" }}
+            />
+          </TouchableOpacity>
+          <View style={styles.column}>
+            <View style={styles.textContainer}>
+              <Text style={styles.fieldName}>Nombre</Text>
+              <Text style={styles.textBlack}>
+                {userData.nombre} {userData.apellido}
+              </Text>
+            </View>
+            <Text style={styles.fieldName}>Edad</Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.textBlack}>{userData.edad}</Text>
+            </View>
+            <Text style={styles.fieldName}>Teléfono</Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.textBlack}>{userData.telefono}</Text>
+            </View>
+            <Text style={styles.fieldName}>E-mail</Text>
+            <View style={styles.textContainer}>
+              <Text numberOfLines={1} style={styles.textBlack}>
+                {userData.email}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -115,68 +100,38 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   header: {
-    paddingTop: 30,
+    paddingTop: 50,
     backgroundColor: "white",
     width: "100%",
     alignItems: "center",
-    gap: 20,
     position: "relative",
   },
-  containerCompletado: {
-    width: "100%",
-    alignItems: "center",
-    gap: 5,
-    paddingVertical: 10,
-  },
-  textoCompletado: {
-    fontWeight: "bold",
-    fontSize: 10,
-  },
-  barContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 5,
-  },
-  bar: {
-    paddingVertical: 1,
-    paddingHorizontal: 40,
-    borderRadius: 3,
-    borderColor: "#9A34EA",
-    borderWidth: 1,
-  },
-  titulo: {
-    fontSize: 16,
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    alignSelf: "center",
-    color: "white",
-  },
   profilePic: {
-    height: screenHeight / 3,
-    width: screenWidth / 1.5,
+    aspectRatio: 1,
+    height: screenWidth,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 200,
-    borderColor: "#9A34EA",
-    borderWidth: 2,
   },
   changePic: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
+    alignSelf: "flex-end",
   },
   dataContainer: {
     gap: 10,
-    backgroundColor: "#F1E0FE",
+    backgroundColor: "#eee",
     minHeight: screenHeight / 2,
     padding: 20,
+    width: screenWidth,
+  },
+  column: {
+    justifyContent: "flex-start",
+    width: "70%",
   },
   textContainer: {
     borderColor: "#9A34EA",
     borderBottomWidth: 1,
     padding: 3,
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   textWhite: {
     fontSize: 12,
@@ -186,6 +141,17 @@ const styles = StyleSheet.create({
   textBlack: {
     fontSize: 14,
     color: "black",
+  },
+  fieldName: {
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  arrow: {
+    color: "#C69AE8",
+    position: "absolute",
+    top: 100,
+    left: 20,
+    zIndex: 10,
   },
 });
 

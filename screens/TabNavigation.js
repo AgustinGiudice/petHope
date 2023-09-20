@@ -1,10 +1,9 @@
-import { React, useRef,useState } from "react";
+import { React, useRef, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 // SCREENS
 import LoginScreen from "./Login";
-import PersonalData from "./tabScreens/PersonalData";
-import WatchMatches from "./tabScreens/WatchMatches";
+import ProfileNavigation from "./ProfileNavigation";
 import ShowPets from "./tabScreens/ShowPets";
 import paw from "../assets/paw.png";
 import paw2 from "../assets/paw2.png";
@@ -16,7 +15,7 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
-  const [routeST, setRouteST] = useState('');
+  const [routeST, setRouteST] = useState("");
 
   const { width, height } = useWindowDimensions();
   function getWidth() {
@@ -28,11 +27,14 @@ function MyTabs() {
       <Tab.Navigator
         initialRouteName="Login"
         screenOptions={{
-          tabBarStyle: { backgroundColor: "#C69AE8", height: 60, borderTopWidth: 0 }, // Establece el fondo de color violeta claro
+          tabBarStyle: {
+            backgroundColor: "#C69AE8",
+            height: 60,
+            borderTopWidth: 0,
+          }, // Establece el fondo de color violeta claro
           tabBarShowLabel: false, // Oculta las etiquetas de descripción
           tabBarInactiveTintColor: "white", // Color del ícono cuando no está seleccionado
           tabBarActiveTintColor: "black",
-          
         }}
       >
         <Tab.Screen
@@ -56,7 +58,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Perfil"
-          component={PersonalData}
+          component={ProfileNavigation}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
@@ -77,7 +79,7 @@ function MyTabs() {
           name="Paw"
           component={ShowPets}
           options={{
-            unmountOnBlur:true,
+            unmountOnBlur: true,
             headerShown: false,
             tabBarIcon: ({ focused }) => (
               <View>
@@ -122,7 +124,7 @@ function MyTabs() {
               <Ionicons name="ios-chatbox" size={size} color={color} />
             ),
             tabBarBadge: 16,
-            unmountOnBlur: true
+            unmountOnBlur: true,
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
@@ -154,7 +156,7 @@ function MyTabs() {
           })}
         />
       </Tab.Navigator>
-      
+
       {routeST !== "Paw" ? (
         <Animated.View
           style={{
@@ -164,10 +166,10 @@ function MyTabs() {
             backgroundColor: "black",
             position: "absolute",
             bottom: 0,
-          transform: [{ translateX: tabOffsetValue }],
+            transform: [{ translateX: tabOffsetValue }],
           }}
         ></Animated.View>
-      ):(
+      ) : (
         <Animated.View
           style={{
             width: getWidth() - 20,
@@ -181,8 +183,6 @@ function MyTabs() {
           }}
         ></Animated.View>
       )}
-      
-
     </>
   );
 }
