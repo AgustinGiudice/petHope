@@ -11,7 +11,7 @@ import { View, Image, Animated, useWindowDimensions } from "react-native";
 import OtrasNavegaciones from "./OtrasNavegaciones";
 import MatchNavigation from "./MatchNavigation";
 import ShowRefugios from "./tabScreens/ShowRefugios";
-
+import Refugios from "./tabScreens/Refugios";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -40,7 +40,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={ShowRefugios}
+          component={LoginScreen}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (

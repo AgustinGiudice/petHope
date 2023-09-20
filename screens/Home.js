@@ -25,7 +25,7 @@ function Home({ navigation, route }) {
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen</Text>
 
-      {token ? (
+    {token ? (
         <Button title="Cerrar Sesión" onPress={() => handleCloseLogin('')} />
       ) : (
         <Button title="Iniciar Sesión" onPress={() => saveTokenToState('token-de-ejemplo', usuarioEjemplo)} />
