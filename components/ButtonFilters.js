@@ -11,6 +11,7 @@ import { screenHeight, screenWidth } from "../hooks/useScreenResize.js";
 import Radio from "./Radio.js";
 import Input from "./Input.js";
 import AntDesign from "react-native-vector-icons/AntDesign.js";
+import Ionicons from "react-native-vector-icons/Ionicons.js";
 
 const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -26,7 +27,7 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openModal}>
-      <AntDesign name="bars" size={30} color="black" />
+      <Ionicons name="options-outline" size={35} color="black" />
       </TouchableOpacity>
 
       <Modal

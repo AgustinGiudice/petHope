@@ -13,6 +13,9 @@ import ItemList from "../../components/ItemList";
 import SPButtons from "../../components/SPbuttons";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import ExplodingHeart from "../../components/ExplodingHeart";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+
 
 const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
@@ -22,6 +25,7 @@ const ShowPets = ({ navigation }) => {
     tamaño: 3,
     rangoDeEdad: 3,
   });
+
   const [isFilterChanged, setIsFilterChanged] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
@@ -31,6 +35,34 @@ const ShowPets = ({ navigation }) => {
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
+
+
+  const cambioColorPaw = (numColor) => {
+    let color;
+    
+    switch (numColor) {
+      case 1:
+        color = 'blue';
+        break;
+      case 2:
+        color = 'green';
+        break;
+      case 3:
+        color = 'yellow';
+        break;
+      case 4:
+        color = 'orange';
+        break;
+      case 5:
+        color = 'red';
+        break;
+      default:
+        color = 'red'; // Color predeterminado si el número no coincide con ninguno de los casos anteriores
+        break;
+    }
+    
+    return color;
+  };
 
   //
   //Meto los estilos adentro del cuerpo de la función para poder usar los useState
@@ -105,6 +137,14 @@ const ShowPets = ({ navigation }) => {
       position: "absolute",
       zIndex: 999,
     },
+    pawIcon:{
+      position:"relative",
+    },
+    pawIconNumber:{
+      position:"absolute",
+      top: 17,
+      left: 15.5
+    }
   });
 
   const queryParams = {
@@ -173,7 +213,6 @@ const ShowPets = ({ navigation }) => {
         setIsLoading(false);
       });
   }, [index]);
-
   {
     if (isLoading) {
       return <ActivityIndicator size="large" style={styles.loader} />;
@@ -212,7 +251,8 @@ const ShowPets = ({ navigation }) => {
                       </Text>
                     </View>
                     <View>
-                      <Text>{mascotas[currentIndex].nivelCuidado}</Text>
+                      <Ionicons style={styles.pawIcon} name="paw" size={40} color={cambioColorPaw(mascotas[currentIndex].nivelCuidado)}/>
+                      <Text style={styles.pawIconNumber}>{mascotas[currentIndex].nivelCuidado}</Text>
                     </View>
                   </View>
                 </View>
