@@ -10,16 +10,10 @@ import {
 import Input from "../components/Input";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [userData, setUserData] = useState({ email: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
 
   const handleLogin = () => {
-    const loginData = {
-      email,
-      pass,
-    };
-
     fetch(
       "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
       {
@@ -27,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(userData),
       }
     )
       .then((response) => response.json())
@@ -50,14 +44,14 @@ const LoginScreen = ({ navigation }) => {
       <Text style={styles.title}>Iniciar Sesión</Text>
       <View style={styles.inputsContainer}>
         <Input
-          value={email}
-          setValue={setEmail}
+          value={userData.email}
+          setValue={setUserData}
           placeholder="E-mail"
           atributo="email"
         />
         <Input
-          value={pass}
-          setValue={setPass}
+          value={userData.pass}
+          setValue={setUserData}
           placeholder="Contraseña"
           atributo="pass"
         />

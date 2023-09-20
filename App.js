@@ -3,5 +3,6 @@ import MainStackNavigation from "./screens/MainNavigation";
 import { AuthContextProvider } from "./context/AuthContext";
 
 export default function App() {
+  
   return <MainStackNavigation />;
 }
