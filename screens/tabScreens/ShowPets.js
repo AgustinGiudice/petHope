@@ -57,7 +57,7 @@ const ShowPets = ({ navigation }) => {
         color = 'red';
         break;
       default:
-        color = 'red'; // Color predeterminado si el número no coincide con ninguno de los casos anteriores
+        color = 'red';
         break;
     }
     
@@ -101,7 +101,6 @@ const ShowPets = ({ navigation }) => {
       zIndex: 10,
       alignItems: "center",
       justifyContent: "flex-end",
-      // marginBottom: -30,
     },
     headerItem2: {
       position: "absolute",
@@ -125,8 +124,9 @@ const ShowPets = ({ navigation }) => {
     headerItemsContenido: {
       flexDirection: "row",
       justifyContent: "space-between",
-      width: screenWidth - screenWidth * 0.3,
-      marginBottom: 25,
+      width: screenWidth - screenWidth * 0.2,
+      marginBottom: 30,
+      alignItems:"center"
     },
     namePet: {
       color: "white",
