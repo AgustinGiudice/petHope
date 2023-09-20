@@ -39,6 +39,15 @@ const MorePersonalData = ({ navigation }) => {
             style={styles.arrow}
             onPress={() => navigation.navigate("PersonalData")}
           />
+          <View style={styles.headerItem}>
+            <View style={styles.headerItem2}>
+              <View style={styles.headerItemsContenido}>
+                <View>
+                  <Text style={styles.nameUser}>{userData.nombre}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
           {userData.pic === null ? (
             <View style={styles.profilePic}>
               <TouchableOpacity onPress={() => handlePressPic()}>
@@ -149,9 +158,50 @@ const styles = StyleSheet.create({
   arrow: {
     color: "#C69AE8",
     position: "absolute",
-    top: 100,
+    top: 130,
     left: 20,
     zIndex: 10,
+  },
+  headerItem: {
+    position: "relative",
+    backgroundColor: "#7A5FB5",
+    width: screenWidth,
+    height: 50,
+    borderRadius: 10,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerItem2: {
+    position: "absolute",
+    backgroundColor: "#C69AE8",
+    width: 1300,
+    height: 1300,
+    borderRadius: 630,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    bottom: -35,
+    elevation: 10, // Para Android
+    shadowColor: "black", // Para iOS
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  headerItemsContenido: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: screenWidth - screenWidth * 0.2,
+    padding: 10,
+    alignItems: "center",
+  },
+  nameUser: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 35,
   },
 });
 

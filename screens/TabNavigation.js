@@ -60,6 +60,7 @@ function MyTabs() {
           name="Perfil"
           component={ProfileNavigation}
           options={{
+            unmountOnBlur: true,
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="ios-person" size={size} color={color} />

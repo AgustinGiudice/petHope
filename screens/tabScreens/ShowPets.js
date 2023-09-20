@@ -15,8 +15,6 @@ import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import ExplodingHeart from "../../components/ExplodingHeart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-
-
 const ShowPets = ({ navigation }) => {
   const [filtros, setFiltros] = useState({
     sexo: 2,
@@ -36,31 +34,30 @@ const ShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const flatlistRef = useRef();
 
-
   const cambioColorPaw = (numColor) => {
     let color;
-    
+
     switch (numColor) {
       case 1:
-        color = 'blue';
+        color = "blue";
         break;
       case 2:
-        color = 'green';
+        color = "green";
         break;
       case 3:
-        color = 'yellow';
+        color = "yellow";
         break;
       case 4:
-        color = 'orange';
+        color = "orange";
         break;
       case 5:
-        color = 'red';
+        color = "red";
         break;
       default:
-        color = 'red';
+        color = "red";
         break;
     }
-    
+
     return color;
   };
 
@@ -126,7 +123,7 @@ const ShowPets = ({ navigation }) => {
       justifyContent: "space-between",
       width: screenWidth - screenWidth * 0.2,
       marginBottom: 30,
-      alignItems:"center"
+      alignItems: "center",
     },
     namePet: {
       color: "white",
@@ -137,14 +134,14 @@ const ShowPets = ({ navigation }) => {
       position: "absolute",
       zIndex: 999,
     },
-    pawIcon:{
-      position:"relative",
+    pawIcon: {
+      position: "relative",
     },
-    pawIconNumber:{
-      position:"absolute",
+    pawIconNumber: {
+      position: "absolute",
       top: 17,
-      left: 15.5
-    }
+      left: 15.5,
+    },
   });
 
   const queryParams = {
@@ -177,8 +174,6 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          console.log(data[0].nombre);
-          console.log(data[0].sexo);
           if (!isFilterChanged) {
             setMascotas((prevData) => prevData.concat(data));
           } else {
@@ -251,8 +246,17 @@ const ShowPets = ({ navigation }) => {
                       </Text>
                     </View>
                     <View>
-                      <Ionicons style={styles.pawIcon} name="paw" size={40} color={cambioColorPaw(mascotas[currentIndex].nivelCuidado)}/>
-                      <Text style={styles.pawIconNumber}>{mascotas[currentIndex].nivelCuidado}</Text>
+                      <Ionicons
+                        style={styles.pawIcon}
+                        name="paw"
+                        size={40}
+                        color={cambioColorPaw(
+                          mascotas[currentIndex].nivelCuidado
+                        )}
+                      />
+                      <Text style={styles.pawIconNumber}>
+                        {mascotas[currentIndex].nivelCuidado}
+                      </Text>
                     </View>
                   </View>
                 </View>
