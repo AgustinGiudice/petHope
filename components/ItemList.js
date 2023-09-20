@@ -1,34 +1,45 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
-import { getAnimalDescripcion, getEdadDescripcion, getTamanioDescripcion, getSexoDescripcion } from "../hooks/getDescripciones";
+import {
+  getAnimalDescripcion,
+  getEdadDescripcion,
+  getTamanioDescripcion,
+  getSexoDescripcion,
+} from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 const ItemList = ({ item }) => {
-  
   return (
     <View style={styles.mascotaItem}>
       <View>
         <View>
-        <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
-        <LinearGradient
-        colors={['rgba(255, 99, 71, 0)', '#000000']}
-        style={styles.gradient}
-        ></LinearGradient>
+          <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
+          <LinearGradient
+            colors={["rgba(255, 99, 71, 0)", "#000000"]}
+            style={styles.gradient}
+          ></LinearGradient>
         </View>
         <View style={styles.containerDistancia}>
-          <AntDesign name="enviromento" size={22} color="white"/>
-          <Text style={ styles.itemDistancia}> A {(item.distance / 1000).toFixed(2)} km de distancia.</Text>
+          <AntDesign name="enviromento" size={22} color="white" />
+          <Text style={styles.itemDistancia}>
+            {" "}
+            A {(item.distance / 1000).toFixed(2)} km de distancia.
+          </Text>
         </View>
       </View>
-      <View  style={styles.dataItem}>
+      <View style={styles.dataItem}>
         {/* <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
         <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
         <View style={styles.dataItemArria}>
-          <Text style={styles.tag}>Raza: {getAnimalDescripcion(item.raza)}</Text>
+          <Text style={styles.tag}>
+            Raza: {getAnimalDescripcion(item.raza)}
+          </Text>
           <Text style={styles.tag}>Edad: {getEdadDescripcion(item.edad)}</Text>
         </View>
-        <View  style={styles.dataItemArria2}>
-          <Text style={styles.tag}>Tamaño: {getTamanioDescripcion(item.tamanio)}</Text>
+        <View style={styles.dataItemArria2}>
+          <Text style={styles.tag}>
+            Tamaño: {getTamanioDescripcion(item.tamanio)}
+          </Text>
           <Text style={styles.tag}>Sexo: {getSexoDescripcion(item.sexo)}</Text>
         </View>
       </View>
@@ -41,10 +52,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 5,
     textAlign: "center",
-    width: screenWidth ,
+    width: screenWidth,
     // position:"relative",
-    zIndex:1,
-    gap:2
+    zIndex: 1,
+    gap: 2,
   },
   mascotaImagen: {
     width: "100%",
@@ -52,54 +63,52 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     resizeMode: "cover",
     alignContent: "center",
-    marginTop:-10,
-    position:"relative"
+    marginTop: -10,
+    position: "relative",
   },
-  containerDistancia:{
-    flexDirection:"row",
-    position:"absolute",
-    bottom:10,
-    left:10,
+  containerDistancia: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 10,
+    left: 10,
   },
   itemDistancia: {
-    fontSize:20,
-    color: "white"
+    fontSize: 20,
+    color: "white",
   },
   mascotaNombre: {
     fontSize: 18,
     fontWeight: "bold",
   },
-  dataItem:{
-   alignItems:"center"
+  dataItem: {
+    alignItems: "center",
   },
-  dataItemArria:{
-    flexDirection:"row",
+  dataItemArria: {
+    flexDirection: "row",
     width: screenWidth,
-    justifyContent:"space-around"
+    justifyContent: "space-around",
   },
   dataItemArria2: {
-    flexDirection:"row"
-    
+    flexDirection: "row",
   },
-  tag:{
-    textAlign:"center",
-    justifyContent:"center",
-    alignContent:"center",
-    backgroundColor:"#9A34EA",
+  tag: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    backgroundColor: "#9A34EA",
     width: 130,
     height: 25,
     borderRadius: 5,
-    margin:3,
-    color:"white"
+    color: "white",
+    margin: 3,
   },
   gradient: {
-    position:"absolute",
-    width:screenWidth,
+    position: "absolute",
+    width: screenWidth,
     height: 100,
-    bottom:0,
+    bottom: 0,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

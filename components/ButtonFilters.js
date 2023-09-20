@@ -27,11 +27,11 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openModal}>
-      <Ionicons name="options-outline" size={35} color="black" />
+        <Ionicons name="options-outline" size={35} color="black" />
       </TouchableOpacity>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={closeModal}
@@ -91,7 +91,6 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                 <TouchableOpacity
                   onPress={() => {
                     {
-                      console.log(filtros);
                       closeModal();
                       setIsFilterChanged(true);
                     }
