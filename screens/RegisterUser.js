@@ -58,10 +58,10 @@ const CreateUserForm = ({ navigation }) => {
         longitude: location.coords.longitude,
       });
     })();
-  });
+  }, []);
 
   const handleSubmit = () => {
-    // Realizar la petición POST al backend para guardar los datos del usuario
+    //Realizar la petición POST al backend para guardar los datos del usuario
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
       method: "POST",
       headers: {
@@ -290,8 +290,8 @@ const CreateUserForm = ({ navigation }) => {
             onPress={() => {
               {
                 const newData = userData;
-                userData.longitud = -34.4634;
-                userData.latitud = -58.5271;
+                newData.longitud = region.longitude;
+                newData.latitud = region.latitude;
                 setUserData(newData);
               }
             }}
@@ -334,10 +334,8 @@ const CreateUserForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
     backgroundColor: "#C69AE8",
     flex: 1,
-    width: "80%",
     justifyContent: "center",
     alignItems: "center",
   },
