@@ -12,9 +12,11 @@ import Radio from "./Radio.js";
 import Input from "./Input.js";
 import AntDesign from "react-native-vector-icons/AntDesign.js";
 import Ionicons from "react-native-vector-icons/Ionicons.js";
+import { Slider } from "@react-native-assets/slider";
 
 const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [distancia, setDistancia] = useState(filtros.distancia);
 
   const openModal = () => {
     setModalVisible(true);
@@ -42,12 +44,23 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
               <View style={styles.modalContainer}>
                 <Text style={styles.title}>Filtros</Text>
                 <Text style={styles.filterTitle}>Distancia</Text>
-                <Input
-                  style={styles.input}
-                  placeholder="Ingrese la distancia"
-                  setValue={setFiltros}
-                  atributo="distancia"
+                <Slider
+                  value={distancia}
+                  minimumValue={500}
+                  maximumValue={100000}
+                  step={500}
+                  thumbTintColor="#9A34EA"
+                  minimumTrackTintColor="#ccc" // The track color before the current value
+                  maximumTrackTintColor="#fff"
+                  onValueChange={(value) => {
+                    const newFiltro = filtros;
+                    newFiltro.distancia = value;
+                    setFiltros(newFiltro);
+                    setDistancia(value);
+                  }}
                 />
+                <Text style={styles.filterTitle}>{distancia / 1000} km</Text>
+
                 <Text style={styles.filterTitle}>Tipo de animal</Text>
                 <Radio
                   defaultValue={
