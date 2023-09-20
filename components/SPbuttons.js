@@ -1,20 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
   View,
-  Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   Animated,
   useWindowDimensions,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import * as Animatable from "react-native-animatable";
 import { BASE_URL } from "@env";
 
-
-const SPbuttons = ({ mascota_id, showLikeAnimation, setShowLikeAnimation }) => {
+const SPbuttons = ({ mascota_id, setShowLikeAnimation, setResetMatches }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
@@ -94,9 +89,6 @@ const SPbuttons = ({ mascota_id, showLikeAnimation, setShowLikeAnimation }) => {
 
   // POST
   const postLike = async () => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA" + mascota_id);
-
-    var url = `${BASE_URL}api/match`;
     try {
       const response = await fetch(`${BASE_URL}api/match`, {
         method: "POST",
@@ -110,11 +102,11 @@ const SPbuttons = ({ mascota_id, showLikeAnimation, setShowLikeAnimation }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Respuesta del backend:", data);
         setMatchResponse(data); // Actualiza el estado con la respuesta
 
         // Mostrar la animación de "like"
         setShowLikeAnimation(true);
+        setResetMatches(true);
 
         // Iniciar la animación
         Animated.sequence([

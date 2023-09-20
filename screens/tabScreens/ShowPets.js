@@ -24,7 +24,7 @@ const ShowPets = ({ navigation }) => {
     rangoDeEdad: 3,
   });
 
-  const [isFilterChanged, setIsFilterChanged] = useState(false);
+  const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -161,7 +161,7 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     setCurrentIndex(0);
     setIndex(0);
-  }, [isFilterChanged]);
+  }, [resetMatches]);
 
   useEffect(() => {
     // Obtener las mascotas
@@ -174,11 +174,11 @@ const ShowPets = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          if (!isFilterChanged) {
+          if (!resetMatches) {
             setMascotas((prevData) => prevData.concat(data));
           } else {
             setMascotas(data);
-            setIsFilterChanged(false);
+            setResetMatches(false);
           }
           const idMascotas = data.map((mascota) => mascota.id);
           setPetVistos((prevString) => {
@@ -190,7 +190,7 @@ const ShowPets = ({ navigation }) => {
             return updatedString;
           });
         } else {
-          if (!isFilterChanged) {
+          if (!resetMatches) {
             console.log("No hay más mascotas!");
             setIndex(1);
           } else {
@@ -198,7 +198,7 @@ const ShowPets = ({ navigation }) => {
               setIndex(1); //Encontrar una forma de no hacer esto, hace peticiones al pedo
             }
             setMascotas([]);
-            setIsFilterChanged(false);
+            setResetMatches(false);
           }
           // ANIMACION DE QUE NO HAY MAS MASCOTAS
         }
@@ -222,7 +222,7 @@ const ShowPets = ({ navigation }) => {
               <ButtonFilters
                 filtros={filtros}
                 setFiltros={setFiltros}
-                setIsFilterChanged={setIsFilterChanged}
+                setResetMatches={setResetMatches}
               />
             </View>
           ) : (
@@ -237,7 +237,7 @@ const ShowPets = ({ navigation }) => {
                       <ButtonFilters
                         filtros={filtros}
                         setFiltros={setFiltros}
-                        setIsFilterChanged={setIsFilterChanged}
+                        setResetMatches={setResetMatches}
                       />
                     </View>
                     <View>
@@ -290,7 +290,7 @@ const ShowPets = ({ navigation }) => {
               {!isLoading ? (
                 <SPButtons
                   mascota_id={mascotas[currentIndex].id}
-                  showLikeAnimation={showLikeAnimation}
+                  setResetMatches={setResetMatches}
                   setShowLikeAnimation={setShowLikeAnimation}
                 />
               ) : null}

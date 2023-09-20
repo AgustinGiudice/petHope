@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from "react-native";
 import * as Location from "expo-location";
-import { useNavigation } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
 import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
@@ -17,12 +16,13 @@ const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
     nombre: "",
     apellido: "",
-    telefono: "",
+    telefono: 1123100216,
     mail: "",
     pass: "",
     repeatPass: "",
-    latitud: -34.4634938947938,
-    longitud: -58.527161947963336,
+    direccion: "todavia no la paso",
+    latitud: null,
+    longitud: null,
     espacioDisponible: null,
     aceptaCuidadosEspeciales: false,
     tipoAnimal: null,
@@ -33,17 +33,8 @@ const CreateUserForm = ({ navigation }) => {
     tuvoMascotas: null,
   };
   const [userData, setUserData] = useState(initialUserData);
-  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [indexModal, setIndexModal] = useState(1);
-
-  const [alertMessage, setAlertMessage] = useState("");
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
-
-  const showAlert = (message) => {
-    setAlertMessage(message);
-    setIsAlertVisible(true);
-  };
 
   const [region, setRegion] = useState({
     latitude: 0,
@@ -59,10 +50,7 @@ const CreateUserForm = ({ navigation }) => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
-
       // Configura la región inicial
       setRegion({
         ...region,
@@ -70,7 +58,7 @@ const CreateUserForm = ({ navigation }) => {
         longitude: location.coords.longitude,
       });
     })();
-  }, []);
+  });
 
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del usuario
@@ -182,10 +170,9 @@ const CreateUserForm = ({ navigation }) => {
           data={["Si", "No"]}
           handleSelect={(value) => {
             const formatedValue = value === "No" ? false : true;
-            setUserData({
-              ...userData,
-              ...(userData.tuvoMascotas = formatedValue),
-            });
+            const newData = userData;
+            userData.tuvoMascotas = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -198,10 +185,9 @@ const CreateUserForm = ({ navigation }) => {
           handleSelect={(value) => {
             const formatedValue =
               value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
-            setUserData({
-              ...userData,
-              ...(userData.tipoAnimal = formatedValue),
-            });
+            const newData = userData;
+            userData.tipoAnimal = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -220,10 +206,9 @@ const CreateUserForm = ({ navigation }) => {
                 : value === "Adulto"
                 ? 3
                 : 4;
-            setUserData({
-              ...userData,
-              ...(userData.edadPreferida = formatedValue),
-            });
+            const newData = userData;
+            userData.edadPreferida = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -242,10 +227,9 @@ const CreateUserForm = ({ navigation }) => {
                 : value === "Grande"
                 ? 3
                 : 4;
-            setUserData({
-              ...userData,
-              ...(userData.tamanioPreferido = formatedValue),
-            });
+            const newData = userData;
+            userData.tamanioPreferido = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -267,10 +251,9 @@ const CreateUserForm = ({ navigation }) => {
                 : value === "Si, entre 12 y 15 años"
                 ? 3
                 : 4;
-            setUserData({
-              ...userData,
-              ...(userData.tieneNinios = formatedValue),
-            });
+            const newData = userData;
+            userData.tieneNinios = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -280,10 +263,9 @@ const CreateUserForm = ({ navigation }) => {
           data={["Si", "No"]}
           handleSelect={(value) => {
             const formatedValue = value === "No" ? false : true;
-            setUserData({
-              ...userData,
-              ...(userData.tieneMascotas = formatedValue),
-            });
+            const newData = userData;
+            userData.tieneMascotas = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
@@ -296,14 +278,29 @@ const CreateUserForm = ({ navigation }) => {
           data={["Si", "No"]}
           handleSelect={(value) => {
             const formatedValue = value === "No" ? false : true;
-            setUserData({
-              ...userData,
-              ...(userData.aceptaCuidadosEspeciales = formatedValue),
-            });
+            const newData = userData;
+            userData.aceptaCuidadosEspeciales = formatedValue;
+            setUserData(newData);
           }}
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              {
+                const newData = userData;
+                userData.longitud = -34.4634;
+                userData.latitud = -58.5271;
+                setUserData(newData);
+              }
+            }}
+          >
+            <Text style={styles.start}>DarPosicion</Text>
+          </TouchableOpacity>
+        </View>
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
