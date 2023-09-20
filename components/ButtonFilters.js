@@ -14,7 +14,7 @@ import AntDesign from "react-native-vector-icons/AntDesign.js";
 import Ionicons from "react-native-vector-icons/Ionicons.js";
 import { Slider } from "@react-native-assets/slider";
 
-const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
+const ButtonFilters = ({ filtros, setFiltros, setResetMatches }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [distancia, setDistancia] = useState(filtros.distancia);
 
@@ -105,7 +105,7 @@ const ButtonFilters = ({ filtros, setFiltros, setIsFilterChanged }) => {
                   onPress={() => {
                     {
                       closeModal();
-                      setIsFilterChanged(true);
+                      setResetMatches(true);
                     }
                   }}
                   style={styles.filtrarButton}
