@@ -15,14 +15,24 @@ const loadCachedData = async (nombreCache) => {
     if (cachedData !== null) {
       return cachedData;
     } else {
-      return "none";
+      return null;
     }
   } catch (error) {
     console.error("Error al cargar desde caché:", error);
   }
 };
 
+const clearCache = async (nombreCache) => {
+  try {
+    await AsyncStorage.removeItem(nombreCache);
+    console.log("Cache borrado");
+  } catch (error) {
+    console.log("Error al limpiar el caché:", error);
+  }
+};
+
 module.exports = {
   saveDataToCache,
   loadCachedData,
+  clearCache,
 };

@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BASE_URL } from "@env";
-import { saveDataToCache, loadCachedData } from "../../hooks/useCache";
+import {
+  saveDataToCache,
+  loadCachedData,
+  clearCache,
+} from "../../hooks/useCache";
 import {
   View,
   Text,
@@ -158,6 +162,21 @@ const ShowPets = ({ navigation }) => {
   // Construye la URL con los parámetros
   const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${filtros.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
 
+  const getUserData = async () => {
+    try {
+      // await clearCache("mascotasVistas");
+      // setPetVistos("");
+      const cache = await loadCachedData("mascotasVistas");
+      if (cache !== null) {
+        const parsedData = cache;
+        console.log("Datos cargados desde caché:", parsedData);
+        setPetVistos(parsedData);
+      }
+    } catch (error) {
+      console.log("Error al obtener datos de caché:", error);
+    }
+  };
+
   useEffect(() => {
     setCurrentIndex(0);
     setIndex(0);
@@ -165,6 +184,8 @@ const ShowPets = ({ navigation }) => {
 
   useEffect(() => {
     // Obtener las mascotas
+    getUserData();
+    console.log(url);
     fetch(url, {
       method: "GET",
       headers: {
