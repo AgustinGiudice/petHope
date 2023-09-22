@@ -8,6 +8,7 @@ import {
   Button,
 } from "react-native";
 import Input from "../components/Input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({ email: "", pass: "" });
@@ -29,8 +30,16 @@ const LoginScreen = ({ navigation }) => {
         console.log(data);
 
         if (data.token) {
-          const { usuario, token } = data;
-          navigation.navigate("Tabs", { usuario, token });
+          AsyncStorage.setItem("token", data.token)
+          .then(()=> {
+            console.log("Token guardado correctamente:", data.token);
+            return AsyncStorage.getItem("token"); // Recuperar el token
+          })
+          .then((storedToken) => {
+            console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
+            const { usuario, token } = data;
+            navigation.navigate("Tabs", { usuario, token });
+          })
         } else {
           setError("Inicio de sesión fallido"); // Establecer mensaje de error
         }

@@ -15,6 +15,8 @@ import ImgRef from '../../assets/refugio.jpg'
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AuthRedirect from "../../components/AuthRedirect";
+
 
 const ShowRefugios = () => {
   const styles = StyleSheet.create({
@@ -64,6 +66,7 @@ const ShowRefugios = () => {
   });
 
   return (
+    <AuthRedirect>
     <View style={styles.containerSR}>
         <View style={styles.containerItem}>
             <View>
@@ -128,6 +131,7 @@ const ShowRefugios = () => {
             </View>
         </View>
     </View>
+    </AuthRedirect>
   );
 };
 

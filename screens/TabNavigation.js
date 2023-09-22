@@ -26,7 +26,7 @@ function MyTabs() {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Login"
+        initialRouteName="Paw"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: "#C69AE8",
