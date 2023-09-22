@@ -20,8 +20,7 @@ import {
   getTamanioDescripcion,
   getSexoDescripcion,
 } from "../../hooks/getDescripciones";
-import Modal from 'react-native-modal';
-
+import Modal from "react-native-modal";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -35,7 +34,6 @@ const MatchesScreen = ({ navigation }) => {
     console.log("Abriendo chat con refugio", refugio);
     navigation.navigate("Chat", { refugio: refugio, mascota: mascota });
   };
-
 
   const handleVerRefugio = () => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -210,7 +208,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   matchItem: {
-    
     backgroundColor: "#fff",
     borderRadius: 10,
     flexDirection: "row",
@@ -218,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 10,
     padding: 5,
-    elevation:5
+    elevation: 5,
   },
   column: {
     display: "flex",

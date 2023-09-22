@@ -7,25 +7,22 @@ import {
   Button,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { format } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
-
 import {
   getAnimalDescripcion,
   getEdadDescripcion,
   getTamanioDescripcion,
   getSexoDescripcion,
 } from "../../hooks/getDescripciones";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Constants from "expo-constants";
 
 const Chat = ({ route }) => {
   const { refugio, mascota } = route.params;
-  console.log("REFUGIO");
-  console.log(refugio);
-  console.log("MASCOTA");
-  console.log(mascota);
 
   // const fecha_format = format(new Date(f.created_at), 'dd/MM/yyyy');
 
@@ -79,15 +76,18 @@ const Chat = ({ route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.spacebet}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Match")}
-          style={{ padding: 10 }}
-        >
-          <Text>Volver a mis Matcheos</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Match")}>
+          <FontAwesome name="arrow-left" size={40} style={styles.arrow} />
         </TouchableOpacity>
-
-        <Button onPress={toggleModal_2} title={refugio.nombre} />
-        <Button onPress={toggleModal} title={mascota.nombre} />
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity onPress={toggleModal}>
+            <Text style={styles.nombreMascota}>{mascota.nombre}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleModal_2}>
+            <Text style={styles.nombreRefugio}>Refugio {refugio.nombre}</Text>
+          </TouchableOpacity>
+        </View>
+        <Image source={{ uri: mascota.pic }} style={styles.mascotaImagen} />
       </View>
 
       {/* <View>
@@ -109,7 +109,7 @@ const Chat = ({ route }) => {
             <View
               style={{
                 backgroundColor:
-                  item.sender === "usuario" ? "#218AFF" : "#a4bb03",
+                  item.sender === "usuario" ? "#C69AE8" : "#9A34EA",
                 padding: 10,
                 margin: 5,
                 borderRadius: 10,
@@ -142,7 +142,11 @@ const Chat = ({ route }) => {
           value={newMessage}
           onChangeText={(text) => setNewMessage(text)}
         />
-        <Button title="Enviar" onPress={sendMessage} />
+        <Button
+          style={{ backgroundColor: "#9A34EA", borderRadius: 5 }}
+          title="Enviar"
+          onPress={sendMessage}
+        />
       </View>
 
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
@@ -189,8 +193,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10,
-    marginTop: 30,
+    marginTop: Constants.statusBarHeight,
+    paddingBottom: 10,
   },
   modalContent: {
     backgroundColor: "white",
@@ -220,7 +224,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "#ddd",
     marginBottom: 40,
+    padding: 10,
+    borderBottomColor: "#bbb",
+    borderBottomWidth: 1,
   },
   estadoIndicator: {
     borderRadius: 5,
@@ -237,6 +245,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
+  },
+  arrow: {
+    color: "#C69AE8",
+  },
+  nombreMascota: {
+    fontWeight: "bold",
+    color: "#9A34EA",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  nombreRefugio: {
+    textAlign: "center",
+    fontSize: 14,
+  },
+  mascotaImagen: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
 });
 
