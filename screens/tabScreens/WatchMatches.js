@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,7 +21,14 @@ import {
   getSexoDescripcion,
 } from "../../hooks/getDescripciones";
 
+//modal
+import Modal from "react-native-modal";
+
 const MatchesScreen = ({ navigation }) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [matches, setMatches] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   // Función para manejar la acción de abrir el chat con el refugio
   const handleChatClick = (refugio, mascota) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -30,9 +37,27 @@ const MatchesScreen = ({ navigation }) => {
     navigation.navigate("Chat", { refugio: refugio, mascota: mascota });
   };
 
-  const [matches, setMatches] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const handleVerRefugio = () => {
+    // Implementa la lógica para abrir el chat con el refugio aquí
+    // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
+    console.log("Abriendo refugio");
+  };
+
+  const handleCancelarMatch = () => {
+    // Implementa la lógica para abrir el chat con el refugio aquí
+
+    console.log("Cancelando match");
+  };
+
+  const handleDenunciarRefugio = () => {
+    // Implementa la lógica para abrir el chat con el refugio aquí
+
+    console.log("Denunciando refugio");
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const fetchMatches = async () => {
     try {
@@ -50,7 +75,6 @@ const MatchesScreen = ({ navigation }) => {
       }
       const data = await response.json();
       setMatches(data);
-      console.log(data);
     } catch (error) {
       console.error("Error al obtener los matches:", error);
     } finally {
@@ -75,57 +99,84 @@ const MatchesScreen = ({ navigation }) => {
       {matches.length === 0 ? (
         <ActivityIndicator size="large" />
       ) : (
-        <FlatList
-          data={matches}
-          renderItem={({ item }) => (
-            <View style={styles.matchItem}>
-              <View style={styles.containerLeft}>
-                <View
-                  onPress={() => handleChatClick(item.mascota.refugioId)}
-                  style={styles.imagenContainer}
-                >
-                  <Image
-                    source={{ uri: item.mascota.pic }}
-                    style={styles.mascotaImagen}
+        <View>
+          {/* <Text onPress={()=>{navigation.navigate("Refugios")}}>Ir a refugios</Text> */}
+          <FlatList
+            data={matches}
+            renderItem={({ item }) => (
+              <View style={styles.matchItem}>
+                <View style={styles.containerLeft}>
+                  <View
+                    onPress={() => handleChatClick(item.mascota.refugioId)}
+                    style={styles.imagenContainer}
+                  >
+                    <Image
+                      source={{ uri: item.mascota.pic }}
+                      style={styles.mascotaImagen}
+                    />
+                  </View>
+
+                  <View style={styles.column}>
+                    <Text style={styles.letraGrande} numberOfLines={1}>
+                      {item.mascota.nombre} - Refugio Devoto
+                    </Text>
+                    <Text style={styles.letraChica}>
+                      {getAnimalDescripcion(item.mascota.animal)}{" "}
+                      {getEdadDescripcion(item.mascota.edad)}{" "}
+                      {getTamanioDescripcion(item.mascota.tamanio)}
+                    </Text>
+                    <Text style={styles.letraChica}>
+                      {getSexoDescripcion(item.mascota.sexo)}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.containerIcons}>
+                  <MaterialIcons
+                    name="chat"
+                    size={25}
+                    onPress={() => handleChatClick(item.refugio, item.mascota)}
+                  />
+                  <MaterialCommunityIcons
+                    name="dots-vertical"
+                    size={25}
+                    onPress={toggleModal}
                   />
                 </View>
-
-                <View style={styles.column}>
-                  <Text style={styles.letraGrande} numberOfLines={1}>
-                    {item.mascota.nombre} - Refugio Devoto
-                  </Text>
-                  <Text style={styles.letraChica}>
-                    {getAnimalDescripcion(item.mascota.animal)}{" "}
-                    {getEdadDescripcion(item.mascota.edad)}{" "}
-                    {getTamanioDescripcion(item.mascota.tamanio)}
-                  </Text>
-                  <Text style={styles.letraChica}>
-                    {getSexoDescripcion(item.mascota.sexo)}
-                  </Text>
-                </View>
               </View>
-
-              <View style={styles.containerIcons}>
-                <MaterialIcons
-                  name="chat"
-                  size={25}
-                  onPress={() => handleChatClick(item.refugio, item.mascota)}
-                />
-                <MaterialCommunityIcons
-                  name="dots-vertical"
-                  size={25}
-                />
-              </View>
-            </View>
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          style={styles.matchContainer}
-          onEndReached={fetchMatches}
-          onEndReachedThreshold={0.1}
-          refreshing={refreshing}
-          onRefresh={fetchMatches}
-        />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            style={styles.matchContainer}
+            onEndReached={fetchMatches}
+            onEndReachedThreshold={0.1}
+            refreshing={refreshing}
+            onRefresh={fetchMatches}
+          />
+        </View>
       )}
+
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <View style={styles.modalContent}>
+          {/* Opciones: ver refugio, cancelar match, denunciar */}
+          <TouchableOpacity
+            onPress={toggleModal}
+            style={styles.modalCloseButton}
+          >
+            <MaterialIcons name="close" size={24} color="black" />
+          </TouchableOpacity>
+
+          <Text style={styles.modalTitle}>Opciones</Text>
+          <TouchableOpacity onPress={handleVerRefugio}>
+            <Text style={styles.modalText}>Ver refugio</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleCancelarMatch}>
+            <Text style={styles.modalText}>Cancelar match</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDenunciarRefugio}>
+            <Text style={styles.modalText}>Denunciar</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -191,6 +242,25 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalCloseButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 

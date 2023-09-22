@@ -5,6 +5,7 @@ import CreateUserForm from "./RegisterUser";
 import RegisterChoice from "./RegisterChoice";
 import RegisterRef from "./RegisterRef";
 import { NavigationContainer } from "@react-navigation/native";
+import Chat from "./tabScreens/Chat";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ function MainNavigation() {
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
+        <Stack.Screen name="Chat" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
