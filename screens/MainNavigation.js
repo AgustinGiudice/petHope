@@ -43,7 +43,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
+        initialRouteName={isLoggedIn ? "Tabs" : "Tabs"} //cambiar el segundo tab por LoginScreen para que vuelva a funcionar el Login
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginScreen" component={LoginScreen} />

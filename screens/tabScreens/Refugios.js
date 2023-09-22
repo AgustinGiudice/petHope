@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,25 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-} from "react-native";
-import Constants from "expo-constants";
+  Modal,
+} from 'react-native';
+import Constants from 'expo-constants';
 
 const Refugios = ({ navigation }) => {
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRefugio, setSelectedRefugio] = useState(null);
+
+  const openModal = (refugio) => {
+    setSelectedRefugio(refugio);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedRefugio(null);
+    setModalVisible(false);
+  };
+
   const refugios = [
     {
       nombre: "Refugio Devoto",
@@ -54,6 +69,7 @@ const Refugios = ({ navigation }) => {
   ];
 
   return (
+    <>
     <FlatList
       data={refugios}
       keyExtractor={(item, index) => index.toString()}
@@ -67,12 +83,41 @@ const Refugios = ({ navigation }) => {
           <Text style={styles.acepta}>Acepta {item.animal}</Text>
           <View style={styles.orderButton}>
             <TouchableOpacity style={styles.containerBotonVerMas}>
-              <Text style={styles.textoBotonVerMas}>Ver Más</Text>
-            </TouchableOpacity>
+              <Text style={styles.textoBotonVerMas} onPress={() => openModal(item)}>Ver Más</Text>
+            </TouchableOpacity>  
           </View>
         </View>
       )}
-    />
+      />
+
+       {/* Modal para mostrar más información del refugio */}
+       <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        {selectedRefugio && (
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>{selectedRefugio.nombre}</Text>
+            <Image source={selectedRefugio.imagen} style={styles.modalImage} />
+            <Text style={styles.modalDescription}>
+              {selectedRefugio.descripcion}
+            </Text>
+            <Text style={styles.modalLink}>
+              Enlace de Donación: {selectedRefugio.linkDonacion}
+            </Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={closeModal}
+            >
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Modal>
+
+      </>
   );
 };
 
@@ -115,9 +160,45 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  textoBotonVerMas: {
-    color: "white",
+  textoBotonVerMas:{
+    color:"white",
+    fontSize:18
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    borderRadius: 5,
+  },
+  modalDescription: {
+    fontSize: 16,
+    marginTop: 10,
+  },
+  modalLink: {
+    fontSize: 16,
+    marginTop: 10,
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: '#9A34EA',
+    borderRadius: 5,
+    padding: 10,
+  },
+  closeButtonText: {
+    color: 'white',
     fontSize: 18,
+    textAlign: 'center',
   },
 });
 
