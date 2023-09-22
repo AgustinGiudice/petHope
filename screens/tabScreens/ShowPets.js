@@ -137,8 +137,8 @@ const ShowPets = ({ navigation }) => {
       fontSize: 28,
       flex: 1,
       paddingHorizontal: 3,
-      textAlign: "center", 
-      textAlignVertical: "center", 
+      textAlign: "center",
+      textAlignVertical: "center",
     },
     corazonLike: {
       position: "absolute",

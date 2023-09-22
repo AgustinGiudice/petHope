@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   header: {
-    paddingTop: 50,
+    paddingTop: 10,
     backgroundColor: "white",
     width: "100%",
     alignItems: "center",
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   column: {
     justifyContent: "flex-start",
     width: "70%",
+    paddingBottom: 120,
   },
   textContainer: {
     borderColor: "#9A34EA",
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
   arrow: {
     color: "#C69AE8",
     position: "absolute",
-    top: 130,
+    top: 100,
     left: 20,
     zIndex: 10,
   },
