@@ -4,7 +4,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import UploadImageModal from "../../components/UploadImageModal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const userData = {
@@ -26,6 +26,18 @@ const PersonalData = ({ navigation }) => {
   const handlePressPic = () => {
     setModalVisible(true);
     console.log("Aca se va a poder modificar una foto");
+  };
+  
+  const handleLogout = async () => {
+    try {
+      // Eliminar el token de AsyncStorage
+      await AsyncStorage.removeItem("token");
+      console.log("TOKEN ELIMINADO");
+      // Redirigir al usuario a la pantalla de inicio de sesión
+      navigation.navigate("LoginScreen"); // Reemplaza "Login" con la pantalla de inicio de sesión real en tu aplicación
+    } catch (error) {
+      console.error("Error al intentar cerrar sesión:", error);
+    }
   };
 
   return (
@@ -102,6 +114,9 @@ const PersonalData = ({ navigation }) => {
           <View style={styles.textContainer}>
             <Text>{userData.descripcion}</Text>
           </View>
+          <TouchableOpacity>
+            <Text onPress={handleLogout}>CERRAR SESION</Text>
+          </TouchableOpacity>
         </View>
         <FontAwesome
           name="arrow-right"

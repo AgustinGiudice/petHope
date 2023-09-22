@@ -64,9 +64,11 @@ const ShowRefugios = () => {
         alignItems:"center"
     }
   });
+   
+  
 
   return (
-    <AuthRedirect>
+    
     <View style={styles.containerSR}>
         <View style={styles.containerItem}>
             <View>
@@ -131,7 +133,7 @@ const ShowRefugios = () => {
             </View>
         </View>
     </View>
-    </AuthRedirect>
+   
   );
 };
 
