@@ -7,6 +7,7 @@ import RegisterRef from "./RegisterRef";
 import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
+import Chat from "./tabScreens/Chat";
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,7 @@ function MainNavigation() {
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
+        <Stack.Screen name="Chat" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
