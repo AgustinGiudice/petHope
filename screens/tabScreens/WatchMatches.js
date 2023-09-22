@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { format, set } from "date-fns";
-import { format, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -37,28 +36,6 @@ const MatchesScreen = ({ navigation }) => {
     navigation.navigate("Chat", { refugio: refugio, mascota: mascota });
   };
 
-  const handleVerRefugio = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
-    // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
-    console.log("Abriendo refugio");
-  };
-
-  const handleCancelarMatch = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
-    
-    console.log("Cancelando match");
-  };
-
-  const handleDenunciarRefugio = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
-
-    console.log("Denunciando refugio");
-  };
-
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const handleVerRefugio = () => {
     // Implementa la lógica para abrir el chat con el refugio aquí
