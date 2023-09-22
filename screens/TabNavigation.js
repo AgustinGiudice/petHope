@@ -26,7 +26,7 @@ function MyTabs() {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="Perfil"
+        initialRouteName="ShowRefugios"
         screenOptions={{
           tabBarStyle: {
             backgroundColor: "#C69AE8",
@@ -40,7 +40,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={ShowRefugios}
+          component={Refugios}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (

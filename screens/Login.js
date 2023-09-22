@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -48,6 +48,10 @@ const LoginScreen = ({ navigation }) => {
         console.error("Error al iniciar sesión:", error);
       });
   };
+  useEffect(() => {          
+    var token = AsyncStorage.getItem("token")
+    console.log(token)
+  }, [] )
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
