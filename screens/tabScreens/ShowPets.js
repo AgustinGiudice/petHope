@@ -124,15 +124,21 @@ const ShowPets = ({ navigation }) => {
     },
     headerItemsContenido: {
       flexDirection: "row",
+      width: screenWidth,
       justifyContent: "space-between",
-      width: screenWidth - screenWidth * 0.2,
       marginBottom: 30,
-      alignItems: "center",
+      alignItems: "baseline",
+      paddingHorizontal: 30,
+      textAlign: "center",
     },
     namePet: {
       color: "white",
       fontWeight: "bold",
-      fontSize: 35,
+      fontSize: 28,
+      flex: 1,
+      paddingHorizontal: 3,
+      textAlign: "center",
+      textAlignVertical: "center",
     },
     corazonLike: {
       position: "absolute",
@@ -164,8 +170,8 @@ const ShowPets = ({ navigation }) => {
 
   const getUserData = async () => {
     try {
-      // await clearCache("mascotasVistas");
-      // setPetVistos("");
+      await clearCache("mascotasVistas");
+      setPetVistos("");
       const cache = await loadCachedData("mascotasVistas");
       if (cache !== null) {
         const parsedData = cache;
@@ -261,11 +267,13 @@ const ShowPets = ({ navigation }) => {
                         setResetMatches={setResetMatches}
                       />
                     </View>
-                    <View>
-                      <Text style={styles.namePet}>
-                        {mascotas[currentIndex].nombre}
-                      </Text>
-                    </View>
+                    <Text
+                      adjustsFontSizeToFit
+                      numberOfLines={1}
+                      style={styles.namePet}
+                    >
+                      {mascotas[currentIndex].nombre}
+                    </Text>
                     <View>
                       <Ionicons
                         style={styles.pawIcon}
