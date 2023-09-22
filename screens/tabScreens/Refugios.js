@@ -1,33 +1,54 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import Constants from 'expo-constants';
 
 const Refugios = ({ navigation }) => {
+  
+
+
+
   const refugios = [
     {
-        
-      titulo: 'Refugio Devoto - A 15km de distancia',
+      nombre: 'Refugio Devoto',
       descripcion:
         'Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.',
-      imagen: require('../../assets/refugio1.jpg'), // Asegúrate de tener la imagen en tu proyecto
+      imagen: require('../../assets/refugio1.jpg'), 
+      distancia: 12,
+      animal: "Perros",
+      mascotasRegistradas:735,
+      linkDonacion: "https://linkdedonacion.com",
     },
     {
-      titulo: 'Unidos por los animales - A 23km de distancia',
+      nombre: 'Gatitos felices',
       descripcion:
-        'Hemos tenido un mes exitoso en términos de adopciones. ¡Gracias a la comunidad por adoptar a tantos animales y darles un nuevo comienzo!',
-      imagen: require('../../assets/refugio2.jpg'), // Asegúrate de tener la imagen en tu proyecto
+        'Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.',
+      imagen: require('../../assets/refugio2.jpg'), 
+      distancia: 12,
+      animal: "Gatos",
+      mascotasRegistradas:735,
+      linkDonacion: "https://linkdedonacion.com",
     },
     {
-      titulo: 'Gatitos felices - A 4km de distancia',
+      nombre: 'Patitas Tristes',
       descripcion:
-        'Nuestro refugio de animales está organizando una campaña de donación de alimentos para ayudar a los animales necesitados. ¡Únete y ayuda a los animales hambrientos!',
-      imagen: require('../../assets/refugio1.jpg'), // Asegúrate de tener la imagen en tu proyecto
+        'Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.',
+      imagen: require('../../assets/refugio1.jpg'), 
+      distancia: 12,
+      animal: "Perros y Gatos",
+      mascotasRegistradas:735,
+      linkDonacion: "https://linkdedonacion.com",
     },
     {
-      titulo: 'Voluntarios necesarios - A 45km de distancia',
+      nombre: 'Unidos por los animales - A 23km de distancia',
       descripcion:
-        'Estamos buscando voluntarios apasionados para ayudar en nuestro refugio. Si amas a los animales y quieres marcar la diferencia, ¡únete a nuestro equipo!',
-      imagen: require('../../assets/refugio2.jpg'), // Asegúrate de tener la imagen en tu proyecto
-    },
+        'Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.',
+      imagen: require('../../assets/refugio2.jpg'), 
+      distancia: 12,
+      animal: "Perros",
+      mascotasRegistradas:735,
+      linkDonacion: "https://linkdedonacion.com",
+    }
+    
   ];
 
   return (
@@ -37,8 +58,14 @@ const Refugios = ({ navigation }) => {
       renderItem={({ item }) => (
         <View style={styles.noticiaContainer}>
           <Image source={item.imagen} style={styles.imagenNoticia} />
-          <Text style={styles.tituloNoticia}>{item.titulo}</Text>
-          <Text style={styles.descripcionNoticia}>{item.descripcion}</Text>
+          <Text style={styles.nombreRef}>{item.nombre}</Text>
+          <Text style={styles.distanciaRef}>A {item.distancia} Km de distancia</Text>
+          <Text style={styles.acepta}>Acepta {item.animal}</Text>
+          <View style={styles.orderButton}>
+            <TouchableOpacity style={styles.containerBotonVerMas}>
+              <Text style={styles.textoBotonVerMas}>Ver Más</Text>
+            </TouchableOpacity>  
+          </View>
         </View>
       )}
     />
@@ -47,6 +74,7 @@ const Refugios = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   noticiaContainer: {
+    marginTop: Constants.statusBarHeight,
     margin: 10,
     padding: 10,
     borderRadius: 5,
@@ -59,15 +87,34 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 5,
   },
-  tituloNoticia: {
+  nombreRef: {
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 10,
+    marginBottom:8
   },
   descripcionNoticia: {
     fontSize: 16,
     marginTop: 5,
   },
+  acepta:{
+    marginBottom:8
+  },
+  orderButton:{
+    alignItems:"center"
+  },
+  containerBotonVerMas:{
+    width:100,
+    height:35,
+    backgroundColor:"#9A34EA",
+    borderRadius:5,
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  textoBotonVerMas:{
+    color:"white",
+    fontSize:18
+  }
 });
 
 export default Refugios;

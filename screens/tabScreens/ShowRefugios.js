@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { BASE_URL } from "@env";
-import Constants from 'expo-constants'
-import ImgRef from '../../assets/refugio.jpg'
+import Constants from 'expo-constants';
+import ImgRef from '../../assets/refugio.jpg';
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";

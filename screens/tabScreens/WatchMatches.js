@@ -188,7 +188,7 @@ const MatchesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#E3E3E3",
     flex: 1,
     overflow: "hidden",
     alignItems: "center",
@@ -214,13 +214,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   matchItem: {
-    backgroundColor: "#C69AE8",
+    
+    backgroundColor: "#fff",
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 5,
+    marginBottom: 10,
     padding: 5,
+    elevation:5
   },
   column: {
     display: "flex",
