@@ -106,6 +106,9 @@ const Refugios = ({ navigation }) => {
             <Text style={styles.modalLink}>
               Enlace de Donación: {selectedRefugio.linkDonacion}
             </Text>
+            <Text style={styles.modalLink}>
+              Mascotas Registradas: {selectedRefugio.mascotasRegistradas}
+            </Text>
             <TouchableOpacity
               style={styles.closeButton}
               onPress={closeModal}
@@ -115,7 +118,6 @@ const Refugios = ({ navigation }) => {
           </View>
         )}
       </Modal>
-
       </>
   );
 };
