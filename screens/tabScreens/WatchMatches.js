@@ -28,6 +28,8 @@ const MatchesScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const { currentUser } = useContext(UserContext);
+
+  const [userAbrir, setuserAbrir] = useState(null);
   // Función para manejar la acción de abrir el chat con el refugio
   const handleChatClick = (receiver, mascota, refugio) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -40,10 +42,10 @@ const MatchesScreen = ({ navigation }) => {
     });
   };
 
-  const handleVerRefugio = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
-    // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
-    console.log("Abriendo refugio");
+  const handleVerUser = (id) => {
+    
+    console.log("Abriendo info con user", id);
+    
   };
 
   const handleCancelarMatch = () => {
@@ -58,8 +60,9 @@ const MatchesScreen = ({ navigation }) => {
     console.log("Denunciando refugio");
   };
 
-  const toggleModal = () => {
+  const toggleModal = (user) => {
     setModalVisible(!isModalVisible);
+    setuserAbrir(user);
   };
 
   const fetchMatches = async () => {
@@ -87,6 +90,8 @@ const MatchesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchMatches();
+    console.log(currentUser)
+    
   }, []);
 
   // if (isLoading) {
@@ -151,7 +156,7 @@ const MatchesScreen = ({ navigation }) => {
                   <MaterialCommunityIcons
                     name="dots-vertical"
                     size={25}
-                    onPress={toggleModal}
+                    onPress={() => toggleModal(currentUser.id == item.refugio.id ? item.usuario : item.refugio)}
                   />
                 </View>
               </View>
@@ -166,7 +171,7 @@ const MatchesScreen = ({ navigation }) => {
         </View>
       )}
 
-      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal} userAbrir={userAbrir}>
         <View style={styles.modalContent}>
           {/* Opciones: ver refugio, cancelar match, denunciar */}
           <TouchableOpacity
@@ -177,8 +182,8 @@ const MatchesScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <Text style={styles.modalTitle}>Opciones</Text>
-          <TouchableOpacity onPress={handleVerRefugio}>
-            <Text style={styles.modalText}>Ver refugio</Text>
+          <TouchableOpacity onPress={ () => handleVerUser(userAbrir) } >
+            <Text style={styles.modalText}>{currentUser.estado ? 'Ver usuario' : 'Ver refugio'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleCancelarMatch}>
             <Text style={styles.modalText}>Cancelar match</Text>
