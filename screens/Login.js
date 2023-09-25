@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,10 +9,13 @@ import {
 } from "react-native";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../context/UserContext";
 
 const LoginScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({ email: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const handleLogin = () => {
     fetch(
@@ -27,19 +30,18 @@ const LoginScreen = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-
         if (data.token) {
           AsyncStorage.setItem("token", data.token)
-          .then(()=> {
-            console.log("Token guardado correctamente:", data.token);
-            return AsyncStorage.getItem("token"); // Recuperar el token
-          })
-          .then((storedToken) => {
-            console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
-            const { usuario, token } = data;
-            navigation.navigate("Tabs", { usuario, token });
-          })
+            .then(() => {
+              console.log("Token guardado correctamente:", data.token);
+              return AsyncStorage.getItem("token"); // Recuperar el token
+            })
+            .then((storedToken) => {
+              console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
+              const { usuario, token } = data;
+              setCurrentUser(usuario);
+              navigation.navigate("Tabs", { usuario, token });
+            });
         } else {
           setError("Inicio de sesión fallido"); // Establecer mensaje de error
         }
@@ -48,10 +50,10 @@ const LoginScreen = ({ navigation }) => {
         console.error("Error al iniciar sesión:", error);
       });
   };
-  useEffect(() => {          
-    var token = AsyncStorage.getItem("token")
-    console.log(token)
-  }, [] )
+  useEffect(() => {
+    var token = AsyncStorage.getItem("token");
+    console.log(token);
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>

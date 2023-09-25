@@ -6,7 +6,6 @@ import UploadImageModal from "../../components/UploadImageModal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const userData = {
@@ -29,7 +28,7 @@ const PersonalData = ({ navigation }) => {
     setModalVisible(true);
     console.log("Aca se va a poder modificar una foto");
   };
-  
+
   const handleLogout = async () => {
     try {
       // Eliminar el token de AsyncStorage

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { BASE_URL } from "@env";
 import {
   saveDataToCache,
@@ -18,15 +18,10 @@ import SPButtons from "../../components/SPbuttons";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import ExplodingHeart from "../../components/ExplodingHeart";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { UserContext } from "../../context/UserContext";
 
 const ShowPets = ({ navigation }) => {
-  const [filtros, setFiltros] = useState({
-    sexo: 2,
-    distancia: 6000,
-    tipoMascota: 3,
-    tamaño: 3,
-    rangoDeEdad: 3,
-  });
+  const { currentUser } = useContext(UserContext);
 
   const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
@@ -154,24 +149,20 @@ const ShowPets = ({ navigation }) => {
     },
   });
 
-  const queryParams = {
-    sexo: filtros.sexo,
-    longitud: -58.41184318187,
-    latitud: -34.6093696411,
-    distancia: filtros.distancia,
-    cuidadosEspeciales: false,
-    tipoMascota: filtros.tipoMascota,
-    tamaño: filtros.tamaño,
-    rangoDeEdad: filtros.rangoDeEdad,
-  };
-
+  const [filtros, setFiltros] = useState({
+    sexo: 2,
+    distancia: 6000,
+    tipoMascota: currentUser.tipoAnimal,
+    tamaño: currentUser.tamanioPreferido,
+    rangoDeEdad: currentUser.edadPreferida,
+  });
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${queryParams.longitud}&latitud=${queryParams.latitud}&distancia=${filtros.distancia}&cuidadosEspeciales=${queryParams.cuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${queryParams.tamaño}&rangoDeEdad=${queryParams.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${currentUser.ubicacion.coordinates[1]}&latitud=${currentUser.ubicacion.coordinates[0]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
 
   const getUserData = async () => {
     try {
-      await clearCache("mascotasVistas");
-      setPetVistos("");
+      // await clearCache("mascotasVistas");
+      // setPetVistos("");
       const cache = await loadCachedData("mascotasVistas");
       if (cache !== null) {
         const parsedData = cache;
@@ -189,50 +180,51 @@ const ShowPets = ({ navigation }) => {
   }, [resetMatches]);
 
   useEffect(() => {
+    console.log(url);
     // Obtener las mascotas
-    getUserData();
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.length > 0) {
-          if (!resetMatches) {
-            setMascotas((prevData) => prevData.concat(data));
-          } else {
-            setMascotas(data);
-            setResetMatches(false);
-          }
-          const idMascotas = data.map((mascota) => mascota.id);
-          setPetVistos((prevString) => {
-            const updatedString =
-              prevString === ""
-                ? idMascotas.join("|")
-                : prevString + "|" + idMascotas.join("|");
-            saveDataToCache("mascotasVistas", updatedString);
-            return updatedString;
-          });
-        } else {
-          if (!resetMatches) {
-            console.log("No hay más mascotas!");
-            setIndex(1);
-          } else {
-            if (index === 0) {
-              setIndex(1); //Encontrar una forma de no hacer esto, hace peticiones al pedo
-            }
-            setMascotas([]);
-            setResetMatches(false);
-          }
-          // ANIMACION DE QUE NO HAY MAS MASCOTAS
-        }
+    getUserData().then(
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => console.error("Error al obtener mascotas:", error))
-      .finally(() => {
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.length > 0) {
+            if (!resetMatches) {
+              setMascotas((prevData) => prevData.concat(data));
+            } else {
+              setMascotas(data);
+              setResetMatches(false);
+            }
+            const idMascotas = data.map((mascota) => mascota.id);
+            setPetVistos((prevString) => {
+              const updatedString =
+                prevString === ""
+                  ? idMascotas.join("|")
+                  : prevString + "|" + idMascotas.join("|");
+              saveDataToCache("mascotasVistas", updatedString);
+              return updatedString;
+            });
+          } else {
+            if (!resetMatches) {
+              setIndex(1);
+            } else {
+              if (index === 0) {
+                setIndex(1); //Encontrar una forma de no hacer esto, hace peticiones al pedo
+              }
+              setMascotas([]);
+              setResetMatches(false);
+            }
+            // ANIMACION DE QUE NO HAY MAS MASCOTAS
+          }
+        })
+        .catch((error) => console.error("Error al obtener mascotas:", error))
+        .finally(() => {
+          setIsLoading(false);
+        })
+    );
   }, [index]);
   {
     if (isLoading) {

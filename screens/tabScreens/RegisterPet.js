@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-
 const RegisterPet = ({ navigation }) => {
   const initialPetData = {
     nombre: "",

@@ -84,9 +84,9 @@ const ButtonFilters = ({ filtros, setFiltros, setResetMatches }) => {
                 <Text style={styles.filterTitle}>Sexo</Text>
                 <Radio
                   defaultValue={
-                    filtros.tipoMascota === 1
+                    filtros.sexo === 1
                       ? "Macho"
-                      : filtros.tipoMascota === 2
+                      : filtros.sexo === 2
                       ? "Hembra"
                       : "Ambos"
                   }

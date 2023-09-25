@@ -11,39 +11,26 @@ import Chat from "./tabScreens/Chat";
 
 const Stack = createStackNavigator();
 
-
 function MainNavigation() {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
   useEffect(() => {
-    
     AsyncStorage.getItem("token")
       .then((token) => {
         if (token) {
-          console.log("TOKEN:" + token)
+          console.log("TOKEN:" + token);
           setIsLoggedIn(true);
-          // console.log("TRUE EL TOKEN" + token);
-          // navigation.navigate("Paw");
-          
-        } else {
-          setIsLoggedIn(false);
-          // console.log("false EL TOKEN");
-          // navigation.navigate("LoginScreen");
         }
       })
       .catch((error) => {
         console.error("Error al verificar la autenticación:", error);
-      })
-      
-  },[])
-
+      });
+  }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "Tabs" : "Tabs"} //cambiar el segundo tab por LoginScreen para que vuelva a funcionar el Login
+        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"} //cambiar el segundo tab por LoginScreen para que vuelva a funcionar el Login
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
