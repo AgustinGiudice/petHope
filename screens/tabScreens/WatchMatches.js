@@ -46,6 +46,7 @@ const MatchesScreen = ({ navigation }) => {
   };
 
   const handleVerUser = () => {
+    setIsModalForMoreInfoVisible(false);
     setIsModalForUserInfoVisible(true);
   };
 
@@ -208,11 +209,17 @@ const MatchesScreen = ({ navigation }) => {
       {isModalForUserInfoVisible && (
         <Modal
           isVisible={true}
-          onBackdropPress={() => setIsModalForUserInfoVisible(false)}
+          onBackdropPress={() => {
+            setIsModalForUserInfoVisible(false);
+            setIsModalForMoreInfoVisible(true);
+          }}
         >
           <View style={styles.modalContent}>
             <TouchableOpacity
-              onPress={() => setIsModalForUserInfoVisible(false)}
+              onPress={() => {
+                setIsModalForUserInfoVisible(false);
+                setIsModalForMoreInfoVisible(true);
+              }}
               style={styles.modalCloseButton}
             >
               <MaterialIcons name="close" size={24} color="black" />
