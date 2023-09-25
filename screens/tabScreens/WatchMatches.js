@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { format, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
 import {
   View,
   Text,
@@ -21,12 +20,14 @@ import {
   getSexoDescripcion,
 } from "../../hooks/getDescripciones";
 import Modal from "react-native-modal";
+import { UserContext } from "../../context/UserContext";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { currentUser } = useContext(UserContext);
   // Función para manejar la acción de abrir el chat con el refugio
   const handleChatClick = (refugio, mascota) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -61,7 +62,7 @@ const MatchesScreen = ({ navigation }) => {
     try {
       setRefreshing(true);
 
-      const response = await fetch(`${BASE_URL}api/match`, {
+      const response = await fetch(`${BASE_URL}api/match/${currentUser.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -19,6 +19,7 @@ import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import ExplodingHeart from "../../components/ExplodingHeart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../../context/UserContext";
+import Constants from "expo-constants";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
@@ -63,91 +64,6 @@ const ShowPets = ({ navigation }) => {
   //
   //Meto los estilos adentro del cuerpo de la función para poder usar los useState
   //
-  const styles = StyleSheet.create({
-    container: {
-      justifyContent: "center",
-      backgroundColor: "#eee",
-      flex: 1,
-      overflow: "hidden",
-      position: "relative",
-      minWidth: screenWidth,
-      alignItems: "center",
-      minHeight: screenHeight - 60,
-      paddingTop: 60,
-    },
-    loader: {
-      width: "100%",
-      height: "100%",
-    },
-    buttonFilters: {
-      zIndex: 1,
-    },
-    sinMascotas: {
-      color: "black",
-      fontSize: 30,
-      fontWeight: "bold",
-      flex: 1,
-    },
-    headerItem: {
-      position: "relative",
-      backgroundColor: "#7A5FB5",
-      width: screenWidth,
-      height: 50,
-      borderRadius: 10,
-      zIndex: 10,
-      alignItems: "center",
-      justifyContent: "flex-end",
-    },
-    headerItem2: {
-      position: "absolute",
-      backgroundColor: "#C69AE8",
-      width: 1300,
-      height: 1300,
-      borderRadius: 630,
-      zIndex: 10,
-      alignItems: "center",
-      justifyContent: "flex-end",
-      bottom: -35,
-      elevation: 10, // Para Android
-      shadowColor: "black", // Para iOS
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.5,
-      shadowRadius: 4,
-    },
-    headerItemsContenido: {
-      flexDirection: "row",
-      width: screenWidth,
-      justifyContent: "space-between",
-      marginBottom: 30,
-      alignItems: "baseline",
-      paddingHorizontal: 30,
-      textAlign: "center",
-    },
-    namePet: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 28,
-      flex: 1,
-      paddingHorizontal: 3,
-      textAlign: "center",
-      textAlignVertical: "center",
-    },
-    corazonLike: {
-      position: "absolute",
-      zIndex: 999,
-    },
-    pawIcon: {
-      position: "relative",
-    },
-    pawIconNumber: {
-      position: "absolute",
-      top: 17,
-      left: 15.5,
-    },
-  });
 
   const [filtros, setFiltros] = useState({
     sexo: 2,
@@ -157,7 +73,7 @@ const ShowPets = ({ navigation }) => {
     rangoDeEdad: currentUser.edadPreferida,
   });
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${currentUser.ubicacion.coordinates[1]}&latitud=${currentUser.ubicacion.coordinates[0]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${currentUser.ubicacion.coordinates[0]}&latitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
 
   const getUserData = async () => {
     try {
@@ -231,7 +147,12 @@ const ShowPets = ({ navigation }) => {
       return <ActivityIndicator size="large" style={styles.loader} />;
     } else {
       return (
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            { minWidth: screenWidth, minHeight: screenHeight - 60 },
+          ]}
+        >
           {mascotas.length === 0 ? (
             <View style={styles.buttonFilters}>
               <Text styles={styles.sinMascotas}>
@@ -312,6 +233,7 @@ const ShowPets = ({ navigation }) => {
                   mascota_id={mascotas[currentIndex].id}
                   setResetMatches={setResetMatches}
                   setShowLikeAnimation={setShowLikeAnimation}
+                  currentUserId={currentUser.id}
                 />
               ) : null}
             </>
@@ -321,4 +243,87 @@ const ShowPets = ({ navigation }) => {
     }
   }
 };
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    backgroundColor: "#eee",
+    flex: 1,
+    overflow: "hidden",
+    position: "relative",
+    alignItems: "center",
+    paddingTop: Constants.statusBarHeight,
+  },
+  loader: {
+    width: "100%",
+    height: "100%",
+  },
+  buttonFilters: {
+    zIndex: 1,
+  },
+  sinMascotas: {
+    color: "black",
+    fontSize: 30,
+    fontWeight: "bold",
+    flex: 1,
+  },
+  headerItem: {
+    position: "relative",
+    backgroundColor: "#7A5FB5",
+    width: screenWidth,
+    height: 50,
+    borderRadius: 10,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerItem2: {
+    position: "absolute",
+    backgroundColor: "#C69AE8",
+    width: 1300,
+    height: 1300,
+    borderRadius: 630,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    bottom: -35,
+    elevation: 10, // Para Android
+    shadowColor: "black", // Para iOS
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  headerItemsContenido: {
+    flexDirection: "row",
+    width: screenWidth,
+    justifyContent: "space-between",
+    marginBottom: 30,
+    alignItems: "baseline",
+    paddingHorizontal: 30,
+    textAlign: "center",
+  },
+  namePet: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 28,
+    flex: 1,
+    paddingHorizontal: 3,
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+  corazonLike: {
+    position: "absolute",
+    zIndex: 999,
+  },
+  pawIcon: {
+    position: "relative",
+  },
+  pawIconNumber: {
+    position: "absolute",
+    top: 17,
+    left: 15.5,
+  },
+});
 export default ShowPets;

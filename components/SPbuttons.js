@@ -9,7 +9,12 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { BASE_URL } from "@env";
 
-const SPbuttons = ({ mascota_id, setShowLikeAnimation, setResetMatches }) => {
+const SPbuttons = ({
+  mascota_id,
+  setShowLikeAnimation,
+  setResetMatches,
+  currentUserId,
+}) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
@@ -97,6 +102,7 @@ const SPbuttons = ({ mascota_id, setShowLikeAnimation, setResetMatches }) => {
         },
         body: JSON.stringify({
           idMascota: mascota_id,
+          idUsuario: currentUserId,
         }),
       });
 
