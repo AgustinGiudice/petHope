@@ -35,7 +35,7 @@ const MorePersonalData = ({ navigation }) => {
         <View style={styles.header}>
           <FontAwesome
             name="arrow-left"
-            size={40}
+            size={25}
             style={styles.arrow}
             onPress={() => navigation.navigate("PersonalData")}
           />

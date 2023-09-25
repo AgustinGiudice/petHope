@@ -97,7 +97,7 @@ const Chat = ({ route }) => {
     <View style={styles.container}>
       <View style={styles.spacebet}>
         <TouchableOpacity onPress={() => navigation.navigate("Match")}>
-          <FontAwesome name="arrow-left" size={40} style={styles.arrow} />
+          <FontAwesome name="arrow-left" size={25} style={styles.arrow} />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <TouchableOpacity onPress={() => setIsModalMascotaVisible(true)}>

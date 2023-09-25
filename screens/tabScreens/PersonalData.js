@@ -121,7 +121,7 @@ const PersonalData = ({ navigation }) => {
         </View>
         <FontAwesome
           name="arrow-right"
-          size={40}
+          size={25}
           style={styles.arrow}
           onPress={() => navigation.navigate("MorePersonalData")}
         />
@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
   arrow: {
     color: "#9A34EA",
     position: "absolute",
-    bottom: 20,
-    right: 20,
+    bottom: 10,
+    right: 10,
     borderColor: "#9A34EA",
   },
 });
