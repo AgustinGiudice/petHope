@@ -23,7 +23,10 @@ import Modal from "react-native-modal";
 import { UserContext } from "../../context/UserContext";
 
 const MatchesScreen = ({ navigation }) => {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
+    useState(false);
+  const [isModalForUserInfoVisible, setIsModalForUserInfoVisible] =
+    useState(false);
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -42,10 +45,8 @@ const MatchesScreen = ({ navigation }) => {
     });
   };
 
-  const handleVerUser = (id) => {
-    
-    console.log("Abriendo info con user", id);
-    
+  const handleVerUser = () => {
+    setIsModalForUserInfoVisible(true);
   };
 
   const handleCancelarMatch = () => {
@@ -60,8 +61,8 @@ const MatchesScreen = ({ navigation }) => {
     console.log("Denunciando refugio");
   };
 
-  const toggleModal = (user) => {
-    setModalVisible(!isModalVisible);
+  const openMoreInfoModal = (user) => {
+    setIsModalForMoreInfoVisible(!isModalForMoreInfoVisible);
     setuserAbrir(user);
   };
 
@@ -90,8 +91,7 @@ const MatchesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchMatches();
-    console.log(currentUser)
-    
+    console.log(currentUser);
   }, []);
 
   // if (isLoading) {
@@ -156,7 +156,13 @@ const MatchesScreen = ({ navigation }) => {
                   <MaterialCommunityIcons
                     name="dots-vertical"
                     size={25}
-                    onPress={() => toggleModal(currentUser.id == item.refugio.id ? item.usuario : item.refugio)}
+                    onPress={() =>
+                      openMoreInfoModal(
+                        currentUser.id == item.refugio.id
+                          ? item.usuario
+                          : item.refugio
+                      )
+                    }
                   />
                 </View>
               </View>
@@ -171,19 +177,25 @@ const MatchesScreen = ({ navigation }) => {
         </View>
       )}
 
-      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal} userAbrir={userAbrir}>
+      <Modal
+        isVisible={isModalForMoreInfoVisible}
+        onBackdropPress={() => setIsModalForMoreInfoVisible(false)}
+        userAbrir={userAbrir}
+      >
         <View style={styles.modalContent}>
           {/* Opciones: ver refugio, cancelar match, denunciar */}
           <TouchableOpacity
-            onPress={toggleModal}
+            onPress={() => setIsModalForMoreInfoVisible(false)}
             style={styles.modalCloseButton}
           >
             <MaterialIcons name="close" size={24} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.modalTitle}>Opciones</Text>
-          <TouchableOpacity onPress={ () => handleVerUser(userAbrir) } >
-            <Text style={styles.modalText}>{currentUser.estado ? 'Ver usuario' : 'Ver refugio'}</Text>
+          <TouchableOpacity onPress={handleVerUser}>
+            <Text style={styles.modalText}>
+              {currentUser.estado ? "Ver usuario" : "Ver refugio"}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleCancelarMatch}>
             <Text style={styles.modalText}>Cancelar match</Text>
@@ -193,6 +205,23 @@ const MatchesScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      {isModalForUserInfoVisible && (
+        <Modal
+          isVisible={true}
+          onBackdropPress={() => setIsModalForUserInfoVisible(false)}
+        >
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              onPress={() => setIsModalForUserInfoVisible(false)}
+              style={styles.modalCloseButton}
+            >
+              <MaterialIcons name="close" size={24} color="black" />
+            </TouchableOpacity>
+            <Text> {userAbrir.nombre} </Text>
+            <Text> {userAbrir.direccion} </Text>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
