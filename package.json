@@ -40,7 +40,8 @@
     "react-native-screens": "~3.20.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.18.10",
-    "react-router-native": "^6.14.2"
+    "react-router-native": "^6.14.2",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

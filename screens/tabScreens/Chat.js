@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Keyboard,
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -20,33 +21,25 @@ import {
 } from "../../hooks/getDescripciones";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Constants from "expo-constants";
+import io from "socket.io-client";
 
 const Chat = ({ route }) => {
   const { refugio, mascota } = route.params;
-
+  const currentUser = { id: 2 };
   // const fecha_format = format(new Date(f.created_at), 'dd/MM/yyyy');
 
   const navigation = useNavigation();
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalVisible_2, setModalVisible_2] = useState(false);
+  const [isModalMascotaVisible, setIsModalMascotaVisible] = useState(false);
+  const [isModalRefugioVisible, setIsModalRefugioVisible] = useState(false);
+  const [isModalMascotaPicVisible, setIsModalMascotaPicVisible] =
+    useState(false);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  const toggleModal_2 = () => {
-    setModalVisible_2(!isModalVisible_2);
-  };
-  // use getEstadoNombre to get the name of the state
-
-  // const estadoColor = estadoColores[reclamo.estado];
-
-  // const estadoIndicatorStyle = {
-  //   backgroundColor: estadoColor || '#FFFFFF',
-  // };
+  const socket = io("https://mascotas-back-31adf188c4e6.herokuapp.com/");
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+
+  const [loading, setIsLoading] = useState(true);
 
   // Función para enviar un mensaje
   const sendMessage = () => {
@@ -55,9 +48,43 @@ const Chat = ({ route }) => {
     // Luego, actualiza el estado de los mensajes.
 
     // Ejemplo de cómo podrías actualizar el estado:
-    setMessages([...messages, { text: newMessage, sender: "usuario" }]);
+    //setMessages([...messages, { text: newMessage, sender: "usuario" }]);
+    const message = {
+      text: newMessage,
+      sender: currentUser.id,
+      receiver: refugio.id, // Reemplaza con el ID del destinatario
+      mascota: mascota.id,
+      timestamp: new Date().toISOString(), // Agrega el timestamp
+    };
+    socket.emit("chat message", message);
     setNewMessage("");
+    // setMessages((prevMessages) => [
+    //   ...prevMessages,
+    //   { text: newMessage, sender: "refugio" },
+    // ]);
+    Keyboard.dismiss();
   };
+
+  useEffect(() => {
+    fetch(
+      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${refugio.id}&sender=${currentUser.id}&mascota=${mascota.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setMessages(data);
+      })
+      .catch((error) => console.error("Error al obtener mensajes:", error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   // Simula la carga de mensajes cuando se monta el componente
   useEffect(() => {
@@ -66,12 +93,21 @@ const Chat = ({ route }) => {
     // Ejemplo:
     // console.log(match);
 
-    const initialMessages = [
-      { text: "Hola, ¿en qué puedo ayudarte?", sender: "refugio" },
-      { text: "Tengo un problema con mi match.", sender: "usuario" },
-    ];
-    setMessages(initialMessages);
-  }, [refugio]);
+    socket.on("chat message", (mensaje) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: mensaje.text, sender: mensaje.sender },
+      ]);
+    });
+    // const initialMessages = [
+    //   { text: "Hola, ¿en qué puedo ayudarte?", sender: "refugio" },
+    //   { text: "Tengo un problema con mi match.", sender: "usuario" },
+    // ];
+
+    return () => {
+      socket.off("chat message");
+    };
+  }, [messages]);
 
   return (
     <View style={styles.container}>
@@ -80,22 +116,17 @@ const Chat = ({ route }) => {
           <FontAwesome name="arrow-left" size={40} style={styles.arrow} />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <TouchableOpacity onPress={toggleModal}>
+          <TouchableOpacity onPress={() => setIsModalMascotaVisible(true)}>
             <Text style={styles.nombreMascota}>{mascota.nombre}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={toggleModal_2}>
+          <TouchableOpacity onPress={() => setIsModalRefugioVisible(true)}>
             <Text style={styles.nombreRefugio}>Refugio {refugio.nombre}</Text>
           </TouchableOpacity>
         </View>
-        <Image source={{ uri: mascota.pic }} style={styles.mascotaImagen} />
+        <TouchableOpacity onPress={() => setIsModalMascotaPicVisible(true)}>
+          <Image source={{ uri: mascota.pic }} style={styles.mascotaImagen} />
+        </TouchableOpacity>
       </View>
-
-      {/* <View>
-      <Text style={[styles.estadoIndicator, estadoIndicatorStyle]}> {getEstadoNombre(reclamo.estado)}</Text>
-      <Text style={[styles.fechaIndicator, estadoIndicatorStyle]}> Conversación iniciada el ${fecha_format}</Text>
-
-
-    </View> */}
 
       <FlatList
         data={messages}
@@ -149,7 +180,10 @@ const Chat = ({ route }) => {
         />
       </View>
 
-      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+      <Modal
+        isVisible={isModalMascotaVisible}
+        onBackdropPress={() => setIsModalMascotaVisible(false)}
+      >
         <View style={styles.modalContent}>
           {/* Contenido del modal */}
           <Text numberOfLines={1} style={styles.modalTitle}>
@@ -166,19 +200,39 @@ const Chat = ({ route }) => {
           </Text>
 
           <TouchableOpacity
-            onPress={toggleModal}
+            onPress={() => setIsModalMascotaVisible(false)}
             style={styles.modalCloseButton}
           >
             <Icon name="times" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </Modal>
-      <Modal isVisible={isModalVisible_2} onBackdropPress={toggleModal_2}>
+      <Modal
+        isVisible={isModalRefugioVisible}
+        onBackdropPress={() => setIsModalRefugioVisible(false)}
+      >
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{refugio.nombre}</Text>
           <Text style={styles.modalText}>{refugio.direccion}</Text>
           <TouchableOpacity
-            onPress={toggleModal}
+            onPress={() => setIsModalRefugioVisible(false)}
+            style={styles.modalCloseButton}
+          >
+            <Icon name="times" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isModalMascotaPicVisible}
+        onBackdropPress={() => setIsModalMascotaPicVisible(false)}
+      >
+        <View style={styles.modalPicContent}>
+          <Image
+            source={{ uri: mascota.pic }}
+            style={styles.mascotaModalImagen}
+          />
+          <TouchableOpacity
+            onPress={() => setIsModalMascotaPicVisible(false)}
             style={styles.modalCloseButton}
           >
             <Icon name="times" size={24} color="black" />
@@ -193,12 +247,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    marginTop: Constants.statusBarHeight,
+    paddingTop: Constants.statusBarHeight,
     paddingBottom: 10,
   },
   modalContent: {
     backgroundColor: "white",
     padding: 20,
+    borderRadius: 10,
+  },
+  modalPicContent: {
+    backgroundColor: "white",
+    padding: 5,
     borderRadius: 10,
   },
   modalTitle: {
@@ -224,10 +283,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ddd",
+    backgroundColor: "#eee",
     marginBottom: 40,
     padding: 10,
-    borderBottomColor: "#bbb",
+    borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },
   estadoIndicator: {
@@ -263,6 +322,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
+  },
+  mascotaModalImagen: {
+    width: "100%",
+    aspectRatio: 1,
   },
 });
 

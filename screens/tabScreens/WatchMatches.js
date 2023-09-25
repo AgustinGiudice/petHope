@@ -116,7 +116,7 @@ const MatchesScreen = ({ navigation }) => {
 
                   <View style={styles.column}>
                     <Text style={styles.letraGrande} numberOfLines={1}>
-                      {item.mascota.nombre} - Refugio Devoto
+                      {item.mascota.nombre} - {item.refugio.nombre}
                     </Text>
                     <Text style={styles.letraChica}>
                       {getAnimalDescripcion(item.mascota.animal)}{" "}

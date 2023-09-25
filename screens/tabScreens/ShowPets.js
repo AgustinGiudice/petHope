@@ -191,7 +191,6 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     // Obtener las mascotas
     getUserData();
-    console.log(url);
     fetch(url, {
       method: "GET",
       headers: {
