@@ -45,11 +45,7 @@ const Chat = ({ route }) => {
   // Función para enviar un mensaje
   const sendMessage = () => {
     // Aquí puedes enviar el mensaje al servidor o realizar las acciones necesarias
-    // para guardar el mensaje en el contexto del reclamo con idReclamo.
     // Luego, actualiza el estado de los mensajes.
-
-    // Ejemplo de cómo podrías actualizar el estado:
-    //setMessages([...messages, { text: newMessage, sender: "usuario" }]);
     const message = {
       text: newMessage,
       sender: currentUser.id,
@@ -59,10 +55,6 @@ const Chat = ({ route }) => {
     };
     socket.emit("chat message", message);
     setNewMessage("");
-    // setMessages((prevMessages) => [
-    //   ...prevMessages,
-    //   { text: newMessage, sender: "refugio" },
-    // ]);
     Keyboard.dismiss();
   };
 
@@ -89,21 +81,12 @@ const Chat = ({ route }) => {
 
   // Simula la carga de mensajes cuando se monta el componente
   useEffect(() => {
-    // Aquí podrías obtener los mensajes del reclamo con idReclamo
-    // desde tu API o desde el almacenamiento local y establecerlos en el estado.
-    // Ejemplo:
-    // console.log(match);
-
     socket.on("chat message", (mensaje) => {
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: mensaje.text, sender: mensaje.sender },
       ]);
     });
-    // const initialMessages = [
-    //   { text: "Hola, ¿en qué puedo ayudarte?", sender: "refugio" },
-    //   { text: "Tengo un problema con mi match.", sender: "usuario" },
-    // ];
 
     return () => {
       socket.off("chat message");

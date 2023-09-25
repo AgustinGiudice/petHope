@@ -29,7 +29,7 @@ function getEdadDescripcion(edad) {
     case 1:
       return "Cachorro";
     case 2:
-      return "Adulto-Mediano";
+      return "Juvenil";
     case 3:
       return "Adulto";
     default:
