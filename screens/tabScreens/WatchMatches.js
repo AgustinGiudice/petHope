@@ -29,11 +29,15 @@ const MatchesScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { currentUser } = useContext(UserContext);
   // Función para manejar la acción de abrir el chat con el refugio
-  const handleChatClick = (refugio, mascota) => {
+  const handleChatClick = (receiver, mascota, refugio) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
     // Puedes navegar a una nueva pantalla de chat o mostrar un modal de chat, por ejemplo.
     console.log("Abriendo chat con refugio", refugio);
-    navigation.navigate("Chat", { refugio: refugio, mascota: mascota });
+    navigation.navigate("Chat", {
+      receiver: receiver,
+      mascota: mascota,
+      refugio: refugio,
+    });
   };
 
   const handleVerRefugio = () => {
@@ -134,7 +138,15 @@ const MatchesScreen = ({ navigation }) => {
                   <MaterialIcons
                     name="chat"
                     size={25}
-                    onPress={() => handleChatClick(item.refugio, item.mascota)}
+                    onPress={() =>
+                      handleChatClick(
+                        currentUser.id === item.refugio.id
+                          ? item.usuario
+                          : item.refugio,
+                        item.mascota,
+                        item.refugio
+                      )
+                    }
                   />
                   <MaterialCommunityIcons
                     name="dots-vertical"

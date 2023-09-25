@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -22,10 +22,11 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Constants from "expo-constants";
 import io from "socket.io-client";
+import { UserContext } from "../../context/UserContext";
 
 const Chat = ({ route }) => {
-  const { refugio, mascota } = route.params;
-  const currentUser = { id: 2 };
+  const { receiver, mascota, refugio } = route.params;
+  const { currentUser } = useContext(UserContext);
   // const fecha_format = format(new Date(f.created_at), 'dd/MM/yyyy');
 
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const Chat = ({ route }) => {
     const message = {
       text: newMessage,
       sender: currentUser.id,
-      receiver: refugio.id, // Reemplaza con el ID del destinatario
+      receiver: receiver.id, // Reemplaza con el ID del destinatario
       mascota: mascota.id,
       timestamp: new Date().toISOString(), // Agrega el timestamp
     };
@@ -67,7 +68,7 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     fetch(
-      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${refugio.id}&sender=${currentUser.id}&mascota=${mascota.id}`,
+      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${receiver.id}&sender=${currentUser.id}&mascota=${mascota.id}`,
       {
         method: "GET",
         headers: {
@@ -120,7 +121,10 @@ const Chat = ({ route }) => {
             <Text style={styles.nombreMascota}>{mascota.nombre}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setIsModalRefugioVisible(true)}>
-            <Text style={styles.nombreRefugio}>Refugio {refugio.nombre}</Text>
+            <Text style={styles.nombreRefugio}>
+              Refugio
+              {/* {mascota.refugio.nombre} */}
+            </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => setIsModalMascotaPicVisible(true)}>
@@ -134,13 +138,14 @@ const Chat = ({ route }) => {
         renderItem={({ item }) => (
           <View
             style={{
-              flexDirection: item.sender === "usuario" ? "row-reverse" : "row",
+              flexDirection:
+                item.sender === currentUser.id ? "row-reverse" : "row",
             }}
           >
             <View
               style={{
                 backgroundColor:
-                  item.sender === "usuario" ? "#C69AE8" : "#9A34EA",
+                  item.sender === currentUser.id ? "#C69AE8" : "#9A34EA",
                 padding: 10,
                 margin: 5,
                 borderRadius: 10,
@@ -212,8 +217,8 @@ const Chat = ({ route }) => {
         onBackdropPress={() => setIsModalRefugioVisible(false)}
       >
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{refugio.nombre}</Text>
-          <Text style={styles.modalText}>{refugio.direccion}</Text>
+          <Text style={styles.modalTitle}>{mascota.refugio.nombre}</Text>
+          <Text style={styles.modalText}>{mascota.refugio.direccion}</Text>
           <TouchableOpacity
             onPress={() => setIsModalRefugioVisible(false)}
             style={styles.modalCloseButton}
