@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import MainStackNavigation from "./screens/MainNavigation";
 import TabNavigation from "./screens/TabNavigation";
 //CONTEXT

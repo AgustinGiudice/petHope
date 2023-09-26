@@ -12,6 +12,8 @@ import OtrasNavegaciones from "./OtrasNavegaciones";
 import MatchNavigation from "./MatchNavigation";
 import ShowRefugios from "./tabScreens/ShowRefugios";
 import Refugios from "./tabScreens/Refugios";
+import DrawerNavigation from "./DrawerNavigation";
+
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -140,7 +142,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Otro"
-          component={OtrasNavegaciones}
+          component={DrawerNavigation}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
