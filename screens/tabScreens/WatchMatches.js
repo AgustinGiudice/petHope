@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { format, set } from "date-fns";
+import { format, parse, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -33,6 +33,7 @@ const MatchesScreen = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
 
   const [userAbrir, setuserAbrir] = useState(null);
+  const [match_id, setmatch_id] = useState(null);
   // Función para manejar la acción de abrir el chat con el refugio
   const handleChatClick = (receiver, mascota, refugio) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -50,10 +51,36 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForUserInfoVisible(true);
   };
 
-  const handleCancelarMatch = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
+  const handleCancelarMatch = async ( match_id ) => {
+    try {
+      console.log("Cancelando match")
+      console.log(match_id)
+      // URL de la API para cancelar un match (ajústala a tu API)
+      const apiUrl =  `${BASE_URL}api/match/delete/${match_id}`; 
 
-    console.log("Cancelando match");
+      // ID del match que deseas cancelar
+      const matchId = parseInt(match_id); // Reemplaza con el ID del match real
+
+      const response = await fetch(apiUrl, {
+        method: 'PUT', // Método HTTP para actualizar el estado del match
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ matchId }), // Enviar el ID del match en el cuerpo de la solicitud
+      });
+
+      if (response.ok) {
+        // La solicitud fue exitosa, el match se ha cancelado
+        alert('Match cancelado con éxito');
+      } else {
+        // La solicitud falló, puedes manejar los errores aquí
+        alert('Error al cancelar el match');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      alert('Error al cancelar el match');
+    }
+
   };
 
   const handleDenunciarRefugio = () => {
@@ -62,9 +89,10 @@ const MatchesScreen = ({ navigation }) => {
     console.log("Denunciando refugio");
   };
 
-  const openMoreInfoModal = (user) => {
+  const openMoreInfoModal = (user, match) => {
     setIsModalForMoreInfoVisible(!isModalForMoreInfoVisible);
     setuserAbrir(user);
+    setmatch_id(match);
   };
 
   const fetchMatches = async () => {
@@ -161,7 +189,8 @@ const MatchesScreen = ({ navigation }) => {
                       openMoreInfoModal(
                         currentUser.id == item.refugio.id
                           ? item.usuario
-                          : item.refugio
+                          : item.refugio,
+                        item.id
                       )
                     }
                   />
@@ -182,6 +211,7 @@ const MatchesScreen = ({ navigation }) => {
         isVisible={isModalForMoreInfoVisible}
         onBackdropPress={() => setIsModalForMoreInfoVisible(false)}
         userAbrir={userAbrir}
+        match_id={match_id}
       >
         <View style={styles.modalContent}>
           {/* Opciones: ver refugio, cancelar match, denunciar */}
@@ -198,7 +228,7 @@ const MatchesScreen = ({ navigation }) => {
               {currentUser.estado ? "Ver usuario" : "Ver refugio"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleCancelarMatch}>
+          <TouchableOpacity onPress={() => handleCancelarMatch(match_id)}>
             <Text style={styles.modalText}>Cancelar match</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDenunciarRefugio}>
