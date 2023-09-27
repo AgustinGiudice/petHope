@@ -30,8 +30,12 @@ const LoginScreen = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        if (data.token) {
-          AsyncStorage.setItem("token", data.token)
+        if (data.token && data.usuario) {
+          const data_user = {
+            token: data.token,
+            usuario : data.usuario
+          }
+          AsyncStorage.setItem("token", JSON.stringify(data_user))
             .then(() => {
               console.log("Token guardado correctamente:", data.token);
               return AsyncStorage.getItem("token"); // Recuperar el token
