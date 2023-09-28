@@ -33,8 +33,8 @@ const LoginScreen = ({ navigation }) => {
         if (data.token && data.usuario) {
           const data_user = {
             token: data.token,
-            usuario : data.usuario
-          }
+            usuario: data.usuario,
+          };
           AsyncStorage.setItem("token", JSON.stringify(data_user))
             .then(() => {
               console.log("Token guardado correctamente:", data.token);

@@ -21,6 +21,7 @@ import {
 } from "../../hooks/getDescripciones";
 import Modal from "react-native-modal";
 import { UserContext } from "../../context/UserContext";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
@@ -51,36 +52,35 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForUserInfoVisible(true);
   };
 
-  const handleCancelarMatch = async ( match_id ) => {
+  const handleCancelarMatch = async (match_id) => {
     try {
-      console.log("Cancelando match")
-      console.log(match_id)
+      console.log("Cancelando match");
+      console.log(match_id);
       // URL de la API para cancelar un match (ajústala a tu API)
-      const apiUrl =  `${BASE_URL}api/match/delete/${match_id}`; 
+      const apiUrl = `${BASE_URL}api/match/delete/${match_id}`;
 
       // ID del match que deseas cancelar
       const matchId = parseInt(match_id); // Reemplaza con el ID del match real
 
       const response = await fetch(apiUrl, {
-        method: 'PUT', // Método HTTP para actualizar el estado del match
+        method: "PUT", // Método HTTP para actualizar el estado del match
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ matchId }), // Enviar el ID del match en el cuerpo de la solicitud
       });
 
       if (response.ok) {
         // La solicitud fue exitosa, el match se ha cancelado
-        alert('Match cancelado con éxito');
+        alert("Match cancelado con éxito");
       } else {
         // La solicitud falló, puedes manejar los errores aquí
-        alert('Error al cancelar el match');
+        alert("Error al cancelar el match");
       }
     } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
-      alert('Error al cancelar el match');
+      console.error("Error al realizar la solicitud:", error);
+      alert("Error al cancelar el match");
     }
-
   };
 
   const handleDenunciarRefugio = () => {
@@ -110,6 +110,7 @@ const MatchesScreen = ({ navigation }) => {
         throw new Error("No se pudo obtener la lista de matches.");
       }
       const data = await response.json();
+      setIsLoading(false);
       setMatches(data);
     } catch (error) {
       console.error("Error al obtener los matches:", error);
@@ -120,92 +121,89 @@ const MatchesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchMatches();
-    console.log(currentUser);
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
+  if (matches.length === 0) {
+    <View style={styles.container}>
+      <Text>¡Todavía no elegiste una mascota!</Text>
+      <TouchableOpacity>
+        <Text>Ver mascotas</Text>
+      </TouchableOpacity>
+    </View>;
+  }
   return (
     <View style={styles.container}>
-      {matches.length === 0 ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <View>
-          {/* <Text onPress={()=>{navigation.navigate("Refugios")}}>Ir a refugios</Text> */}
-          <FlatList
-            data={matches}
-            renderItem={({ item }) => (
-              <View style={styles.matchItem}>
-                <View style={styles.containerLeft}>
-                  <View
-                    onPress={() => handleChatClick(item.mascota.refugioId)}
-                    style={styles.imagenContainer}
-                  >
-                    <Image
-                      source={{ uri: item.mascota.pic }}
-                      style={styles.mascotaImagen}
-                    />
-                  </View>
-
-                  <View style={styles.column}>
-                    <Text style={styles.letraGrande} numberOfLines={1}>
-                      {item.mascota.nombre} - {item.refugio.nombre}
-                    </Text>
-                    <Text style={styles.letraChica}>
-                      {getAnimalDescripcion(item.mascota.animal)}{" "}
-                      {getEdadDescripcion(item.mascota.edad)}{" "}
-                      {getTamanioDescripcion(item.mascota.tamanio)}
-                    </Text>
-                    <Text style={styles.letraChica}>
-                      {getSexoDescripcion(item.mascota.sexo)}
-                    </Text>
-                  </View>
+      <View>
+        <FlatList
+          data={matches}
+          renderItem={({ item }) => (
+            <View style={styles.matchItem}>
+              <View style={styles.containerLeft}>
+                <View
+                  onPress={() => handleChatClick(item.mascota.refugioId)}
+                  style={styles.imagenContainer}
+                >
+                  <Image
+                    source={{ uri: item.mascota.pic }}
+                    style={styles.mascotaImagen}
+                  />
                 </View>
 
-                <View style={styles.containerIcons}>
-                  <MaterialIcons
-                    name="chat"
-                    size={25}
-                    onPress={() =>
-                      handleChatClick(
-                        currentUser.id === item.refugio.id
-                          ? item.usuario
-                          : item.refugio,
-                        item.mascota,
-                        item.refugio
-                      )
-                    }
-                  />
-                  <MaterialCommunityIcons
-                    name="dots-vertical"
-                    size={25}
-                    onPress={() =>
-                      openMoreInfoModal(
-                        currentUser.id == item.refugio.id
-                          ? item.usuario
-                          : item.refugio,
-                        item.id
-                      )
-                    }
-                  />
+                <View style={styles.column}>
+                  <Text style={styles.letraGrande} numberOfLines={1}>
+                    {item.mascota.nombre} - {item.refugio.nombre}
+                  </Text>
+                  <Text style={styles.letraChica}>
+                    {getAnimalDescripcion(item.mascota.animal)}{" "}
+                    {getEdadDescripcion(item.mascota.edad)}{" "}
+                    {getTamanioDescripcion(item.mascota.tamanio)}
+                  </Text>
+                  <Text style={styles.letraChica}>
+                    {getSexoDescripcion(item.mascota.sexo)}
+                  </Text>
                 </View>
               </View>
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            style={styles.matchContainer}
-            onEndReached={fetchMatches}
-            onEndReachedThreshold={0.1}
-            refreshing={refreshing}
-            onRefresh={fetchMatches}
-          />
-        </View>
-      )}
+
+              <View style={styles.containerIcons}>
+                <MaterialIcons
+                  name="chat"
+                  size={25}
+                  onPress={() =>
+                    handleChatClick(
+                      currentUser.id === item.refugio.id
+                        ? item.usuario
+                        : item.refugio,
+                      item.mascota,
+                      item.refugio
+                    )
+                  }
+                />
+                <MaterialCommunityIcons
+                  name="dots-vertical"
+                  size={25}
+                  onPress={() =>
+                    openMoreInfoModal(
+                      currentUser.id == item.refugio.id
+                        ? item.usuario
+                        : item.refugio,
+                      item.id
+                    )
+                  }
+                />
+              </View>
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.matchContainer}
+          onEndReached={fetchMatches}
+          onEndReachedThreshold={0.1}
+          refreshing={refreshing}
+          onRefresh={fetchMatches}
+        />
+      </View>
 
       <Modal
         isVisible={isModalForMoreInfoVisible}
@@ -262,7 +260,6 @@ const MatchesScreen = ({ navigation }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",

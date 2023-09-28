@@ -21,19 +21,17 @@ function MainNavigation() {
 
   const { setCurrentUser } = useContext(UserContext);
 
-  
-
   useEffect(() => {
     AsyncStorage.getItem("token")
       .then((token) => {
         if (token) {
           console.log("TOKEN:" + token);
-          const token_parsed = JSON.parse(token)
+          const token_parsed = JSON.parse(token);
           setIsLoggedIn(true);
 
-          const usuario =  token_parsed.usuario;
+          const usuario = token_parsed.usuario;
 
-          console.log("usuario parseado" , usuario)
+          console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
         }
         setIsLoading(false); // Indica que hemos terminado de verificar la autenticación

@@ -5,13 +5,7 @@ import {
   loadCachedData,
   clearCache,
 } from "../../hooks/useCache";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import ButtonFilters from "../../components/ButtonFilters";
 import ItemList from "../../components/ItemList";
 import SPButtons from "../../components/SPbuttons";
@@ -20,6 +14,7 @@ import ExplodingHeart from "../../components/ExplodingHeart";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../../context/UserContext";
 import Constants from "expo-constants";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
@@ -93,10 +88,10 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     setCurrentIndex(0);
     setIndex(0);
+    setIsLoading(true);
   }, [resetMatches]);
 
   useEffect(() => {
-    console.log(url);
     // Obtener las mascotas
     getUserData().then(
       fetch(url, {
@@ -144,7 +139,7 @@ const ShowPets = ({ navigation }) => {
   }, [index]);
   {
     if (isLoading) {
-      return <ActivityIndicator size="large" style={styles.loader} />;
+      return <LoadingComponent />;
     } else {
       return (
         <View
@@ -190,12 +185,23 @@ const ShowPets = ({ navigation }) => {
                       <Ionicons
                         style={styles.pawIcon}
                         name="paw"
-                        size={40}
+                        size={45}
                         color={cambioColorPaw(
                           mascotas[currentIndex].nivelCuidado
                         )}
                       />
-                      <Text style={styles.pawIconNumber}>
+                      <Text
+                        style={[
+                          styles.pawIconNumber,
+                          {
+                            color:
+                              mascotas[currentIndex].nivelCuidado === 1 ||
+                              mascotas[currentIndex].nivelCuidado === 5
+                                ? "white"
+                                : "black",
+                          },
+                        ]}
+                      >
                         {mascotas[currentIndex].nivelCuidado}
                       </Text>
                     </View>
@@ -252,10 +258,6 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     paddingTop: Constants.statusBarHeight,
-  },
-  loader: {
-    width: "100%",
-    height: "100%",
   },
   buttonFilters: {
     zIndex: 1,
@@ -322,8 +324,9 @@ const styles = StyleSheet.create({
   },
   pawIconNumber: {
     position: "absolute",
-    top: 17,
-    left: 15.5,
+    top: 19,
+    left: 18,
+    fontSize: 12,
   },
 });
 export default ShowPets;
