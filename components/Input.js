@@ -14,7 +14,7 @@ const Input = ({ value, setValue, placeholder, atributo }) => {
           [atributo]: value,
         }));
       }}
-      secureTextEntry={atributo === "pass"}
+      secureTextEntry={atributo === "pass" || atributo === "repeatPass"}
       placeholder={placeholder}
       placeholderTextColor={"#9A34EA"}
     />
