@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
 import Radio from "../components/Radio";
+import LoadingComponent from "../components/LoadingComponent";
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
@@ -20,7 +15,9 @@ const CreateUserForm = ({ navigation }) => {
     mail: "",
     pass: "",
     repeatPass: "",
-    direccion: "todavia no la paso",
+    direccion: "",
+    ciudad: "",
+    provincia: "",
     latitud: null,
     longitud: null,
     espacioDisponible: null,
@@ -34,13 +31,14 @@ const CreateUserForm = ({ navigation }) => {
   };
   const [userData, setUserData] = useState(initialUserData);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [indexModal, setIndexModal] = useState(1);
+  const [indexModal, setIndexModal] = useState(15);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.00322,
+    longitudeDelta: 0.00021,
   });
 
   useEffect(() => {
@@ -57,6 +55,7 @@ const CreateUserForm = ({ navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
+      setIsLoading(false);
     })();
   }, []);
 
@@ -81,7 +80,9 @@ const CreateUserForm = ({ navigation }) => {
         // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
       });
   };
-
+  if (isLoading) {
+    <LoadingComponent />;
+  }
   return (
     <View style={styles.container}>
       {/* <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
@@ -285,22 +286,48 @@ const CreateUserForm = ({ navigation }) => {
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              {
-                const newData = userData;
-                newData.longitud = region.longitude;
-                newData.latitud = region.latitude;
-                setUserData(newData);
-              }
-            }}
-          >
-            <Text style={styles.start}>DarPosicion</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.title}>Ingresá tu dirección</Text>
+        <Input
+          value={userData.direccion}
+          setValue={setUserData}
+          atributo={"direccion"}
+          placeholder={"Dirección"}
+        />
+        <Input
+          value={userData.ciudad}
+          setValue={setUserData}
+          atributo={"ciudad"}
+          placeholder={"Ciudad"}
+        />
+        <Input
+          value={userData.provincia}
+          setValue={setUserData}
+          atributo={"provincia"}
+          placeholder={"Provincia"}
+        />
       </RegisterModal>
       <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          Mové el cursor hasta que coincida con tu ubicación
+        </Text>
+        <MapView style={styles.map} region={region}>
+          <Marker
+            coordinate={{
+              latitude: region.latitude,
+              longitude: region.longitude,
+            }}
+            title="Mi Ubicación"
+            description="Estoy aquí"
+            draggable
+            onDragEnd={(e) => {
+              const { latitude, longitude } = e.nativeEvent.coordinate;
+              setRegion({ ...region, latitude, longitude });
+              console.log(latitude, longitude);
+            }}
+          />
+        </MapView>
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
@@ -311,23 +338,6 @@ const CreateUserForm = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </RegisterModal>
-      {/* {location && (
-        <MapView
-          style={styles.map}
-          region={region}
-          onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
-        >
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title="Mi Ubicación"
-            description="Estoy aquí"
-            draggable
-          />
-        </MapView>
-      )} */}
     </View>
   );
 };
@@ -343,24 +353,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  button: {
-    backgroundColor: "blue",
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-  },
-  goBackText: {
-    color: "blue",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  map: {
-    height: 200,
-  },
   lastContainer: {
     gap: 20,
     alignItems: "center",
@@ -372,6 +364,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: "center",
     color: "white",
+  },
+  map: {
+    width: "90%",
+    aspectRatio: 1,
+    borderRadius: 10,
   },
 });
 
