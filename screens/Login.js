@@ -34,6 +34,7 @@ const LoginScreen = ({ navigation }) => {
           const data_user = {
             token: data.token,
             usuario: data.usuario,
+            matches: data.matches,
           };
           AsyncStorage.setItem("token", JSON.stringify(data_user))
             .then(() => {

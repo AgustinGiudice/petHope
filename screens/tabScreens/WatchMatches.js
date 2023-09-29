@@ -11,7 +11,9 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { screenWidth } from "../../hooks/useScreenResize";
 import {
   getAnimalDescripcion,
@@ -52,6 +54,14 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForUserInfoVisible(true);
   };
 
+  // const [selectedState, setSelectedState] = useState("Todos los estados");
+
+  // const handleStateChange = (value) => {
+  //   // Aquí puedes realizar la lógica para filtrar los matches según el estado seleccionado
+  //   setSelectedState(value);
+  //   // Llamar a una función que actualice la lista de matches con el filtro
+  // };
+  
   const handleCancelarMatch = async (match_id) => {
     try {
       console.log("Cancelando match");
@@ -136,6 +146,19 @@ const MatchesScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
+     {/* <View style={styles.header}>
+        <Picker
+          selectedValue={selectedState}
+          style={styles.picker}
+          onValueChange={(itemValue, itemIndex) => handleStateChange(itemValue)}
+        >
+          <Picker.Item label="Todos los estados" value="Todos los estados" />
+          <Picker.Item label="Estado 1" value="Estado 1" />
+          <Picker.Item label="Estado 2" value="Estado 2" />
+          <Picker.Item label="Estado 3" value="Estado 3" />
+        </Picker>
+      </View> */}
+
       <View>
         <FlatList
           data={matches}
@@ -166,6 +189,8 @@ const MatchesScreen = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
+              <View style={styles.column_design}> 
+              <MaterialIcons name="circle" size={18} color={item.estado == 1 ? "#4BB543" : "#FF5733"} />
 
               <View style={styles.containerIcons}>
                 <MaterialIcons
@@ -193,6 +218,7 @@ const MatchesScreen = ({ navigation }) => {
                     )
                   }
                 />
+              </View>
               </View>
             </View>
           )}
@@ -269,6 +295,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    paddingRight: 10,
+  },
+  picker: {
+    height: 40,
+    width: 150,
+  },
   matchContainer: {
     width: screenWidth,
     paddingHorizontal: 10,
@@ -315,6 +351,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     flexShrink: 99,
+  },
+
+  column_design:{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexShrink: 1,
+    gap: 15,
   },
   containerIcons: {
     display: "flex",

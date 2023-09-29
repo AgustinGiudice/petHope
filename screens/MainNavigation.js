@@ -12,6 +12,7 @@ import DrawerNavigation from "./DrawerNavigation";
 
 import LoadingComponent from "../components/LoadingComponent";
 import { UserContext } from "../context/UserContext";
+import { matchesCount,CountMatchesContext } from "../context/CountMatchesContext";
 
 const Stack = createStackNavigator();
 
@@ -20,9 +21,21 @@ function MainNavigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { setCurrentUser } = useContext(UserContext);
+  const { setMatchesCount } = useContext(CountMatchesContext);
+  // .then((token) => {
+
+  //   // request a la api para traer el count de notificaciones de matches
+  //   fetch("http://")
+  //   .then((response) => response.json())
+  //   .then((json) => {
+  //     console.log(json);
+  //     setMatchesCount(json.count);
+  //   })
+  // })
 
   useEffect(() => {
     AsyncStorage.getItem("token")
+    
       .then((token) => {
         if (token) {
           console.log("TOKEN:" + token);
@@ -33,6 +46,9 @@ function MainNavigation() {
 
           console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
+          const count = token_parsed.matches;
+          console.log(count)
+          setMatchesCount(count);
         }
         setIsLoading(false); // Indica que hemos terminado de verificar la autenticación
       })
