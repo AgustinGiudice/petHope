@@ -23,6 +23,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Constants from "expo-constants";
 import io from "socket.io-client";
 import { UserContext } from "../../context/UserContext";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const Chat = ({ route }) => {
   const { receiver, mascota, refugio } = route.params;
@@ -79,6 +80,8 @@ const Chat = ({ route }) => {
       });
   }, []);
 
+  
+
   // Simula la carga de mensajes cuando se monta el componente
   useEffect(() => {
     socket.on("chat message", (mensaje) => {
@@ -92,6 +95,10 @@ const Chat = ({ route }) => {
       socket.off("chat message");
     };
   }, [messages]);
+
+  if (loading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <View style={styles.container}>

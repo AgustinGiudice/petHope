@@ -45,6 +45,10 @@ const LoginScreen = ({ navigation }) => {
               console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
               const { usuario, token } = data;
               setCurrentUser(usuario);
+
+              //clean state
+              setUserData({ email: "", pass: "" });
+              setError("");
               navigation.navigate("Tabs", { usuario, token });
             });
         } else {
