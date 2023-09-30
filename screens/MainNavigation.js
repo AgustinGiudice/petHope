@@ -12,7 +12,10 @@ import DrawerNavigation from "./DrawerNavigation";
 
 import LoadingComponent from "../components/LoadingComponent";
 import { UserContext } from "../context/UserContext";
-import { matchesCount,CountMatchesContext } from "../context/CountMatchesContext";
+import {
+  matchesCount,
+  CountMatchesContext,
+} from "../context/CountMatchesContext";
 
 const Stack = createStackNavigator();
 
@@ -35,7 +38,6 @@ function MainNavigation() {
 
   useEffect(() => {
     AsyncStorage.getItem("token")
-    
       .then((token) => {
         if (token) {
           console.log("TOKEN:" + token);
@@ -47,8 +49,10 @@ function MainNavigation() {
           console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
           const count = token_parsed.matches;
-          console.log(count)
+          console.log(count);
           setMatchesCount(count);
+        } else {
+          console.log("no hay token");
         }
         setIsLoading(false); // Indica que hemos terminado de verificar la autenticación
       })

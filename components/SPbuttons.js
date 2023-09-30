@@ -14,6 +14,7 @@ const SPbuttons = ({
   setShowLikeAnimation,
   setResetMatches,
   currentUserId,
+  setInfoPetModalIsVisible,
 }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
 
@@ -112,7 +113,6 @@ const SPbuttons = ({
 
         // Mostrar la animación de "like"
         setShowLikeAnimation(true);
-        setResetMatches(true);
 
         // Iniciar la animación
         Animated.sequence([
@@ -130,6 +130,7 @@ const SPbuttons = ({
         ]).start(() => {
           // Reiniciar la animación y ocultarla cuando termine
           likeAnimationValue.setValue(0);
+          setResetMatches(true);
           setShowLikeAnimation(false);
         });
       } else {
@@ -187,7 +188,10 @@ const SPbuttons = ({
         <TouchableOpacity style={styles.backIcons2}>
           <AntDesign name="sharealt" size={30} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.backIcons2}>
+        <TouchableOpacity
+          style={styles.backIcons2}
+          onPress={() => setInfoPetModalIsVisible(true)}
+        >
           <AntDesign name="ellipsis1" size={30} color="white" />
         </TouchableOpacity>
       </View>

@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
-  
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { screenWidth } from "../../hooks/useScreenResize";
@@ -61,7 +60,7 @@ const MatchesScreen = ({ navigation }) => {
   //   setSelectedState(value);
   //   // Llamar a una función que actualice la lista de matches con el filtro
   // };
-  
+
   const handleCancelarMatch = async (match_id) => {
     try {
       console.log("Cancelando match");
@@ -146,7 +145,7 @@ const MatchesScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-     {/* <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Picker
           selectedValue={selectedState}
           style={styles.picker}
@@ -189,36 +188,40 @@ const MatchesScreen = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <View style={styles.column_design}> 
-              <MaterialIcons name="circle" size={18} color={item.estado == 1 ? "#4BB543" : "#FF5733"} />
-
-              <View style={styles.containerIcons}>
+              <View style={styles.column_design}>
                 <MaterialIcons
-                  name="chat"
-                  size={25}
-                  onPress={() =>
-                    handleChatClick(
-                      currentUser.id === item.refugio.id
-                        ? item.usuario
-                        : item.refugio,
-                      item.mascota,
-                      item.refugio
-                    )
-                  }
+                  name="circle"
+                  size={18}
+                  color={item.estado == 1 ? "#4BB543" : "#FF5733"}
                 />
-                <MaterialCommunityIcons
-                  name="dots-vertical"
-                  size={25}
-                  onPress={() =>
-                    openMoreInfoModal(
-                      currentUser.id == item.refugio.id
-                        ? item.usuario
-                        : item.refugio,
-                      item.id
-                    )
-                  }
-                />
-              </View>
+
+                <View style={styles.containerIcons}>
+                  <MaterialIcons
+                    name="chat"
+                    size={25}
+                    onPress={() =>
+                      handleChatClick(
+                        currentUser.id === item.refugio.id
+                          ? item.usuario
+                          : item.refugio,
+                        item.mascota,
+                        item.refugio
+                      )
+                    }
+                  />
+                  <MaterialCommunityIcons
+                    name="dots-vertical"
+                    size={25}
+                    onPress={() =>
+                      openMoreInfoModal(
+                        currentUser.id == item.refugio.id
+                          ? item.usuario
+                          : item.refugio,
+                        item.id
+                      )
+                    }
+                  />
+                </View>
               </View>
             </View>
           )}
@@ -353,7 +356,7 @@ const styles = StyleSheet.create({
     flexShrink: 99,
   },
 
-  column_design:{
+  column_design: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",

@@ -59,10 +59,12 @@ const LoginScreen = ({ navigation }) => {
         console.error("Error al iniciar sesión:", error);
       });
   };
+
   useEffect(() => {
-    var token = AsyncStorage.getItem("token");
+    const token = AsyncStorage.getItem("token");
     console.log(token);
   }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>

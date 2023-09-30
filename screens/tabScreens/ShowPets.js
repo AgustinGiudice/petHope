@@ -15,6 +15,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../../context/UserContext";
 import Constants from "expo-constants";
 import LoadingComponent from "../../components/LoadingComponent";
+import InfoPetModal from "../../components/InfoPetModal";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
@@ -27,6 +28,7 @@ const ShowPets = ({ navigation }) => {
   const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
+  const [infoPetModalIsVisible, setInfoPetModalIsVisible] = useState(false);
   const flatlistRef = useRef();
 
   const cambioColorPaw = (numColor) => {
@@ -62,7 +64,7 @@ const ShowPets = ({ navigation }) => {
 
   const [filtros, setFiltros] = useState({
     sexo: 2,
-    distancia: 6000,
+    distancia: 100000,
     tipoMascota: currentUser.tipoAnimal,
     tamaño: currentUser.tamanioPreferido,
     rangoDeEdad: currentUser.edadPreferida,
@@ -72,8 +74,8 @@ const ShowPets = ({ navigation }) => {
 
   const getUserData = async () => {
     try {
-      // await clearCache("mascotasVistas");
-      // setPetVistos("");
+      await clearCache("mascotasVistas");
+      setPetVistos("");
       const cache = await loadCachedData("mascotasVistas");
       if (cache !== null) {
         const parsedData = cache;
@@ -93,6 +95,7 @@ const ShowPets = ({ navigation }) => {
 
   useEffect(() => {
     // Obtener las mascotas
+    console.log(url);
     getUserData().then(
       fetch(url, {
         method: "GET",
@@ -209,6 +212,14 @@ const ShowPets = ({ navigation }) => {
                 </View>
               </View>
 
+              <InfoPetModal
+                isVisible={infoPetModalIsVisible}
+                setIsVisible={setInfoPetModalIsVisible}
+                petInfo={mascotas[currentIndex]}
+                setResetMatches={setResetMatches}
+                setShowLikeAnimation={setShowLikeAnimation}
+                currentUserId={currentUser.id}
+              />
               <FlatList
                 ref={flatlistRef}
                 horizontal
@@ -240,6 +251,7 @@ const ShowPets = ({ navigation }) => {
                   setResetMatches={setResetMatches}
                   setShowLikeAnimation={setShowLikeAnimation}
                   currentUserId={currentUser.id}
+                  setInfoPetModalIsVisible={setInfoPetModalIsVisible}
                 />
               ) : null}
             </>
