@@ -17,6 +17,7 @@ const Input = ({ value, setValue, placeholder, atributo }) => {
       secureTextEntry={atributo === "pass" || atributo === "repeatPass"}
       placeholder={placeholder}
       placeholderTextColor={"#9A34EA"}
+      keyboardType={ atributo === "edad" || atributo === "telefono" ? "numeric" : atributo === "mail" ? "email-address" :"default"}
     />
   );
 };
