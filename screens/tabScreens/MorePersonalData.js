@@ -14,7 +14,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { UserContext } from "../../context/UserContext";
 import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
-import { color } from "react-native-reanimated";
 import Input from "../../components/Input";
 
 const MorePersonalData = ({ navigation }) => {
@@ -239,8 +238,6 @@ const styles = StyleSheet.create({
     maxHeight: screenHeight / 1.5 - 60,
   },
   textContainer: {
-    borderColor: "#9A34EA",
-    borderBottomWidth: 1,
     padding: 3,
     alignItems: "flex-start",
   },
