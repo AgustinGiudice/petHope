@@ -14,6 +14,8 @@ import Radio from "../components/Radio";
 import LoadingComponent from "../components/LoadingComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
+// import DatePicker from "react-native-datepicker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
@@ -36,7 +38,7 @@ const CreateUserForm = ({ navigation }) => {
     tieneNinios: null,
     tieneMascotas: null,
     tuvoMascotas: null,
-    descripcion: "Agregar descripción",
+    descripcion: null,
     fechaDeNacimiento: Date.now(), //Después crear un date selector
   };
   const { setCurrentUser } = useContext(UserContext);
@@ -45,13 +47,14 @@ const CreateUserForm = ({ navigation }) => {
   const [indexModal, setIndexModal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingFetch, setLoadingFetch] = useState(false);
-
+  const [date, setDate] = useState(new Date());
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
     latitudeDelta: 0.00322,
     longitudeDelta: 0.00021,
   });
+
 
   useEffect(() => {
     (async () => {
@@ -148,7 +151,7 @@ const CreateUserForm = ({ navigation }) => {
         <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
         <Text>Queremos que nos cuentes de vos</Text>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cómo te llamas?</Text>
         <Input
           value={userData.nombre}
@@ -164,7 +167,7 @@ const CreateUserForm = ({ navigation }) => {
           atributo="apellido"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
         <Text style={styles.title}>Decinos cual es tu E-mail</Text>
         <Input
           value={userData.mail}
@@ -173,7 +176,16 @@ const CreateUserForm = ({ navigation }) => {
           atributo="mail"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+        <Text style={styles.title}>Contanos un poco mas de vos en una breve descripcion! &#40; Opcional &#41; </Text>
+        <Input
+          value={userData.descripcion}
+          setValue={setUserData}
+          placeholder="Descripcion"
+          atributo="descripcion"
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
         <Text style={styles.title}>Ingresá una contraseña</Text>
         <Input
           value={userData.pass}
@@ -188,7 +200,25 @@ const CreateUserForm = ({ navigation }) => {
           atributo="repeatPass"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
+        <Text style={styles.title}>Decinos cual es tu Fecha de Nacimiento</Text>
+        <DateTimePicker
+          value={date}
+          onDateChange={(value) => {
+              const newData = userData;
+              newData.fechaDeNacimiento = value;
+              setUserData(newData);
+              setDate(value);
+              console.log(value);
+          }}
+          minDate={new Date("1900-01-01")}
+          maxDate={new Date()}
+          
+        />
+        <Text>{date.toDateString()}</Text>
+        
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
         <View style={styles.warningContainer} key={99}>
           <Text style={styles.title}>
             A continuación te haremos unas preguntas que nos van a permitir
@@ -200,7 +230,7 @@ const CreateUserForm = ({ navigation }) => {
           </Text>
         </View>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Cómo es el lugar donde vivís actualmente?
         </Text>
@@ -209,7 +239,7 @@ const CreateUserForm = ({ navigation }) => {
           handleSelect={() => console.log()}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
         <Radio
           data={[
@@ -223,7 +253,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene experiencia previa con mascotas?
         </Text>
@@ -237,7 +267,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia por un tipo de Animal?
         </Text>
@@ -252,7 +282,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de edad para la mascota?
         </Text>
@@ -273,7 +303,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de tamaño para la mascota?
         </Text>
@@ -294,7 +324,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Tiene niños en casa?</Text>
         <Radio
           data={[
@@ -318,7 +348,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 17} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Tiene otras mascotas en casa?</Text>
         <Radio
           data={["Si", "No"]}
@@ -330,7 +360,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 18} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Está dispuesto a adoptar una mascota con necesidades especiales o
           problemas de salud?
@@ -345,7 +375,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
         <Text style={styles.title}>Ingresá tu dirección</Text>
         <Input
           value={userData.direccion}
@@ -366,7 +396,7 @@ const CreateUserForm = ({ navigation }) => {
           placeholder={"Provincia"}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
         <Text style={styles.title}>
           Mové el cursor hasta que coincida con tu ubicación
         </Text>
@@ -387,7 +417,7 @@ const CreateUserForm = ({ navigation }) => {
           />
         </MapView>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
         <Text style={styles.title}>Decinos cual es tu teléfono</Text>
         <Input
           value={userData.telefono}
@@ -396,7 +426,7 @@ const CreateUserForm = ({ navigation }) => {
           atributo="telefono"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 17} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 19} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!

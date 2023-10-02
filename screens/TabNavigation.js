@@ -14,6 +14,7 @@ import MatchNavigation from "./MatchNavigation";
 import Refugios from "./tabScreens/Refugios";
 import DrawerNavigation from "./DrawerNavigation";
 import { CountMatchesContext } from "../context/CountMatchesContext";
+import DatePickerComponent from "./tabScreens/DatePickerComponent";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -147,7 +148,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Otro"
-          component={OtrasNavigation}
+          component={DatePickerComponent}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
