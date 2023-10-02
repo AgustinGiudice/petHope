@@ -15,6 +15,7 @@ import { UserContext } from "../../context/UserContext";
 import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
 import { color } from "react-native-reanimated";
+import Input from "../../components/Input";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -138,90 +139,57 @@ const MorePersonalData = ({ navigation }) => {
             <ScrollView collapsable={true}>
               <View style={styles.textContainer}>
                 <Text style={styles.fieldName}>Nombre</Text>
-                <TextInput
+                <Input
                   value={editableData.nombre}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      nombre: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
+                  setValue={setEditableData}
+                  atributo="nombre"
                   placeholder="Nombre"
                 />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.fieldName}>Apellido</Text>
-                <TextInput
+                <Input
                   value={editableData.apellido}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      apellido: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
-                  placeholder="Apellido"
+                  setValue={setEditableData}
+                  atributo="apellido"
                 />
               </View>
               <Text style={styles.fieldName}>Edad</Text>
               <View style={styles.textContainer}>
-                <TextInput
+                <Input
                   value={editableData.edad}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      edad: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
+                  setValue={setEditableData}
+                  atributo="edad"
                   placeholder="Edad"
-                  keyboardType="numeric"
+                  
                 />
               </View>
               <Text style={styles.fieldName}>Teléfono</Text>
               <View style={styles.textContainer}>
-                <TextInput
+                <Input
                   value={editableData.telefono}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      telefono: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
+                  setValue={setEditableData}
+                  atributo="telefono"
                   placeholder="Teléfono"
-                  keyboardType="numeric"
+
                 />
               </View>
               <Text style={styles.fieldName}>E-mail</Text>
               <View style={styles.textContainer}>
-                <TextInput
+                <Input
                   value={editableData.mail}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      mail: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
+                  setValue={setEditableData}
+                  atributo="mail"
                   placeholder="E-mail"
-                  keyboardType="email-address"
                 />
               </View>
               <Text style={styles.fieldName}>Descripcion</Text>
               <View style={styles.textContainer}>
-                <TextInput
+                <Input
                   value={editableData.descripcion}
-                  multiline={true}
-                  onChangeText={(text) =>
-                    setEditableData((prevState) => ({
-                      ...prevState,
-                      descripcion: text,
-                    }))
-                  }
-                  style={styles.inputStyle}
-                  placeholder="Descripcion"
+                  setValue={setEditableData}
+                  atributo="descripcion"
+                  placeholder="Descripcion"                 
                 />
               </View>
             </ScrollView>
@@ -337,12 +305,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 35,
   },
-  inputStyle: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 5,
-    borderRadius: 5,
-  },
+  
 });
 
 export default MorePersonalData;
