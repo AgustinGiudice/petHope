@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
@@ -6,22 +6,19 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
+import { UserContext } from "../../context/UserContext";
 
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const userData = {
-    nombre: "Alexis",
-    apellido: "Maubert",
-    edad: 30,
-    direccion: "Calle Alegría de los pibes",
-    telefono: 1161746234,
-    email: "alexismaubertop@gmail.com",
-    completado: 100,
-    descripcion:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ",
-    pic: null,
-    //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  };
+  const { currentUser } = useContext(UserContext);
+  const userData = currentUser;
+  currentUser.edad = 30;
+  currentUser.completado = 100;
+  currentUser.descripcion =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ";
+  currentUser.pic = null;
+  //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+
   const [profilePic, setProfilePic] = useState(userData.pic);
 
   useEffect(() => {});

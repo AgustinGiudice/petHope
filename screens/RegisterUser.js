@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
 import Radio from "../components/Radio";
 import LoadingComponent from "../components/LoadingComponent";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../context/UserContext";
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
     nombre: "",
     apellido: "",
-    telefono: 1123100216,
+    telefono: null,
     mail: "",
     pass: "",
     repeatPass: "",
@@ -29,10 +37,12 @@ const CreateUserForm = ({ navigation }) => {
     tieneMascotas: null,
     tuvoMascotas: null,
   };
+  const { setCurrentUser } = useContext(UserContext);
   const [userData, setUserData] = useState(initialUserData);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [indexModal, setIndexModal] = useState(15);
+  const [indexModal, setIndexModal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingFetch, setLoadingFetch] = useState(false);
 
   const [region, setRegion] = useState({
     latitude: 0,
@@ -55,12 +65,60 @@ const CreateUserForm = ({ navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
+      const newData = userData;
+      newData.latitud = location.coords.latitude;
+      newData.longitud = location.coords.latitude;
+      setUserData(newData);
       setIsLoading(false);
     })();
   }, []);
 
+  const handleLogin = () => {
+    fetch(
+      "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.token && data.usuario) {
+          const data_user = {
+            token: data.token,
+            usuario: data.usuario,
+            matches: data.matches,
+          };
+          AsyncStorage.setItem("token", JSON.stringify(data_user))
+            .then(() => {
+              console.log("Token guardado correctamente:", data.token);
+              return AsyncStorage.getItem("token"); // Recuperar el token
+            })
+            .then((storedToken) => {
+              console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
+              const { usuario, token } = data;
+              setCurrentUser(usuario);
+
+              //clean state
+              setUserData(initialUserData);
+
+              navigation.navigate("Tabs", { usuario, token });
+            })
+            .finally(() => {
+              setLoadingFetch(false);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error al iniciar sesión:", error);
+      });
+  };
   const handleSubmit = () => {
     //Realizar la petición POST al backend para guardar los datos del usuario
+    setLoadingFetch(true);
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
       method: "POST",
       headers: {
@@ -71,8 +129,7 @@ const CreateUserForm = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         // Reiniciar los campos del formulario después de guardar los datos
-        setUserData(initialUserData);
-        navigation.navigate("Tabs"); // Reemplaza "Inicio" con el nombre de tu pantalla de inicio
+        handleLogin();
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -85,9 +142,10 @@ const CreateUserForm = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      {/* <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
-        <Text style={styles.title}>¡Bienvenido!</Text>
-      </RegisterModal> */}
+      <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
+        <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
+        <Text>Queremos que nos cuentes de vos</Text>
+      </RegisterModal>
       <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cómo te llamas?</Text>
         <Input
@@ -128,7 +186,7 @@ const CreateUserForm = ({ navigation }) => {
           atributo="repeatPass"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
         <View style={styles.warningContainer} key={99}>
           <Text style={styles.title}>
             A continuación te haremos unas preguntas que nos van a permitir
@@ -140,7 +198,7 @@ const CreateUserForm = ({ navigation }) => {
           </Text>
         </View>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Cómo es el lugar donde vivís actualmente?
         </Text>
@@ -149,7 +207,7 @@ const CreateUserForm = ({ navigation }) => {
           handleSelect={() => console.log()}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
         <Radio
           data={[
@@ -163,7 +221,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene experiencia previa con mascotas?
         </Text>
@@ -177,7 +235,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia por un tipo de Animal?
         </Text>
@@ -192,7 +250,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de edad para la mascota?
         </Text>
@@ -213,7 +271,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de tamaño para la mascota?
         </Text>
@@ -234,7 +292,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Tiene niños en casa?</Text>
         <Radio
           data={[
@@ -258,7 +316,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Tiene otras mascotas en casa?</Text>
         <Radio
           data={["Si", "No"]}
@@ -270,7 +328,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
         <Text style={styles.title}>
           ¿Está dispuesto a adoptar una mascota con necesidades especiales o
           problemas de salud?
@@ -285,7 +343,7 @@ const CreateUserForm = ({ navigation }) => {
           }}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
         <Text style={styles.title}>Ingresá tu dirección</Text>
         <Input
           value={userData.direccion}
@@ -306,7 +364,7 @@ const CreateUserForm = ({ navigation }) => {
           placeholder={"Provincia"}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
         <Text style={styles.title}>
           Mové el cursor hasta que coincida con tu ubicación
         </Text>
@@ -327,14 +385,27 @@ const CreateUserForm = ({ navigation }) => {
           />
         </MapView>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
+      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+        <Text style={styles.title}>Decinos cual es tu teléfono</Text>
+        <Input
+          value={userData.telefono}
+          setValue={setUserData}
+          placeholder="Teléfono"
+          atributo="telefono"
+        />
+      </RegisterModal>
+      <RegisterModal visible={indexModal === 17} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
           </Text>
           <Text>Ya podes encontrar tu mascota soñada</Text>
           <TouchableOpacity onPress={handleSubmit}>
-            <Text style={styles.start}>Empezar</Text>
+            {loadingFetch ? (
+              <ActivityIndicator color={"white"} />
+            ) : (
+              <Text style={styles.start}>Empezar</Text>
+            )}
           </TouchableOpacity>
         </View>
       </RegisterModal>

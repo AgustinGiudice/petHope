@@ -10,7 +10,6 @@ import paw2 from "../assets/paw2.png";
 import { View, Image, Animated, useWindowDimensions } from "react-native";
 import OtrasNavegaciones from "./OtrasNavegaciones";
 import MatchNavigation from "./MatchNavigation";
-import ShowRefugios from "./tabScreens/ShowRefugios";
 import Refugios from "./tabScreens/Refugios";
 import DrawerNavigation from "./DrawerNavigation";
 import { CountMatchesContext } from "../context/CountMatchesContext";
