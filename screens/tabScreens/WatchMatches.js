@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { format, set } from "date-fns";
+import { format, parse, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,6 +12,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { screenWidth } from "../../hooks/useScreenResize";
 import {
   getAnimalDescripcion,
@@ -21,6 +22,7 @@ import {
 } from "../../hooks/getDescripciones";
 import Modal from "react-native-modal";
 import { UserContext } from "../../context/UserContext";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
@@ -33,6 +35,7 @@ const MatchesScreen = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
 
   const [userAbrir, setuserAbrir] = useState(null);
+  const [match_id, setmatch_id] = useState(null);
   // Función para manejar la acción de abrir el chat con el refugio
   const handleChatClick = (receiver, mascota, refugio) => {
     // Implementa la lógica para abrir el chat con el refugio aquí
@@ -50,10 +53,43 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForUserInfoVisible(true);
   };
 
-  const handleCancelarMatch = () => {
-    // Implementa la lógica para abrir el chat con el refugio aquí
+  // const [selectedState, setSelectedState] = useState("Todos los estados");
 
-    console.log("Cancelando match");
+  // const handleStateChange = (value) => {
+  //   // Aquí puedes realizar la lógica para filtrar los matches según el estado seleccionado
+  //   setSelectedState(value);
+  //   // Llamar a una función que actualice la lista de matches con el filtro
+  // };
+
+  const handleCancelarMatch = async (match_id) => {
+    try {
+      console.log("Cancelando match");
+      console.log(match_id);
+      // URL de la API para cancelar un match (ajústala a tu API)
+      const apiUrl = `${BASE_URL}api/match/delete/${match_id}`;
+
+      // ID del match que deseas cancelar
+      const matchId = parseInt(match_id); // Reemplaza con el ID del match real
+
+      const response = await fetch(apiUrl, {
+        method: "PUT", // Método HTTP para actualizar el estado del match
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ matchId }), // Enviar el ID del match en el cuerpo de la solicitud
+      });
+
+      if (response.ok) {
+        // La solicitud fue exitosa, el match se ha cancelado
+        alert("Match cancelado con éxito");
+      } else {
+        // La solicitud falló, puedes manejar los errores aquí
+        alert("Error al cancelar el match");
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+      alert("Error al cancelar el match");
+    }
   };
 
   const handleDenunciarRefugio = () => {
@@ -62,9 +98,10 @@ const MatchesScreen = ({ navigation }) => {
     console.log("Denunciando refugio");
   };
 
-  const openMoreInfoModal = (user) => {
+  const openMoreInfoModal = (user, match) => {
     setIsModalForMoreInfoVisible(!isModalForMoreInfoVisible);
     setuserAbrir(user);
+    setmatch_id(match);
   };
 
   const fetchMatches = async () => {
@@ -82,6 +119,7 @@ const MatchesScreen = ({ navigation }) => {
         throw new Error("No se pudo obtener la lista de matches.");
       }
       const data = await response.json();
+      setIsLoading(false);
       setMatches(data);
     } catch (error) {
       console.error("Error al obtener los matches:", error);
@@ -92,53 +130,70 @@ const MatchesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchMatches();
-    console.log(currentUser);
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
+  if (matches.length === 0) {
+    <View style={styles.container}>
+      <Text>¡Todavía no elegiste una mascota!</Text>
+      <TouchableOpacity>
+        <Text>Ver mascotas</Text>
+      </TouchableOpacity>
+    </View>;
+  }
   return (
     <View style={styles.container}>
-      {matches.length === 0 ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <View>
-          {/* <Text onPress={()=>{navigation.navigate("Refugios")}}>Ir a refugios</Text> */}
-          <FlatList
-            data={matches}
-            renderItem={({ item }) => (
-              <View style={styles.matchItem}>
-                <View style={styles.containerLeft}>
-                  <View
-                    onPress={() => handleChatClick(item.mascota.refugioId)}
-                    style={styles.imagenContainer}
-                  >
-                    <Image
-                      source={{ uri: item.mascota.pic }}
-                      style={styles.mascotaImagen}
-                    />
-                  </View>
+      {/* <View style={styles.header}>
+        <Picker
+          selectedValue={selectedState}
+          style={styles.picker}
+          onValueChange={(itemValue, itemIndex) => handleStateChange(itemValue)}
+        >
+          <Picker.Item label="Todos los estados" value="Todos los estados" />
+          <Picker.Item label="Estado 1" value="Estado 1" />
+          <Picker.Item label="Estado 2" value="Estado 2" />
+          <Picker.Item label="Estado 3" value="Estado 3" />
+        </Picker>
+      </View> */}
 
-                  <View style={styles.column}>
-                    <Text style={styles.letraGrande} numberOfLines={1}>
-                      {item.mascota.nombre} - {item.refugio.nombre}
-                    </Text>
-                    <Text style={styles.letraChica}>
-                      {getAnimalDescripcion(item.mascota.animal)}{" "}
-                      {getEdadDescripcion(item.mascota.edad)}{" "}
-                      {getTamanioDescripcion(item.mascota.tamanio)}
-                    </Text>
-                    <Text style={styles.letraChica}>
-                      {getSexoDescripcion(item.mascota.sexo)}
-                    </Text>
-                  </View>
+      <View>
+        <FlatList
+          data={matches}
+          renderItem={({ item }) => (
+            <View style={styles.matchItem}>
+              <View style={styles.containerLeft}>
+                <View
+                  onPress={() => handleChatClick(item.mascota.refugioId)}
+                  style={styles.imagenContainer}
+                >
+                  <Image
+                    source={{ uri: item.mascota.pic }}
+                    style={styles.mascotaImagen}
+                  />
                 </View>
+
+                <View style={styles.column}>
+                  <Text style={styles.letraGrande} numberOfLines={1}>
+                    {item.mascota.nombre} - {item.refugio.nombre}
+                  </Text>
+                  <Text style={styles.letraChica}>
+                    {getAnimalDescripcion(item.mascota.animal)}{" "}
+                    {getEdadDescripcion(item.mascota.edad)}{" "}
+                    {getTamanioDescripcion(item.mascota.tamanio)}
+                  </Text>
+                  <Text style={styles.letraChica}>
+                    {getSexoDescripcion(item.mascota.sexo)}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.column_design}>
+                <MaterialIcons
+                  name="circle"
+                  size={18}
+                  color={item.estado == 1 ? "#4BB543" : "#FF5733"}
+                />
 
                 <View style={styles.containerIcons}>
                   <MaterialIcons
@@ -161,27 +216,29 @@ const MatchesScreen = ({ navigation }) => {
                       openMoreInfoModal(
                         currentUser.id == item.refugio.id
                           ? item.usuario
-                          : item.refugio
+                          : item.refugio,
+                        item.id
                       )
                     }
                   />
                 </View>
               </View>
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            style={styles.matchContainer}
-            onEndReached={fetchMatches}
-            onEndReachedThreshold={0.1}
-            refreshing={refreshing}
-            onRefresh={fetchMatches}
-          />
-        </View>
-      )}
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.matchContainer}
+          onEndReached={fetchMatches}
+          onEndReachedThreshold={0.1}
+          refreshing={refreshing}
+          onRefresh={fetchMatches}
+        />
+      </View>
 
       <Modal
         isVisible={isModalForMoreInfoVisible}
         onBackdropPress={() => setIsModalForMoreInfoVisible(false)}
         userAbrir={userAbrir}
+        match_id={match_id}
       >
         <View style={styles.modalContent}>
           {/* Opciones: ver refugio, cancelar match, denunciar */}
@@ -198,7 +255,7 @@ const MatchesScreen = ({ navigation }) => {
               {currentUser.estado ? "Ver usuario" : "Ver refugio"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleCancelarMatch}>
+          <TouchableOpacity onPress={() => handleCancelarMatch(match_id)}>
             <Text style={styles.modalText}>Cancelar match</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDenunciarRefugio}>
@@ -232,7 +289,6 @@ const MatchesScreen = ({ navigation }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
@@ -241,6 +297,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignItems: "center",
     paddingTop: 40,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    paddingRight: 10,
+  },
+  picker: {
+    height: 40,
+    width: 150,
   },
   matchContainer: {
     width: screenWidth,
@@ -288,6 +354,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     flexShrink: 99,
+  },
+
+  column_design: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexShrink: 1,
+    gap: 15,
   },
   containerIcons: {
     display: "flex",

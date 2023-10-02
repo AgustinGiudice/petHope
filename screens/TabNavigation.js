@@ -1,4 +1,4 @@
-import { React, useRef, useState } from "react";
+import { React, useRef, useState, useContext, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 // SCREENS
@@ -13,17 +13,22 @@ import MatchNavigation from "./MatchNavigation";
 import ShowRefugios from "./tabScreens/ShowRefugios";
 import Refugios from "./tabScreens/Refugios";
 import DrawerNavigation from "./DrawerNavigation";
-
+import { CountMatchesContext } from "../context/CountMatchesContext";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
 
+  const { matchesCount } = useContext(CountMatchesContext);
+
   const { width, height } = useWindowDimensions();
   function getWidth() {
     return width / 5;
   }
+  useEffect(() => {
+    console.log("matchesCount", matchesCount);
+  }, [matchesCount]);
 
   return (
     <>
@@ -127,7 +132,7 @@ function MyTabs() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="ios-chatbox" size={size} color={color} />
             ),
-            tabBarBadge: 16,
+            tabBarBadge: matchesCount,
             unmountOnBlur: true,
           }}
           listeners={({ navigation, route }) => ({

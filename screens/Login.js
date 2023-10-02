@@ -30,8 +30,13 @@ const LoginScreen = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        if (data.token) {
-          AsyncStorage.setItem("token", data.token)
+        if (data.token && data.usuario) {
+          const data_user = {
+            token: data.token,
+            usuario: data.usuario,
+            matches: data.matches,
+          };
+          AsyncStorage.setItem("token", JSON.stringify(data_user))
             .then(() => {
               console.log("Token guardado correctamente:", data.token);
               return AsyncStorage.getItem("token"); // Recuperar el token
@@ -40,6 +45,10 @@ const LoginScreen = ({ navigation }) => {
               console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
               const { usuario, token } = data;
               setCurrentUser(usuario);
+
+              //clean state
+              setUserData({ email: "", pass: "" });
+              setError("");
               navigation.navigate("Tabs", { usuario, token });
             });
         } else {
@@ -50,10 +59,12 @@ const LoginScreen = ({ navigation }) => {
         console.error("Error al iniciar sesión:", error);
       });
   };
+
   useEffect(() => {
-    var token = AsyncStorage.getItem("token");
+    const token = AsyncStorage.getItem("token");
     console.log(token);
   }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>

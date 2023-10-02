@@ -70,6 +70,7 @@ const RegisterModal = ({ children, visible, setVisible }) => {
       alignItems: "center",
       backgroundColor: "#C69AE8",
       gap: 15,
+      padding: 20,
     },
     arrow: {
       color: "white",
