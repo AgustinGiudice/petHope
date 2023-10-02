@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
 
 const LoginScreen = ({ navigation }) => {
-  const [userData, setUserData] = useState({ email: "", pass: "" });
+  const [userData, setUserData] = useState({ mail: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
 
   const { setCurrentUser } = useContext(UserContext);
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
               setCurrentUser(usuario);
 
               //clean state
-              setUserData({ email: "", pass: "" });
+              setUserData({ mail: "", pass: "" });
               setError("");
               navigation.navigate("Tabs", { usuario, token });
             });
@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
           value={userData.email}
           setValue={setUserData}
           placeholder="E-mail"
-          atributo="email"
+          atributo="mail"
         />
         <Input
           value={userData.pass}

@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { UserContext } from "../../context/UserContext";
+import AddImageModal from "../../components/AddImageModal";
+import ChangeImageModal from "../../components/ChangeImageModal";
+import { color } from "react-native-reanimated";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const userData = {
-    nombre: "Alexis",
-    apellido: "Maubert",
-    edad: 30,
-    direccion: "Calle Alegría de los pibes",
-    telefono: 1161746234,
-    email: "alexismaubertop@gmail.com",
-    completado: 100,
-    descripcion:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ",
-    //pic: null,
-    pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  };
-
+  const { currentUser } = useContext(UserContext);
+  const userData = currentUser;
+  currentUser.edad = 30;
+  currentUser.completado = 100;
+  currentUser.descripcion =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ";
+  currentUser.pic = null;
+  //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  const [profilePic, setProfilePic] = useState(userData.pic);
+  const [error, setError] = useState(null);
   useEffect(() => {});
 
   const handlePressPic = () => {
@@ -27,9 +27,28 @@ const MorePersonalData = ({ navigation }) => {
     console.log("Aca se va a poder modificar una foto");
   };
 
+  const handleEditInformation = () => {
+    setError("Todavía no podés cambiar tu información");
+  };
   return (
     <>
       <View style={styles.container}>
+        {profilePic ? (
+          <ChangeImageModal
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            images={profilePic}
+            setImages={setProfilePic}
+            selectedImage={profilePic}
+          />
+        ) : (
+          <AddImageModal
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            images={profilePic}
+            setImages={setProfilePic}
+          />
+        )}
         <View style={styles.header}>
           <FontAwesome
             name="arrow-left"
@@ -62,7 +81,7 @@ const MorePersonalData = ({ navigation }) => {
         </View>
         <View style={styles.dataContainer}>
           <TouchableOpacity
-            onPress={() => handlePressPic()}
+            onPress={() => handleEditInformation()}
             style={styles.changePic}
           >
             <FontAwesome5
@@ -71,6 +90,7 @@ const MorePersonalData = ({ navigation }) => {
               style={{ color: "#9A34EA" }}
             />
           </TouchableOpacity>
+          {error && <Text style={{ color: "red" }}>{error}</Text>}
           <View style={styles.column}>
             <View style={styles.textContainer}>
               <Text style={styles.fieldName}>Nombre</Text>
@@ -89,7 +109,7 @@ const MorePersonalData = ({ navigation }) => {
             <Text style={styles.fieldName}>E-mail</Text>
             <View style={styles.textContainer}>
               <Text numberOfLines={1} style={styles.textBlack}>
-                {userData.email}
+                {userData.mail}
               </Text>
             </View>
           </View>
