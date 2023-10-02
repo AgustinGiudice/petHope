@@ -48,6 +48,7 @@ const CreateUserForm = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingFetch, setLoadingFetch] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -55,6 +56,9 @@ const CreateUserForm = ({ navigation }) => {
     longitudeDelta: 0.00021,
   });
 
+  const onChangeDate = () => {
+    setShow(true);
+  }
 
   useEffect(() => {
     (async () => {
@@ -202,6 +206,11 @@ const CreateUserForm = ({ navigation }) => {
       </RegisterModal>
       <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
         <Text style={styles.title}>Decinos cual es tu Fecha de Nacimiento</Text>
+        <TouchableOpacity onPress={onChangeDate}>
+          <Text>MOSTRATEFORRO</Text>
+        </TouchableOpacity>
+        {show && (
+
         <DateTimePicker
           value={date}
           onDateChange={(value) => {
@@ -215,6 +224,7 @@ const CreateUserForm = ({ navigation }) => {
           maxDate={new Date()}
           
         />
+        )}
         <Text>{date.toDateString()}</Text>
         
       </RegisterModal>
