@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
-import UploadImageModal from "../../components/UploadImageModal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AddImageModal from "../../components/AddImageModal";
+import ChangeImageModal from "../../components/ChangeImageModal";
 
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,15 +19,15 @@ const PersonalData = ({ navigation }) => {
     completado: 100,
     descripcion:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ",
-    //pic: null,
-    pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    pic: null,
+    //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   };
+  const [profilePic, setProfilePic] = useState(userData.pic);
 
   useEffect(() => {});
 
   const handlePressPic = () => {
     setModalVisible(true);
-    console.log("Aca se va a poder modificar una foto");
   };
 
   const handleLogout = async () => {
@@ -43,8 +44,23 @@ const PersonalData = ({ navigation }) => {
 
   return (
     <>
-      <UploadImageModal visible={modalVisible} setVisible={setModalVisible} />
       <View style={styles.container}>
+        {profilePic ? (
+          <ChangeImageModal
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            images={profilePic}
+            setImages={setProfilePic}
+            selectedImage={profilePic}
+          />
+        ) : (
+          <AddImageModal
+            isVisible={modalVisible}
+            setIsVisible={setModalVisible}
+            images={profilePic}
+            setImages={setProfilePic}
+          />
+        )}
         <View style={styles.header}>
           <View style={styles.containerCompletado}>
             <Text style={styles.textoCompletado}>
@@ -77,8 +93,8 @@ const PersonalData = ({ navigation }) => {
               />
             </View>
           </View>
-          {userData.pic === null ? (
-            <View style={styles.profilePic}>
+          {profilePic === null ? (
+            <View>
               <TouchableOpacity onPress={() => handlePressPic()}>
                 <FontAwesome5
                   name="user-edit"
@@ -89,7 +105,7 @@ const PersonalData = ({ navigation }) => {
             </View>
           ) : (
             <>
-              <Image source={{ uri: userData.pic }} style={styles.profilePic} />
+              <Image source={{ uri: profilePic }} style={styles.profilePic} />
               <TouchableOpacity
                 onPress={() => handlePressPic()}
                 style={styles.changePic}

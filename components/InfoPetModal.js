@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Animated,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -16,6 +17,7 @@ import {
   getSexoDescripcion,
 } from "../hooks/getDescripciones";
 import { BASE_URL } from "@env";
+import { ScrollView } from "react-native-gesture-handler";
 
 const InfoPetModal = ({
   isVisible,
@@ -25,9 +27,15 @@ const InfoPetModal = ({
   setResetMatches,
   currentUserId,
 }) => {
-  const images = [petInfo.pic];
+  const [images, setImages] = useState([
+    petInfo.pic,
+    petInfo.pic,
+    petInfo.pic,
+    petInfo.pic,
+  ]);
   const [selectedPic, setSelectedPic] = useState(null);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
+  const [addImageModalIsVisible, setAddImageModalIsVisible] = useState(false);
 
   const postLike = async () => {
     try {
@@ -73,7 +81,10 @@ const InfoPetModal = ({
 
   const NoPic = () => {
     return (
-      <TouchableOpacity style={styles.image}>
+      <TouchableOpacity
+        style={styles.image}
+        onPress={() => setAddImageModalIsVisible(true)}
+      >
         <FontAwesome name="plus-square-o" color={"#fff"} size={125} />
       </TouchableOpacity>
     );
@@ -81,82 +92,57 @@ const InfoPetModal = ({
 
   return (
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
-      <View style={styles.modalContainer}>
-        <TouchableOpacity
-          onPress={() => setIsVisible(false)}
-          style={styles.modalCloseButton}
-        >
-          <Icon name="times" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.titulo}>{petInfo.nombre}</Text>
-        <View style={styles.row}>
-          {images[0] ? (
+      <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+        <ScrollView>
+          <View style={styles.modalContainer}>
             <TouchableOpacity
-              style={styles.image}
-              onPress={() => setSelectedPic(images[0])}
+              onPress={() => setIsVisible(false)}
+              style={styles.modalCloseButton}
             >
-              <Image source={{ uri: images[0] }} style={styles.image} />
+              <Icon name="times" size={24} color="black" />
             </TouchableOpacity>
-          ) : (
-            <NoPic />
-          )}
-          {images[1] ? (
-            <TouchableOpacity
-              style={styles.image}
-              onPress={() => setSelectedPic(images[1])}
-            >
-              <Image source={{ uri: images[1] }} style={styles.image} />
-            </TouchableOpacity>
-          ) : (
-            <NoPic />
-          )}
-        </View>
-        <View style={styles.row}>
-          {images[2] ? (
-            <TouchableOpacity
-              style={styles.image}
-              onPress={() => setSelectedPic(images[2])}
-            >
-              <Image source={{ uri: images[2] }} style={styles.image} />
-            </TouchableOpacity>
-          ) : (
-            <NoPic />
-          )}
-          {images[3] ? (
-            <TouchableOpacity
-              style={styles.image}
-              onPress={() => setSelectedPic(images[3])}
-            >
-              <Image source={{ uri: images[3] }} style={styles.image} />
-            </TouchableOpacity>
-          ) : (
-            <NoPic />
-          )}
-        </View>
-        <Text>Edad: {getEdadDescripcion(petInfo.edad)}</Text>
-        <Text>Tamaño: {getTamanioDescripcion(petInfo.tamanio)}</Text>
-        <Text>Sexo: {getSexoDescripcion(petInfo.sexo)}</Text>
-        <Text>
-          Requiere de cuidados especiales:{" "}
-          {petInfo.cuidadosEspeciales ? "Si" : "No"}
-        </Text>
-        <Text>Refugio: {petInfo.refugio.nombre || petInfo.refugio.id}</Text>
-        <Text>Distancia: {(petInfo.distance / 1000).toFixed(2)}km</Text>
-        <View style={styles.botones}>
-          <TouchableOpacity style={[styles.boton, { backgroundColor: "red" }]}>
-            <Text style={{ color: "white" }}>Denunciar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.boton, { backgroundColor: "#C69AE8" }]}
-            onPress={async () => {
-              setIsVisible(false);
-              await postLike(petInfo.id);
-            }}
-          >
-            <Text style={{ color: "white" }}>Adoptar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <Text style={styles.titulo}>{petInfo.nombre}</Text>
+            <View style={styles.row}>
+              {images.map((image, key) => {
+                return (
+                  <TouchableOpacity
+                    style={styles.imageContainer}
+                    onPress={() => setSelectedPic(image)}
+                    key={key}
+                  >
+                    <Image source={{ uri: image }} style={styles.image} />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <Text>Edad: {getEdadDescripcion(petInfo.edad)}</Text>
+            <Text>Tamaño: {getTamanioDescripcion(petInfo.tamanio)}</Text>
+            <Text>Sexo: {getSexoDescripcion(petInfo.sexo)}</Text>
+            <Text>
+              Requiere de cuidados especiales:{" "}
+              {petInfo.cuidadosEspeciales ? "Si" : "No"}
+            </Text>
+            <Text>Refugio: {petInfo.refugio.nombre || petInfo.refugio.id}</Text>
+            <Text>Distancia: {(petInfo.distance / 1000).toFixed(2)}km</Text>
+            <View style={styles.botones}>
+              <TouchableOpacity
+                style={[styles.boton, { backgroundColor: "red" }]}
+              >
+                <Text style={{ color: "white" }}>Denunciar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.boton, { backgroundColor: "#C69AE8" }]}
+                onPress={async () => {
+                  setIsVisible(false);
+                  await postLike(petInfo.id);
+                }}
+              >
+                <Text style={{ color: "white" }}>Adoptar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
       <Modal
         isVisible={selectedPic !== null}
         onBackdropPress={() => setSelectedPic(null)}
@@ -194,18 +180,25 @@ const styles = StyleSheet.create({
     color: "#9A34EA",
   },
   row: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: 10,
     alignContent: "center",
     justifyContent: "center",
+    flexWrap: "wrap-reverse",
   },
-  image: {
+  imageContainer: {
     flex: 1,
     aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#C69AE8",
+    flexBasis: "48%",
+  },
+  image: {
+    flex: 1,
+    aspectRatio: 1,
+    borderRadius: 10,
   },
   picModalContainer: {
     backgroundColor: "#eee",
@@ -224,10 +217,7 @@ const styles = StyleSheet.create({
   },
   botones: {
     flexDirection: "row",
-    position: "absolute",
     alignItems: "center",
-    bottom: 10,
-    left: 10,
     gap: 20,
   },
   boton: {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
-import UploadImageModal from "../../components/UploadImageModal";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const MorePersonalData = ({ navigation }) => {
@@ -30,7 +29,6 @@ const MorePersonalData = ({ navigation }) => {
 
   return (
     <>
-      <UploadImageModal visible={modalVisible} setVisible={setModalVisible} />
       <View style={styles.container}>
         <View style={styles.header}>
           <FontAwesome
