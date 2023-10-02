@@ -212,13 +212,15 @@ const CreateUserForm = ({ navigation }) => {
         {show && (
 
         <DateTimePicker
+          
           value={date}
-          onDateChange={(value) => {
+          onChange={(value) => {
               const newData = userData;
               newData.fechaDeNacimiento = value;
               setUserData(newData);
               setDate(value);
               console.log(value);
+              setShow(false)
           }}
           minDate={new Date("1900-01-01")}
           maxDate={new Date()}
