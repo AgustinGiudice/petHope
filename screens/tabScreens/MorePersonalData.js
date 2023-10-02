@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image,TextInput  } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -13,7 +21,7 @@ const MorePersonalData = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const userData = currentUser;
   console.log(userData);
-  
+
   currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
@@ -38,32 +46,33 @@ const MorePersonalData = ({ navigation }) => {
   const handleEditInformation = () => {
     const updatedUserData = {
       ...editableData,
-      edad: Number(editableData.edad),  // Convertir la edad de nuevo a número
-      telefono : Number(editableData.telefono)
+      edad: Number(editableData.edad), // Convertir la edad de nuevo a número
+      telefono: Number(editableData.telefono),
     };
-  
-    fetch(`https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedUserData)
-    })
-    .then(response => response.json())
-    .then(data => {
-    
-      // actualizar el usuario en el contexto
-      setCurrentUser(data.usuario);
 
-      navigation.navigate("PersonalData");
-    })
-    .catch(error => {
-      console.error("Error actualizando la información:", error);
-      setError("Error al actualizar la información");
-    });
+    fetch(
+      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // actualizar el usuario en el contexto
+        setCurrentUser(data.usuario);
+
+        navigation.navigate("PersonalData");
+      })
+      .catch((error) => {
+        console.error("Error actualizando la información:", error);
+        setError("Error al actualizar la información");
+      });
   };
-  
-  
+
   return (
     <>
       <View style={styles.container}>
@@ -104,7 +113,7 @@ const MorePersonalData = ({ navigation }) => {
               <TouchableOpacity onPress={() => handlePressPic()}>
                 <FontAwesome5
                   name="user-edit"
-                  size={screenHeight / 4}
+                  size={screenHeight / 6}
                   style={{ color: "#C69AE8" }}
                 />
               </TouchableOpacity>
@@ -114,78 +123,110 @@ const MorePersonalData = ({ navigation }) => {
           )}
         </View>
         <View style={styles.dataContainer}>
-  <TouchableOpacity
-    onPress={() => handleEditInformation()}
-    style={styles.changePic}
-  >
-    <FontAwesome5
-      name="user-edit"
-      size={20}
-      style={{ color: "#9A34EA" }}
-    />
-  </TouchableOpacity>
-  {error && <Text style={{ color: "red" }}>{error}</Text>}
-  <View style={styles.column}>
-    <View style={styles.textContainer}>
-      <Text style={styles.fieldName}>Nombre</Text>
-      <TextInput
-        value={editableData.nombre}
-        onChangeText={(text) => setEditableData(prevState => ({ ...prevState, nombre: text }))}
-        style={styles.inputStyle}
-        placeholder="Nombre"
-      />
-    </View>
-    <View style={styles.textContainer}>
-      <Text style={styles.fieldName}>Apellido</Text>
-      <TextInput
-        value={editableData.apellido}
-        onChangeText={(text) => setEditableData(prevState => ({ ...prevState, apellido: text }))}
-        style={styles.inputStyle}
-        placeholder="Apellido"
-      />
-    </View>
-    <Text style={styles.fieldName}>Edad</Text>
-    <View style={styles.textContainer}>
-      <TextInput 
-        value={editableData.edad}
-        onChangeText={(text) => setEditableData(prevState => ({ ...prevState, edad: text }))}
-        style={styles.inputStyle}
-        placeholder="Edad"
-        keyboardType="numeric"
-      />
-    </View>
-    <Text style={styles.fieldName}>Teléfono</Text>
-    <View style={styles.textContainer}>
-      <TextInput
-        value={editableData.telefono}
-        onChangeText={(text) => setEditableData(prevState => ({ ...prevState, telefono: text }))}
-        style={styles.inputStyle}
-        placeholder="Teléfono"
-        keyboardType="numeric"
-      />
-    </View>
-    <Text style={styles.fieldName}>E-mail</Text>
-    <View style={styles.textContainer}>
-            <TextInput 
-              value={editableData.mail}
-              onChangeText={(text) => setEditableData(prevState => ({ ...prevState, mail: text }))}
-              style={styles.inputStyle}
-              placeholder="E-mail"
-              keyboardType="email-address"
+          <TouchableOpacity
+            onPress={() => handleEditInformation()}
+            style={styles.changePic}
+          >
+            <FontAwesome5
+              name="user-edit"
+              size={20}
+              style={{ color: "#9A34EA" }}
             />
-    </View>
-    <Text style={styles.fieldName}>Descripcion</Text>
-    <View style={styles.textContainer}>
-            <TextInput 
-              value={editableData.descripcion}
-              onChangeText={(text) => setEditableData(prevState => ({ ...prevState, descripcion: text }))}
-              style={styles.inputStyle}
-              placeholder="Descripcion"
-            />
-    </View>
-    
-  </View>
-</View>
+          </TouchableOpacity>
+          {error && <Text style={{ color: "red" }}>{error}</Text>}
+          <View style={styles.column}>
+            <ScrollView >
+              <View style={styles.textContainer}>
+                <Text style={styles.fieldName}>Nombre</Text>
+                <TextInput
+                  value={editableData.nombre}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      nombre: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="Nombre"
+                />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.fieldName}>Apellido</Text>
+                <TextInput
+                  value={editableData.apellido}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      apellido: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="Apellido"
+                />
+              </View>
+              <Text style={styles.fieldName}>Edad</Text>
+              <View style={styles.textContainer}>
+                <TextInput
+                  value={editableData.edad}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      edad: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="Edad"
+                  keyboardType="numeric"
+                />
+              </View>
+              <Text style={styles.fieldName}>Teléfono</Text>
+              <View style={styles.textContainer}>
+                <TextInput
+                  value={editableData.telefono}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      telefono: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="Teléfono"
+                  keyboardType="numeric"
+                />
+              </View>
+              <Text style={styles.fieldName}>E-mail</Text>
+              <View style={styles.textContainer}>
+                <TextInput
+                  value={editableData.mail}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      mail: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                />
+              </View>
+              <Text style={styles.fieldName}>Descripcion</Text>
+              <View style={styles.textContainer}>
+                <TextInput
+                  value={editableData.descripcion}
+                  multiline={true}
+                  onChangeText={(text) =>
+                    setEditableData((prevState) => ({
+                      ...prevState,
+                      descripcion: text,
+                    }))
+                  }
+                  style={styles.inputStyle}
+                  placeholder="Descripcion"
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </View>
       </View>
     </>
   );
@@ -207,25 +248,26 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     aspectRatio: 1,
-    height: screenWidth,
+    height: screenHeight / 4,
     backgroundColor: "white",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   changePic: {
-    alignSelf: "flex-end",
+    top: 10,
+    right: 10,
+    position: "absolute",
   },
   dataContainer: {
     gap: 10,
     backgroundColor: "#eee",
     minHeight: screenHeight / 2,
-    padding: 20,
+    paddingHorizontal: 20,
     width: screenWidth,
   },
   column: {
     justifyContent: "flex-start",
     width: "70%",
-    paddingBottom: 120,
   },
   textContainer: {
     borderColor: "#9A34EA",
@@ -296,7 +338,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 5,
     borderRadius: 5,
   },

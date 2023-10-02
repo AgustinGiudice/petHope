@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 5,
+    backgroundColor: "#F1E0FE",
   },
   header: {
     paddingTop: 30,
@@ -202,9 +203,9 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     gap: 10,
-    backgroundColor: "#F1E0FE",
     minHeight: screenHeight,
     padding: 20,
+    width: "100%",
   },
   textContainer: {
     borderColor: "#9A34EA",
