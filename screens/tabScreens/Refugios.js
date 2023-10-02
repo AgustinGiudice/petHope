@@ -69,6 +69,8 @@ const Refugios = ({ navigation }) => {
 
   return (
     <>
+    <View style={styles.container}>
+
       <FlatList
         data={refugios}
         keyExtractor={(item, index) => index.toString()}
@@ -85,14 +87,15 @@ const Refugios = ({ navigation }) => {
                 <Text
                   style={styles.textoBotonVerMas}
                   onPress={() => openModal(item)}
-                >
+                  >
                   Ver Más
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
-      />
+        />
+        </View>
 
       {/* Modal para mostrar más información del refugio */}
       <Modal
@@ -125,6 +128,9 @@ const Refugios = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor:"#E3E3E3"
+  },
   noticiaContainer: {
     marginTop: Constants.statusBarHeight,
     margin: 10,
