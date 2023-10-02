@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     gap: 10,
     backgroundColor: "#F1E0FE",
-    minHeight: screenHeight / 2,
+    minHeight: screenHeight,
     padding: 20,
   },
   textContainer: {

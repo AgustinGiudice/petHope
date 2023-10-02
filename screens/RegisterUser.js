@@ -36,6 +36,8 @@ const CreateUserForm = ({ navigation }) => {
     tieneNinios: null,
     tieneMascotas: null,
     tuvoMascotas: null,
+    descripcion: "Agregar descripción",
+    fechaDeNacimiento: Date.now(), //Después crear un date selector
   };
   const { setCurrentUser } = useContext(UserContext);
   const [userData, setUserData] = useState(initialUserData);

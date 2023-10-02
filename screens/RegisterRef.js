@@ -20,6 +20,11 @@ const RegisterRef = ({ navigation }) => {
     longitud: null,
     pass: "",
     repeatPass: "",
+    descripcion: "agregar Descripcion",
+    facebook: "facebook.com",
+    instagram: "instagram.com",
+    web: "web.com",
+    linkDonacion: "paypal.com",
   };
   const [refugioData, setRefugioData] = useState(initialData);
   const [region, setRegion] = useState({
