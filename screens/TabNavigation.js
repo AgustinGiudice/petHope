@@ -8,6 +8,7 @@ import ShowPets from "./tabScreens/ShowPets";
 import paw from "../assets/paw.png";
 import paw2 from "../assets/paw2.png";
 import { View, Image, Animated, useWindowDimensions } from "react-native";
+import OtrasNavigation from "./OtrasNavigation";
 import OtrasNavegaciones from "./OtrasNavegaciones";
 import MatchNavigation from "./MatchNavigation";
 import Refugios from "./tabScreens/Refugios";
@@ -146,7 +147,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Otro"
-          component={DrawerNavigation}
+          component={OtrasNavigation}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
