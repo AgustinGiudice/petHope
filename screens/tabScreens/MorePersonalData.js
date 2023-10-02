@@ -37,6 +37,7 @@ const MorePersonalData = ({ navigation }) => {
 
   const [profilePic, setProfilePic] = useState(userData.pic);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(true);
   useEffect(() => {});
 
   const handlePressPic = () => {
@@ -45,6 +46,10 @@ const MorePersonalData = ({ navigation }) => {
   };
 
   const handleEditInformation = () => {
+   
+  };
+
+  const handleSubmit = () => {
     const updatedUserData = {
       ...editableData,
       edad: Number(editableData.edad), // Convertir la edad de nuevo a número
@@ -72,7 +77,7 @@ const MorePersonalData = ({ navigation }) => {
         console.error("Error actualizando la información:", error);
         setError("Error al actualizar la información");
       });
-  };
+  }
 
   return (
     <>
@@ -193,6 +198,11 @@ const MorePersonalData = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
+            {isEditing && ( // Renderizar el botón "Confirmar" solo cuando la edición está habilitada
+          <TouchableOpacity onPress={() => handleSubmit()} style={styles.confirmButton}>
+            <Text style={styles.confirmButtonText}>Confirmar</Text>
+          </TouchableOpacity>
+        )}
           </View>
         </View>
       </View>
@@ -304,6 +314,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 35,
+  },
+  confirmButton: {
+    backgroundColor: "#9A34EA",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: 5,
+    alignSelf: "center",
+    marginTop: 10,
   },
   
 });
