@@ -135,7 +135,7 @@ const MorePersonalData = ({ navigation }) => {
           </TouchableOpacity>
           {error && <Text style={{ color: "red" }}>{error}</Text>}
           <View style={styles.column}>
-            <ScrollView >
+            <ScrollView collapsable={true}>
               <View style={styles.textContainer}>
                 <Text style={styles.fieldName}>Nombre</Text>
                 <TextInput
@@ -260,14 +260,15 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     gap: 10,
-    backgroundColor: "#eee",
-    minHeight: screenHeight / 2,
+    backgroundColor: "#C69AE8",
+    minHeight: screenHeight / 1.5,
     paddingHorizontal: 20,
     width: screenWidth,
   },
   column: {
     justifyContent: "flex-start",
     width: "70%",
+    maxHeight: screenHeight / 1.5 - 60,
   },
   textContainer: {
     borderColor: "#9A34EA",
