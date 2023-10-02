@@ -14,8 +14,6 @@ const PersonalData = ({ navigation }) => {
   const userData = currentUser;
   currentUser.edad = 30;
   currentUser.completado = 100;
-  currentUser.descripcion =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit ligula, tincidunt quis ante at, bibendum placerat odio. Mauris eget tristique nunc. Aliquam posuere erat pellentesque cursus semper. Nam id mauris nec lectus rhoncus blandit a a sapien. ";
   currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
