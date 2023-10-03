@@ -76,7 +76,9 @@ const ShowPets = ({ navigation }) => {
     rangoDeEdad: currentUser.edadPreferida,
   });
   // Construye la URL con los parámetros
-  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${currentUser.ubicacion.coordinates[0]}&latitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+  // const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&longitud=${currentUser.ubicacion.coordinates[0]}&latitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
+  const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[1]}&longitud=${currentUser.ubicacion.coordinates[0]}&distancia=10000000&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
+
 
   const getUserData = async () => {
     try {
