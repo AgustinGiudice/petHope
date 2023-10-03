@@ -12,8 +12,7 @@ const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { currentUser } = useContext(UserContext);
   const userData = currentUser;
-  currentUser.edad = 30;
-  currentUser.completado = 100;
+  currentUser.edad = calcularEdad(currentUser.fechaDeNacimiento);
   currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
@@ -221,5 +220,16 @@ const styles = StyleSheet.create({
     borderColor: "#9A34EA",
   },
 });
+function calcularEdad(fechaNacimiento) {
+  const fechaNacimientoDate = new Date(fechaNacimiento);
+  const fechaActual = new Date();
 
+  // Calcula la diferencia en milisegundos
+  const diferencia = fechaActual - fechaNacimientoDate;
+
+  // Convierte la diferencia en años
+  const edad = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365.25));
+
+  return edad;
+}
 export default PersonalData;

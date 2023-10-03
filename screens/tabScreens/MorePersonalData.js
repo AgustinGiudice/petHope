@@ -160,7 +160,6 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="edad"
                   placeholder="Edad"
-                  
                 />
               </View>
               <Text style={styles.fieldName}>Teléfono</Text>
@@ -170,7 +169,6 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="telefono"
                   placeholder="Teléfono"
-
                 />
               </View>
               <Text style={styles.fieldName}>E-mail</Text>
@@ -188,7 +186,7 @@ const MorePersonalData = ({ navigation }) => {
                   value={editableData.descripcion}
                   setValue={setEditableData}
                   atributo="descripcion"
-                  placeholder="Descripcion"                 
+                  placeholder="Descripcion"
                 />
               </View>
             </ScrollView>
@@ -227,7 +225,7 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     gap: 10,
-    backgroundColor: "#C69AE8",
+    backgroundColor: "#eee",
     minHeight: screenHeight / 1.5,
     paddingHorizontal: 20,
     width: screenWidth,
@@ -302,7 +300,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 35,
   },
-  
 });
 
 export default MorePersonalData;

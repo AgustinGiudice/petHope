@@ -7,6 +7,7 @@ import {
   Easing,
   View,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -22,7 +23,20 @@ const RegisterModal = ({ children, visible, setVisible }) => {
     setError([]);
     if (children.length >= 1) {
       children.forEach((element) => {
-        if (element.props.value === "") {
+        if (!element) {
+          return;
+        }
+        if (
+          element.props.placeholder === "fecha" &&
+          element.props.value === ""
+        ) {
+          setError((prev) => [...prev, `Por favor elegir una fecha`]);
+          hasEmptyValues = true;
+        }
+        if (
+          element.props.value === "" &&
+          element.props.placeholder !== "fecha"
+        ) {
           setError((prev) => [
             ...prev,
             `Completar el campo de ${element.props.placeholder}`,
@@ -56,7 +70,6 @@ const RegisterModal = ({ children, visible, setVisible }) => {
         }
       });
     }
-
     if (!hasEmptyValues && passMatch) {
       setVisible((prev) => prev + 1);
     }
@@ -113,7 +126,7 @@ const RegisterModal = ({ children, visible, setVisible }) => {
     <Modal
       transparent={false}
       visible={visible}
-      onRequestClose={() => setVisible((prev) => prev - 1)}
+      onRequestClose={() => setVisible((prev) => prev - 1)}//ojo con esto
     >
       <Animated.View
         style={[
@@ -145,7 +158,9 @@ const RegisterModal = ({ children, visible, setVisible }) => {
           : null}
         {children.key == 99 ? (
           <View style={styles.containerButtons}>
-            <Text>Completar más tarde</Text>
+            <TouchableOpacity onPress={() => setVisible(21)}>
+              <Text>Completar más tarde</Text>
+            </TouchableOpacity>
             <FontAwesome
               name="arrow-right"
               size={40}
