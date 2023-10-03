@@ -24,17 +24,7 @@ const PersonalData = ({ navigation }) => {
     setModalVisible(true);
   };
 
-  const handleLogout = async () => {
-    try {
-      // Eliminar el token de AsyncStorage
-      await AsyncStorage.removeItem("token");
-      console.log("TOKEN ELIMINADO");
-      // Redirigir al usuario a la pantalla de inicio de sesión
-      navigation.navigate("LoginScreen"); // Reemplaza "Login" con la pantalla de inicio de sesión real en tu aplicación
-    } catch (error) {
-      console.error("Error al intentar cerrar sesión:", error);
-    }
-  };
+
 
   return (
     <>
@@ -125,9 +115,6 @@ const PersonalData = ({ navigation }) => {
           <View style={styles.textContainer}>
             <Text>{userData.descripcion}</Text>
           </View>
-          <TouchableOpacity>
-            <Text onPress={handleLogout}>CERRAR SESION</Text>
-          </TouchableOpacity>
         </View>
         <FontAwesome
           name="arrow-right"

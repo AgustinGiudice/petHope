@@ -148,7 +148,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Otro"
-          component={DatePickerComponent}
+          component={OtrasNavigation}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
