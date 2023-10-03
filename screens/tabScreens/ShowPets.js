@@ -5,7 +5,13 @@ import {
   loadCachedData,
   clearCache,
 } from "../../hooks/useCache";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import ButtonFilters from "../../components/ButtonFilters";
 import ItemList from "../../components/ItemList";
 import SPButtons from "../../components/SPbuttons";
@@ -151,7 +157,22 @@ const ShowPets = ({ navigation }) => {
             { minWidth: screenWidth, minHeight: screenHeight - 60 },
           ]}
         >
-          {mascotas.length === 0 ? (
+          {currentUser.completado !== 66 ? (
+            <View>
+              <Text>
+                Sin completar el formulario no te podemos mostrar las mascotas
+                que son ideales para vos
+              </Text>
+              <TouchableOpacity
+                style={styles.surveyButton}
+                onPress={() => {
+                  navigation.navigate("RegisterUser", { index: 10 });
+                }}
+              >
+                <Text style={styles.surveyButtonText}>Formulario</Text>
+              </TouchableOpacity>
+            </View>
+          ) : mascotas.length === 0 ? (
             <View style={styles.buttonFilters}>
               <Text styles={styles.sinMascotas}>
                 No hay mascotas para mostrar
@@ -339,6 +360,17 @@ const styles = StyleSheet.create({
     top: 19,
     left: 18,
     fontSize: 12,
+  },
+  surveyButton: {
+    backgroundColor: "#9A34EA",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    alignSelf: "center",
+    marginTop: 30,
+  },
+  surveyButtonText: {
+    color: "white",
   },
 });
 export default ShowPets;

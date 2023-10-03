@@ -5,7 +5,7 @@ const RegisterChoice = ({ navigation }) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.choiceButton}
-        onPress={() => navigation.navigate("RegisterUser")}
+        onPress={() => navigation.navigate("RegisterUser", { index: null })}
       >
         <Text style={styles.text}>¡Quiero adoptar!</Text>
       </TouchableOpacity>

@@ -19,7 +19,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
-const CreateUserForm = ({ navigation }) => {
+const CreateUserForm = ({ navigation, route }) => {
+  const { currentUser } = useContext(UserContext);
+  const { index } = route.params;
   const initialUserData = {
     nombre: "",
     apellido: "",
@@ -44,9 +46,9 @@ const CreateUserForm = ({ navigation }) => {
     fechaDeNacimiento: null, //Después crear un date selector
   };
   const { setCurrentUser } = useContext(UserContext);
-  const [userData, setUserData] = useState(initialUserData);
+  const [userData, setUserData] = useState(currentUser || initialUserData);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [indexModal, setIndexModal] = useState(1);
+  const [indexModal, setIndexModal] = useState(index || 1);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingFetch, setLoadingFetch] = useState(false);
   const [date, setDate] = useState(null);
@@ -80,7 +82,40 @@ const CreateUserForm = ({ navigation }) => {
       setIsLoading(false);
     })();
   }, []);
+  const handleActualizarDatos = () => {
+    setIsLoading(true);
+    console.log(userData);
+    fetch(
+      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        data.usuario.profilePic && data.usuario.tuvoMascotas
+          ? (data.usuario.completado = 100)
+          : data.usuario.profilePic || data.usuario.tuvoMascotas
+          ? (data.usuario.completado = 66)
+          : (data.usuario.completado = 33);
 
+        // actualizar el usuario en el contexto
+        setCurrentUser(data.usuario);
+
+        navigation.navigate("Tabs");
+      })
+      .catch((error) => {
+        console.error("Error actualizando la información:", error);
+        setError("Error al actualizar la información");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const handleLogin = () => {
     fetch(
       "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
@@ -95,6 +130,11 @@ const CreateUserForm = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.token && data.usuario) {
+          data.usuario.profilePic && data.usuario.tuvoMascotas
+            ? (data.usuario.completado = 100)
+            : data.usuario.profilePic || data.usuario.tuvoMascotas
+            ? (data.usuario.completado = 66)
+            : (data.usuario.completado = 33);
           const data_user = {
             token: data.token,
             usuario: data.usuario,
@@ -137,7 +177,9 @@ const CreateUserForm = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         // Reiniciar los campos del formulario después de guardar los datos
-        handleLogin();
+        if (!index) {
+          handleLogin();
+        }
       })
       .catch((error) => {
         console.error("Error al guardar el usuario:", error);
@@ -435,8 +477,8 @@ const CreateUserForm = ({ navigation }) => {
               const { latitude, longitude } = e.nativeEvent.coordinate;
               setRegion({ ...region, latitude, longitude });
               const newData = userData;
-              newData.latitud = location.coords.latitude;
-              newData.longitud = location.coords.longitude;
+              newData.latitud = latitude;
+              newData.longitud = longitude;
               setUserData(newData);
             }}
           />
@@ -456,8 +498,11 @@ const CreateUserForm = ({ navigation }) => {
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
           </Text>
+          {console.log(userData)}
           <Text>Ya podes encontrar tu mascota soñada</Text>
-          <TouchableOpacity onPress={handleSubmit}>
+          <TouchableOpacity
+            onPress={index ? handleActualizarDatos : handleSubmit}
+          >
             {loadingFetch ? (
               <ActivityIndicator color={"white"} />
             ) : (
@@ -468,19 +513,33 @@ const CreateUserForm = ({ navigation }) => {
       </RegisterModal>
       <RegisterModal visible={indexModal === 21} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
-          <Text style={styles.title}>¡Muchas gracias!</Text>
-          <Text>Ya podes continuar</Text>
-          <Text>
-            Acordate que, hasta que no completes el formulario, no vas a ver
-            mascotas
-          </Text>
-          <TouchableOpacity onPress={handleSubmit}>
-            {loadingFetch ? (
-              <ActivityIndicator color={"white"} />
-            ) : (
-              <Text style={styles.start}>Continuar</Text>
-            )}
-          </TouchableOpacity>
+          {!index ? (
+            <>
+              <Text style={styles.title}>¡Muchas gracias!</Text>
+              <Text>Ya podes continuar</Text>
+              <Text>
+                Acordate que, hasta que no completes el formulario, no vas a ver
+                mascotas
+              </Text>
+              <TouchableOpacity onPress={handleSubmit}>
+                {loadingFetch ? (
+                  <ActivityIndicator color={"white"} />
+                ) : (
+                  <Text style={styles.start}>Continuar</Text>
+                )}
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <Text>
+                Te pedimos que llenes el formulario a la brevedad para poder
+                disfrutar todas las funcionalidades de PetHope
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Tabs")}>
+                <Text style={styles.start}>Volver</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </RegisterModal>
     </View>

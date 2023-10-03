@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput } from "react-native";
 
-const Input = ({ value, setValue, placeholder, atributo }) => {
+const Input = ({ value, setValue, placeholder, atributo, disable }) => {
   return (
     <TextInput
       style={styles.input}
@@ -17,7 +17,14 @@ const Input = ({ value, setValue, placeholder, atributo }) => {
       secureTextEntry={atributo === "pass" || atributo === "repeatPass"}
       placeholder={placeholder}
       placeholderTextColor={"#9A34EA"}
-      keyboardType={ atributo === "edad" || atributo === "telefono" ? "numeric" : atributo === "mail" ? "email-address" :"default"}
+      keyboardType={
+        atributo === "edad" || atributo === "telefono"
+          ? "numeric"
+          : atributo === "mail"
+          ? "email-address"
+          : "default"
+      }
+      editable={disable ? false : true}
     />
   );
 };

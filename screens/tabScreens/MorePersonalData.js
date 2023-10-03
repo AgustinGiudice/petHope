@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
@@ -21,7 +22,6 @@ const MorePersonalData = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const userData = currentUser;
   console.log(userData);
-
   currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
@@ -30,14 +30,14 @@ const MorePersonalData = ({ navigation }) => {
     apellido: userData.apellido,
     edad: String(userData.edad),
     mail: userData.mail,
-    telefono: userData.telefono,
+    telefono: String(userData.telefono),
     descripcion: userData.descripcion,
   });
 
   const [profilePic, setProfilePic] = useState(userData.pic);
   const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(true);
-  useEffect(() => {});
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handlePressPic = () => {
     setModalVisible(true);
@@ -45,10 +45,11 @@ const MorePersonalData = ({ navigation }) => {
   };
 
   const handleEditInformation = () => {
-   
+    setIsEditing(true);
   };
 
   const handleSubmit = () => {
+    setLoading(true);
     const updatedUserData = {
       ...editableData,
       edad: Number(editableData.edad), // Convertir la edad de nuevo a número
@@ -67,6 +68,12 @@ const MorePersonalData = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+        data.usuario.profilePic && data.usuario.tuvoMascotas
+          ? (data.usuario.completado = 100)
+          : data.usuario.profilePic || data.usuario.tuvoMascotas
+          ? (data.usuario.completado = 66)
+          : (data.usuario.completado = 33);
+
         // actualizar el usuario en el contexto
         setCurrentUser(data.usuario);
 
@@ -75,8 +82,11 @@ const MorePersonalData = ({ navigation }) => {
       .catch((error) => {
         console.error("Error actualizando la información:", error);
         setError("Error al actualizar la información");
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }
+  };
 
   return (
     <>
@@ -132,12 +142,9 @@ const MorePersonalData = ({ navigation }) => {
             onPress={() => handleEditInformation()}
             style={styles.changePic}
           >
-            <FontAwesome5
-              name="user-edit"
-              size={20}
-              style={{ color: "#9A34EA" }}
-            />
+            <FontAwesome5 name="edit" size={30} style={{ color: "#9A34EA" }} />
           </TouchableOpacity>
+
           {error && <Text style={{ color: "red" }}>{error}</Text>}
           <View style={styles.column}>
             <ScrollView collapsable={true}>
@@ -148,6 +155,7 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="nombre"
                   placeholder="Nombre"
+                  disable={!isEditing}
                 />
               </View>
               <View style={styles.textContainer}>
@@ -156,6 +164,7 @@ const MorePersonalData = ({ navigation }) => {
                   value={editableData.apellido}
                   setValue={setEditableData}
                   atributo="apellido"
+                  disable={!isEditing}
                 />
               </View>
               <Text style={styles.fieldName}>Edad</Text>
@@ -165,6 +174,7 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="edad"
                   placeholder="Edad"
+                  disable={!isEditing}
                 />
               </View>
               <Text style={styles.fieldName}>Teléfono</Text>
@@ -174,6 +184,7 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="telefono"
                   placeholder="Teléfono"
+                  disable={!isEditing}
                 />
               </View>
               <Text style={styles.fieldName}>E-mail</Text>
@@ -183,6 +194,7 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="mail"
                   placeholder="E-mail"
+                  disable={!isEditing}
                 />
               </View>
               <Text style={styles.fieldName}>Descripcion</Text>
@@ -192,16 +204,34 @@ const MorePersonalData = ({ navigation }) => {
                   setValue={setEditableData}
                   atributo="descripcion"
                   placeholder="Descripcion"
+                  disable={!isEditing}
                 />
               </View>
             </ScrollView>
-            {isEditing && ( // Renderizar el botón "Confirmar" solo cuando la edición está habilitada
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.confirmButton}>
-            <Text style={styles.confirmButtonText}>Confirmar</Text>
-          </TouchableOpacity>
-        )}
           </View>
         </View>
+
+        {isEditing ? ( // Renderizar el botón "Confirmar" solo cuando la edición está habilitada
+          <TouchableOpacity
+            onPress={() => handleSubmit()}
+            style={styles.confirmButton}
+          >
+            {loading ? (
+              <ActivityIndicator color={"white"} />
+            ) : (
+              <Text style={styles.confirmButtonText}>Confirmar</Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          !userData.tieneMascotas && (
+            <TouchableOpacity
+              onPress={() => handleSubmit()}
+              style={styles.surveyButton}
+            >
+              <Text style={styles.confirmButtonText}>Cuestionario</Text>
+            </TouchableOpacity>
+          )
+        )}
       </View>
     </>
   );
@@ -312,14 +342,28 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: "#9A34EA",
+    position: "absolute",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginHorizontal: 5,
     alignSelf: "center",
-    marginTop: 10,
+    right: 10,
+    bottom: 20,
+    minWidth: 120,
   },
-  
+  surveyButton: {
+    backgroundColor: "#9A34EA",
+    position: "absolute",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    alignSelf: "center",
+    right: 10,
+    bottom: 20,
+  },
+  confirmButtonText: {
+    color: "white",
+  },
 });
 
 export default MorePersonalData;
