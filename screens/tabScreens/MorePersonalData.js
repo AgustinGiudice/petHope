@@ -16,13 +16,15 @@ import { UserContext } from "../../context/UserContext";
 import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
 import Input from "../../components/Input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const userData = currentUser;
-  console.log(userData);
+
   currentUser.pic = null;
+  console.log(currentUser);
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
   const [editableData, setEditableData] = useState({
@@ -55,37 +57,40 @@ const MorePersonalData = ({ navigation }) => {
       edad: Number(editableData.edad), // Convertir la edad de nuevo a número
       telefono: Number(editableData.telefono),
     };
+    AsyncStorage.getItem("token").then((cache) => {
+      const token = JSON.parse(cache);
+      fetch(
+        `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token.token}`,
+          },
+          body: JSON.stringify(updatedUserData),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.usuario.profilePic && data.usuario.tuvoMascotas
+            ? (data.usuario.completado = 100)
+            : data.usuario.profilePic || data.usuario.tuvoMascotas
+            ? (data.usuario.completado = 66)
+            : (data.usuario.completado = 33);
 
-    fetch(
-      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedUserData),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        data.usuario.profilePic && data.usuario.tuvoMascotas
-          ? (data.usuario.completado = 100)
-          : data.usuario.profilePic || data.usuario.tuvoMascotas
-          ? (data.usuario.completado = 66)
-          : (data.usuario.completado = 33);
+          // actualizar el usuario en el contexto
+          setCurrentUser(data.usuario);
 
-        // actualizar el usuario en el contexto
-        setCurrentUser(data.usuario);
-
-        navigation.navigate("PersonalData");
-      })
-      .catch((error) => {
-        console.error("Error actualizando la información:", error);
-        setError("Error al actualizar la información");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+          navigation.navigate("PersonalData");
+        })
+        .catch((error) => {
+          console.error("Error actualizando la información:", error);
+          setError("Error al actualizar la información");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   };
 
   return (

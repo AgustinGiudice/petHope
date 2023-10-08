@@ -76,8 +76,8 @@ const CreateUserForm = ({ navigation, route }) => {
         longitude: location.coords.longitude,
       });
       const newData = userData;
-      newData.latitud = location.coords.latitude;
-      newData.longitud = location.coords.longitude;
+      newData.latitud = region.latitude;
+      newData.longitud = region.longitude;
       setUserData(newData);
       setIsLoading(false);
     })();
@@ -177,6 +177,7 @@ const CreateUserForm = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((data) => {
         // Reiniciar los campos del formulario después de guardar los datos
+        console.log("hasta aca llega", data);
         if (!index) {
           handleLogin();
         }
@@ -185,7 +186,8 @@ const CreateUserForm = ({ navigation, route }) => {
         console.error("Error al guardar el usuario:", error);
         console.log(userData);
         // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
-      });
+      })
+      .finally(setLoadingFetch(false));
   };
   if (isLoading) {
     <LoadingComponent />;
@@ -521,11 +523,11 @@ const CreateUserForm = ({ navigation, route }) => {
                 Acordate que, hasta que no completes el formulario, no vas a ver
                 mascotas
               </Text>
-              <TouchableOpacity onPress={handleSubmit}>
+              <TouchableOpacity onPress={handleSubmit} style={styles.start}>
                 {loadingFetch ? (
                   <ActivityIndicator color={"white"} />
                 ) : (
-                  <Text style={styles.start}>Continuar</Text>
+                  <Text style={{ color: "white" }}>Continuar</Text>
                 )}
               </TouchableOpacity>
             </>
@@ -535,8 +537,11 @@ const CreateUserForm = ({ navigation, route }) => {
                 Te pedimos que llenes el formulario a la brevedad para poder
                 disfrutar todas las funcionalidades de PetHope
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Tabs")}>
-                <Text style={styles.start}>Volver</Text>
+              <TouchableOpacity
+                style={styles.start}
+                onPress={() => navigation.navigate("Tabs")}
+              >
+                <Text style={{ color: "white" }}>Volver</Text>
               </TouchableOpacity>
             </>
           )}
@@ -566,8 +571,7 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 10,
     borderRadius: 5,
-    textAlign: "center",
-    color: "white",
+    alignItems: "center",
   },
   map: {
     width: "90%",
