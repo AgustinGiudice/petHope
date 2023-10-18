@@ -82,21 +82,24 @@ const CreateUserForm = ({ navigation, route }) => {
       setIsLoading(false);
     })();
   }, []);
-  const handleActualizarDatos = () => {
+  const handleActualizarDatos = async () => {
     setIsLoading(true);
-    console.log(userData);
+    const cache = await AsyncStorage.getItem("token");
+    console.log(cache.token);
     fetch(
       `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${cache.token}`,
         },
         body: JSON.stringify(userData),
       }
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         data.usuario.profilePic && data.usuario.tuvoMascotas
           ? (data.usuario.completado = 100)
           : data.usuario.profilePic || data.usuario.tuvoMascotas
@@ -110,7 +113,7 @@ const CreateUserForm = ({ navigation, route }) => {
       })
       .catch((error) => {
         console.error("Error actualizando la información:", error);
-        setError("Error al actualizar la información");
+        setErrorMsg("Error al actualizar la información");
       })
       .finally(() => {
         setIsLoading(false);

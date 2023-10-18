@@ -13,6 +13,7 @@ import { LogBox } from "react-native";
 
 import LoadingComponent from "../components/LoadingComponent";
 import { UserContext } from "../context/UserContext";
+import { TokenContext } from "../context/TokenContext";
 import {
   matchesCount,
   CountMatchesContext,
@@ -21,13 +22,13 @@ import {
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
 
-
 function MainNavigation() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { setCurrentUser } = useContext(UserContext);
   const { setMatchesCount } = useContext(CountMatchesContext);
+  const { setToken } = useContext(TokenContext);
   // .then((token) => {
 
   //   // request a la api para traer el count de notificaciones de matches
@@ -46,13 +47,13 @@ function MainNavigation() {
           console.log("TOKEN:" + token);
           const token_parsed = JSON.parse(token);
           setIsLoggedIn(true);
-
           const usuario = token_parsed.usuario;
 
           console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
+          setToken(token_parsed.token);
           const count = token_parsed.matches;
-          console.log(count);
+          console.log(count); 
           setMatchesCount(count);
         } else {
           console.log("no hay token");

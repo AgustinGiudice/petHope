@@ -24,7 +24,6 @@ const MorePersonalData = ({ navigation }) => {
   const userData = currentUser;
 
   currentUser.pic = null;
-  console.log(currentUser);
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
   const [editableData, setEditableData] = useState({
