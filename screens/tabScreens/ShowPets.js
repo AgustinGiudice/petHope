@@ -23,12 +23,10 @@ import Constants from "expo-constants";
 import LoadingComponent from "../../components/LoadingComponent";
 import InfoPetModal from "../../components/InfoPetModal";
 import { fetchData } from "../../hooks/useFetch";
-import { TokenContext } from "../../context/TokenContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
-  const { token } = useContext(TokenContext);
 
   const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
@@ -110,7 +108,7 @@ const ShowPets = ({ navigation }) => {
       try {
         AsyncStorage.getItem("token").then(async (cache) => {
           const token = JSON.parse(cache);
-
+          console.log(token);
           const data = await fetchData(
             url,
             token.token,
