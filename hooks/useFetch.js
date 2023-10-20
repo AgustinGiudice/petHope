@@ -1,9 +1,16 @@
-export async function fetchData(url, token, method, body, navigation) {
+export async function fetchData(
+  url,
+  token,
+  method,
+  body,
+  navigation,
+  contentType
+) {
   try {
     const response = await fetch(url, {
       method,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": contentType,
         Authorization: `Bearer ${token}`,
       },
       body,
