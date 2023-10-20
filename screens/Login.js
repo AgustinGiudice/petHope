@@ -1,10 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
@@ -15,22 +10,19 @@ const LoginScreen = ({ navigation }) => {
   const [error, setError] = useState(""); // Estado para el mensaje de error
   const { setCurrentUser } = useContext(UserContext);
   const { setToken } = useContext(TokenContext);
+  const [isRefugio, setIsRefugio] = useState(false);
 
   const handleLogin = () => {
-
     const url = isRefugio
       ? "https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios/login"
       : "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login";
-    fetch(
-      url,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    )
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.token && data.usuario) {
@@ -76,7 +68,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      
       <Text style={styles.title}>Iniciar Sesión</Text>
       {/* LOGUEARSE COMO USUARIO O REFUGIO */}
       <TouchableOpacity
@@ -115,7 +106,6 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
       </Text>
-
     </View>
   );
 };
