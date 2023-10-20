@@ -13,13 +13,18 @@ import { TokenContext } from "../context/TokenContext";
 const LoginScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({ mail: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
+  const [isRefugio, setIsRefugio] = useState(false); //como se quiere loguear
 
   const { setCurrentUser } = useContext(UserContext);
   const { setToken } = useContext(TokenContext);
 
   const handleLogin = () => {
+
+    const url = isRefugio
+      ? "https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios/login"
+      : "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login";
     fetch(
-      "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
+      url,
       {
         method: "POST",
         headers: {
@@ -73,7 +78,20 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      
       <Text style={styles.title}>Iniciar Sesión</Text>
+      {/* LOGUEARSE COMO USUARIO O REFUGIO */}
+      <TouchableOpacity
+        style={styles.switchButton}
+        onPress={() => setIsRefugio(!isRefugio)}
+      >
+        <Text style={{ color: "black" }}>
+          {isRefugio
+            ? "Iniciar sesión como Usuario Normal"
+            : "Iniciar sesión como Refugio"}
+        </Text>
+      </TouchableOpacity>
+
       <View style={styles.inputsContainer}>
         <Input
           value={userData.email}
@@ -99,6 +117,7 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
       </Text>
+
     </View>
   );
 };
