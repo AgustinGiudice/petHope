@@ -13,7 +13,6 @@ import { TokenContext } from "../context/TokenContext";
 const LoginScreen = ({ navigation }) => {
   const [userData, setUserData] = useState({ mail: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
-
   const { setCurrentUser } = useContext(UserContext);
   const { setToken } = useContext(TokenContext);
 

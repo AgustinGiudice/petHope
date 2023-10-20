@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
 import { UserContext } from "../../context/UserContext";
@@ -12,20 +11,51 @@ const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { currentUser } = useContext(UserContext);
   const userData = currentUser;
-  currentUser.edad = calcularEdad(currentUser.fechaDeNacimiento);
-  // currentUser.pic = null;
-  //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
+  if (!currentUser.estado) {
+    currentUser.edad = calcularEdad(currentUser.fechaDeNacimiento);
+  }
   const [profilePic, setProfilePic] = useState(userData.imagen);
+
+  const porcentajes = (
+    <View style={styles.containerCompletado}>
+      <Text style={styles.textoCompletado}>
+        {userData.completado}% COMPLETADO
+      </Text>
+      <View style={styles.barContainer}>
+        <View
+          style={[
+            styles.bar,
+            userData.completado >= 33
+              ? { backgroundColor: "#C69AE8" }
+              : { backgroundColor: "white" },
+          ]}
+        />
+        <View
+          style={[
+            styles.bar,
+            userData.completado >= 66
+              ? { backgroundColor: "#C69AE8" }
+              : { backgroundColor: "white" },
+          ]}
+        />
+        <View
+          style={[
+            styles.bar,
+            userData.completado >= 99
+              ? { backgroundColor: "#C69AE8" }
+              : { backgroundColor: "white" },
+          ]}
+        />
+      </View>
+    </View>
+  );
 
   useEffect(() => {});
 
   const handlePressPic = () => {
     setModalVisible(true);
   };
-
-
-
   return (
     <>
       <View style={styles.container}>
@@ -46,37 +76,7 @@ const PersonalData = ({ navigation }) => {
           />
         )}
         <View style={styles.header}>
-          <View style={styles.containerCompletado}>
-            <Text style={styles.textoCompletado}>
-              {userData.completado}% COMPLETADO
-            </Text>
-            <View style={styles.barContainer}>
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 33
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 66
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-              <View
-                style={[
-                  styles.bar,
-                  userData.completado >= 99
-                    ? { backgroundColor: "#C69AE8" }
-                    : { backgroundColor: "white" },
-                ]}
-              />
-            </View>
-          </View>
+          {!currentUser.estado && porcentajes}
           {profilePic === null ? (
             <View>
               <TouchableOpacity onPress={() => handlePressPic()}>
@@ -110,7 +110,11 @@ const PersonalData = ({ navigation }) => {
             </Text>
           </View>
           <View style={styles.textContainer}>
-            <Text>{userData.edad}</Text>
+            {currentUser.estado ? (
+              <Text>{userData.mail}</Text>
+            ) : (
+              <Text>{userData.edad}</Text>
+            )}
           </View>
           <View style={styles.textContainer}>
             <Text>{userData.descripcion}</Text>

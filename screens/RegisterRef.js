@@ -47,11 +47,11 @@ const RegisterRef = ({ navigation }) => {
       setRegion({
         ...region,
         latitude: location.coords.latitude,
-        longitude: location.coords.latitude,
+        longitude: location.coords.longitude,
       });
       const newData = refugioData;
       newData.latitud = location.coords.latitude;
-      newData.longitud = location.coords.latitude;
+      newData.longitud = location.coords.longitude;
       setRefugioData(newData);
       setIsLoading(false);
     })();
