@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 
 const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
@@ -90,7 +90,9 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
             console.log(data);
             if (data.imageUrl){
               setImages(data.imageUrl);
+              setCurrentUser({...currentUser, imagen: data.imageUrl});
             }
+
           })
           .catch(error => {
             console.error(error);
