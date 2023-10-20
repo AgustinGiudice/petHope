@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { format, parse, set } from "date-fns";
 import { BASE_URL } from "@env";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,11 +7,9 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  ActivityIndicator,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { screenWidth } from "../../hooks/useScreenResize";
 import {
   getAnimalDescripcion,

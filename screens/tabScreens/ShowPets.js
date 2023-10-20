@@ -23,7 +23,6 @@ import Constants from "expo-constants";
 import LoadingComponent from "../../components/LoadingComponent";
 import InfoPetModal from "../../components/InfoPetModal";
 import { fetchData } from "../../hooks/useFetch";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TokenContext } from "../../context/TokenContext";
 
 const ShowPets = ({ navigation }) => {

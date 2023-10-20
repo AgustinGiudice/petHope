@@ -14,7 +14,6 @@ import Radio from "../components/Radio";
 import LoadingComponent from "../components/LoadingComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
-// import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";

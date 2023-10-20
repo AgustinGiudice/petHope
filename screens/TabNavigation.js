@@ -2,19 +2,16 @@ import { React, useRef, useState, useContext, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 // SCREENS
-import LoginScreen from "./Login";
 import ProfileNavigation from "./ProfileNavigation";
 import ShowPets from "./tabScreens/ShowPets";
 import paw from "../assets/paw.png";
 import paw2 from "../assets/paw2.png";
 import { View, Image, Animated, useWindowDimensions } from "react-native";
 import OtrasNavigation from "./OtrasNavigation";
-import OtrasNavegaciones from "./OtrasNavegaciones";
 import MatchNavigation from "./MatchNavigation";
 import Refugios from "./tabScreens/Refugios";
-import DrawerNavigation from "./DrawerNavigation";
 import { CountMatchesContext } from "../context/CountMatchesContext";
-import DatePickerComponent from "./tabScreens/DatePickerComponent";
+
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {

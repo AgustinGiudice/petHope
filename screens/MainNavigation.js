@@ -8,7 +8,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState, useContext } from "react";
 import Chat from "./tabScreens/Chat";
-import DrawerNavigation from "./DrawerNavigation";
 import { LogBox } from "react-native";
 
 import LoadingComponent from "../components/LoadingComponent";

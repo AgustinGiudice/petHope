@@ -4,10 +4,6 @@ import { CountMatchesContext } from "../context/CountMatchesContext";
 import { useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const { setCurrentUser } = useContext(UserContext);
-const { setToken } = useContext(TokenContext);
-const { setMatchesCount } = useContext(CountMatchesContext);
-
 export async function fetchData(
   url,
   token,
@@ -16,6 +12,9 @@ export async function fetchData(
   navigation,
   contentType
 ) {
+  const { setCurrentUser } = useContext(UserContext);
+  const { setToken } = useContext(TokenContext);
+  const { setMatchesCount } = useContext(CountMatchesContext);
   try {
     const response = await fetch(url, {
       method,
