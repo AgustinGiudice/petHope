@@ -41,3 +41,18 @@ Formularios:
 - Usuario: datos del Power
 - Refugio: datos del refugio
 - Mascota: datos de la mascota (Formulario a parte de vacunas, etc)  => ?? Relación 1 a 1 con la mascota ??
+
+
+
+
+20-10
+
+- Vistas que usan multipar-formdata. 
+
+1- Registrar usuario | 1 sola imagen de perfil
+2- Editar usuario | 1 sola imagen de perfil
+3- Registrar mascota | 4 imagenes
+4- Editar mascota | 4 imagenes
+5- Registrar refugio | 1 sola imagen de perfil
+6- Editar refugio | 1 sola imagen de perfil
+
