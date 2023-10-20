@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
+import { UserContext } from "../context/UserContext";
+import { TokenContext } from "../context/TokenContext";
 
 const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
+  const { currentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
@@ -45,20 +49,58 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
     }
   };
 
-  const handleAccept = () => {
-    if (Array.isArray(images)) {
-      const newArray = [...images];
-      newArray.push(newImage);
-      setImages(newArray);
-    } else {
-      setImages(newImage);
+  const handleAccept = async () => {
+    console.log("Agregando imagen");
+    // Comprueba si hay una nueva imagen
+    if (newImage) {
+      try {
+        // Crear una instancia de FormData para enviar los archivos
+        const formData = new FormData();
+        const response = await fetch(newImage);
+        const blob = await response.blob();
+        formData.append('userImage', {
+          uri: newImage,
+          name: 'userImage.jpg', // Nombre de archivo arbitrario
+          type: 'image/jpeg', // Cambia esto según el tipo de archivo
+        });
+  
+        // Poner el loading en true
+  
+        // Realizar la solicitud POST con fetch
+        fetch(`https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/upload-img/${currentUser.id}`, {
+          method: 'PUT',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              // La solicitud se completó con éxito
+              return response.json();
+            } else {
+              // Manejar errores aquí, por ejemplo, mostrar un mensaje de error
+              throw new Error('Error al subir la imagen');
+            }
+          })
+          .then(data => {
+            // Procesar la respuesta si es necesario
+          })
+          .catch(error => {
+            console.error(error);
+          })
+          .finally(() => {
+            // Poner el loading en false
+            setIsVisible(false);
+            setNewImage(null);
+          });
+      } catch (error) {
+        console.error("Error al cargar la imagen:", error);
+      }
     }
-    //poner el loading en true
-
-    //hacer el fetch y cuando termine poner el loading en false
-    setIsVisible(false);
-    setNewImage(null);
   };
+  
 
   return (
     <Modal
