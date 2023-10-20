@@ -11,10 +11,17 @@ import OtrasNavigation from "./OtrasNavigation";
 import MatchNavigation from "./MatchNavigation";
 import Refugios from "./tabScreens/Refugios";
 import { CountMatchesContext } from "../context/CountMatchesContext";
-
+import { UserContext } from "../context/UserContext";
+import { TokenContext } from "../context/TokenContext";
+//IMPORTS REFUGIOS
+import ChatRef from "./tabScreens/refugioScreens/ChatRef"
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
+  const {currentUser} = useContext(UserContext);
+  const {token} = useContext(TokenContext);
+console.log( "AAAAAAAAAAAAAAAAAAAAAAAAAAA"+currentUser.nombre);
+console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
 
@@ -45,7 +52,8 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={Refugios}
+          // component={!isRefugio ? Refugios : ChatRef}
+          component={ Refugios }
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
