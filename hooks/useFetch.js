@@ -1,3 +1,13 @@
+import { TokenContext } from "../context/TokenContext";
+import { UserContext } from "../context/UserContext";
+import { CountMatchesContext } from "../context/CountMatchesContext";
+import { useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const { setCurrentUser } = useContext(UserContext);
+const { setToken } = useContext(TokenContext);
+const { setMatchesCount } = useContext(CountMatchesContext);
+
 export async function fetchData(
   url,
   token,
@@ -16,6 +26,10 @@ export async function fetchData(
       body,
     });
     if (response.status === 401 || response.status === 403) {
+      setCurrentUser(null);
+      setMatchesCount(null);
+      setToken(null);
+      AsyncStorage.removeItem("token");
       navigation.navigate("LoginScreen");
       throw new Error("Acceso no autorizado");
     }

@@ -108,9 +108,10 @@ const ShowPets = ({ navigation }) => {
     // Obtener las mascotas
     getUserData().then(async () => {
       try {
+        console.log("soy el token en contexto",token);
         const data = await fetchData(
           url,
-          token.token,
+          token,
           "GET",
           null,
           navigation,
