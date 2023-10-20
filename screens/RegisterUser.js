@@ -85,6 +85,8 @@ const CreateUserForm = ({ navigation, route }) => {
     setIsLoading(true);
     const cache = await AsyncStorage.getItem("token");
     console.log(cache.token);
+
+    
     fetch(
       `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
       {
