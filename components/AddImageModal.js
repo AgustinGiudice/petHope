@@ -56,8 +56,9 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
       try {
         // Crear una instancia de FormData para enviar los archivos
         const formData = new FormData();
-        const response = await fetch(newImage);
-        const blob = await response.blob();
+        // const response = await fetch(newImage);
+        // const blob = await response.blob();
+        
         formData.append('userImage', {
           uri: newImage,
           name: 'userImage.jpg', // Nombre de archivo arbitrario
