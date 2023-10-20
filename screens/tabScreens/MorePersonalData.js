@@ -23,7 +23,7 @@ const MorePersonalData = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const userData = currentUser;
 
-  currentUser.pic = null;
+  // currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
   const [editableData, setEditableData] = useState({
@@ -35,7 +35,7 @@ const MorePersonalData = ({ navigation }) => {
     descripcion: userData.descripcion,
   });
 
-  const [profilePic, setProfilePic] = useState(userData.pic);
+  const [profilePic, setProfilePic] = useState(userData.imagen);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);

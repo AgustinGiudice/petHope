@@ -13,10 +13,10 @@ const PersonalData = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
   const userData = currentUser;
   currentUser.edad = calcularEdad(currentUser.fechaDeNacimiento);
-  currentUser.pic = null;
+  // currentUser.pic = null;
   //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 
-  const [profilePic, setProfilePic] = useState(userData.pic);
+  const [profilePic, setProfilePic] = useState(userData.imagen);
 
   useEffect(() => {});
 

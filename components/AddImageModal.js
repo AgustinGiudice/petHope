@@ -87,6 +87,10 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
           })
           .then(data => {
             // Procesar la respuesta si es necesario
+            console.log(data);
+            if (data.imageUrl){
+              setImages(data.imageUrl);
+            }
           })
           .catch(error => {
             console.error(error);
