@@ -107,8 +107,8 @@ const ShowPets = ({ navigation }) => {
     // Obtener las mascotas
     getUserData().then(async () => {
       try {
-        console.log("soy el token en contexto",token);
-        const data = await fetchData(
+        console.log("soy el token en contexto", token);
+        const response = await fetchData(
           url,
           token,
           "GET",
@@ -116,6 +116,12 @@ const ShowPets = ({ navigation }) => {
           navigation,
           "application/json"
         );
+        if (response.status === 401 || response.status === 403) {
+          AsyncStorage.removeItem("token");
+          navigation.navigate("LoginScreen");
+          throw new Error("Acceso no autorizado");
+        }
+        const data = await response.json();
         if (data.length > 0) {
           if (!resetMatches) {
             setMascotas((prevData) => prevData.concat(data));

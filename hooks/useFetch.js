@@ -12,9 +12,6 @@ export async function fetchData(
   navigation,
   contentType
 ) {
-  const { setCurrentUser } = useContext(UserContext);
-  const { setToken } = useContext(TokenContext);
-  const { setMatchesCount } = useContext(CountMatchesContext);
   try {
     const response = await fetch(url, {
       method,
@@ -24,15 +21,8 @@ export async function fetchData(
       },
       body,
     });
-    if (response.status === 401 || response.status === 403) {
-      setCurrentUser(null);
-      setMatchesCount(null);
-      setToken(null);
-      AsyncStorage.removeItem("token");
-      navigation.navigate("LoginScreen");
-      throw new Error("Acceso no autorizado");
-    }
-    const data = await response.json();
+    
+    const data = await response;
     return data;
   } catch (error) {
     throw error;
