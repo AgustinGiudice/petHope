@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { screenHeight, screenWidth } from "../hooks/useScreenResize.js";
 import Radio from "./Radio.js";
-import Input from "./Input.js";
 import AntDesign from "react-native-vector-icons/AntDesign.js";
 import Ionicons from "react-native-vector-icons/Ionicons.js";
 import { Slider } from "@react-native-assets/slider";
