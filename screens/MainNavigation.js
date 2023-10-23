@@ -52,7 +52,7 @@ function MainNavigation() {
           setCurrentUser(usuario);
           setToken(token_parsed.token);
           const count = token_parsed.matches;
-          console.log(count); 
+          console.log(count);
           setMatchesCount(count);
         } else {
           console.log("no hay token");
@@ -74,9 +74,9 @@ function MainNavigation() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen}/>
         <Stack.Screen name="RegisterChoice" component={RegisterChoice} />
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />

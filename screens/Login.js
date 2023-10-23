@@ -1,5 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
@@ -11,8 +17,10 @@ const LoginScreen = ({ navigation }) => {
   const { setCurrentUser } = useContext(UserContext);
   const { setToken } = useContext(TokenContext);
   const [isRefugio, setIsRefugio] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = () => {
+    setIsLoading(true);
     const url = isRefugio
       ? "https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios/login"
       : "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login";
@@ -26,9 +34,9 @@ const LoginScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.token && data.usuario) {
-          data.usuario.profilePic && data.usuario.tuvoMascotas
+          data.usuario.imagen && data.usuario.tuvoMascotas
             ? (data.usuario.completado = 100)
-            : data.usuario.profilePic || data.usuario.tuvoMascotas
+            : data.usuario.imagen || data.usuario.tuvoMascotas
             ? (data.usuario.completado = 66)
             : (data.usuario.completado = 33);
 
@@ -58,14 +66,14 @@ const LoginScreen = ({ navigation }) => {
       })
       .catch((error) => {
         console.error("Error al iniciar sesión:", error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {
     const token = AsyncStorage.getItem("token");
     console.log(token);
   }, []);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
@@ -83,7 +91,7 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.inputsContainer}>
         <Input
-          value={userData.email}
+          value={userData.mail}
           setValue={setUserData}
           placeholder="E-mail"
           atributo="mail"
@@ -97,7 +105,11 @@ const LoginScreen = ({ navigation }) => {
       </View>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={{ color: "white" }}>Ingresar</Text>
+        {isLoading ? (
+          <ActivityIndicator color={"white"} />
+        ) : (
+          <Text style={{ color: "white" }}>Ingresar</Text>
+        )}
       </TouchableOpacity>
 
       <Text

@@ -1,19 +1,20 @@
+import { useContext } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Constants from "expo-constants";
-import Logo from "../assets/logo.png";
-import Logo2 from "../assets/logo2.png";
-import Logo3 from "../assets/logo3.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Logo3 from "../assets/logo3.png";
+import { UserContext } from "../context/UserContext";
 
 function OtrasNavigation({ navigation }) {
+  const { setCurrentUser } = useContext(UserContext);
   const handleLogout = async () => {
     try {
       // Eliminar el token de AsyncStorage
       await AsyncStorage.removeItem("token");
       console.log("TOKEN ELIMINADO");
       // Redirigir al usuario a la pantalla de inicio de sesión
+      setCurrentUser(null);
       navigation.navigate("LoginScreen"); // Reemplaza "Login" con la pantalla de inicio de sesión real en tu aplicación
     } catch (error) {
       console.error("Error al intentar cerrar sesión:", error);
