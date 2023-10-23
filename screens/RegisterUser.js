@@ -86,7 +86,6 @@ const CreateUserForm = ({ navigation, route }) => {
     const cache = await AsyncStorage.getItem("token");
     console.log(cache.token);
 
-    
     fetch(
       `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
       {
@@ -133,10 +132,11 @@ const CreateUserForm = ({ navigation, route }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log("Response del login", data);
         if (data.token && data.usuario) {
-          data.usuario.profilePic && data.usuario.tuvoMascotas
+          data.usuario.imagen && data.usuario.tuvoMascotas
             ? (data.usuario.completado = 100)
-            : data.usuario.profilePic || data.usuario.tuvoMascotas
+            : data.usuario.imagen || data.usuario.tuvoMascotas
             ? (data.usuario.completado = 66)
             : (data.usuario.completado = 33);
           const data_user = {
@@ -153,7 +153,6 @@ const CreateUserForm = ({ navigation, route }) => {
               console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
               const { usuario, token } = data;
               setCurrentUser(usuario);
-
               //clean state
               setUserData(initialUserData);
 
@@ -171,6 +170,7 @@ const CreateUserForm = ({ navigation, route }) => {
   const handleSubmit = () => {
     //Realizar la petición POST al backend para guardar los datos del usuario
     setLoadingFetch(true);
+    console.log("Datos del usuario enviados", userData);
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
       method: "POST",
       headers: {
@@ -181,7 +181,7 @@ const CreateUserForm = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((data) => {
         // Reiniciar los campos del formulario después de guardar los datos
-        console.log("hasta aca llega", data);
+        console.log("Respuesta del back", data);
         if (!index) {
           handleLogin();
         }
@@ -306,7 +306,13 @@ const CreateUserForm = ({ navigation, route }) => {
         </Text>
         <Radio
           data={["Monoambiente", "Departamento", "Casa"]}
-          handleSelect={() => console.log()}
+          handleSelect={(value) => {
+            const formatedValue =
+              value === "Monoambiente" ? 1 : value === "Departamento" ? 2 : 3;
+            const newData = userData;
+            userData.espacioDisponible = formatedValue;
+            setUserData(newData);
+          }}
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
@@ -504,10 +510,10 @@ const CreateUserForm = ({ navigation, route }) => {
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
           </Text>
-          {console.log(userData)}
           <Text>Ya podes encontrar tu mascota soñada</Text>
           <TouchableOpacity
             onPress={index ? handleActualizarDatos : handleSubmit}
+            style={styles.botonStart}
           >
             {loadingFetch ? (
               <ActivityIndicator color={"white"} />
@@ -570,12 +576,18 @@ const styles = StyleSheet.create({
     gap: 20,
     alignItems: "center",
   },
+  botonStart: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 150,
+  },
   start: {
     backgroundColor: "#9A34EA",
-    width: 150,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: "center",
+    color: "white",
   },
   map: {
     width: "90%",

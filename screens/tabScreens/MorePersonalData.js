@@ -23,9 +23,6 @@ const MorePersonalData = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const userData = currentUser;
 
-  // currentUser.pic = null;
-  //pic: "https://images.pexels.com/photos/5648357/pexels-photo-5648357.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-
   const [editableData, setEditableData] = useState({
     nombre: userData.nombre,
     apellido: userData.apellido,
@@ -71,9 +68,9 @@ const MorePersonalData = ({ navigation }) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          data.usuario.profilePic && data.usuario.tuvoMascotas
+          data.usuario.imagen && data.usuario.tuvoMascotas
             ? (data.usuario.completado = 100)
-            : data.usuario.profilePic || data.usuario.tuvoMascotas
+            : data.usuario.imagen || data.usuario.tuvoMascotas
             ? (data.usuario.completado = 66)
             : (data.usuario.completado = 33);
 
@@ -95,7 +92,7 @@ const MorePersonalData = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        {profilePic ? (
+        {userData.imagen ? (
           <ChangeImageModal
             isVisible={modalVisible}
             setIsVisible={setModalVisible}
@@ -127,7 +124,7 @@ const MorePersonalData = ({ navigation }) => {
               </View>
             </View>
           </View>
-          {userData.pic === null ? (
+          {userData.imagen === null ? (
             <View style={styles.profilePic}>
               <TouchableOpacity onPress={() => handlePressPic()}>
                 <FontAwesome5
@@ -138,7 +135,10 @@ const MorePersonalData = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <Image source={{ uri: userData.pic }} style={styles.profilePic} />
+            <Image
+              source={{ uri: userData.imagen }}
+              style={styles.profilePic}
+            />
           )}
         </View>
         <View style={styles.dataContainer}>
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     aspectRatio: 1,
-    height: screenHeight / 4,
+    width: "100%",
     backgroundColor: "white",
     justifyContent: "flex-end",
     alignItems: "center",
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   column: {
     justifyContent: "flex-start",
     width: "70%",
-    maxHeight: screenHeight / 1.5 - 60,
+    maxHeight: screenHeight / 2 - 120,
   },
   textContainer: {
     padding: 3,

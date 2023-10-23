@@ -14,14 +14,14 @@ import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 //IMPORTS REFUGIOS
-import RefShowPets from "./tabScreens/refugioScreens/RefShowPets"
+import ChatRef from "./tabScreens/refugioScreens/ChatRef"
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   const {currentUser} = useContext(UserContext);
   const {token} = useContext(TokenContext);
-    console.log( "AAAAAAAAAAAAAAAAAAAAAAAAAAA"+currentUser.nombre);
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
+console.log( "AAAAAAAAAAAAAAAAAAAAAAAAAAA"+currentUser.nombre);
+console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
 
@@ -55,13 +55,16 @@ function MyTabs() {
           tabBarShowLabel: false, // Oculta las etiquetas de descripción
           tabBarInactiveTintColor: "white", // Color del ícono cuando no está seleccionado
           tabBarActiveTintColor: "black",
+          unmountOnBlur: true,
         }}
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={  Refugios }
+          // component={!isRefugio ? Refugios : ChatRef}
+          component={ Refugios }
           options={{
             headerShown: false,
+            unmountOnBlur: true,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="ios-home" size={size} color={color} />
             ),
@@ -161,6 +164,7 @@ function MyTabs() {
           name="Otro"
           component={OtrasNavigation}
           options={{
+            unmountOnBlur: true,
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="ios-menu" size={40} color={color} />
