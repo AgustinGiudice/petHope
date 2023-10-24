@@ -14,14 +14,14 @@ import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 //IMPORTS REFUGIOS
-import ChatRef from "./tabScreens/refugioScreens/ChatRef"
+import RefShowPets from "./tabScreens/refugioScreens/RefShowPets"
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
+  //Traer usuario y token
   const {currentUser} = useContext(UserContext);
   const {token} = useContext(TokenContext);
-console.log( "AAAAAAAAAAAAAAAAAAAAAAAAAAA"+currentUser.nombre);
-console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
+  
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
 
@@ -35,11 +35,11 @@ console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
     console.log("matchesCount", matchesCount);
   }, [matchesCount]);
 
-  //verificar si currentUser tiene x atributo.
+  //verificar si currentUser tiene x atributo. Retorna True False
   const tieneAtributo = () => {
     return currentUser.hasOwnProperty('estado');
   };
-  console.log(tieneAtributo());
+
 
 
   return (
@@ -60,7 +60,6 @@ console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+token);
       >
         <Tab.Screen
           name="ShowRefugios"
-          // component={!isRefugio ? Refugios : ChatRef}
           component={ Refugios }
           options={{
             headerShown: false,
