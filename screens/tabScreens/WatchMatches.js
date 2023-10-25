@@ -22,6 +22,7 @@ import { UserContext } from "../../context/UserContext";
 import { TokenContext } from "../../context/TokenContext";
 import LoadingComponent from "../../components/LoadingComponent";
 import { getMatches } from "../../services/getMatches";
+import { cancelarMatch } from "../../services/cancelarMatch";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
@@ -53,37 +54,6 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForUserInfoVisible(true);
   };
 
-  const handleCancelarMatch = async (match_id) => {
-    try {
-      console.log("Cancelando match");
-      console.log(match_id);
-      // URL de la API para cancelar un match (ajústala a tu API)
-      const apiUrl = `${BASE_URL}api/match/delete/${match_id}`;
-
-      // ID del match que deseas cancelar
-      const matchId = parseInt(match_id); // Reemplaza con el ID del match real
-
-      const response = await fetch(apiUrl, {
-        method: "PUT", // Método HTTP para actualizar el estado del match
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ matchId }), // Enviar el ID del match en el cuerpo de la solicitud
-      });
-
-      if (response.ok) {
-        // La solicitud fue exitosa, el match se ha cancelado
-        alert("Match cancelado con éxito");
-      } else {
-        // La solicitud falló, puedes manejar los errores aquí
-        alert("Error al cancelar el match");
-      }
-    } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
-      alert("Error al cancelar el match");
-    }
-  };
-
   const handleDenunciarRefugio = () => {
     // Implementa la lógica para abrir el chat con el refugio aquí
 
@@ -97,6 +67,7 @@ const MatchesScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    setRefreshing(true);
     getMatches(
       navigation,
       currentUser,
@@ -106,6 +77,7 @@ const MatchesScreen = ({ navigation }) => {
       setMatches,
       setRefreshing
     );
+    setRefreshing(false);
   }, []);
 
   if (isLoading) {
@@ -240,7 +212,11 @@ const MatchesScreen = ({ navigation }) => {
               {currentUser.estado ? "Ver usuario" : "Ver refugio"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleCancelarMatch(match_id)}>
+          <TouchableOpacity
+            onPress={() =>
+              cancelarMatch(match_id, token, navigation, setCurrentUser)
+            }
+          >
             <Text style={styles.modalText}>Cancelar match</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDenunciarRefugio}>

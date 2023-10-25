@@ -8,10 +8,8 @@ export const getMatches = async (
   token,
   setIsLoading,
   setMatches,
-  setRefreshing
 ) => {
   try {
-    setRefreshing(true);
 
     const response = await fetch(`${BASE_URL}api/match/${currentUser.id}`, {
       method: "GET",
@@ -34,7 +32,5 @@ export const getMatches = async (
     setMatches(data);
   } catch (error) {
     console.error("Error al obtener los matches:", error);
-  } finally {
-    setRefreshing(false);
-  }
+  } 
 };

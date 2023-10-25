@@ -24,10 +24,13 @@ import Constants from "expo-constants";
 import io from "socket.io-client";
 import { UserContext } from "../../context/UserContext";
 import LoadingComponent from "../../components/LoadingComponent";
+import { getChat } from "../../services/getChat";
+import { TokenContext } from "../../context/TokenContext";
 
-const Chat = ({ route }) => {
-  const { receiver, mascota, refugio } = route.params;
-  const { currentUser } = useContext(UserContext);
+const Chat = ({ route, navigation }) => {
+  const { receiver, mascota } = route.params;
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
   // const fecha_format = format(new Date(f.created_at), 'dd/MM/yyyy');
 
   const navigation = useNavigation();
@@ -60,27 +63,17 @@ const Chat = ({ route }) => {
   };
 
   useEffect(() => {
-    fetch(
-      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${receiver.id}&sender=${currentUser.id}&mascota=${mascota.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setMessages(data);
-      })
-      .catch((error) => console.error("Error al obtener mensajes:", error))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    getChat(
+      receiver.id,
+      currentUser.id,
+      mascota.id,
+      setMessages,
+      token,
+      setCurrentUser,
+      navigation
+    );
+    setIsLoading(false);
   }, []);
-
-  
 
   // Simula la carga de mensajes cuando se monta el componente
   useEffect(() => {
