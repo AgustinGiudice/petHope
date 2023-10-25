@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 import MascotaRef from "../../../components/componentesRefugio/MascotaRef";
+import { screenHeight, screenWidth } from "../../../hooks/useScreenResize";
 
 const data = [
   { id: '1', name: 'Mascota 1' },
@@ -20,15 +21,29 @@ const RefShowPets = ({ navigation }) => {
   );
 
   return (
+    <>
+    <View style={styles.headerItem}>
+      <View style={styles.headerItem2}>
+        <View style={styles.headerItemsContenido}>
+
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+            Mascotas
+          </Text>
+          
+        </View>
+      </View>
+    </View>
+
+
     <View style={styles.container}>
-      <Text style={styles.title}>RefShowPets</Text>
-      <FlatList
+      <FlatList style={styles.flatlist}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={2} // Mostrar dos elementos por fila
-      />
+        />
     </View>
+    </>
   );
 };
 
@@ -39,14 +54,63 @@ const styles = StyleSheet.create({
   justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 40,
-    textAlign: "center",
-    color: "red",
-  },
   item: {
     
   },
+  flatlist:{
+    paddingTop: screenHeight - screenHeight * 0.97
+  },
+  //HEADER ESTILOS
+  headerItem: {
+    position: "relative",
+    backgroundColor: "#7A5FB5",
+    width: screenWidth,
+    height: 50,
+    borderRadius: 10,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerItem2: {
+    position: "absolute",
+    backgroundColor: "#C69AE8",
+    width: 1300,
+    height: 1300,
+    borderRadius: 630,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    bottom: -35,
+    elevation: 10, // Para Android
+    shadowColor: "black", // Para iOS
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  headerItemsContenido: {
+    flexDirection: "row",
+    width: screenWidth,
+    justifyContent: "space-between",
+    marginBottom: 30,
+    alignItems: "baseline",
+    paddingHorizontal: 30,
+    textAlign: "center",
+  },
+  buttonFilters: {
+    zIndex: 1,
+  },
+  namePet: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 28,
+    flex: 1,
+    paddingHorizontal: 3,
+    textAlign: "center",
+    textAlignVertical: "center",
+  }
 });
 
 export default RefShowPets;

@@ -27,7 +27,7 @@ import LoadingComponent from "../../components/LoadingComponent";
 import { getChat } from "../../services/getChat";
 import { TokenContext } from "../../context/TokenContext";
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route }) => {
   const { receiver, mascota } = route.params;
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);

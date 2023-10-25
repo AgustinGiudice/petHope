@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,12 +8,20 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
+import { BASE_URL } from "@env";
 import Constants from "expo-constants";
+import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import LoadingComponent from "../../components/LoadingComponent";
+import { TokenContext } from "../../context/TokenContext";
+import { getRefugios } from "../../services/getRefugios";
+
+
 
 const Refugios = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRefugio, setSelectedRefugio] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
   const openModal = (refugio) => {
     setSelectedRefugio(refugio);
     setModalVisible(true);
@@ -24,53 +32,78 @@ const Refugios = ({ navigation }) => {
     setModalVisible(false);
   };
 
-  const refugios = [
-    {
-      nombre: "Refugio Devoto",
-      descripcion:
-        "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-      imagen: require("../../assets/refugio1.jpg"),
-      distancia: 12,
-      animal: "Perros",
-      mascotasRegistradas: 735,
-      linkDonacion: "https://linkdedonacion.com",
-    },
-    {
-      nombre: "Gatitos felices",
-      descripcion:
-        "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-      imagen: require("../../assets/refugio2.jpg"),
-      distancia: 12,
-      animal: "Gatos",
-      mascotasRegistradas: 735,
-      linkDonacion: "https://linkdedonacion.com",
-    },
-    {
-      nombre: "Patitas Tristes",
-      descripcion:
-        "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-      imagen: require("../../assets/refugio1.jpg"),
-      distancia: 12,
-      animal: "Perros y Gatos",
-      mascotasRegistradas: 735,
-      linkDonacion: "https://linkdedonacion.com",
-    },
-    {
-      nombre: "Unidos por los animales - A 23km de distancia",
-      descripcion:
-        "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-      imagen: require("../../assets/refugio2.jpg"),
-      distancia: 12,
-      animal: "Perros",
-      mascotasRegistradas: 735,
-      linkDonacion: "https://linkdedonacion.com",
-    },
-  ];
+  const [refugios, setRefugios] = useState();
 
+  // const refugios = [
+  //   {
+  //     nombre: "Refugio Devoto",
+  //     descripcion:
+  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
+  //     imagen: require("../../assets/refugio1.jpg"),
+  //     distancia: 12,
+  //     animal: "Perros",
+  //     mascotasRegistradas: 735,
+  //     linkDonacion: "https://linkdedonacion.com",
+  //   },
+  //   {
+  //     nombre: "Gatitos felices",
+  //     descripcion:
+  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
+  //     imagen: require("../../assets/refugio2.jpg"),
+  //     distancia: 12,
+  //     animal: "Gatos",
+  //     mascotasRegistradas: 735,
+  //     linkDonacion: "https://linkdedonacion.com",
+  //   },
+  //   {
+  //     nombre: "Patitas Tristes",
+  //     descripcion:
+  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
+  //     imagen: require("../../assets/refugio1.jpg"),
+  //     distancia: 12,
+  //     animal: "Perros y Gatos",
+  //     mascotasRegistradas: 735,
+  //     linkDonacion: "https://linkdedonacion.com",
+  //   },
+  //   {
+  //     nombre: "Unidos por los animales - A 23km de distancia",
+  //     descripcion:
+  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
+  //     imagen: require("../../assets/refugio2.jpg"),
+  //     distancia: 12,
+  //     animal: "Perros",
+  //     mascotasRegistradas: 735,
+  //     linkDonacion: "https://linkdedonacion.com",
+  //   },
+  // ];
+
+  useEffect(() => {
+    // Obtener las mascotas
+    const url = `${BASE_URL}api/refugios/`;
+
+      try {
+        getRefugios(
+          url,
+          token,
+          navigation,
+          setRefugios,
+          setIsLoading
+        );
+      } catch (error) {
+        console.error("Error al obtener mascotas:", error);
+      } finally {
+        setIsLoading(false);
+      }
+   
+  }, []);
+
+  if (isLoading) {
+    return <LoadingComponent />;
+  } 
   return (
     <>
+    
     <View style={styles.container}>
-
       <FlatList
         data={refugios}
         keyExtractor={(item, index) => index.toString()}
@@ -105,22 +138,40 @@ const Refugios = ({ navigation }) => {
         onRequestClose={closeModal}
       >
         {selectedRefugio && (
+          <>
+          
+              <View style={styles.headerItem}>
+                <View style={styles.headerItem2}>
+                  <View style={styles.headerItemsContenido}>
+
+                    <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+                      {selectedRefugio.nombre}
+                    </Text>
+                    
+                  </View>
+                </View>
+              </View>
+
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>{selectedRefugio.nombre}</Text>
             <Image source={selectedRefugio.imagen} style={styles.modalImage} />
-            <Text style={styles.modalDescription}>
-              {selectedRefugio.descripcion}
-            </Text>
-            <Text style={styles.modalLink}>
-              Enlace de Donación: {selectedRefugio.linkDonacion}
-            </Text>
-            <Text style={styles.modalLink}>
-              Mascotas Registradas: {selectedRefugio.mascotasRegistradas}
-            </Text>
+            <View style={styles.dataRef}>
+              <Text style={styles.modalDescription}>
+                {selectedRefugio.descripcion}
+              </Text>
+              <Text style={styles.modalLink}>
+                Enlace de Donación: {selectedRefugio.linkDonacion}
+              </Text>
+              <Text style={styles.modalLink}>
+                Mascotas Registradas: {selectedRefugio.mascotasRegistradas}
+              </Text>
+            </View>
+            <View style={styles.containerButton} >
             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>
+            </View>
           </View>
+          </>
         )}
       </Modal>
     </>
@@ -175,9 +226,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+
   },
   modalTitle: {
     fontSize: 24,
@@ -186,29 +235,95 @@ const styles = StyleSheet.create({
   },
   modalImage: {
     width: "100%",
-    height: 200,
+    height: 300,
     resizeMode: "cover",
     borderRadius: 5,
+  },
+  dataRef:{
+    padding:10
   },
   modalDescription: {
     fontSize: 16,
     marginTop: 10,
+    borderColor: "#9A34EA",
+    borderBottomWidth: 1,
+    padding: 3,
+    alignItems: "center",
   },
   modalLink: {
     fontSize: 16,
     marginTop: 10,
+    borderColor: "#9A34EA",
+    borderBottomWidth: 1,
+    padding: 3,
+    alignItems: "center",
+  },
+  containerButton:{
+    alignItems:"center"
   },
   closeButton: {
     marginTop: 20,
     backgroundColor: "#9A34EA",
     borderRadius: 5,
     padding: 10,
-  },
+    width: screenWidth - screenWidth * .5,
+  }, 
   closeButtonText: {
     color: "white",
     fontSize: 18,
     textAlign: "center",
   },
+   //HEADER ESTILOS
+   headerItem: {
+    position: "relative",
+    backgroundColor: "#7A5FB5",
+    width: screenWidth,
+    height: 50,
+    borderRadius: 10,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerItem2: {
+    position: "absolute",
+    backgroundColor: "#C69AE8",
+    width: 1300,
+    height: 1300,
+    borderRadius: 630,
+    zIndex: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    bottom: -35,
+    elevation: 10, // Para Android
+    shadowColor: "black", // Para iOS
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  headerItemsContenido: {
+    flexDirection: "row",
+    width: screenWidth,
+    justifyContent: "space-between",
+    marginBottom: 30,
+    alignItems: "baseline",
+    paddingHorizontal: 30,
+    textAlign: "center",
+  },
+  buttonFilters: {
+    zIndex: 1,
+  },
+  namePet: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 28,
+    flex: 1,
+    paddingHorizontal: 3,
+    textAlign: "center",
+    textAlignVertical: "center",
+  }
 });
 
 export default Refugios;
