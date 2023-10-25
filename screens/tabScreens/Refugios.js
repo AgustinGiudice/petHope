@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -8,17 +8,16 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import { BASE_URL } from "@env";
 import Constants from "expo-constants";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import LoadingComponent from "../../components/LoadingComponent";
 import { TokenContext } from "../../context/TokenContext";
+import { setCurrentUser } from "../../context/UserContext";
 import { getRefugios } from "../../services/getRefugios";
 
-
-
 const Refugios = ({ navigation }) => {
+  const { token } = useContext(TokenContext);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRefugio, setSelectedRefugio] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,101 +33,51 @@ const Refugios = ({ navigation }) => {
 
   const [refugios, setRefugios] = useState();
 
-  // const refugios = [
-  //   {
-  //     nombre: "Refugio Devoto",
-  //     descripcion:
-  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-  //     imagen: require("../../assets/refugio1.jpg"),
-  //     distancia: 12,
-  //     animal: "Perros",
-  //     mascotasRegistradas: 735,
-  //     linkDonacion: "https://linkdedonacion.com",
-  //   },
-  //   {
-  //     nombre: "Gatitos felices",
-  //     descripcion:
-  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-  //     imagen: require("../../assets/refugio2.jpg"),
-  //     distancia: 12,
-  //     animal: "Gatos",
-  //     mascotasRegistradas: 735,
-  //     linkDonacion: "https://linkdedonacion.com",
-  //   },
-  //   {
-  //     nombre: "Patitas Tristes",
-  //     descripcion:
-  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-  //     imagen: require("../../assets/refugio1.jpg"),
-  //     distancia: 12,
-  //     animal: "Perros y Gatos",
-  //     mascotasRegistradas: 735,
-  //     linkDonacion: "https://linkdedonacion.com",
-  //   },
-  //   {
-  //     nombre: "Unidos por los animales - A 23km de distancia",
-  //     descripcion:
-  //       "Estamos emocionados de anunciar la inauguración de nuestro nuevo refugio de animales, que proporcionará un hogar seguro y amoroso para cientos de animales necesitados.",
-  //     imagen: require("../../assets/refugio2.jpg"),
-  //     distancia: 12,
-  //     animal: "Perros",
-  //     mascotasRegistradas: 735,
-  //     linkDonacion: "https://linkdedonacion.com",
-  //   },
-  // ];
+  
 
   useEffect(() => {
     // Obtener las mascotas
-    const url = `${BASE_URL}api/refugios/`;
 
-      try {
-        getRefugios(
-          url,
-          token,
-          navigation,
-          setRefugios,
-          setIsLoading
-        );
-      } catch (error) {
-        console.error("Error al obtener mascotas:", error);
-      } finally {
-        setIsLoading(false);
-      }
-   
+    try {
+      getRefugios(token, navigation, setRefugios, setCurrentUser);
+    } catch (error) {
+      console.error("Error al obtener refugios:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   if (isLoading) {
     return <LoadingComponent />;
-  } 
+  }
   return (
     <>
-    
-    <View style={styles.container}>
-      <FlatList
-        data={refugios}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.noticiaContainer}>
-            <Image source={item.imagen} style={styles.imagenNoticia} />
-            <Text style={styles.nombreRef}>{item.nombre}</Text>
-            <Text style={styles.distanciaRef}>
-              A {item.distancia} Km de distancia
-            </Text>
-            <Text style={styles.acepta}>Acepta {item.animal}</Text>
-            <View style={styles.orderButton}>
-              <TouchableOpacity style={styles.containerBotonVerMas}>
-                <Text
-                  style={styles.textoBotonVerMas}
-                  onPress={() => openModal(item)}
+      <View style={styles.container}>
+        <FlatList
+          data={refugios}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.noticiaContainer}>
+              <Image source={item.imagen} style={styles.imagenNoticia} />
+              <Text style={styles.nombreRef}>{item.nombre}</Text>
+              <Text style={styles.distanciaRef}>
+                A {item.distancia} Km de distancia
+              </Text>
+              <Text style={styles.acepta}>Acepta {item.animal}</Text>
+              <View style={styles.orderButton}>
+                <TouchableOpacity style={styles.containerBotonVerMas}>
+                  <Text
+                    style={styles.textoBotonVerMas}
+                    onPress={() => openModal(item)}
                   >
-                  Ver Más
-                </Text>
-              </TouchableOpacity>
+                    Ver Más
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
+          )}
         />
-        </View>
+      </View>
 
       {/* Modal para mostrar más información del refugio */}
       <Modal
@@ -139,38 +88,45 @@ const Refugios = ({ navigation }) => {
       >
         {selectedRefugio && (
           <>
-          
-              <View style={styles.headerItem}>
-                <View style={styles.headerItem2}>
-                  <View style={styles.headerItemsContenido}>
-
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-                      {selectedRefugio.nombre}
-                    </Text>
-                    
-                  </View>
+            <View style={styles.headerItem}>
+              <View style={styles.headerItem2}>
+                <View style={styles.headerItemsContenido}>
+                  <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={styles.namePet}
+                  >
+                    {selectedRefugio.nombre}
+                  </Text>
                 </View>
               </View>
+            </View>
 
-          <View style={styles.modalContainer}>
-            <Image source={selectedRefugio.imagen} style={styles.modalImage} />
-            <View style={styles.dataRef}>
-              <Text style={styles.modalDescription}>
-                {selectedRefugio.descripcion}
-              </Text>
-              <Text style={styles.modalLink}>
-                Enlace de Donación: {selectedRefugio.linkDonacion}
-              </Text>
-              <Text style={styles.modalLink}>
-                Mascotas Registradas: {selectedRefugio.mascotasRegistradas}
-              </Text>
+            <View style={styles.modalContainer}>
+              <Image
+                source={selectedRefugio.imagen}
+                style={styles.modalImage}
+              />
+              <View style={styles.dataRef}>
+                <Text style={styles.modalDescription}>
+                  {selectedRefugio.descripcion}
+                </Text>
+                <Text style={styles.modalLink}>
+                  Enlace de Donación: {selectedRefugio.linkDonacion}
+                </Text>
+                <Text style={styles.modalLink}>
+                  Mascotas Registradas: {selectedRefugio.mascotasRegistradas}
+                </Text>
+              </View>
+              <View style={styles.containerButton}>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.closeButtonText}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.containerButton} >
-            <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-            </View>
-          </View>
           </>
         )}
       </Modal>
@@ -179,8 +135,8 @@ const Refugios = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor:"#E3E3E3"
+  container: {
+    backgroundColor: "#E3E3E3",
   },
   noticiaContainer: {
     marginTop: Constants.statusBarHeight,
@@ -226,7 +182,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-
   },
   modalTitle: {
     fontSize: 24,
@@ -239,8 +194,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 5,
   },
-  dataRef:{
-    padding:10
+  dataRef: {
+    padding: 10,
   },
   modalDescription: {
     fontSize: 16,
@@ -258,23 +213,23 @@ const styles = StyleSheet.create({
     padding: 3,
     alignItems: "center",
   },
-  containerButton:{
-    alignItems:"center"
+  containerButton: {
+    alignItems: "center",
   },
   closeButton: {
     marginTop: 20,
     backgroundColor: "#9A34EA",
     borderRadius: 5,
     padding: 10,
-    width: screenWidth - screenWidth * .5,
-  }, 
+    width: screenWidth - screenWidth * 0.5,
+  },
   closeButtonText: {
     color: "white",
     fontSize: 18,
     textAlign: "center",
   },
-   //HEADER ESTILOS
-   headerItem: {
+  //HEADER ESTILOS
+  headerItem: {
     position: "relative",
     backgroundColor: "#7A5FB5",
     width: screenWidth,
@@ -323,7 +278,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     textAlign: "center",
     textAlignVertical: "center",
-  }
+  },
 });
 
 export default Refugios;
