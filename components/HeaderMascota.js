@@ -1,15 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 import ButtonFilters from "./ButtonFilters";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {  screenWidth } from "../hooks/useScreenResize";
+import { screenWidth } from "../hooks/useScreenResize";
 
-const HeaderMascota = (
-  filtros,
-  setFiltros,
-  currentIndex,
-  mascotas,
-  setResetMatches
-) => {
+const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
   const cambioColorPaw = (numColor) => {
     let color;
 
@@ -49,28 +43,27 @@ const HeaderMascota = (
             />
           </View>
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-            {mascotas[currentIndex].nombre}
+            {mascota.nombre}
           </Text>
           <View>
             <Ionicons
               style={styles.pawIcon}
               name="paw"
               size={45}
-              color={cambioColorPaw(mascotas[currentIndex].nivelCuidado)}
+              color={cambioColorPaw(mascota.nivelCuidado)}
             />
             <Text
               style={[
                 styles.pawIconNumber,
                 {
                   color:
-                    mascotas[currentIndex].nivelCuidado === 1 ||
-                    mascotas[currentIndex].nivelCuidado === 5
+                    mascota.nivelCuidado === 1 || mascota.nivelCuidado === 5
                       ? "white"
                       : "black",
                 },
               ]}
             >
-              {mascotas[currentIndex].nivelCuidado}
+              {mascota.nivelCuidado}
             </Text>
           </View>
         </View>

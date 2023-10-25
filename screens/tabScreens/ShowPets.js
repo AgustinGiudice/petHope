@@ -15,9 +15,10 @@ import { getMascotas } from "../../services/getMascotas";
 import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ShowPets = ({ navigation }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
 
   const [resetMatches, setResetMatches] = useState(false);
@@ -49,18 +50,19 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     // Obtener las mascotas
     const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=100000&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
-    getMascotasVistas().then(async () => {
+    getMascotasVistas(setPetVistos).then(async () => {
       try {
-        getMascotas(
+        await getMascotas(
           url,
           token,
           navigation,
           setMascotas,
-          setPetVistos,
+          index,
           setIndex,
           resetMatches,
           setResetMatches,
-          setIsLoading
+          setIsLoading,
+          setCurrentUser
         );
       } catch (error) {
         console.error("Error al obtener mascotas:", error);
@@ -93,12 +95,10 @@ const ShowPets = ({ navigation }) => {
               {showLikeAnimation && (
                 <ExplodingHeart style={styles.corazonLike} width={300} />
               )}
-
               <HeaderMascota
                 filtros={filtros}
                 setFiltros={setFiltros}
-                currentIndex={currentIndex}
-                mascotas={mascotas}
+                mascota={mascotas[currentIndex]}
                 setResetMatches={setResetMatches}
               />
 
@@ -127,24 +127,22 @@ const ShowPets = ({ navigation }) => {
                   const newIndex = Math.round(
                     event.nativeEvent.contentOffset.x / screenWidth
                   );
-                  setPetVistos((prevString) => {
-                    const updatedString =
-                      prevString === ""
-                        ? mascotas[currentIndex].id.join("|")
-                        : prevString +
-                          "|" +
-                          mascotas[currentIndex].id.join("|");
-                    console.log(currentIndex);
-                    console.log(mascotas[currentIndex]);
-                    saveDataToCache("mascotasVistas", updatedString);
-                    return updatedString;
-                  });
+
                   if (newIndex !== currentIndex) {
                     setCurrentIndex(newIndex);
                   }
                 }}
                 onEndReached={() => {
                   setIndex(index + 1);
+                }}
+                onScrollBeginDrag={() => {
+                  setPetVistos(async (prevString) => {
+                    const updatedString =
+                      prevString === ""
+                        ? mascotas[currentIndex].id + "|"
+                        : prevString + mascotas[currentIndex].id + "|";
+                    await AsyncStorage.setItem("mascotasVistas", updatedString);
+                  });
                 }}
               />
               {!isLoading ? (

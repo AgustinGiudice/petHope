@@ -5,35 +5,32 @@ export const getMascotas = async (
   token,
   navigation,
   setMascotas,
-  setPetVistos,
+  index,
   setIndex,
   resetMatches,
   setResetMatches,
-  setIsLoading
+  setIsLoading,
+  setCurrentUser
 ) => {
   try {
-    const response = fetchData(url, token); //verificar si se necesita el await o no
+    const response = await fetchData(url, token); //verificar si se necesita el await o no
 
     if (response.status === 401 || response.status === 403) {
-      AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("token");
+      setCurrentUser(null);
       navigation.navigate("LoginScreen");
       throw new Error("Acceso no autorizado");
     }
 
     const data = await response.json();
-
-    const hayMascotas = manejarMascotas(
+    manejarMascotas(
       data,
       setMascotas,
+      resetMatches,
       setResetMatches,
-      setPetVistos,
-      setIndex,
-      resetMatches
+      index,
+      setIndex
     );
-
-    if (hayMascotas) {
-      saveIdMascotaEnCache(data, setPetVistos);
-    }
   } catch (error) {
     console.error("Error al obtener mascotas:", error);
   } finally {
@@ -60,18 +57,19 @@ async function fetchData(url, token) {
 function manejarMascotas(
   data,
   setMascotas,
+  resetMatches,
   setResetMatches,
-  setIndex,
-  resetMatches
+  index,
+  setIndex
 ) {
   if (data.length > 0) {
+    console.log(resetMatches);
     if (!resetMatches) {
       setMascotas((prevData) => prevData.concat(data));
     } else {
       setMascotas(data);
       setResetMatches(false);
     }
-    return true;
   } else {
     if (!resetMatches) {
       setIndex(1);
@@ -82,18 +80,5 @@ function manejarMascotas(
       setMascotas([]);
       setResetMatches(false);
     }
-    return false;
   }
-}
-
-function saveIdMascotaEnCache(data, setPetVistos) {
-  const idMascotas = data.map((mascota) => mascota.id);
-  setPetVistos((prevString) => {
-    const updatedString =
-      prevString === ""
-        ? idMascotas.join("|")
-        : prevString + "|" + idMascotas.join("|");
-    AsyncStorage.setItem("mascotasVistas", updatedString);
-    return updatedString;
-  });
 }
