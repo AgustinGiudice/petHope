@@ -19,7 +19,9 @@ import {
 } from "../../hooks/getDescripciones";
 import Modal from "react-native-modal";
 import { UserContext } from "../../context/UserContext";
+import { TokenContext } from "../../context/TokenContext";
 import LoadingComponent from "../../components/LoadingComponent";
+import { getMatches } from "../../services/getMatches";
 
 const MatchesScreen = ({ navigation }) => {
   const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
@@ -29,7 +31,8 @@ const MatchesScreen = ({ navigation }) => {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
 
   const [userAbrir, setuserAbrir] = useState(null);
   const [match_id, setmatch_id] = useState(null);
@@ -49,14 +52,6 @@ const MatchesScreen = ({ navigation }) => {
     setIsModalForMoreInfoVisible(false);
     setIsModalForUserInfoVisible(true);
   };
-
-  // const [selectedState, setSelectedState] = useState("Todos los estados");
-
-  // const handleStateChange = (value) => {
-  //   // Aquí puedes realizar la lógica para filtrar los matches según el estado seleccionado
-  //   setSelectedState(value);
-  //   // Llamar a una función que actualice la lista de matches con el filtro
-  // };
 
   const handleCancelarMatch = async (match_id) => {
     try {
@@ -101,32 +96,16 @@ const MatchesScreen = ({ navigation }) => {
     setmatch_id(match);
   };
 
-  const fetchMatches = async () => {
-    try {
-      setRefreshing(true);
-
-      const response = await fetch(`${BASE_URL}api/match/${currentUser.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          // Aquí puedes agregar otros encabezados si es necesario
-        },
-      });
-      if (!response.ok) {
-        throw new Error("No se pudo obtener la lista de matches.");
-      }
-      const data = await response.json();
-      setIsLoading(false);
-      setMatches(data);
-    } catch (error) {
-      console.error("Error al obtener los matches:", error);
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
   useEffect(() => {
-    fetchMatches();
+    getMatches(
+      navigation,
+      currentUser,
+      setCurrentUser,
+      token,
+      setIsLoading,
+      setMatches,
+      setRefreshing
+    );
   }, []);
 
   if (isLoading) {
@@ -224,10 +203,19 @@ const MatchesScreen = ({ navigation }) => {
           )}
           keyExtractor={(item) => item.id.toString()}
           style={styles.matchContainer}
-          onEndReached={fetchMatches}
           onEndReachedThreshold={0.1}
           refreshing={refreshing}
-          onRefresh={fetchMatches}
+          onRefresh={() =>
+            getMatches(
+              navigation,
+              currentUser,
+              setCurrentUser,
+              token,
+              setIsLoading,
+              setMatches,
+              setRefreshing
+            )
+          }
         />
       </View>
 

@@ -14,14 +14,14 @@ import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 //IMPORTS REFUGIOS
-import RefShowPets from "./tabScreens/refugioScreens/RefShowPets"
+import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   //Traer usuario y token
-  const {currentUser} = useContext(UserContext);
-  const {token} = useContext(TokenContext);
-  
+  const { currentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
+
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
 
@@ -37,10 +37,10 @@ function MyTabs() {
 
   //verificar si currentUser tiene x atributo. Retorna True False
   const tieneAtributo = () => {
-    return currentUser.hasOwnProperty('estado');
+    if (currentUser !== null) {
+      return currentUser.hasOwnProperty("estado");
+    }
   };
-
-
 
   return (
     <>
@@ -60,7 +60,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={ Refugios }
+          component={Refugios}
           options={{
             headerShown: false,
             unmountOnBlur: true,
@@ -100,7 +100,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={ tieneAtributo() ? ShowPets :  RefShowPets}
+          component={tieneAtributo() ? ShowPets : RefShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,
