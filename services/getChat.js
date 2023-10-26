@@ -10,7 +10,7 @@ export const getChat = async (
   navigation
 ) => {
   try {
-    const response = fetch(
+    const response = await fetch(
       `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${receiverId}&sender=${senderId}&mascota=${mascotaId}`,
       {
         method: "GET",

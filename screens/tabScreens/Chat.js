@@ -101,12 +101,17 @@ const Chat = ({ route }) => {
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <TouchableOpacity onPress={() => setIsModalMascotaVisible(true)}>
-            <Text style={styles.nombreMascota}>{mascota.nombre}</Text>
+            <Text style={styles.nombreGrande}>
+              {currentUser.hasOwnProperty("estado")
+                ? receiver.nombre
+                : mascota.nombre}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setIsModalRefugioVisible(true)}>
-            <Text style={styles.nombreRefugio}>
-              Refugio
-              {/* {mascota.refugio.nombre} */}
+            <Text style={styles.nombreChico}>
+              {currentUser.hasOwnProperty("estado")
+                ? mascota.nombre
+                : mascota.refugio.nombre}
             </Text>
           </TouchableOpacity>
         </View>
@@ -296,13 +301,13 @@ const styles = StyleSheet.create({
   arrow: {
     color: "#C69AE8",
   },
-  nombreMascota: {
+  nombreGrande: {
     fontWeight: "bold",
     color: "#9A34EA",
     fontSize: 18,
     textAlign: "center",
   },
-  nombreRefugio: {
+  nombreChico: {
     textAlign: "center",
     fontSize: 14,
   },

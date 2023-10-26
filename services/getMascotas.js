@@ -31,6 +31,7 @@ export const getMascotas = async (
       index,
       setIndex
     );
+    console.log(data);
   } catch (error) {
     console.error("Error al obtener mascotas:", error);
   } finally {
@@ -63,7 +64,6 @@ function manejarMascotas(
   setIndex
 ) {
   if (data.length > 0) {
-    console.log(resetMatches);
     if (!resetMatches) {
       setMascotas((prevData) => prevData.concat(data));
     } else {

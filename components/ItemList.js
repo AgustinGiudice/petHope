@@ -8,12 +8,20 @@ import {
 } from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
-const ItemList = ({ item }) => {
+import HeaderMascota from "./HeaderMascota";
+
+const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
   return (
     <View style={styles.mascotaItem}>
+      <HeaderMascota
+        mascota={item}
+        filtros={filtros}
+        setFiltros={setFiltros}
+        setResetMatches={setResetMatches}
+      />
       <View>
         <View>
-          <Image source={{ uri: item.pic }} style={styles.mascotaImagen} />
+          <Image source={{ uri: item.imagen }} style={styles.mascotaImagen} />
           <LinearGradient
             colors={["rgba(255, 99, 71, 0)", "#000000"]}
             style={styles.gradient}
@@ -53,9 +61,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: "center",
     width: screenWidth,
+    flex: 1,
     // position:"relative",
     zIndex: 1,
-    gap: 2,
+    gap: 3,
+    backgroundColor: "#fff",
   },
   mascotaImagen: {
     width: "100%",
