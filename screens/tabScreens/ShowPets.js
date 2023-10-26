@@ -136,12 +136,6 @@ const ShowPets = ({ navigation }) => {
               {showLikeAnimation && (
                 <ExplodingHeart style={styles.corazonLike} width={300} />
               )}
-              {/* <HeaderMascota
-                filtros={filtros}
-                setFiltros={setFiltros}
-                mascota={mascotas[currentIndex]}
-                setResetMatches={setResetMatches}
-              /> */}
               <InfoPetModal
                 isVisible={infoPetModalIsVisible}
                 setIsVisible={setInfoPetModalIsVisible}
@@ -158,35 +152,6 @@ const ShowPets = ({ navigation }) => {
                 setIndex={setIndex}
                 setResetMatches={setResetMatches}
               />
-              {/* <FlatList
-                ref={flatlistRef}
-                horizontal
-                pagingEnabled
-                data={mascotas}
-                renderItem={ItemList}
-                keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={styles.listContainer}
-                getItemLayout={(data, index) => ({
-                  length: screenWidth,
-                  offset: screenWidth * index,
-                  index,
-                })}
-                onMomentumScrollEnd={(event) => {
-                  const newIndex = Math.round(
-                    event.nativeEvent.contentOffset.x / screenWidth
-                  );
-
-                  if (newIndex !== currentIndex) {
-                    setCurrentIndex(newIndex);
-                  }
-                }}
-                onEndReached={() => {
-                  setIndex(index + 1);
-                }}
-                onScrollBeginDrag={() => {
-                  setPetVistos(petVistos + "|" + mascotas[currentIndex].id);
-                }}
-              /> */}
               {!isLoading ? (
                 <SPButtons
                   mascota_id={mascotas[index].id}

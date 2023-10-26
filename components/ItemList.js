@@ -57,7 +57,7 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
 
 const styles = StyleSheet.create({
   mascotaItem: {
-    marginTop: 5,
+    
     borderRadius: 5,
     textAlign: "center",
     width: screenWidth,
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     gap: 3,
     backgroundColor: "#fff",
+    overflow: "hidden",
   },
   mascotaImagen: {
     width: "100%",

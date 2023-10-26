@@ -25,12 +25,11 @@ const SwiperPets = ({
       }}
       onSwiped={() => setIndex(index + 1)}
       cardIndex={0}
-      backgroundColor={"#fff"}
+      backgroundColor={"#C69AE8"}
       stackSize={2}
       containerStyle={styles.container}
       verticalSwipe={false}
       showSecondCard={true}
-      
     />
   );
 };
