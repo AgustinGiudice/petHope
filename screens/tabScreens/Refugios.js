@@ -12,11 +12,13 @@ import Constants from "expo-constants";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import LoadingComponent from "../../components/LoadingComponent";
 import { TokenContext } from "../../context/TokenContext";
-import { setCurrentUser } from "../../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import { getRefugios } from "../../services/getRefugios";
+import { BASE_URL } from "@env";
 
 const Refugios = ({ navigation }) => {
   const { token } = useContext(TokenContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRefugio, setSelectedRefugio] = useState(null);
@@ -37,9 +39,10 @@ const Refugios = ({ navigation }) => {
 
   useEffect(() => {
     // Obtener las mascotas
-
     try {
-      getRefugios(token, navigation, setRefugios, setCurrentUser);
+      const url = `${BASE_URL}api/refugios?latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}`;
+      getRefugios(url, token, navigation, setRefugios, setCurrentUser);
+      console.log(refugios);
     } catch (error) {
       console.error("Error al obtener refugios:", error);
     } finally {
@@ -61,7 +64,7 @@ const Refugios = ({ navigation }) => {
               <Image source={item.imagen} style={styles.imagenNoticia} />
               <Text style={styles.nombreRef}>{item.nombre}</Text>
               <Text style={styles.distanciaRef}>
-                A {item.distancia} Km de distancia
+                A {item.distance} Km de distancia
               </Text>
               <Text style={styles.acepta}>Acepta {item.animal}</Text>
               <View style={styles.orderButton}>
