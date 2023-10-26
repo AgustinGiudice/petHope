@@ -34,7 +34,7 @@ const RefShowPets = ({ navigation }) => {
 
   useEffect(() => {
     try {
-      const url = `${BASE_URL}api/petsRef`;
+      const url = `${BASE_URL}api/mascotas/petsRef/${currentUser.id}`;
       getMascotasRef(url, token, navigation, setMascotasRef, setCurrentUser);
       console.log(MascotasRef);
     } catch (error) {
