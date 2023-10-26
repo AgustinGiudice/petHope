@@ -1,7 +1,13 @@
-import React from "react";
+import React, {useContext,useEffect,useState} from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 import MascotaRef from "../../../components/componentesRefugio/MascotaRef";
 import { screenHeight, screenWidth } from "../../../hooks/useScreenResize";
+import LoadingComponent from "../../../components/LoadingComponent";
+import { TokenContext } from "../../../context/TokenContext";
+import { UserContext } from "../../../context/UserContext";
+import { getMascotasRef } from "../../../services/getMascotasRef";
+import { BASE_URL } from "@env";
+
 
 const data = [
   { id: '1', name: 'Mascota 1' },
@@ -14,11 +20,33 @@ const data = [
 ];
 
 const RefShowPets = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const { token } = useContext(TokenContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <MascotaRef />
     </View>
   );
+
+  const [MascotasRef, setMascotasRef] = useState();
+
+  useEffect(() => {
+    try {
+      const url = `${BASE_URL}api/petsRef`;
+      getMascotasRef(url, token, navigation, setMascotasRef, setCurrentUser);
+      console.log(MascotasRef);
+    } catch (error) {
+      console.error("Error al obtener macotas de refugio:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <>
