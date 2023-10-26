@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { BASE_URL } from "@env";
+import { TokenContext } from "../context/TokenContext";
 
 const SPbuttons = ({
   mascota_id,
@@ -15,83 +16,13 @@ const SPbuttons = ({
   setResetMatches,
   currentUserId,
   setInfoPetModalIsVisible,
+  setMascotas,
 }) => {
   const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
-
+  const { token } = useContext(TokenContext);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
 
   const { width, height } = useWindowDimensions();
-
-  const styles = StyleSheet.create({
-    footerContainer: {
-      width: width - width * 0.05,
-      height: height - height * 0.5,
-      backgroundColor: "#C69AE8",
-      borderRadius: 500,
-      position: "absolute",
-      bottom: height - height * 1.365, //aaaaaaa
-      alignItems: "center",
-      justifyContent: "flex-start",
-    },
-    text: {
-      color: "white",
-      fontSize: 30,
-    },
-    buttonsMain: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: 140,
-      marginTop: 15,
-    },
-    buttonsSecondary: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: 270,
-      marginTop: -17,
-    },
-    backIcons: {
-      backgroundColor: "#9A34EA",
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    backIcons2: {
-      backgroundColor: "#9A34EA",
-      width: 45,
-      height: 45,
-      borderRadius: 22.5,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    pawbutton: {
-      backgroundColor: "#777bf6",
-      position: "absolute",
-      paddingVertical: 15,
-      paddingHorizontal: 15,
-      borderRadius: 50,
-      marginHorizontal: width / 3,
-      zIndex: 2,
-      bottom: 0,
-    },
-    likeAnimation: {
-      position: "absolute",
-      alignSelf: "center",
-    },
-    likeEmoji: {
-      fontSize: 36,
-      color: "red",
-    },
-    likeAnimation: {
-      position: "absolute",
-      alignSelf: "center",
-    },
-    likeEmoji: {
-      fontSize: 36,
-      color: "red",
-    },
-  });
 
   // POST
   const postLike = async () => {
@@ -100,6 +31,7 @@ const SPbuttons = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           idMascota: mascota_id,
@@ -131,6 +63,7 @@ const SPbuttons = ({
           // Reiniciar la animación y ocultarla cuando termine
           likeAnimationValue.setValue(0);
           setResetMatches(true);
+          setMascotas([]);
           setShowLikeAnimation(false);
         });
       } else {
@@ -141,7 +74,6 @@ const SPbuttons = ({
     }
   };
 
-  //ANIMACION
   const [scaleValue, setScaleValue] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -156,23 +88,25 @@ const SPbuttons = ({
       scaleValue.stopAnimation();
       scaleValue.setValue(0);
     };
-
-    // Agrega un efecto de limpieza para reiniciar la animación
-    // return () => {
-    //     setScaleValue(new Animated.Value(0));
-    // };
     return cleanUp;
   }, []);
 
-  // Aplicar la escala al estilo del componente
   const containerStyle = {
     ...styles.footerContainer,
     transform: [{ scale: scaleValue }],
   };
-  //FIN ANIMACION
 
   return (
-    <Animated.View style={containerStyle}>
+    <Animated.View
+      style={[
+        containerStyle,
+        {
+          width: width - width * 0.05,
+          height: height - height * 0.5,
+          bottom: height - height * 1.365,
+        },
+      ]}
+    >
       <View style={styles.buttonsMain}>
         <TouchableOpacity
           style={styles.backIcons}
@@ -198,5 +132,63 @@ const SPbuttons = ({
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  footerContainer: {
+    backgroundColor: "#C69AE8",
+    borderRadius: 500,
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  text: {
+    color: "white",
+    fontSize: 30,
+  },
+  buttonsMain: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 140,
+    marginTop: 15,
+  },
+  buttonsSecondary: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 270,
+    marginTop: -17,
+  },
+  backIcons: {
+    backgroundColor: "#9A34EA",
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  backIcons2: {
+    backgroundColor: "#9A34EA",
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  likeAnimation: {
+    position: "absolute",
+    alignSelf: "center",
+  },
+  likeEmoji: {
+    fontSize: 36,
+    color: "red",
+  },
+  likeAnimation: {
+    position: "absolute",
+    alignSelf: "center",
+  },
+  likeEmoji: {
+    fontSize: 36,
+    color: "red",
+  },
+});
 
 export default SPbuttons;
