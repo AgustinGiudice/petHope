@@ -2,13 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "@env";
 
 export const getRefugios = async (
+  url,
   token,
   navigation,
   setRefugios,
   setCurrentUser
 ) => {
   try {
-    const response = await fetchData(`${BASE_URL}api/refugios/`, token); //verificar si se necesita el await o no
+    const response = await fetchData(url, token); //verificar si se necesita el await o no
 
     if (response.status === 401 || response.status === 403) {
       await AsyncStorage.removeItem("token");
