@@ -15,6 +15,8 @@ import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 //IMPORTS REFUGIOS
 import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
+import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
+
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -60,7 +62,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={Refugios}
+          component={tieneAtributo() ? RegisterPet : Refugios}
           options={{
             headerShown: false,
             unmountOnBlur: true,
@@ -100,7 +102,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={tieneAtributo() ? ShowPets : RefShowPets}
+          component={tieneAtributo() ? RefShowPets : ShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,

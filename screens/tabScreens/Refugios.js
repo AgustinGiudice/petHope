@@ -37,11 +37,11 @@ const Refugios = ({ navigation }) => {
 
   
 
-  useEffect(() => {
+  useEffect( async() => {
     // Obtener las mascotas
     try {
       const url = `${BASE_URL}api/refugios?latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}`;
-      getRefugios(url, token, navigation, setRefugios, setCurrentUser);
+      await getRefugios(url, token, navigation, setRefugios, setCurrentUser);
       console.log(refugios);
     } catch (error) {
       console.error("Error al obtener refugios:", error);
