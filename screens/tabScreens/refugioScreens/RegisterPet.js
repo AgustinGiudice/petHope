@@ -33,7 +33,11 @@ const RegisterPet = ({ navigation }) => {
           placeholder="Perro o gato"
           atributo="animal"
         />
-        <Select />
+        <Select
+          values={["Perro", "Gato"]}
+          setValue={setNewPetData}
+          atributo={"Selecciona tipo de animal"}
+        />
         <Input
           value={newPetData.sexo}
           setValue={setNewPetData}

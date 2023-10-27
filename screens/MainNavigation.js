@@ -17,6 +17,7 @@ import {
   matchesCount,
   CountMatchesContext,
 } from "../context/CountMatchesContext";
+import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -73,15 +74,17 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
+        //initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
+        initialRouteName="test"
         screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >
-        <Stack.Screen name="LoginScreen" component={LoginScreen}/>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterChoice" component={RegisterChoice} />
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
         <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="test" component={RegisterPet} />
       </Stack.Navigator>
     </NavigationContainer>
   );
