@@ -2,6 +2,54 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Foundation from "react-native-vector-icons/Foundation";
+
+const obtenerTamanioTexto = (tamanio) => {
+  switch (tamanio) {
+    case 1:
+      return "Chico";
+    case 2:
+      return "Mediano";
+    case 3:
+      return "Grande";
+    default:
+      return "Desconocido";
+  }
+};
+
+const obtenerEdadTexto = (edad) => {
+  switch (edad) {
+    case 1:
+      return "Cachorro";
+    case 2:
+      return "Juvenil";
+    case 3:
+      return "Adulto";
+    default:
+      return "Desconocido";
+  }
+};
+
+const obtenerSexoTexto = (sexo) => {
+  switch (sexo) {
+    case 1:
+      return <Foundation name="male-symbol" size={40} color="blue" />;
+    case 2:
+      return <Foundation name="female-symbol" size={40} color="pink" />;
+    default:
+      return "Desconocido";
+  }
+};
+
+const obtenerCuidados = (cuidadosEspeciales) => {
+  if (cuidadosEspeciales = true) {
+    return <Foundation name="male-symbol" size={40} color="red" />;
+    
+  }else{
+    return <Foundation name="male-symbol" size={40} color="black" />;
+
+  }
+}
 const MascotaRef = ({ mascota }) => {
   return (
     <View style={styles.container}>
@@ -37,9 +85,10 @@ const MascotaRef = ({ mascota }) => {
       />
 
       <View style={styles.data1}>
-        <Text style={styles.data}>Tamaño: Medio</Text>
-        <Text style={styles.data}>Edad: Cachorro</Text>
-        <Text style={styles.data}>Sexo: Masculino</Text>
+        <Text style={styles.data}>Sexo: {obtenerSexoTexto(mascota.sexo)}</Text>
+        {/* <Text style={styles.data}>cuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}</Text> */}
+        <Text style={styles.data}>Tamaño: {obtenerTamanioTexto(mascota.tamanio)}</Text>
+        <Text style={styles.data}>Edad: {obtenerEdadTexto(mascota.edad)}</Text>
       </View>
     </View>
   );
