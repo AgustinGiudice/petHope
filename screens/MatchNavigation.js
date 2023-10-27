@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 function MatchNavigation() {
   return (
     <Stack.Navigator
-      initialRouteName="Tabs"
+      initialRouteName="Match"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Match" component={WatchMatches} />

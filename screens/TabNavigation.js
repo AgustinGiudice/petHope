@@ -14,7 +14,7 @@ import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
 import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
-import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
+import RegisterPetNavigation from "./RegisterPetNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,7 +54,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={currentUser.isRefugio ? RegisterPet : Refugios}
+          component={currentUser.isRefugio ? RegisterPetNavigation : Refugios}
           options={{
             headerShown: false,
             unmountOnBlur: true,
