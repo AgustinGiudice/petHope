@@ -74,8 +74,8 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        //initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
-        initialRouteName="test"
+        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
+     
         screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >
         <Stack.Screen name="LoginScreen" component={LoginScreen} />

@@ -121,6 +121,7 @@ function MyTabs() {
                 </View>
               </View>
             ),
+            
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {

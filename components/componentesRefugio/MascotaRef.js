@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const obtenerTamanioTexto = (tamanio) => {
   switch (tamanio) {
@@ -42,14 +43,14 @@ const obtenerSexoTexto = (sexo) => {
 };
 
 const obtenerCuidados = (cuidadosEspeciales) => {
-  if (cuidadosEspeciales = true) {
-    return <Foundation name="male-symbol" size={40} color="red" />;
-    
+  if (cuidadosEspeciales === true) {
+    return <Text> SI </Text>;
   }else{
-    return <Foundation name="male-symbol" size={40} color="black" />;
-
+    return <Text> NO </Text>;
   }
 }
+
+
 const MascotaRef = ({ mascota }) => {
   return (
     <View style={styles.container}>
@@ -83,13 +84,17 @@ const MascotaRef = ({ mascota }) => {
         source={require("../../assets/refugio1.jpg")}
         style={styles.image}
       />
-
-      <View style={styles.data1}>
-        <Text style={styles.data}>Sexo: {obtenerSexoTexto(mascota.sexo)}</Text>
-        {/* <Text style={styles.data}>cuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}</Text> */}
-        <Text style={styles.data}>Tamaño: {obtenerTamanioTexto(mascota.tamanio)}</Text>
-        <Text style={styles.data}>Edad: {obtenerEdadTexto(mascota.edad)}</Text>
+      <View style={styles.dataContainer}>
+        
+        <View style={styles.data1}>
+          <Text style={styles.data}>Tamaño: {obtenerTamanioTexto(mascota.tamanio)}</Text>
+          <Text style={styles.data}>Edad: {obtenerEdadTexto(mascota.edad)}</Text>
+        </View>
+        
+        <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
+      
       </View>
+          <Text style={styles.data2}>CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}</Text>
     </View>
   );
 };
@@ -98,8 +103,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     borderRadius: 10,
-    margin: 10,
-    width: screenWidth - screenWidth * 0.55,
+    margin: 5,
+    width: screenWidth - screenWidth * 0.53,
     height: screenHeight - screenHeight * 0.7,
     alignItems: "center",
   },
@@ -117,6 +122,13 @@ const styles = StyleSheet.create({
   namePet: {
     fontSize: 20,
   },
+  dataContainer:{
+    width: screenWidth - screenWidth * 0.53,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    paddingLeft:5,
+    paddingRight:5
+  },
   data: {
     fontSize: 14,
     margin: 2,
@@ -124,6 +136,9 @@ const styles = StyleSheet.create({
   data1: {},
   dificultad: {
     color: "red",
+  },
+  data2:{
+    marginRight:20 //DEBATIBLE
   },
   pawIcon: {
     position: "relative",
