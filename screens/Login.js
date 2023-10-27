@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,6 +22,7 @@ const LoginScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
+    setError("");
     setIsLoading(true);
     await login(
       userData,
@@ -33,56 +35,60 @@ const LoginScreen = ({ navigation }) => {
     );
     setIsLoading(false);
   };
-
+  useEffect(() => {
+    setError("");
+  }, [isRefugio]);
   useEffect(() => {
     const token = AsyncStorage.getItem("token");
     console.log(token);
   }, []);
-  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Iniciar Sesión</Text>
-      {/* LOGUEARSE COMO USUARIO O REFUGIO */}
-      <TouchableOpacity
-        style={styles.switchButton}
-        onPress={() => setIsRefugio(!isRefugio)}
-      >
-        <Text style={{ color: "black" }}>
-          {isRefugio
-            ? "Iniciar sesión como Usuario Normal"
-            : "Iniciar sesión como Refugio"}
-        </Text>
-      </TouchableOpacity>
-
-      <View style={styles.inputsContainer}>
-        <Input
-          value={userData.mail}
-          setValue={setUserData}
-          placeholder="E-mail"
-          atributo="mail"
-        />
-        <Input
-          value={userData.pass}
-          setValue={setUserData}
-          placeholder="Contraseña"
-          atributo="pass"
-        />
+      <View style={styles.tabContainer}>
+        <View style={[styles.tab, isRefugio ? null : styles.tabActive]}>
+          <TouchableOpacity onPress={() => setIsRefugio(false)}>
+            <Text>Cliente</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.tab, isRefugio ? styles.tabActive : null]}>
+          <TouchableOpacity onPress={() => setIsRefugio(true)}>
+            <Text>Refugio</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        {isLoading ? (
-          <ActivityIndicator color={"white"} />
-        ) : (
-          <Text style={{ color: "white" }}>Ingresar</Text>
-        )}
-      </TouchableOpacity>
 
-      <Text
-        style={styles.registerTextContainer}
-        onPress={() => navigation.navigate("RegisterChoice")}
-      >
-        <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
-      </Text>
+      <View style={styles.main}>
+        <View style={styles.inputsContainer}>
+          <Input
+            value={userData.mail}
+            setValue={setUserData}
+            placeholder="E-mail"
+            atributo="mail"
+          />
+          <Input
+            value={userData.pass}
+            setValue={setUserData}
+            placeholder="Contraseña"
+            atributo="pass"
+          />
+        </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          {isLoading ? (
+            <ActivityIndicator color={"white"} />
+          ) : (
+            <Text style={{ color: "white" }}>Ingresar</Text>
+          )}
+        </TouchableOpacity>
+
+        <Text
+          style={styles.registerTextContainer}
+          onPress={() => navigation.navigate("RegisterChoice")}
+        >
+          <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
+        </Text>
+      </View>
     </View>
   );
 };
@@ -92,13 +98,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#C69AE8",
-    gap: 20,
+    backgroundColor: "#9A34EA",
+  },
+  tabContainer: {
+    width: "80%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  tab: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: "#ddd",
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderColor: "#9A34EA",
+    borderBottomWidth: 1,
+    flex: 1,
+  },
+  tabActive: {
+    borderBottomWidth: 0,
+    backgroundColor: "#eee",
+  },
+  main: {
+    backgroundColor: "#eee",
+    width: "80%",
+    aspectRatio: 1,
+    borderRadius: 10,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
-    color: "#9A34EA",
+    color: "#eee",
+    padding: 30,
   },
   inputsContainer: {
     width: "100%",
@@ -119,6 +154,9 @@ const styles = StyleSheet.create({
   registerText: {
     color: "black",
     fontSize: 12,
+  },
+  errorText: {
+    color: "red",
   },
 });
 
