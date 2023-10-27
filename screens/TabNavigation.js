@@ -100,7 +100,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={tieneAtributo() ? ShowPets : RefShowPets}
+          component={!tieneAtributo() ? ShowPets : RefShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,
