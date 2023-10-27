@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
-import SelectDropdown from "react-native-select-dropdown";
 //https://github.com/AdelRedaa97/react-native-select-dropdown#buttonTextAfterSelection
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { BASE_URL } from "@env";
@@ -30,87 +29,52 @@ const RegisterPet = ({ navigation }) => {
           placeholder="Nombre de la Mascota"
           atributo="nombre"
         />
-        <Input
-          value={newPetData.animal}
-          setValue={setNewPetData}
-          placeholder="Perro o gato"
-          atributo="animal"
-        />
-        {/* <Select
-           values={["Perro", "Gato"]}
-           setValue={setNewPetData}
-           atributo={"Selecciona tipo de animal"}
-         /> */}
-
-        <SelectDropdown
-          data={["Perro", "Gato"]}
-          buttonStyle={{
-            borderColor: "#C69AE8",
-            borderWidth: 1,
-            borderRadius: 5,
-            backgroundColor: "#e3e3e3",
-            width: "80%",
+        <Select
+          values={["Perro", "Gato"]}
+          setValues={(item) => {
+            const newData = newPetData;
+            newData.animal = item === "Perro" ? 1 : 2;
+            setNewPetData(newData);
           }}
-          renderDropdownIcon={() => {
-            return (
-              <MaterialIcons
-                name="keyboard-arrow-down"
-                size={25}
-                style={{ color: "#C69AE8" }}
-              />
-            );
+          texto={"Selecciona que animal es"}
+        />
+        <Select
+          values={["Macho", "Hembra"]}
+          setValues={(item) => {
+            const newData = newPetData;
+            newData.sexo = item === "Macho" ? 1 : 2;
+            setNewPetData(newData);
           }}
-          buttonTextStyle={{
-            color: "#9A34EA",
+          texto={"Selecciona el sexo de la mascota"}
+        />
+        <Select
+          values={["Perro", "Gato"]}
+          setValues={(item) => {
+            const newData = newPetData;
+            newData.edad = item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
+            setNewPetData(newData);
           }}
-          defaultButtonText="Selecciona que animal es"
-          rowStyle={{
-            borderColor: "#9A34EA",
-            borderRightWidth: 5,
-            borderLeftWidth: 5,
-            borderBottomColor: "#9A34EA",
+          texto={"Selecciona la edad de la mascota"}
+        />
+        <Select
+          values={["Raza", "Raza"]}
+          //poner la lista de razas
+          setValues={(item) => {
+            const newData = newPetData;
+            newData.raza = item === "Perro" ? 1 : 2;
+            setNewPetData(newData);
           }}
-          rowTextStyle={{ color: "#9A34EA" }}
-          selectedRowStyle={{ backgroundColor: "#C69AE8" }}
-          selectedRowTextStyle={{ color: "#e3e3e3" }}
-          dropdownOverlayColor="#rgba(50,50,50,0.8)"
-          dropdownStyle={{ margin: 0 }}
+          texto={"Selecciona la raza de la mascota"}
         />
-        <Input
-          value={newPetData.sexo}
-          setValue={setNewPetData}
-          placeholder="Sexo"
-          atributo="sexo"
-        />
-        <Input
-          value={newPetData.edad}
-          setValue={setNewPetData}
-          placeholder="Edad"
-          atributo="edad"
-        />
-        <Input
-          value={newPetData.nivelCuidado}
-          setValue={setNewPetData}
-          placeholder="Nivel de cuidado??"
-          atributo="nivelCuidado"
-        />
-        <Input
-          value={newPetData.cuidadosEspeciales}
-          setValue={setNewPetData}
-          placeholder="Cuidados Especiales??"
-          atributo="cuidadosEspeciales"
-        />
-        <Input
-          value={newPetData.raza}
-          setValue={setNewPetData}
-          placeholder="Raza"
-          atributo="raza"
-        />
-        <Input
-          value={newPetData.tamanio}
-          setValue={setNewPetData}
-          placeholder="Tamaño"
-          atributo="tamanio"
+        <Select
+          values={["Pequeño", "Mediano", "Grande"]}
+          setValues={(item) => {
+            const newData = newPetData;
+            newData.tamanio =
+              item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
+            setNewPetData(newData);
+          }}
+          texto={"Selecciona que tan grande es la mascota"}
         />
         <Input
           value={newPetData.descripcion}
@@ -142,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderRadius: 10,
-    gap: 5,
+    gap: 10,
   },
 });
 
