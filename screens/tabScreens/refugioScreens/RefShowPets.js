@@ -36,7 +36,6 @@ const RefShowPets = ({ navigation }) => {
     try {
       const url = `${BASE_URL}api/mascotas/petsRef/${currentUser.id}`;
       getMascotasRef(url, token, navigation, setMascotasRef, setCurrentUser);
-      console.log(MascotasRef);
     } catch (error) {
       console.error("Error al obtener macotas de refugio:", error);
     } finally {

@@ -19,9 +19,10 @@ export const getMascotasRef = async (
 
     const data = await response.json();
     setMascotasRef(data);
+    console.log(data);
   } catch (error) {
     console.error("Error al obtener Refugios:", error);
-  } 
+  }
 };
 
 async function fetchData(url, token) {
