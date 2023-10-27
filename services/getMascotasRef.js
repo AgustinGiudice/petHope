@@ -21,11 +21,15 @@ export const getMascotasRef = async (
     setMascotasRef(data);
     console.log(data);
   } catch (error) {
-    console.error("Error al obtener Refugios:", error);
+    console.error(
+      "Error al obtener las mascotas del refugio (funcion):",
+      error
+    );
   }
 };
 
 async function fetchData(url, token) {
+  console.log(token);
   try {
     const response = await fetch(url, {
       method: "GET",

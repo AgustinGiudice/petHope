@@ -1,5 +1,5 @@
-import React, {useContext,useEffect,useState} from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import MascotaRef from "../../../components/componentesRefugio/MascotaRef";
 import { screenHeight, screenWidth } from "../../../hooks/useScreenResize";
 import LoadingComponent from "../../../components/LoadingComponent";
@@ -7,17 +7,6 @@ import { TokenContext } from "../../../context/TokenContext";
 import { UserContext } from "../../../context/UserContext";
 import { getMascotasRef } from "../../../services/getMascotasRef";
 import { BASE_URL } from "@env";
-
-
-const data = [
-  { id: '1', name: 'Mascota 1' },
-  { id: '2', name: 'Mascota 2' },
-  { id: '3', name: 'Mascota 3' },
-  { id: '4', name: 'Mascota 4' },  
-  { id: '4', name: 'Mascota 4' },  
-  { id: '4', name: 'Mascota 4' },  
-  { id: '4', name: 'Mascota 4' },
-];
 
 const RefShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +19,7 @@ const RefShowPets = ({ navigation }) => {
     </View>
   );
 
-  const [MascotasRef, setMascotasRef] = useState();
+  const [mascotasRef, setMascotasRef] = useState();
 
   useEffect(() => {
     try {
@@ -49,27 +38,25 @@ const RefShowPets = ({ navigation }) => {
 
   return (
     <>
-    <View style={styles.headerItem}>
-      <View style={styles.headerItem2}>
-        <View style={styles.headerItemsContenido}>
-
-          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-            Mascotas
-          </Text>
-          
+      <View style={styles.headerItem}>
+        <View style={styles.headerItem2}>
+          <View style={styles.headerItemsContenido}>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+              Mascotas
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
 
-
-    <View style={styles.container}>
-      <FlatList style={styles.flatlist}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2} // Mostrar dos elementos por fila
+      <View style={styles.container}>
+        <FlatList
+          style={styles.flatlist}
+          data={mascotasRef}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={2} // Mostrar dos elementos por fila
         />
-    </View>
+      </View>
     </>
   );
 };
@@ -78,14 +65,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E3E3E3",
-  justifyContent: "center",
+    justifyContent: "center",
     alignItems: "center",
   },
-  item: {
-    
-  },
-  flatlist:{
-    paddingTop: screenHeight - screenHeight * 0.97
+  item: {},
+  flatlist: {
+    paddingTop: screenHeight - screenHeight * 0.97,
   },
   //HEADER ESTILOS
   headerItem: {
@@ -137,7 +122,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     textAlign: "center",
     textAlignVertical: "center",
-  }
+  },
 });
 
 export default RefShowPets;

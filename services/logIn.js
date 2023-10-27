@@ -44,6 +44,7 @@ export const login = async (
           .then((storedToken) => {
             console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
             const { usuario, token } = data;
+            usuario.isRefugio = isRefugio;
             setCurrentUser(usuario);
             setUserData({ mail: "", pass: "" });
             setError("");

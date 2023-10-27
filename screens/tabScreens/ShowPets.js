@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BASE_URL } from "@env";
-import { View, FlatList, StyleSheet } from "react-native";
-import ItemList from "../../components/ItemList";
+import { View, StyleSheet } from "react-native";
 import SPButtons from "../../components/SPbuttons";
 import ExplodingHeart from "../../components/ExplodingHeart";
 import LoadingComponent from "../../components/LoadingComponent";
 import InfoPetModal from "../../components/InfoPetModal";
 import CompletarFormulario from "../../components/CompletarFormulario";
 import SinMascotas from "../../components/SinMascotas";
-import HeaderMascota from "../../components/HeaderMascota";
 import { UserContext } from "../../context/UserContext";
 import { TokenContext } from "../../context/TokenContext";
 import { getMascotas } from "../../services/getMascotas";
 import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Constants from "expo-constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import SwiperPets from "../../components/SwiperPets";
 
 const ShowPets = ({ navigation }) => {
@@ -32,7 +29,6 @@ const ShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [infoPetModalIsVisible, setInfoPetModalIsVisible] = useState(false);
   const [firstFetch, setFirstFetch] = useState(false);
-  const flatlistRef = useRef();
 
   const [filtros, setFiltros] = useState({
     sexo: 2,

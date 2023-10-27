@@ -12,7 +12,6 @@ import MatchNavigation from "./MatchNavigation";
 import Refugios from "./tabScreens/Refugios";
 import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
-import { TokenContext } from "../context/TokenContext";
 //IMPORTS REFUGIOS
 import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
 import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
@@ -22,7 +21,6 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   //Traer usuario y token
   const { currentUser } = useContext(UserContext);
-  const { token } = useContext(TokenContext);
 
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [routeST, setRouteST] = useState("");
@@ -34,15 +32,9 @@ function MyTabs() {
     return width / 5;
   }
   useEffect(() => {
+    console.log("usuario", currentUser);
     console.log("matchesCount", matchesCount);
   }, [matchesCount]);
-
-  //verificar si currentUser tiene x atributo. Retorna True False
-  const tieneAtributo = () => {
-    if (currentUser !== null) {
-      return currentUser.hasOwnProperty("estado");
-    }
-  };
 
   return (
     <>
@@ -62,7 +54,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={tieneAtributo() ? RegisterPet : Refugios}
+          component={currentUser.isRefugio ? RegisterPet : Refugios}
           options={{
             headerShown: false,
             unmountOnBlur: true,
@@ -102,7 +94,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={tieneAtributo() ? RefShowPets : ShowPets}
+          component={currentUser.isRefugio ? RefShowPets : ShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,
