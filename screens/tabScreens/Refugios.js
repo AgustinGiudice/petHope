@@ -64,7 +64,7 @@ const Refugios = ({ navigation }) => {
               <Image source={item.imagen} style={styles.imagenNoticia} />
               <Text style={styles.nombreRef}>{item.nombre}</Text>
               <Text style={styles.distanciaRef}>
-                A {item.distance} Km de distancia
+                A {item.distance.toFixed(2)} Km de distancia
               </Text>
               <Text style={styles.acepta}>Acepta {item.animal}</Text>
               <View style={styles.orderButton}>
