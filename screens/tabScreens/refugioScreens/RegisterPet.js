@@ -30,6 +30,34 @@ const RegisterPet = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.titulo}>Publicar una mascota</Text>
       <View style={styles.row}>
+        <View style={styles.column}>
+          {images.map((image, key) => {
+            return (
+              <TouchableOpacity
+                style={styles.imageContainer}
+                onPress={() => setSelectedPic(image)}
+                key={key}
+              >
+                <Image source={{ uri: image }} style={styles.image} />
+              </TouchableOpacity>
+            );
+          })}
+          {images.length < 4 && (
+            <TouchableOpacity
+              style={styles.imageContainer}
+              onPress={() => setAddImageModalVisible(true)}
+            >
+              <View
+                style={[
+                  styles.image,
+                  { justifyContent: "center", alignItems: "center" },
+                ]}
+              >
+                <MaterialIcons name="add-a-photo" size={30} color="white" />
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
         <View style={styles.inputsContainer}>
           <Input
             value={newPetData.nombre}
@@ -86,34 +114,7 @@ const RegisterPet = ({ navigation }) => {
             texto={"Tamaño"}
           />
         </View>
-        <View style={styles.column}>
-          {images.map((image, key) => {
-            return (
-              <TouchableOpacity
-                style={styles.imageContainer}
-                onPress={() => setSelectedPic(image)}
-                key={key}
-              >
-                <Image source={{ uri: image }} style={styles.image} />
-              </TouchableOpacity>
-            );
-          })}
-          {images.length < 4 && (
-            <TouchableOpacity
-              style={styles.imageContainer}
-              onPress={() => setAddImageModalVisible(true)}
-            >
-              <View
-                style={[
-                  styles.image,
-                  { justifyContent: "center", alignItems: "center" },
-                ]}
-              >
-                <MaterialIcons name="add-a-photo" size={30} color="white" />
-              </View>
-            </TouchableOpacity>
-          )}
-        </View>
+
         <AddImageModal
           isVisible={addImageModalVisible}
           setIsVisible={setAddImageModalVisible}
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: "#e3e3e3",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     borderRadius: 10,
     gap: 10,
   },
