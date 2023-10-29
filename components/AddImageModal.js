@@ -3,11 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
-import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 
-const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
   const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
@@ -58,43 +56,45 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
         const formData = new FormData();
         // const response = await fetch(newImage);
         // const blob = await response.blob();
-        
-        formData.append('userImage', {
+
+        formData.append("userImage", {
           uri: newImage,
-          name: 'userImage.jpg', // Nombre de archivo arbitrario
-          type: 'image/jpeg', // Cambia esto según el tipo de archivo
+          name: "userImage.jpg", // Nombre de archivo arbitrario
+          type: "image/jpeg", // Cambia esto según el tipo de archivo
         });
-  
+
         // Poner el loading en true
-  
+
         // Realizar la solicitud POST con fetch
-        fetch(`https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/upload-img/${currentUser.id}`, {
-          method: 'PUT',
-          body: formData,
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-          .then(response => {
+        fetch(
+          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/upload-img/${id}`,
+          {
+            method: "PUT",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+          .then((response) => {
             if (response.ok) {
               // La solicitud se completó con éxito
               return response.json();
             } else {
               // Manejar errores aquí, por ejemplo, mostrar un mensaje de error
-              throw new Error('Error al subir la imagen');
+              throw new Error("Error al subir la imagen");
             }
           })
-          .then(data => {
+          .then((data) => {
             // Procesar la respuesta si es necesario
             console.log(data);
-            if (data.imageUrl){
+            if (data.imageUrl) {
               setImages(data.imageUrl);
-              setCurrentUser({...currentUser, imagen: data.imageUrl});
+              setCurrentUser({ ...currentUser, imagen: data.imageUrl });
             }
-
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(error);
           })
           .finally(() => {
@@ -107,7 +107,6 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
       }
     }
   };
-  
 
   return (
     <Modal
@@ -139,7 +138,18 @@ const AddImageModal = ({ isVisible, setIsVisible, setImages, images }) => {
             <Text style={{ color: "white" }}>Cancelar</Text>
           </TouchableOpacity>
           {newImage ? (
-            <TouchableOpacity onPress={handleAccept} style={styles.boton}>
+            <TouchableOpacity
+              onPress={() => {
+                if (id) {
+                  handleAccept();
+                } else {
+                  setImages(newImage);
+                  setIsVisible(false);
+                  setNewImage(null);
+                }
+              }}
+              style={styles.boton}
+            >
               {loading ? (
                 <ActivityIndicator color={"white"} />
               ) : (
