@@ -4,12 +4,14 @@ import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import { TokenContext } from "../context/TokenContext";
+import { UserContext } from "../context/UserContext";
 
 const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
   const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const pickImage = async () => {
     try {
