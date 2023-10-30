@@ -33,7 +33,8 @@ function MyTabs() {
   }
   useEffect(() => {
     console.log("usuario", currentUser);
-    console.log("matchesCount", matchesCount);
+    console.log("is_REFUGIO DESDE TABNAVIGATION", currentUser.isRefugio)
+    // console.log("matchesCount", matchesCount);
   }, [matchesCount]);
 
   return (

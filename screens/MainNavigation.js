@@ -51,6 +51,11 @@ function MainNavigation() {
 
           console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
+          if (usuario.hasOwnProperty("contadorMatch")) {
+            usuario.isRefugio = false;
+          } else {
+            usuario.isRefugio = true;
+          }
           setToken(token_parsed.token);
           const count = token_parsed.matches;
           console.log(count);
