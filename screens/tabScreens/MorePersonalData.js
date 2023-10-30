@@ -102,6 +102,7 @@ const MorePersonalData = ({ navigation }) => {
           />
         ) : (
           <AddImageModal
+            id={currentUser.id}
             isVisible={modalVisible}
             setIsVisible={setModalVisible}
             images={profilePic}

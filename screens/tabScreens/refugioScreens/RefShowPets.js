@@ -9,7 +9,6 @@ import { getMascotasRef } from "../../../services/getMascotasRef";
 import { BASE_URL } from "@env";
 
 const RefShowPets = ({ navigation }) => {
-  
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useContext(TokenContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -26,10 +25,13 @@ const RefShowPets = ({ navigation }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [token, currentUser.id, navigation, setCurrentUser]);
+  }, []);
 
   const renderItem = ({ item }) => {
-    if (searchText.length === 0 || item.nombre.toLowerCase().includes(searchText.toLowerCase())) {
+    if (
+      searchText.length === 0 ||
+      item.nombre.toLowerCase().includes(searchText.toLowerCase())
+    ) {
       return (
         <View style={styles.item}>
           <MascotaRef mascota={item} />
@@ -60,14 +62,14 @@ const RefShowPets = ({ navigation }) => {
         <TextInput
           style={styles.searchInput}
           placeholder="Buscar por nombre"
-          onChangeText={text => setSearchText(text)}
+          onChangeText={(text) => setSearchText(text)}
           value={searchText}
         />
         <FlatList
           style={styles.flatlist}
           data={mascotasRef}
           renderItem={renderItem}
-          keyExtractor={item => item.id} // Use toString to ensure it's a string
+          keyExtractor={(item) => item.id} // Use toString to ensure it's a string
           numColumns={2}
         />
       </View>
@@ -88,13 +90,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#E3E3E3",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
-  item: {},
-  flatlist: {
-
-  },
-  //HEADER ESTILOS
   headerItem: {
     position: "relative",
     backgroundColor: "#7A5FB5",
