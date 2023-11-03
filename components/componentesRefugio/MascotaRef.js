@@ -5,6 +5,33 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+const cambioColorPaw = (numColor) => {
+  let color;
+
+  switch (numColor) {
+    case 1:
+      color = "blue";
+      break;
+    case 2:
+      color = "green";
+      break;
+    case 3:
+      color = "yellow";
+      break;
+    case 4:
+      color = "orange";
+      break;
+    case 5:
+      color = "red";
+      break;
+    default:
+      color = "red";
+      break;
+  }
+
+  return color;
+};
+
 const obtenerTamanioTexto = (tamanio) => {
   switch (tamanio) {
     case 1:
@@ -55,28 +82,27 @@ const MascotaRef = ({ mascota }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
-        <Text style={styles.namePet}>{mascota.nombre}</Text>
+        <Text djustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
         <View>
           <Ionicons
             style={styles.pawIcon}
             name="paw"
             size={35}
-            // color={cambioColorPaw(mascotas[currentIndex].nivelCuidado)}
-            color="blue"
+            color={cambioColorPaw(mascota.nivelCuidado)}
           />
           <Text
             style={[
               styles.pawIconNumber,
-              // {
-              // color:
-              //     mascotas[currentIndex].nivelCuidado === 1 ||
-              //     mascotas[currentIndex].nivelCuidado === 5
-              //     ? "white"
-              //     : "black",
-              // },
+               {
+               color:
+                   mascota.nivelCuidado === 1 ||
+                   mascota.nivelCuidado === 5
+                   ? "white"
+                   : "white",
+               },
             ]}
           >
-            {/* {mascotas[currentIndex].nivelCuidado} */}4
+          {mascota.nivelCuidado} 
           </Text>
         </View>
       </View>
@@ -121,6 +147,8 @@ const styles = StyleSheet.create({
   },
   namePet: {
     fontSize: 20,
+    width: screenWidth - screenWidth * 0.70,
+   
   },
   dataContainer:{
     width: screenWidth - screenWidth * 0.53,
