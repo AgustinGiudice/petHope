@@ -59,23 +59,16 @@ const PersonalData = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        {profilePic ? (
-          <ChangeImageModal
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            images={profilePic}
-            setImages={setProfilePic}
-            selectedImage={profilePic}
-          />
-        ) : (
+      
           <AddImageModal
             id={currentUser.id}
             isVisible={modalVisible}
             setIsVisible={setModalVisible}
             images={profilePic}
             setImages={setProfilePic}
+            currentImage={profilePic}
           />
-        )}
+       
         <View style={styles.header}>
           {!currentUser.estado && porcentajes}
           {profilePic === null ? (

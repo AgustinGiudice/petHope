@@ -6,13 +6,16 @@ import * as ImagePicker from "expo-image-picker";
 import { TokenContext } from "../context/TokenContext";
 import { UserContext } from "../context/UserContext";
 
-const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
+const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage }) => {
   const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   console.log("currentUser", currentUser.isRefugio)
+  if(currentImage){
+    console.log("TIENE CURRENT IMG")
+  }
 
   const pickImage = async () => {
     try {
@@ -124,7 +127,7 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
         >
           <Icon name="times" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.titulo}>Agregar una foto</Text>
+        <Text style={styles.titulo}>{currentImage ? "Editar mi imagen" : "Agregar una foto"}</Text>
         {error && <Text>{error}</Text>}
         {newImage && (
           <Image
