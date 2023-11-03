@@ -56,16 +56,20 @@ const ShowPets = ({ navigation }) => {
         currentUser.ubicacion.coordinates[0]
       }&longitud=${
         currentUser.ubicacion.coordinates[1]
-      }&distancia=100000&cuidadosEspeciales=${
-        currentUser.aceptaCuidadosEspeciales
-      }&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${
-        index + 1
-      }&vistos=${petVistos}`;
+      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+        filtros.tipoMascota
+      }&tamaño=2&rangoDeEdad=2&current=${index + 1}&vistos=${petVistos}`;
     } else {
-      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=100000&cuidadosEspeciales=${2}&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
+      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
+        currentUser.ubicacion.coordinates[0]
+      }&longitud=${
+        currentUser.ubicacion.coordinates[1]
+      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+        filtros.tipoMascota
+      }&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
     }
-    console.log(url);
     getMascotasVistas(setPetVistos).then(async () => {
+      console.log(index);
       try {
         await getMascotas(
           url,
@@ -88,11 +92,9 @@ const ShowPets = ({ navigation }) => {
             currentUser.ubicacion.coordinates[0]
           }&longitud=${
             currentUser.ubicacion.coordinates[1]
-          }&distancia=100000&cuidadosEspeciales=${
-            currentUser.aceptaCuidadosEspeciales
-          }&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${
-            index + 1
-          }&vistos=${petVistos}`;
+          }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+            filtros.tipoMascota
+          }&tamaño=3&rangoDeEdad=3&current=${index + 1}&vistos=${petVistos}`;
           await getMascotas(
             url,
             token,
