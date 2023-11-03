@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet,TouchableOpacity } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const cambioColorPaw = (numColor) => {
   let color;
@@ -84,7 +85,7 @@ const MascotaRef = ({ mascota }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
-        <Text djustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
+        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
         <View>
           <Ionicons
             style={styles.pawIcon}
@@ -108,14 +109,27 @@ const MascotaRef = ({ mascota }) => {
           </Text>
         </View>
       </View>
-      <Image
-        source={
-          mascota.imagen.length !== 0
+      <View>
+        <Image
+          source={
+            mascota.imagen.length !== 0
             ? { uri: mascota.imagen[0].url }
             : require("../../assets/refugio1.jpg")
-        }
-        style={styles.image}
-      />
+          }
+          style={styles.image}
+          />
+          <View style={styles.buttonsImage}>
+            <TouchableOpacity style={styles.buttonedit} onPress={() => handleEdit()}>
+              <AntDesign name="edit" size={20} color="black" />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.buttondelete} onPress={() => handleDelete()}>
+              <MaterialCommunityIcons name="delete" size={20} color="black" />
+            </TouchableOpacity>
+          </View>
+      </View>
+      <View style={styles.heightdataContainer}>
+
       <View style={styles.dataContainer}>
         <View style={styles.data1}>
           <Text style={styles.data}>
@@ -128,9 +142,12 @@ const MascotaRef = ({ mascota }) => {
 
         <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
       </View>
+
       <Text style={styles.data2}>
-        CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}
+        Cuidados Especiales: {obtenerCuidados(mascota.cuidadosEspeciales)}
       </Text>
+
+      </View>
     </View>
   );
 };
@@ -189,6 +206,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+  buttonsImage: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    flexDirection: 'column',
+  },
+  buttonedit:{
+    backgroundColor:"#76DF00",
+    borderRadius:5,
+    marginBottom: 5,
+    marginTop: 5,
+    width: 25,
+    height: 25,
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  buttondelete:{
+    backgroundColor:"#DD4000",
+    borderRadius:5,
+    width: 25,
+    height: 25,
+    justifyContent:"center",
+    alignItems:"center"
+  }
 });
 
 export default MascotaRef;
