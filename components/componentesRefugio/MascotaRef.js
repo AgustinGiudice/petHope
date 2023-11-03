@@ -84,7 +84,9 @@ const MascotaRef = ({ mascota }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
-        <Text djustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
+        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+          {mascota.nombre}
+        </Text>
         <View>
           <Ionicons
             style={styles.pawIcon}
@@ -95,16 +97,15 @@ const MascotaRef = ({ mascota }) => {
           <Text
             style={[
               styles.pawIconNumber,
-               {
-               color:
-                   mascota.nivelCuidado === 1 ||
-                   mascota.nivelCuidado === 5
-                   ? "white"
-                   : "white",
-               },
+              {
+                color:
+                  mascota.nivelCuidado === 1 || mascota.nivelCuidado === 5
+                    ? "white"
+                    : "white",
+              },
             ]}
           >
-          {mascota.nivelCuidado} 
+            {mascota.nivelCuidado}
           </Text>
         </View>
       </View>
@@ -157,8 +158,7 @@ const styles = StyleSheet.create({
   },
   namePet: {
     fontSize: 20,
-    width: screenWidth - screenWidth * 0.70,
-   
+    width: screenWidth - screenWidth * 0.7,
   },
   dataContainer: {
     width: screenWidth - screenWidth * 0.53,
