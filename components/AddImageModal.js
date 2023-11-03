@@ -12,6 +12,7 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  console.log("currentUser", currentUser.isRefugio)
 
   const pickImage = async () => {
     try {
@@ -69,7 +70,7 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages }) => {
 
         // Realizar la solicitud POST con fetch
         fetch(
-          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/upload-img/${id}`,
+          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/${currentUser.isRefugio ? "refugios" : "usuarios"}/upload-img/${id}`,
           {
             method: "PUT",
             body: formData,
