@@ -5,26 +5,37 @@ import Select from "../../../components/Select";
 import Constants from "expo-constants";
 //https://github.com/AdelRedaa97/react-native-select-dropdown#buttonTextAfterSelection
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Modal from "react-native-modal";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { BASE_URL } from "@env";
+import Modal from "react-native-modal";
 import AddImageModal from "../../../components/AddImageModal";
+import { UserContext } from "../../../context/UserContext";
+import { TokenContext } from "../../../context/TokenContext";
+import { agregarMascota } from "../../../services/agregarMascota";
 
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [selectedPic, setSelectedPic] = useState(null);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
   const [newPetData, setNewPetData] = useState({
     nombre: "",
     animal: "",
     sexo: "",
     raza: "",
     edad: "",
-    nivelCuidado: "",
-    cuidadosEspeciales: "",
+    nivelCuidado: 2,
+    cuidadosEspeciales: true,
     tamanio: "",
-    descripcion: "",
+    descripcion: "Descripcion de prueba",
+    refugioId: currentUser.id,
   });
+
+  const handleClick = () => {
+    console.log(newPetData);
+    agregarMascota(newPetData,images, token, navigation, setCurrentUser);
+  };
 
   return (
     <View style={styles.container}>
@@ -84,7 +95,7 @@ const RegisterPet = ({ navigation }) => {
             texto={"Sexo"}
           />
           <Select
-            values={["Perro", "Gato"]}
+            values={["Cachorro", "Juvenil", "Adulto"]}
             setValues={(item) => {
               const newData = newPetData;
               newData.edad =
@@ -94,11 +105,11 @@ const RegisterPet = ({ navigation }) => {
             texto={"Edad"}
           />
           <Select
-            values={["Raza", "Raza"]}
+            values={["Golden", "Husky"]}
             //poner la lista de razas
             setValues={(item) => {
               const newData = newPetData;
-              newData.raza = item === "Perro" ? 1 : 2;
+              newData.raza = item;
               setNewPetData(newData);
             }}
             texto={"Raza"}
@@ -135,6 +146,17 @@ const RegisterPet = ({ navigation }) => {
           </View>
         </Modal>
       </View>
+      <FontAwesome
+        name="arrow-right"
+        size={40}
+        style={{
+          color: "#9A34EA",
+          position: "absolute",
+          bottom: 30,
+          right: 30,
+        }}
+        onPress={handleClick}
+      />
     </View>
   );
 };

@@ -21,7 +21,12 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
       />
       <View>
         <View>
-          <Image source={{ uri: item.imagen }} style={styles.mascotaImagen} />
+          <Image
+            source={{
+              uri: item.imagenes.length > 0 ? item.imagenes[0].url : null,
+            }}
+            style={styles.mascotaImagen}
+          />
           <LinearGradient
             colors={["rgba(255, 99, 71, 0)", "#000000"]}
             style={styles.gradient}
@@ -39,8 +44,9 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
         {/* <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
         <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
         <View style={styles.dataItemArria}>
+          <Text style={styles.tag}>Raza: {item.raza}</Text>
           <Text style={styles.tag}>
-            Raza: {getAnimalDescripcion(item.raza)}
+            Animal: {getAnimalDescripcion(item.animal)}
           </Text>
           <Text style={styles.tag}>Edad: {getEdadDescripcion(item.edad)}</Text>
         </View>
@@ -57,7 +63,6 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
 
 const styles = StyleSheet.create({
   mascotaItem: {
-    
     borderRadius: 5,
     textAlign: "center",
     width: screenWidth,

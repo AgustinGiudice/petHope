@@ -31,11 +31,14 @@ const ShowPets = ({ navigation }) => {
   const [firstFetch, setFirstFetch] = useState(false);
 
   const [filtros, setFiltros] = useState({
-    sexo: 2,
+    sexo: 1,
     distancia: 100000,
-    tipoMascota: currentUser.tipoAnimal,
-    tamaño: currentUser.tamanioPreferido,
-    rangoDeEdad: currentUser.edadPreferida,
+    tipoMascota: 1,
+    tamaño: 2,
+    rangoDeEdad: 3,
+    // tipoMascota: currentUser.tipoAnimal,
+    // tamaño: currentUser.tamanioPreferido,
+    // rangoDeEdad: currentUser.edadPreferida,
   });
   // Construye la URL con los parámetros
 
