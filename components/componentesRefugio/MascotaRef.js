@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet,TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
@@ -11,22 +11,22 @@ const cambioColorPaw = (numColor) => {
 
   switch (numColor) {
     case 1:
-      color = "blue";
+      color = "#0080ff";
       break;
     case 2:
-      color = "green";
+      color = "#33ff66";
       break;
     case 3:
-      color = "yellow";
+      color = "#ffdb4d";
       break;
     case 4:
-      color = "orange";
+      color = "#ff944d";
       break;
     case 5:
-      color = "red";
+      color = "#ff4d4d";
       break;
     default:
-      color = "red";
+      color = "#ff4d4d";
       break;
   }
 
@@ -62,22 +62,21 @@ const obtenerEdadTexto = (edad) => {
 const obtenerSexoTexto = (sexo) => {
   switch (sexo) {
     case 1:
-      return <Foundation name="male-symbol" size={40} color="blue" />;
+      return <Foundation name="male-symbol" size={20} color="blue" />;
     case 2:
-      return <Foundation name="female-symbol" size={40} color="pink" />;
+      return <Foundation name="female-symbol" size={20} color="pink" />;
     default:
       return "Desconocido";
   }
 };
 
 const MascotaRef = ({ mascota }) => {
-  if (mascota.imagen.length !== 0) {
-    console.log(mascota.imagen);
-  }
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
-        <Text djustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
+        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+          {mascota.nombre}
+        </Text>
         <View>
           <Ionicons
             style={styles.pawIcon}
@@ -85,54 +84,47 @@ const MascotaRef = ({ mascota }) => {
             size={35}
             color={cambioColorPaw(mascota.nivelCuidado)}
           />
-          <Text
-            style={[
-              styles.pawIconNumber,
-              {
-                color:
-                  mascota.nivelCuidado === 1 || mascota.nivelCuidado === 5
-                    ? "white"
-                    : "white",
-              },
-            ]}
-          >
-            {mascota.nivelCuidado}
-          </Text>
+          <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
         </View>
       </View>
       <View>
         <Image
           source={
             mascota.imagen.length !== 0
-            ? { uri: mascota.imagen[0].url }
-            : require("../../assets/refugio1.jpg")
+              ? { uri: mascota.imagen[0].url }
+              : require("../../assets/refugio1.jpg")
           }
           style={styles.image}
-          />
-          <View style={styles.buttonsImage}>
-            <TouchableOpacity style={styles.buttonedit} onPress={() => handleEdit()}>
-              <AntDesign name="edit" size={20} color="black" />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.buttondelete} onPress={() => handleDelete()}>
-              <MaterialCommunityIcons name="delete" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
+        />
+        <View style={styles.buttonsImage}>
+          <TouchableOpacity
+            style={styles.buttonedit}
+            onPress={() => handleEdit()}
+          >
+            <AntDesign name="edit" size={20} color="black" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttondelete}
+            onPress={() => handleDelete()}
+          >
+            <MaterialCommunityIcons name="delete" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.heightdataContainer}>
-
-      <View style={styles.dataContainer}>
-        <View style={styles.data1}>
-          <Text style={styles.data}>
-            Tamaño: {obtenerTamanioTexto(mascota.tamanio)}
-          </Text>
-          <Text style={styles.data}>
-            Edad: {obtenerEdadTexto(mascota.edad)}
-          </Text>
-          <Text style={styles.data}>Raza: {mascota.raza}</Text>
+        <View style={styles.dataContainer}>
+          <View style={styles.data1}>
+            <Text style={styles.data}>
+              Tamaño: {obtenerTamanioTexto(mascota.tamanio)}
+            </Text>
+            <Text style={styles.data}>
+              Edad: {obtenerEdadTexto(mascota.edad)}
+            </Text>
+            <Text style={styles.data}>Raza: {mascota.raza}</Text>
+          </View>
+          <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
         </View>
-
-        <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
       </View>
     </View>
   );
@@ -186,34 +178,34 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 15,
     left: 14,
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "bold",
-    color: "white",
+    color: "black",
   },
   buttonsImage: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
-  buttonedit:{
-    backgroundColor:"#76DF00",
-    borderRadius:5,
+  buttonedit: {
+    backgroundColor: "#76DF00",
+    borderRadius: 5,
     marginBottom: 5,
     marginTop: 5,
     width: 25,
     height: 25,
-    justifyContent:"center",
-    alignItems:"center"
+    justifyContent: "center",
+    alignItems: "center",
   },
-  buttondelete:{
-    backgroundColor:"#DD4000",
-    borderRadius:5,
+  buttondelete: {
+    backgroundColor: "#DD4000",
+    borderRadius: 5,
     width: 25,
     height: 25,
-    justifyContent:"center",
-    alignItems:"center"
-  }
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default MascotaRef;
