@@ -69,14 +69,6 @@ const obtenerSexoTexto = (sexo) => {
   }
 };
 
-const obtenerCuidados = (cuidadosEspeciales) => {
-  if (cuidadosEspeciales === true) {
-    return <Text> SI </Text>;
-  } else {
-    return <Text> NO </Text>;
-  }
-};
-
 const MascotaRef = ({ mascota }) => {
   if (mascota.imagen.length !== 0) {
     console.log(mascota.imagen);
@@ -125,13 +117,11 @@ const MascotaRef = ({ mascota }) => {
           <Text style={styles.data}>
             Edad: {obtenerEdadTexto(mascota.edad)}
           </Text>
+          <Text style={styles.data}>Raza: {mascota.raza}</Text>
         </View>
 
         <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
       </View>
-      <Text style={styles.data2}>
-        CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}
-      </Text>
     </View>
   );
 };
@@ -142,7 +132,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
     width: screenWidth - screenWidth * 0.53,
-    height: screenHeight - screenHeight * 0.7,
     alignItems: "center",
   },
   headerPet: {
