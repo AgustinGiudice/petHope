@@ -50,16 +50,20 @@ const Chat = ({ route }) => {
   const sendMessage = () => {
     // Aquí puedes enviar el mensaje al servidor o realizar las acciones necesarias
     // Luego, actualiza el estado de los mensajes.
-    const message = {
-      text: newMessage,
-      sender: currentUser.id,
-      receiver: receiver.id, // Reemplaza con el ID del destinatario
-      mascota: mascota.id,
-      timestamp: new Date().toISOString(), // Agrega el timestamp
-    };
-    socket.emit("chat message", message);
-    setNewMessage("");
-    Keyboard.dismiss();
+    if (newMessage !== "") {
+      const message = {
+        text: newMessage,
+        sender: currentUser.id,
+        receiver: receiver.id, // Reemplaza con el ID del destinatario
+        mascota: mascota.id,
+        timestamp: new Date().toISOString(), // Agrega el timestamp
+      };
+      socket.emit("chat message", message);
+      setNewMessage("");
+      Keyboard.dismiss();
+    } else {
+      console.log("Meter un mensaje de error o algo");
+    }
   };
 
   useEffect(() => {

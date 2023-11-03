@@ -72,13 +72,15 @@ const obtenerSexoTexto = (sexo) => {
 const obtenerCuidados = (cuidadosEspeciales) => {
   if (cuidadosEspeciales === true) {
     return <Text> SI </Text>;
-  }else{
+  } else {
     return <Text> NO </Text>;
   }
-}
-
+};
 
 const MascotaRef = ({ mascota }) => {
+  if (mascota.imagen.length !== 0) {
+    console.log(mascota.imagen);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
@@ -107,20 +109,28 @@ const MascotaRef = ({ mascota }) => {
         </View>
       </View>
       <Image
-        source={require("../../assets/refugio1.jpg")}
+        source={
+          mascota.imagen.length !== 0
+            ? { uri: mascota.imagen[0].url }
+            : require("../../assets/refugio1.jpg")
+        }
         style={styles.image}
       />
       <View style={styles.dataContainer}>
-        
         <View style={styles.data1}>
-          <Text style={styles.data}>Tamaño: {obtenerTamanioTexto(mascota.tamanio)}</Text>
-          <Text style={styles.data}>Edad: {obtenerEdadTexto(mascota.edad)}</Text>
+          <Text style={styles.data}>
+            Tamaño: {obtenerTamanioTexto(mascota.tamanio)}
+          </Text>
+          <Text style={styles.data}>
+            Edad: {obtenerEdadTexto(mascota.edad)}
+          </Text>
         </View>
-        
+
         <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
-      
       </View>
-          <Text style={styles.data2}>CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}</Text>
+      <Text style={styles.data2}>
+        CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}
+      </Text>
     </View>
   );
 };
@@ -150,12 +160,12 @@ const styles = StyleSheet.create({
     width: screenWidth - screenWidth * 0.70,
    
   },
-  dataContainer:{
+  dataContainer: {
     width: screenWidth - screenWidth * 0.53,
-    flexDirection:"row",
-    justifyContent:"space-between",
-    paddingLeft:5,
-    paddingRight:5
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   data: {
     fontSize: 14,
@@ -165,8 +175,8 @@ const styles = StyleSheet.create({
   dificultad: {
     color: "red",
   },
-  data2:{
-    marginRight:20 //DEBATIBLE
+  data2: {
+    marginRight: 20, //DEBATIBLE
   },
   pawIcon: {
     position: "relative",
