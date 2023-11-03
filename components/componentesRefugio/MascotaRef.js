@@ -5,6 +5,33 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+const cambioColorPaw = (numColor) => {
+  let color;
+
+  switch (numColor) {
+    case 1:
+      color = "blue";
+      break;
+    case 2:
+      color = "green";
+      break;
+    case 3:
+      color = "yellow";
+      break;
+    case 4:
+      color = "orange";
+      break;
+    case 5:
+      color = "red";
+      break;
+    default:
+      color = "red";
+      break;
+  }
+
+  return color;
+};
+
 const obtenerTamanioTexto = (tamanio) => {
   switch (tamanio) {
     case 1:
@@ -45,56 +72,65 @@ const obtenerSexoTexto = (sexo) => {
 const obtenerCuidados = (cuidadosEspeciales) => {
   if (cuidadosEspeciales === true) {
     return <Text> SI </Text>;
-  }else{
+  } else {
     return <Text> NO </Text>;
   }
-}
-
+};
 
 const MascotaRef = ({ mascota }) => {
+  if (mascota.imagen.length !== 0) {
+    console.log(mascota.imagen);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
-        <Text style={styles.namePet}>{mascota.nombre}</Text>
+        <Text djustsFontSizeToFit numberOfLines={1} style={styles.namePet}>{mascota.nombre}</Text>
         <View>
           <Ionicons
             style={styles.pawIcon}
             name="paw"
             size={35}
-            // color={cambioColorPaw(mascotas[currentIndex].nivelCuidado)}
-            color="blue"
+            color={cambioColorPaw(mascota.nivelCuidado)}
           />
           <Text
             style={[
               styles.pawIconNumber,
-              // {
-              // color:
-              //     mascotas[currentIndex].nivelCuidado === 1 ||
-              //     mascotas[currentIndex].nivelCuidado === 5
-              //     ? "white"
-              //     : "black",
-              // },
+               {
+               color:
+                   mascota.nivelCuidado === 1 ||
+                   mascota.nivelCuidado === 5
+                   ? "white"
+                   : "white",
+               },
             ]}
           >
-            {/* {mascotas[currentIndex].nivelCuidado} */}4
+          {mascota.nivelCuidado} 
           </Text>
         </View>
       </View>
       <Image
-        source={require("../../assets/refugio1.jpg")}
+        source={
+          mascota.imagen.length !== 0
+            ? { uri: mascota.imagen[0].url }
+            : require("../../assets/refugio1.jpg")
+        }
         style={styles.image}
       />
       <View style={styles.dataContainer}>
-        
         <View style={styles.data1}>
-          <Text style={styles.data}>Tamaño: {obtenerTamanioTexto(mascota.tamanio)}</Text>
-          <Text style={styles.data}>Edad: {obtenerEdadTexto(mascota.edad)}</Text>
+          <Text style={styles.data}>
+            Tamaño: {obtenerTamanioTexto(mascota.tamanio)}
+          </Text>
+          <Text style={styles.data}>
+            Edad: {obtenerEdadTexto(mascota.edad)}
+          </Text>
         </View>
-        
+
         <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
-      
       </View>
-          <Text style={styles.data2}>CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}</Text>
+      <Text style={styles.data2}>
+        CuidadosEspeciales: {obtenerCuidados(mascota.cuidadosEspeciales)}
+      </Text>
     </View>
   );
 };
@@ -121,13 +157,15 @@ const styles = StyleSheet.create({
   },
   namePet: {
     fontSize: 20,
+    width: screenWidth - screenWidth * 0.70,
+   
   },
-  dataContainer:{
+  dataContainer: {
     width: screenWidth - screenWidth * 0.53,
-    flexDirection:"row",
-    justifyContent:"space-between",
-    paddingLeft:5,
-    paddingRight:5
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   data: {
     fontSize: 14,
@@ -137,8 +175,8 @@ const styles = StyleSheet.create({
   dificultad: {
     color: "red",
   },
-  data2:{
-    marginRight:20 //DEBATIBLE
+  data2: {
+    marginRight: 20, //DEBATIBLE
   },
   pawIcon: {
     position: "relative",

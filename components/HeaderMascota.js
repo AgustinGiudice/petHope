@@ -4,6 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { screenWidth } from "../hooks/useScreenResize";
 
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
+  
   const cambioColorPaw = (numColor) => {
     let color;
 
