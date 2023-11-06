@@ -15,7 +15,7 @@ import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
 import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
 import RegisterPetNavigation from "./RegisterPetNavigation";
-import PetRefNavigation from "./petRefNavigation";
+import PetRefNavigation from "./PetRefNavigation";
 
 const Tab = createBottomTabNavigator();
 

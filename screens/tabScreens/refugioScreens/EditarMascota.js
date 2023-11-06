@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
 import Constants from "expo-constants";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
@@ -6,6 +6,7 @@ import { TokenContext } from "../../../context/TokenContext";
 import { useContext, useState } from "react";
 import HeaderMascota from "../../../components/HeaderMascota";
 import AddImageModal from "../../../components/AddImageModal";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const EditarMascota = ({ route }) => {
   const { mascota } = route.params;
@@ -22,6 +23,32 @@ const EditarMascota = ({ route }) => {
     newData.imagen[index] = img;
     console.log(newData.imagen);
   };
+
+
+  const handleDelete = async (idMascota) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authentication: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // Eliminación exitosa
+        setMascotaEliminada(true);
+      } else {
+        console.error("Error al eliminar la mascota.");
+      }
+    } catch (error) {
+      console.error("Error al eliminar la mascota:", error);
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -143,6 +170,15 @@ const EditarMascota = ({ route }) => {
         setImages={(img) => cambiarImagen(img)}
         currentImage={selectedPic}
       />
+
+
+          <TouchableOpacity
+            style={styles.buttondelete}
+            onPress={() => handleDelete(mascota.id)}
+            >
+            <Text>  Eliminar Registro </Text>
+          </TouchableOpacity>
+
     </View>
   );
 };
@@ -204,6 +240,14 @@ const styles = StyleSheet.create({
   imageSelected: {
     width: "100%",
     aspectRatio: 1,
+  },
+  buttondelete: {
+    backgroundColor: "#FF3838",
+    borderRadius: 5,
+    width: 150,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
