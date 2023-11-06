@@ -1,10 +1,13 @@
-import React from "react";
+import {React, useState, useContext} from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { BASE_URL } from "@env";
+import { TokenContext } from "../../context/TokenContext";
+import { UserContext } from "../../context/UserContext";
 
 const cambioColorPaw = (numColor) => {
   let color;
@@ -70,7 +73,39 @@ const obtenerSexoTexto = (sexo) => {
   }
 };
 
+
+
 const MascotaRef = ({ mascota }) => {
+const { currentUser, setCurrentUser } = useContext(UserContext);
+const [mascotaEliminada, setMascotaEliminada] = useState(false);
+const { token } = useContext(TokenContext);
+
+
+const handleDelete = async (idMascota) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authentication: `Bearer ${token}`
+        },
+      }
+    );
+    console.log(response);
+    if (response.status === 200) {
+      // Eliminación exitosa
+      setMascotaEliminada(true);
+
+    } else {
+      console.error("Error al eliminar la mascota.");
+    }
+  } catch (error) {
+    console.error("Error al eliminar la mascota:", error);
+  }
+};
+
   return (
     <View style={styles.container}>
       <View style={styles.headerPet}>
@@ -106,7 +141,7 @@ const MascotaRef = ({ mascota }) => {
 
           <TouchableOpacity
             style={styles.buttondelete}
-            onPress={() => handleDelete()}
+            onPress={() => handleDelete(mascota.id)}
           >
             <MaterialCommunityIcons name="delete" size={20} color="black" />
           </TouchableOpacity>
