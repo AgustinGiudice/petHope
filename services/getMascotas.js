@@ -62,23 +62,25 @@ function manejarMascotas(
   index,
   setIndex
 ) {
-  if (data.mascotas.length > 0) {
-    data.mascotas[0].imagenes = data.imagenes;
-    if (!resetMatches) {
-      setMascotas((prevData) => prevData.concat(data.mascotas));
-    } else {
-      setMascotas(data.mascotas);
-      setResetMatches(false);
-    }
-  } else {
-    if (!resetMatches) {
-      setIndex(1);
-    } else {
-      if (index === 0) {
-        setIndex(1);
+  if (data.mascotas) {
+    if (data.mascotas.length > 0) {
+      data.mascotas[0].imagenes = data.imagenes;
+      if (!resetMatches) {
+        setMascotas((prevData) => prevData.concat(data.mascotas));
+      } else {
+        setMascotas(data.mascotas);
+        setResetMatches(false);
       }
-      setMascotas([]);
-      setResetMatches(false);
+    } else {
+      if (!resetMatches) {
+        setIndex(1);
+      } else {
+        if (index === 0) {
+          setIndex(1);
+        }
+        setMascotas([]);
+        setResetMatches(false);
+      }
     }
   }
 }

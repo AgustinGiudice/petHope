@@ -1,4 +1,4 @@
-import { View, Button, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import ItemList from "./ItemList";
 
