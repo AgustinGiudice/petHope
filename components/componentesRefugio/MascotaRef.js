@@ -65,7 +65,7 @@ const obtenerEdadTexto = (edad) => {
 const obtenerSexoTexto = (sexo) => {
   switch (sexo) {
     case 1:
-      return <Foundation name="male-symbol" size={20} color="blue" />;
+      return <Foundation name="male-symbol" size={20} color="#33ccff" />;
     case 2:
       return <Foundation name="female-symbol" size={20} color="pink" />;
     default:
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 15,
     left: 14,
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: "bold",
     color: "black",
   },

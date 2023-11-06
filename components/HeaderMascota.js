@@ -4,28 +4,27 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { screenWidth } from "../hooks/useScreenResize";
 
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
-  
   const cambioColorPaw = (numColor) => {
     let color;
 
     switch (numColor) {
       case 1:
-        color = "blue";
+        color = "#0080ff";
         break;
       case 2:
-        color = "green";
+        color = "#33ff66";
         break;
       case 3:
-        color = "yellow";
+        color = "#ffdb4d";
         break;
       case 4:
-        color = "orange";
+        color = "#ff944d";
         break;
       case 5:
-        color = "red";
+        color = "#ff4d4d";
         break;
       default:
-        color = "red";
+        color = "#ff4d4d";
         break;
     }
 
@@ -44,28 +43,22 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
             />
           </View>
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-            {mascota.nombre}
+            {mascota
+              ? mascota.nombre
+              : " No tenemos más mascotas para mostrarte"}
           </Text>
           <View>
-            <Ionicons
-              style={styles.pawIcon}
-              name="paw"
-              size={45}
-              color={cambioColorPaw(mascota.nivelCuidado)}
-            />
-            <Text
-              style={[
-                styles.pawIconNumber,
-                {
-                  color:
-                    mascota.nivelCuidado === 1 || mascota.nivelCuidado === 5
-                      ? "white"
-                      : "black",
-                },
-              ]}
-            >
-              {mascota.nivelCuidado}
-            </Text>
+            {mascota && (
+              <>
+                <Ionicons
+                  style={styles.pawIcon}
+                  name="paw"
+                  size={45}
+                  color={cambioColorPaw(mascota.nivelCuidado)}
+                />
+                <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
+              </>
+            )}
           </View>
         </View>
       </View>

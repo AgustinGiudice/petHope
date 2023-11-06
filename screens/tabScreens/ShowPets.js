@@ -14,6 +14,7 @@ import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Constants from "expo-constants";
 import SwiperPets from "../../components/SwiperPets";
+import { faSmile } from "@fortawesome/free-regular-svg-icons";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -22,7 +23,6 @@ const ShowPets = ({ navigation }) => {
   const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [mascotas, setMascotas] = useState([]);
   const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
@@ -40,11 +40,10 @@ const ShowPets = ({ navigation }) => {
     // tamaño: currentUser.tamanioPreferido,
     // rangoDeEdad: currentUser.edadPreferida,
   });
-  // Construye la URL con los parámetros
 
   useEffect(() => {
-    setCurrentIndex(0);
     setIndex(0);
+    setFirstFetch(false);
     setIsLoading(true);
   }, [resetMatches]);
 
@@ -56,15 +55,18 @@ const ShowPets = ({ navigation }) => {
         currentUser.ubicacion.coordinates[0]
       }&longitud=${
         currentUser.ubicacion.coordinates[1]
-      }&distancia=100000&cuidadosEspeciales=${
-        currentUser.aceptaCuidadosEspeciales
-      }&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${
-        index + 1
-      }&vistos=${petVistos}`;
+      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+        filtros.tipoMascota
+      }&tamaño=2&rangoDeEdad=2&current=${index + 1}&vistos=${petVistos}`;
     } else {
-      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=100000&cuidadosEspeciales=${2}&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
+      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
+        currentUser.ubicacion.coordinates[0]
+      }&longitud=${
+        currentUser.ubicacion.coordinates[1]
+      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+        filtros.tipoMascota
+      }&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
     }
-    console.log(url);
     getMascotasVistas(setPetVistos).then(async () => {
       try {
         await getMascotas(
@@ -88,11 +90,9 @@ const ShowPets = ({ navigation }) => {
             currentUser.ubicacion.coordinates[0]
           }&longitud=${
             currentUser.ubicacion.coordinates[1]
-          }&distancia=100000&cuidadosEspeciales=${
-            currentUser.aceptaCuidadosEspeciales
-          }&tipoMascota=${filtros.tipoMascota}&tamaño=3&rangoDeEdad=3&current=${
-            index + 1
-          }&vistos=${petVistos}`;
+          }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
+            filtros.tipoMascota
+          }&tamaño=3&rangoDeEdad=3&current=${index + 1}&vistos=${petVistos}`;
           await getMascotas(
             url,
             token,
@@ -124,7 +124,7 @@ const ShowPets = ({ navigation }) => {
         >
           {currentUser.completado !== 100 ? (
             <CompletarFormulario navigation={navigation} />
-          ) : mascotas.length === 0 ? (
+          ) : mascotas.length === 0 || !mascotas[index] ? (
             <SinMascotas
               filtros={filtros}
               setFiltros={setFiltros}
@@ -135,14 +135,16 @@ const ShowPets = ({ navigation }) => {
               {showLikeAnimation && (
                 <ExplodingHeart style={styles.corazonLike} width={300} />
               )}
-              <InfoPetModal
-                isVisible={infoPetModalIsVisible}
-                setIsVisible={setInfoPetModalIsVisible}
-                petInfo={mascotas[index]}
-                setResetMatches={setResetMatches}
-                setShowLikeAnimation={setShowLikeAnimation}
-                currentUserId={currentUser.id}
-              />
+              {mascotas[index] && (
+                <InfoPetModal
+                  isVisible={infoPetModalIsVisible}
+                  setIsVisible={setInfoPetModalIsVisible}
+                  petInfo={mascotas[index] && mascotas[index]}
+                  setResetMatches={setResetMatches}
+                  setShowLikeAnimation={setShowLikeAnimation}
+                  currentUserId={currentUser.id}
+                />
+              )}
               <SwiperPets
                 mascotas={mascotas}
                 filtros={filtros}
@@ -151,16 +153,16 @@ const ShowPets = ({ navigation }) => {
                 setIndex={setIndex}
                 setResetMatches={setResetMatches}
               />
-              {!isLoading ? (
+              {!isLoading && (
                 <SPButtons
-                  mascota_id={mascotas[index].id}
+                  mascota_id={mascotas[index] && mascotas[index].id}
                   setResetMatches={setResetMatches}
                   setShowLikeAnimation={setShowLikeAnimation}
                   currentUserId={currentUser.id}
                   setInfoPetModalIsVisible={setInfoPetModalIsVisible}
                   setMascotas={setMascotas}
                 />
-              ) : null}
+              )}
             </>
           )}
         </View>
