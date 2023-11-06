@@ -15,6 +15,7 @@ import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
 import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
 import RegisterPetNavigation from "./RegisterPetNavigation";
+import PetRefNavigation from "./petRefNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ function MyTabs() {
   }
   useEffect(() => {
     console.log("usuario", currentUser);
-    console.log("is_REFUGIO DESDE TABNAVIGATION", currentUser.isRefugio)
+    console.log("is_REFUGIO DESDE TABNAVIGATION", currentUser.isRefugio);
     // console.log("matchesCount", matchesCount);
   }, [matchesCount]);
 
@@ -95,7 +96,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={currentUser.isRefugio ? RefShowPets : ShowPets}
+          component={currentUser.isRefugio ? PetRefNavigation : ShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,
@@ -122,7 +123,6 @@ function MyTabs() {
                 </View>
               </View>
             ),
-            
           }}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {

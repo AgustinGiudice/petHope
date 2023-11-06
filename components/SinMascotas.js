@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
-import ButtonFilters from "./ButtonFilters";
 import img from "../assets/perrogato.jpg";
 import { Image } from "react-native";
 import HeaderMascota from "./HeaderMascota";

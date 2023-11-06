@@ -1,58 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import Constants from "expo-constants";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
-import Constants from "expo-constants";
-//https://github.com/AdelRedaa97/react-native-select-dropdown#buttonTextAfterSelection
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Icon from "react-native-vector-icons/FontAwesome";
-import Modal from "react-native-modal";
-import AddImageModal from "../../../components/AddImageModal";
-import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
-import { agregarMascota } from "../../../services/agregarMascota";
+import { useContext, useState } from "react";
+import HeaderMascota from "../../../components/HeaderMascota";
+import AddImageModal from "../../../components/AddImageModal";
 
-const RegisterPet = ({ navigation }) => {
-  const [images, setImages] = useState([]);
+const EditarMascota = ({ route }) => {
+  const { mascota } = route.params;
+  const [newPetData, setNewPetData] = useState(mascota);
   const [selectedPic, setSelectedPic] = useState(null);
-  const [addImageModalVisible, setAddImageModalVisible] = useState(false);
-  const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
-  const [newPetData, setNewPetData] = useState({
-    nombre: "",
-    animal: "",
-    sexo: "",
-    raza: "",
-    edad: "",
-    nivelCuidado: 2,
-    cuidadosEspeciales: true,
-    tamanio: "",
-    descripcion: "Descripcion de prueba",
-    refugioId: currentUser.id,
-  });
+  const [addImageModalVisible, setAddImageModalVisible] = useState(false);
+  const [replaceImageModalVisible, setReplaceImageModalVisible] =
+    useState(false);
 
-  const handleClick = () => {
-    agregarMascota(newPetData,images, token, navigation, setCurrentUser);
+  const cambiarImagen = (img) => {
+    const newData = newPetData;
+    const index = newData.imagen.find((imagen) => imagen === selectedPic);
+    newData.imagen[index] = img;
+    console.log(newData.imagen);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Publicar una mascota</Text>
+      <HeaderMascota mascota={mascota} />
       <View style={styles.row}>
         <View style={styles.column}>
-          {images.map((image, key) => {
+          {mascota.imagen.map((image, key) => {
             return (
               <TouchableOpacity
                 style={styles.imageContainer}
-                onPress={() => setSelectedPic(image)}
+                onPress={() => {
+                  setSelectedPic(image);
+                  setReplaceImageModalVisible(true);
+                }}
                 key={key}
               >
-                <Image source={{ uri: image }} style={styles.image} />
+                <Image source={{ uri: image.url }} style={styles.image} />
               </TouchableOpacity>
             );
           })}
-          {images.length < 4 && (
+          {mascota.imagen.length < 4 && (
             <TouchableOpacity
               style={styles.imageContainer}
               onPress={() => setAddImageModalVisible(true)}
@@ -76,6 +66,7 @@ const RegisterPet = ({ navigation }) => {
             atributo="nombre"
           />
           <Select
+            defaultValue={newPetData.animal === 1 ? "Perro" : "Gato"}
             values={["Perro", "Gato"]}
             setValues={(item) => {
               const newData = newPetData;
@@ -85,6 +76,7 @@ const RegisterPet = ({ navigation }) => {
             texto={"Animal"}
           />
           <Select
+            defaultValue={newPetData.sexo === 1 ? "Macho" : "Hembra"}
             values={["Macho", "Hembra"]}
             setValues={(item) => {
               const newData = newPetData;
@@ -94,6 +86,13 @@ const RegisterPet = ({ navigation }) => {
             texto={"Sexo"}
           />
           <Select
+            defaultValue={
+              newPetData.edad === 1
+                ? "Cachorro"
+                : newPetData.edad === 2
+                ? "Juvenil"
+                : "Adulto"
+            }
             values={["Cachorro", "Juvenil", "Adulto"]}
             setValues={(item) => {
               const newData = newPetData;
@@ -104,6 +103,7 @@ const RegisterPet = ({ navigation }) => {
             texto={"Edad"}
           />
           <Select
+            defaultValue={newPetData.raza}
             values={["Golden", "Husky"]}
             //poner la lista de razas
             setValues={(item) => {
@@ -114,6 +114,13 @@ const RegisterPet = ({ navigation }) => {
             texto={"Raza"}
           />
           <Select
+            defaultValue={
+              newPetData.animal === 1
+                ? "Pequeño"
+                : newPetData.animal === 2
+                ? "Mediano"
+                : "Grande"
+            }
             values={["Pequeño", "Mediano", "Grande"]}
             setValues={(item) => {
               const newData = newPetData;
@@ -124,37 +131,17 @@ const RegisterPet = ({ navigation }) => {
             texto={"Tamaño"}
           />
         </View>
-
-        <AddImageModal
-          isVisible={addImageModalVisible}
-          setIsVisible={setAddImageModalVisible}
-          setImages={(img) => setImages([...images, img])}
-        />
-        <Modal
-          isVisible={selectedPic !== null}
-          onBackdropPress={() => setSelectedPic(null)}
-        >
-          <View style={styles.imageSelected}>
-            <Image source={{ uri: selectedPic }} style={styles.imageSelected} />
-            <TouchableOpacity
-              onPress={() => setSelectedPic(null)}
-              style={styles.picModalCloseButton}
-            >
-              <Icon name="times" size={25} color="#9A34EA" />
-            </TouchableOpacity>
-          </View>
-        </Modal>
       </View>
-      <FontAwesome
-        name="arrow-right"
-        size={40}
-        style={{
-          color: "#9A34EA",
-          position: "absolute",
-          bottom: 30,
-          right: 30,
-        }}
-        onPress={handleClick}
+      <AddImageModal
+        isVisible={addImageModalVisible}
+        setIsVisible={setAddImageModalVisible}
+        setImages={(img) => setImages([...images, img])}
+      />
+      <AddImageModal
+        isVisible={replaceImageModalVisible}
+        setIsVisible={setReplaceImageModalVisible}
+        setImages={(img) => cambiarImagen(img)}
+        currentImage={selectedPic}
       />
     </View>
   );
@@ -176,6 +163,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   row: {
+    marginTop: "10%",
     flexDirection: "row",
     width: "100%",
     paddingHorizontal: 25,
@@ -219,4 +207,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPet;
+export default EditarMascota;

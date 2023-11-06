@@ -35,13 +35,15 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
     <View style={styles.headerItem}>
       <View style={styles.headerItem2}>
         <View style={styles.headerItemsContenido}>
-          <View style={styles.buttonFilters}>
-            <ButtonFilters
-              filtros={filtros}
-              setFiltros={setFiltros}
-              setResetMatches={setResetMatches}
-            />
-          </View>
+          {filtros && (
+            <View style={styles.buttonFilters}>
+              <ButtonFilters
+                filtros={filtros}
+                setFiltros={setFiltros}
+                setResetMatches={setResetMatches}
+              />
+            </View>
+          )}
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
             {mascota
               ? mascota.nombre

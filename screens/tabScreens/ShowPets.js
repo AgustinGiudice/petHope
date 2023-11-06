@@ -14,7 +14,6 @@ import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Constants from "expo-constants";
 import SwiperPets from "../../components/SwiperPets";
-import { faSmile } from "@fortawesome/free-regular-svg-icons";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);

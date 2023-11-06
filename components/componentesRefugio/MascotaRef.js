@@ -1,4 +1,4 @@
-import {React, useState, useContext} from "react";
+import { React, useState, useContext } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -73,38 +73,34 @@ const obtenerSexoTexto = (sexo) => {
   }
 };
 
+const MascotaRef = ({ mascota, navigation }) => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const [mascotaEliminada, setMascotaEliminada] = useState(false);
+  const { token } = useContext(TokenContext);
 
-
-const MascotaRef = ({ mascota }) => {
-const { currentUser, setCurrentUser } = useContext(UserContext);
-const [mascotaEliminada, setMascotaEliminada] = useState(false);
-const { token } = useContext(TokenContext);
-
-
-const handleDelete = async (idMascota) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          authentication: `Bearer ${token}`
-        },
+  const handleDelete = async (idMascota) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authentication: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        // Eliminación exitosa
+        setMascotaEliminada(true);
+      } else {
+        console.error("Error al eliminar la mascota.");
       }
-    );
-    console.log(response);
-    if (response.status === 200) {
-      // Eliminación exitosa
-      setMascotaEliminada(true);
-
-    } else {
-      console.error("Error al eliminar la mascota.");
+    } catch (error) {
+      console.error("Error al eliminar la mascota:", error);
     }
-  } catch (error) {
-    console.error("Error al eliminar la mascota:", error);
-  }
-};
+  };
 
   return (
     <View style={styles.container}>
@@ -134,7 +130,9 @@ const handleDelete = async (idMascota) => {
         <View style={styles.buttonsImage}>
           <TouchableOpacity
             style={styles.buttonedit}
-            onPress={() => handleEdit()}
+            onPress={() =>
+              navigation.navigate("EditarMascota", { mascota: mascota })
+            }
           >
             <AntDesign name="edit" size={20} color="black" />
           </TouchableOpacity>

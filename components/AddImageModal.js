@@ -12,11 +12,7 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage })
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
-  console.log("currentUser", currentUser.isRefugio)
-  if(currentImage){
-    console.log("TIENE CURRENT IMG")
-  }
-
+  
   const pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({

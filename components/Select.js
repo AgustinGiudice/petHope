@@ -1,10 +1,11 @@
 import SelectDropdown from "react-native-select-dropdown";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Select = ({ values, setValues, texto }) => {
+const Select = ({ defaultValue, values, setValues, texto }) => {
   return (
     <SelectDropdown
       data={values}
+      defaultValue={defaultValue}
       onSelect={(item, index) => setValues(item)}
       buttonStyle={{
         borderColor: "#C69AE8",

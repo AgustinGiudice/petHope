@@ -34,7 +34,7 @@ const RefShowPets = ({ navigation }) => {
     ) {
       return (
         <View style={styles.item}>
-          <MascotaRef mascota={item} />
+          <MascotaRef mascota={item} navigation={navigation} />
         </View>
       );
     } else {
