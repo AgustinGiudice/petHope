@@ -59,9 +59,10 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
       <View>
         <View>
           <Image
-            source={{
-              uri: item.imagenes.length > 0 ? item.imagenes[0].url : null,
-            }}
+            source={ 
+              // {uri: item.imagenes.length > 0 ? item.imagenes[0].url : null,}
+              require("../assets/refugio1.jpg")
+             }
             style={styles.mascotaImagen}
           />
           <LinearGradient
@@ -105,15 +106,14 @@ const styles = StyleSheet.create({
     gap: 3,
     backgroundColor: "#fff",
     overflow: "hidden",
-    minHeight: screenHeight - 60
+    minHeight: screenHeight - 60,
+    // marginTop:20
   },
   mascotaImagen: {
     width: "100%",
-    height: screenHeight * 0.6,
+    height: screenHeight * 0.63,
     borderRadius: 5,
     resizeMode: "cover",
-    alignContent: "center",
-    // marginTop: -10,
     position: "relative",
   },
   containerDistancia: {
@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
   },
   dataItemArria3:{
     position: "absolute",
-    bottom: -80,
+    bottom: -70,
     flexDirection:"row",
-    width:screenWidth - 30,
+    width:screenWidth - 25,
     justifyContent:"space-between"
   },
   tag: {

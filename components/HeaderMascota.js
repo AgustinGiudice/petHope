@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#7A5FB5",
     width: screenWidth,
-    height: 50,
+    height: 40,
     borderRadius: 10,
     zIndex: 10,
     alignItems: "center",
