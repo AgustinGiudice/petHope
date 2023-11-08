@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   dataItemArria3:{
     position: "absolute",
-    bottom:  -70,
+    bottom: - screenHeight * 0.08,
     flexDirection:"row",
     width:screenWidth - 25,
     justifyContent:"space-between"
