@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   dataItemArria3:{
     position: "absolute",
-    bottom: -70,
+    bottom:  -70,
     flexDirection:"row",
     width:screenWidth - 25,
     justifyContent:"space-between"
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     backgroundColor: "#9A34EA",
-    width: 130,
+    width: screenWidth * 0.30,
     height: 25,
     borderRadius: 5,
     color: "white",
