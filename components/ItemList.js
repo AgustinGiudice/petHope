@@ -7,8 +7,45 @@ import {
   getSexoDescripcion,
 } from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { LinearGradient } from "expo-linear-gradient";
 import HeaderMascota from "./HeaderMascota";
+import Foundation from "react-native-vector-icons/Foundation";
+
+const obtenerTipoMascota = (t) => {
+  switch (t) {
+    case 1:
+      return <FontAwesome5 name="dog" size={40} color="Black" />;
+
+    case 2:
+      return <FontAwesome5 name="cat" size={40} color="Black" />;
+
+    default:
+      return <FontAwesome5 name="dog" size={40} color="Black" />;
+
+  }
+};
+
+
+
+const obtenerSexoTexto = (sexo) => {
+  switch (sexo) {
+    case 1:
+      return <Foundation name="male-symbol" size={45} color="#33ccff" />;
+    case 2:
+      return <Foundation name="female-symbol" size={45} color="pink" />;
+    default:
+      return "Desconocido";
+  }
+};
+
+function getRazaTexto(raza) {
+  if (raza === "Otra") {
+    return "Sin raza";
+  }
+  return raza;
+}
 
 const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
   return (
@@ -44,17 +81,14 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
         {/* <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
         <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
         <View style={styles.dataItemArria}>
-          <Text style={styles.tag}>Raza: {item.raza}</Text>
-          <Text style={styles.tag}>
-            Animal: {getAnimalDescripcion(item.animal)}
-          </Text>
-          <Text style={styles.tag}>Edad: {getEdadDescripcion(item.edad)}</Text>
+          <Text style={styles.tag}>{getRazaTexto(item.raza)}</Text>
+          <Text style={styles.tag}>Talla {getTamanioDescripcion(item.tamanio)}</Text>
+          <Text style={styles.tag}>{getEdadDescripcion(item.edad)}</Text>
         </View>
-        <View style={styles.dataItemArria2}>
-          <Text style={styles.tag}>
-            Tamaño: {getTamanioDescripcion(item.tamanio)}
-          </Text>
-          <Text style={styles.tag}>Sexo: {getSexoDescripcion(item.sexo)}</Text>
+        
+        <View style={styles.dataItemArria3}>
+          <Text>{obtenerTipoMascota(item.anima)}</Text>
+          <Text>{obtenerSexoTexto(item.sexo)}</Text>
         </View>
       </View>
     </View>
@@ -67,11 +101,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: screenWidth,
     flex: 1,
-    // position:"relative",
     zIndex: 1,
     gap: 3,
     backgroundColor: "#fff",
     overflow: "hidden",
+    minHeight: screenHeight - 60
   },
   mascotaImagen: {
     width: "100%",
@@ -79,7 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     resizeMode: "cover",
     alignContent: "center",
-    marginTop: -10,
+    // marginTop: -10,
     position: "relative",
   },
   containerDistancia: {
@@ -98,6 +132,8 @@ const styles = StyleSheet.create({
   },
   dataItem: {
     alignItems: "center",
+    position: "relative"
+    //aca
   },
   dataItemArria: {
     flexDirection: "row",
@@ -106,6 +142,13 @@ const styles = StyleSheet.create({
   },
   dataItemArria2: {
     flexDirection: "row",
+  },
+  dataItemArria3:{
+    position: "absolute",
+    bottom: -80,
+    flexDirection:"row",
+    width:screenWidth - 30,
+    justifyContent:"space-between"
   },
   tag: {
     textAlign: "center",
@@ -126,6 +169,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  iconMasota:{
+    width:80,
+    height:90
+  }
 });
 
 export default ItemList;

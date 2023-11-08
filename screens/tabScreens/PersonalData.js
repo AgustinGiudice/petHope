@@ -83,7 +83,9 @@ const PersonalData = ({ navigation }) => {
             </View>
           ) : (
             <>
-              <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            <TouchableOpacity  onPress={() => navigation.navigate("MorePersonalData")}>
+              <Image source={{ uri: profilePic }} style={styles.profilePic}  />
+            </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handlePressPic()}
                 style={styles.changePic}
@@ -140,12 +142,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 20,
     position: "relative",
+    
   },
   containerCompletado: {
     width: "100%",
     alignItems: "center",
     gap: 5,
     paddingVertical: 10,
+    
   },
   textoCompletado: {
     fontWeight: "bold",
@@ -155,6 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 5,
+    
   },
   bar: {
     paddingVertical: 1,
@@ -162,6 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: "#9A34EA",
     borderWidth: 1,
+    
   },
   titulo: {
     fontSize: 16,
@@ -190,6 +196,7 @@ const styles = StyleSheet.create({
     minHeight: screenHeight,
     padding: 20,
     width: "100%",
+    
   },
   textContainer: {
     borderColor: "#9A34EA",
@@ -203,6 +210,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     borderColor: "#9A34EA",
+    
   },
 });
 function calcularEdad(fechaNacimiento) {
