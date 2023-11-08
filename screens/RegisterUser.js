@@ -254,203 +254,7 @@ const CreateUserForm = ({ navigation, route }) => {
           atributo="repeatPass"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
-        <Text style={styles.title}>Decinos cual es tu Fecha de nacimiento</Text>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date || new Date()}
-            display="spinner"
-            onChange={(event, selectedDate) => {
-              if (event.type === "set") {
-                const newData = userData;
-                currentDate = selectedDate || date;
-                newData.fechaDeNacimiento = currentDate;
-                console.log(currentDate);
-                setDate(currentDate);
-                setUserData(newData);
-                setFormattedDate(
-                  format(currentDate, "dd 'de' MMMM 'de' yyyy", { locale: es })
-                );
-              }
-              setShowDatePicker(false);
-            }}
-            minDate={new Date("1900-01-01")}
-            maxDate={new Date()}
-          />
-        )}
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          value={date || ""}
-          placeholder={"fecha"}
-        >
-          <Text style={{ color: "#9A34EA", fontWeight: "bold" }}>
-            {date ? formattedDate : "Elegir fecha"}
-          </Text>
-        </TouchableOpacity>
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
-        <View style={styles.warningContainer} key={99}>
-          <Text style={styles.title}>
-            A continuación te haremos unas preguntas que nos van a permitir
-            encontrar las mascotas ideales para vos
-          </Text>
-          <Text style={styles.warning}>
-            ¡Tené en cuenta que, hasta que no contestes estas preguntas no vas a
-            poder ver mascotas!
-          </Text>
-        </View>
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Cómo es el lugar donde vivís actualmente?
-        </Text>
-        <Radio
-          data={["Monoambiente", "Departamento", "Casa"]}
-          handleSelect={(value) => {
-            const formatedValue =
-              value === "Monoambiente" ? 1 : value === "Departamento" ? 2 : 3;
-            const newData = userData;
-            userData.espacioDisponible = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 12} setVisible={setIndexModal}>
-        <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
-        <Radio
-          data={[
-            "Desocupado/a",
-            "Estudiante",
-            "Trabajador/a",
-            "Estudiante y Trabajador/a",
-          ]}
-          handleSelect={(value) => {
-            console.log(value);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 13} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Tiene experiencia previa con mascotas?
-        </Text>
-        <Radio
-          data={["Si", "No"]}
-          handleSelect={(value) => {
-            const formatedValue = value === "No" ? false : true;
-            const newData = userData;
-            userData.tuvoMascotas = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 14} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Tiene alguna preferencia por un tipo de Animal?
-        </Text>
-        <Radio
-          data={["Perro", "Gato", "Indiferente"]}
-          handleSelect={(value) => {
-            const formatedValue =
-              value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
-            const newData = userData;
-            userData.tipoAnimal = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 15} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Tiene alguna preferencia de edad para la mascota?
-        </Text>
-        <Radio
-          data={["Cachorro", "Juvenil", "Adulto", "Indistinto"]}
-          handleSelect={(value) => {
-            const formatedValue =
-              value === "Cachorro"
-                ? 1
-                : value === "Juvenil"
-                ? 2
-                : value === "Adulto"
-                ? 3
-                : 4;
-            const newData = userData;
-            userData.edadPreferida = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 16} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Tiene alguna preferencia de tamaño para la mascota?
-        </Text>
-        <Radio
-          data={["Pequeño", "Mediano", "Grande", "Indistinto"]}
-          handleSelect={(value) => {
-            const formatedValue =
-              value === "Pequeño"
-                ? 1
-                : value === "Mediano"
-                ? 2
-                : value === "Grande"
-                ? 3
-                : 4;
-            const newData = userData;
-            userData.tamanioPreferido = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 17} setVisible={setIndexModal}>
-        <Text style={styles.title}>¿Tiene niños en casa?</Text>
-        <Radio
-          data={[
-            "No",
-            "Si, Menores de 5 años",
-            "Si, entre 12 y 15 años",
-            "Si, mayores de 15 años",
-          ]}
-          handleSelect={(value) => {
-            const formatedValue =
-              value === "No"
-                ? 1
-                : value === "Si, Menores de 5 años"
-                ? 2
-                : value === "Si, entre 12 y 15 años"
-                ? 3
-                : 4;
-            const newData = userData;
-            userData.tieneNinios = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 18} setVisible={setIndexModal}>
-        <Text style={styles.title}>¿Tiene otras mascotas en casa?</Text>
-        <Radio
-          data={["Si", "No"]}
-          handleSelect={(value) => {
-            const formatedValue = value === "No" ? false : true;
-            const newData = userData;
-            userData.tieneMascotas = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 19} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          ¿Está dispuesto a adoptar una mascota con necesidades especiales o
-          problemas de salud?
-        </Text>
-        <Radio
-          data={["Si", "No"]}
-          handleSelect={(value) => {
-            const formatedValue = value === "No" ? false : true;
-            const newData = userData;
-            userData.aceptaCuidadosEspeciales = formatedValue;
-            setUserData(newData);
-          }}
-        />
-      </RegisterModal>
+
       <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
         <Text style={styles.title}>Ingresá tu dirección</Text>
         <Input
@@ -505,57 +309,39 @@ const CreateUserForm = ({ navigation, route }) => {
           atributo="telefono"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 20} setVisible={setIndexModal}>
-        <View key={33} style={styles.lastContainer}>
-          <Text style={styles.title}>
-            ¡Muchas gracias por contestar las preguntas!
+      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+        <Text style={styles.title}>Decinos cual es tu Fecha de nacimiento</Text>
+        {showDatePicker && (
+          <DateTimePicker
+            value={date || new Date()}
+            display="spinner"
+            onChange={(event, selectedDate) => {
+              if (event.type === "set") {
+                const newData = userData;
+                currentDate = selectedDate || date;
+                newData.fechaDeNacimiento = currentDate;
+                console.log(currentDate);
+                setDate(currentDate);
+                setUserData(newData);
+                setFormattedDate(
+                  format(currentDate, "dd 'de' MMMM 'de' yyyy", { locale: es })
+                );
+              }
+              setShowDatePicker(false);
+            }}
+            minDate={new Date("1900-01-01")}
+            maxDate={new Date()}
+          />
+        )}
+        <TouchableOpacity
+          onPress={() => setShowDatePicker(true)}
+          value={date || ""}
+          placeholder={"fecha"}
+        >
+          <Text style={{ color: "#9A34EA", fontWeight: "bold" }}>
+            {date ? formattedDate : "Elegir fecha"}
           </Text>
-          <Text>Ya podes encontrar tu mascota soñada</Text>
-          <TouchableOpacity
-            onPress={index ? handleActualizarDatos : handleSubmit}
-            style={styles.botonStart}
-          >
-            {loadingFetch ? (
-              <ActivityIndicator color={"white"} />
-            ) : (
-              <Text style={styles.start}>Empezar</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 21} setVisible={setIndexModal}>
-        <View key={33} style={styles.lastContainer}>
-          {!index ? (
-            <>
-              <Text style={styles.title}>¡Muchas gracias!</Text>
-              <Text>Ya podes continuar</Text>
-              <Text>
-                Acordate que, hasta que no completes el formulario, no vas a ver
-                mascotas
-              </Text>
-              <TouchableOpacity onPress={handleSubmit} style={styles.start}>
-                {loadingFetch ? (
-                  <ActivityIndicator color={"white"} />
-                ) : (
-                  <Text style={{ color: "white" }}>Continuar</Text>
-                )}
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <Text>
-                Te pedimos que llenes el formulario a la brevedad para poder
-                disfrutar todas las funcionalidades de PetHope
-              </Text>
-              <TouchableOpacity
-                style={styles.start}
-                onPress={() => navigation.navigate("Tabs")}
-              >
-                <Text style={{ color: "white" }}>Volver</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
+        </TouchableOpacity>
       </RegisterModal>
     </View>
   );
