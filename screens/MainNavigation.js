@@ -18,6 +18,7 @@ import {
   CountMatchesContext,
 } from "../context/CountMatchesContext";
 import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
+import CuestionarioUsuarioRegistro from "./CuestionarioUsuarioRegistro";
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -29,16 +30,6 @@ function MainNavigation() {
   const { setCurrentUser } = useContext(UserContext);
   const { setMatchesCount } = useContext(CountMatchesContext);
   const { setToken } = useContext(TokenContext);
-  // .then((token) => {
-
-  //   // request a la api para traer el count de notificaciones de matches
-  //   fetch("http://")
-  //   .then((response) => response.json())
-  //   .then((json) => {
-  //     console.log(json);
-  //     setMatchesCount(json.count);
-  //   })
-  // })
 
   useEffect(() => {
     AsyncStorage.getItem("token")
@@ -86,10 +77,15 @@ function MainNavigation() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterChoice" component={RegisterChoice} />
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
+        <Stack.Screen
+          name="CuestionarioUsuarioRegistro"
+          component={CuestionarioUsuarioRegistro}
+        />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="test" component={RegisterPet} />
+        <Stack.Screen name="CuestionarioUsuario" component={CuestionarioUsuarioRegistro} />
       </Stack.Navigator>
     </NavigationContainer>
   );

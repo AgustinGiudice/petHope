@@ -13,7 +13,6 @@ import Refugios from "./tabScreens/Refugios";
 import { CountMatchesContext } from "../context/CountMatchesContext";
 import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
-import RefShowPets from "./tabScreens/refugioScreens/RefShowPets";
 import RegisterPetNavigation from "./RegisterPetNavigation";
 import PetRefNavigation from "./PetRefNavigation";
 
