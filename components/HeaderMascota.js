@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import ButtonFilters from "./ButtonFilters";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { screenWidth } from "../hooks/useScreenResize";
+import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
   const cambioColorPaw = (numColor) => {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#7A5FB5",
     width: screenWidth,
-    height: 40,
+    height: screenHeight * 0.045,
     borderRadius: 10,
     zIndex: 10,
     alignItems: "center",
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: screenWidth,
     justifyContent: "space-between",
-    marginBottom: 30,
+    marginBottom: screenHeight * 0.025,
     alignItems: "baseline",
     paddingHorizontal: 30,
     textAlign: "center",

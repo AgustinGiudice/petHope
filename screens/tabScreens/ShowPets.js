@@ -12,7 +12,7 @@ import { TokenContext } from "../../context/TokenContext";
 import { getMascotas } from "../../services/getMascotas";
 import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
-import Constants from "expo-constants";
+
 import SwiperPets from "../../components/SwiperPets";
 
 const ShowPets = ({ navigation }) => {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
     alignItems: "center",
-    // paddingTop: Constants.statusBarHeight,
+    
   },
 
   corazonLike: {

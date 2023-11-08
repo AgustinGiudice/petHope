@@ -25,18 +25,20 @@ const SwiperPets = ({
       }}
       onSwiped={() => setIndex(index + 1)}
       cardIndex={0}
-      backgroundColor={"#C69AE8"}
+      backgroundColor={"#9A34EA"}
       stackSize={2}
       containerStyle={styles.container}
       verticalSwipe={false}
       showSecondCard={true}
+      cardStyle={styles.card}
     />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    left: -20.25,
+    left: -20.5,
+    top: -60,
   },
 });
 export default SwiperPets;

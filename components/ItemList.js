@@ -7,12 +7,11 @@ import {
   getSexoDescripcion,
 } from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { LinearGradient } from "expo-linear-gradient";
 import HeaderMascota from "./HeaderMascota";
 import Foundation from "react-native-vector-icons/Foundation";
-
+import Constants from "expo-constants";
 const obtenerTipoMascota = (t) => {
   switch (t) {
     case 1:
@@ -23,11 +22,8 @@ const obtenerTipoMascota = (t) => {
 
     default:
       return <FontAwesome5 name="dog" size={40} color="Black" />;
-
   }
 };
-
-
 
 const obtenerSexoTexto = (sexo) => {
   switch (sexo) {
@@ -59,10 +55,10 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
       <View>
         <View>
           <Image
-            source={ 
+            source={
               // {uri: item.imagenes.length > 0 ? item.imagenes[0].url : null,}
               require("../assets/refugio1.jpg")
-             }
+            }
             style={styles.mascotaImagen}
           />
           <LinearGradient
@@ -83,10 +79,12 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
         <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
         <View style={styles.dataItemArria}>
           <Text style={styles.tag}>{getRazaTexto(item.raza)}</Text>
-          <Text style={styles.tag}>Talla {getTamanioDescripcion(item.tamanio)}</Text>
+          <Text style={styles.tag}>
+            Talla {getTamanioDescripcion(item.tamanio)}
+          </Text>
           <Text style={styles.tag}>{getEdadDescripcion(item.edad)}</Text>
         </View>
-        
+
         <View style={styles.dataItemArria3}>
           <Text>{obtenerTipoMascota(item.anima)}</Text>
           <Text>{obtenerSexoTexto(item.sexo)}</Text>
@@ -106,8 +104,8 @@ const styles = StyleSheet.create({
     gap: 3,
     backgroundColor: "#fff",
     overflow: "hidden",
-    minHeight: screenHeight - 60,
-    // marginTop:20
+    minHeight: screenHeight,
+    paddingTop: Constants.statusBarHeight,
   },
   mascotaImagen: {
     width: "100%",
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
   },
   dataItem: {
     alignItems: "center",
-    position: "relative"
+    position: "relative",
     //aca
   },
   dataItemArria: {
@@ -143,18 +141,18 @@ const styles = StyleSheet.create({
   dataItemArria2: {
     flexDirection: "row",
   },
-  dataItemArria3:{
+  dataItemArria3: {
     position: "absolute",
-    bottom:  -70,
-    flexDirection:"row",
-    width:screenWidth - 25,
-    justifyContent:"space-between"
+    bottom: -70,
+    flexDirection: "row",
+    width: screenWidth - 25,
+    justifyContent: "space-between",
   },
   tag: {
     textAlign: "center",
     textAlignVertical: "center",
     backgroundColor: "#9A34EA",
-    width: screenWidth * 0.30,
+    width: screenWidth * 0.3,
     height: 25,
     borderRadius: 5,
     color: "white",
@@ -169,10 +167,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  iconMasota:{
-    width:80,
-    height:90
-  }
+  iconMasota: {
+    width: 80,
+    height: 90,
+  },
 });
 
 export default ItemList;
