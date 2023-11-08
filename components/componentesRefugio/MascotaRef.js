@@ -78,31 +78,15 @@ const MascotaRef = ({ mascota, navigation }) => {
   const [mascotaEliminada, setMascotaEliminada] = useState(false);
   const { token } = useContext(TokenContext);
 
-  const handleDelete = async (idMascota) => {
-    try {
-      const response = await fetch(
-        `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            authentication: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        // Eliminación exitosa
-        setMascotaEliminada(true);
-      } else {
-        console.error("Error al eliminar la mascota.");
-      }
-    } catch (error) {
-      console.error("Error al eliminar la mascota:", error);
-    }
-  };
+
 
   return (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("EditarMascota", { mascota: mascota })
+      }
+    >
+
     <View style={styles.container}>
       <View style={styles.headerPet}>
         <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
@@ -114,7 +98,7 @@ const MascotaRef = ({ mascota, navigation }) => {
             name="paw"
             size={35}
             color={cambioColorPaw(mascota.nivelCuidado)}
-          />
+            />
           <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
         </View>
       </View>
@@ -122,44 +106,29 @@ const MascotaRef = ({ mascota, navigation }) => {
         <Image
           source={
             mascota.imagen.length !== 0
-              ? { uri: mascota.imagen[0].url }
-              : require("../../assets/refugio1.jpg")
+            ? { uri: mascota.imagen[0].url }
+            : require("../../assets/refugio1.jpg")
           }
           style={styles.image}
-        />
-        <View style={styles.buttonsImage}>
-          <TouchableOpacity
-            style={styles.buttonedit}
-            onPress={() =>
-              navigation.navigate("EditarMascota", { mascota: mascota })
-            }
-          >
-            <AntDesign name="edit" size={20} color="black" />
-          </TouchableOpacity>
+          />
 
-          <TouchableOpacity
-            style={styles.buttondelete}
-            onPress={() => handleDelete(mascota.id)}
-          >
-            <MaterialCommunityIcons name="delete" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
       </View>
       <View style={styles.heightdataContainer}>
         <View style={styles.dataContainer}>
           <View style={styles.data1}>
             <Text style={styles.data}>
-              Tamaño: {obtenerTamanioTexto(mascota.tamanio)}
+              Talla {obtenerTamanioTexto(mascota.tamanio)}
             </Text>
             <Text style={styles.data}>
-              Edad: {obtenerEdadTexto(mascota.edad)}
+              {obtenerEdadTexto(mascota.edad)}
             </Text>
-            <Text style={styles.data}>Raza: {mascota.raza}</Text>
+            <Text style={styles.data}>{mascota.raza}</Text>
           </View>
           <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 
@@ -214,31 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "bold",
     color: "black",
-  },
-  buttonsImage: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    flexDirection: "column",
-  },
-  buttonedit: {
-    backgroundColor: "#76DF00",
-    borderRadius: 5,
-    marginBottom: 5,
-    marginTop: 5,
-    width: 25,
-    height: 25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttondelete: {
-    backgroundColor: "#DD4000",
-    borderRadius: 5,
-    width: 25,
-    height: 25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  }
 });
 
 export default MascotaRef;

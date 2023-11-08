@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
     alignItems: "center",
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
   },
 
   corazonLike: {
