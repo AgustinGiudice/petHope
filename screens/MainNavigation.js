@@ -70,7 +70,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "RegisterUser" : "RegisterUser"}
+        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
         //initialRouteName="test"
         screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >

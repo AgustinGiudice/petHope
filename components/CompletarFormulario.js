@@ -4,16 +4,16 @@ const CompletarFormulario = ({ navigation }) => {
   return (
     <View>
       <Text>
-        Sin completar el formulario no te podemos mostrar las mascotas que son
+        Sin completar el cuestionario no te podemos mostrar las mascotas que son
         ideales para vos
       </Text>
       <TouchableOpacity
         style={styles.surveyButton}
         onPress={() => {
-          navigation.navigate("RegisterUser", { index: 10 });
+          navigation.navigate("CuestionarioUsuarioRegistro");
         }}
       >
-        <Text style={styles.surveyButtonText}>Formulario</Text>
+        <Text style={styles.surveyButtonText}>Cuestionario</Text>
       </TouchableOpacity>
     </View>
   );

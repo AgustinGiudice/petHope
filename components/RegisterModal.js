@@ -1,75 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Modal,
   StyleSheet,
-  Text,
   Animated,
   Easing,
   useWindowDimensions,
 } from "react-native";
 
-const RegisterModal = ({ children, visible, setVisible }) => {
+const RegisterModal = ({ children, visible, setVisible, setError }) => {
   const modalFadeIn = new Animated.Value(0);
   const modalFadeOut = new Animated.Value(1);
-
-  const handleNext = () => {
-    let hasEmptyValues = false;
-    let passMatch = true;
-    let pass = "";
-    setError([]);
-    if (children.length >= 1) {
-      children.forEach((element) => {
-        if (!element) {
-          return;
-        }
-        if (
-          element.props.placeholder === "fecha" &&
-          element.props.value === ""
-        ) {
-          setError((prev) => [...prev, `Por favor elegir una fecha`]);
-          hasEmptyValues = true;
-        }
-        if (
-          element.props.value === "" &&
-          element.props.placeholder !== "fecha"
-        ) {
-          setError((prev) => [
-            ...prev,
-            `Completar el campo de ${element.props.placeholder}`,
-          ]);
-          hasEmptyValues = true;
-        }
-        if (
-          element.props.atributo === "pass" ||
-          element.props.atributo === "repeatPass"
-        ) {
-          if (pass === "") {
-            pass = element.props.value;
-          } else {
-            if (pass !== element.props.value) {
-              passMatch = false;
-              setError((prev) => [...prev, "Las contraseñas no coinciden"]);
-            }
-          }
-        }
-        //
-        //Hacer condicional para el formato de mail tambien!!!!
-        //
-        if (element.props.placeholder === "iugigpj") {
-          //
-          //Hacer el fetcheo, el loading y el renderizado condicional
-          //
-          setError((prev) => [
-            ...prev,
-            "Este E-mail ya tiene una cuenta asociada",
-          ]);
-        }
-      });
-    }
-    if (!hasEmptyValues && passMatch) {
-      setVisible((prev) => prev + 1);
-    }
-  };
 
   const { width } = useWindowDimensions();
   const styles = StyleSheet.create({
@@ -80,15 +20,6 @@ const RegisterModal = ({ children, visible, setVisible }) => {
       backgroundColor: "#C69AE8",
       gap: 15,
       padding: 20,
-    },
-    // arrow: {
-    //   color: "white",
-    //   position: "absolute",
-    //   bottom: 20,
-    //   right: 20,
-    // },
-    error: {
-      color: "red",
     },
     containerButtons: {
       width: width,
@@ -122,7 +53,10 @@ const RegisterModal = ({ children, visible, setVisible }) => {
     <Modal
       transparent={false}
       visible={visible}
-      onRequestClose={() => setVisible((prev) => prev - 1)} //ojo con esto
+      onRequestClose={() => {
+        setError([]);
+        setVisible((prev) => prev - 1);
+      }} //ojo con esto
     >
       <Animated.View
         style={[

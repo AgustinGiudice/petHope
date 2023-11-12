@@ -8,12 +8,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import LoadingComponent from "../components/LoadingComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
-import { TokenContext } from "../context/TokenContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { registrarUsuario } from "../services/registrarUsuario";
-import { login } from "../services/logIn";
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
@@ -40,7 +38,6 @@ const CreateUserForm = ({ navigation }) => {
     fechaDeNacimiento: null,
   };
   const { setCurrentUser } = useContext(UserContext);
-  const { setToken } = useContext(TokenContext);
   const [userData, setUserData] = useState(initialUserData);
   const [error, setError] = useState([]);
   const [indexModal, setIndexModal] = useState(1);
@@ -124,41 +121,6 @@ const CreateUserForm = ({ navigation }) => {
     })();
   }, []);
 
-  const handleActualizarDatos = async () => {
-    setIsLoading(true);
-
-    fetch(
-      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cache.token}`,
-        },
-        body: JSON.stringify(userData),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        data.usuario.profilePic && data.usuario.tuvoMascotas
-          ? (data.usuario.completado = 100)
-          : data.usuario.profilePic || data.usuario.tuvoMascotas
-          ? (data.usuario.completado = 66)
-          : (data.usuario.completado = 33);
-
-        // actualizar el usuario en el contexto
-        setCurrentUser(data.usuario);
-
-        navigation.navigate("Tabs");
-      })
-      .catch((error) => {
-        console.error("Error actualizando la información:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
   const handleLogin = () => {
     fetch(
       "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
@@ -509,6 +471,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "white",
   },
   lastContainer: {
     gap: 20,

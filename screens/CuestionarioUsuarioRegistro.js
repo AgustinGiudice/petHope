@@ -1,3 +1,4 @@
+import { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,13 +7,55 @@ import {
   StyleSheet,
 } from "react-native";
 import RegisterModal from "../components/RegisterModal";
-import Radio from "../components/Select";
+import { UserContext } from "../context/UserContext";
+import { TokenContext } from "../context/TokenContext";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Radio from "../components/Radio";
+import { responderCuestonario } from "../services/responderCuestionario";
 
-const CuestionarioUsuarioRegistro = ({ route }) => {
+const CuestionarioUsuarioRegistro = ({ navigation }) => {
+  const [indexModal, setIndexModal] = useState(0);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
+  const [error, setError] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState({
+    espacioDisponible: null,
+    aceptaCuidadosEspeciales: null,
+    tipoAnimal: null,
+    edadPreferida: null,
+    tamanioPreferido: null,
+    tieneNinios: null,
+    tieneMascotas: null,
+    tuvoMascotas: null,
+    descripcion: null,
+    fechaDeNacimiento: null,
+  });
+
+  const handleNext = async (value) => {
+    setError([]);
+    if (!value) {
+      setError(["Selecciona una opción"]);
+    } else {
+      setIndexModal(indexModal + 1);
+    }
+  };
+
+  const handleActualizarDatos = async () => {
+    setIsLoading(true);
+    userData.id = currentUser.id;
+    await responderCuestonario(userData, token, navigation, setCurrentUser);
+  };
+
   return (
     <View style={styles.container}>
-      <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
-        <View style={styles.warningContainer} key={99}>
+      <RegisterModal
+        visible={indexModal === 0}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
+        <View style={styles.warningContainer}>
+          <Text style={styles.title}>Hola {currentUser.nombre}!</Text>
           <Text style={styles.title}>
             A continuación te haremos unas preguntas que nos van a permitir
             encontrar las mascotas ideales para vos
@@ -22,8 +65,18 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             poder ver mascotas!
           </Text>
         </View>
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext("ok")}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 1}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Cómo es el lugar donde vivís actualmente?
         </Text>
@@ -37,8 +90,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.espacioDisponible)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 2}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
         <Radio
           data={[
@@ -51,8 +123,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             console.log(value);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext("ok")}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 3}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Tiene experiencia previa con mascotas?
         </Text>
@@ -65,8 +156,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.tuvoMascotas)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 4}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Tiene alguna preferencia por un tipo de Animal?
         </Text>
@@ -80,8 +190,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.tipoAnimal)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 5}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de edad para la mascota?
         </Text>
@@ -101,8 +230,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.edadPreferida)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 6}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Tiene alguna preferencia de tamaño para la mascota?
         </Text>
@@ -122,8 +270,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.tamanioPreferido)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 7}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>¿Tiene niños en casa?</Text>
         <Radio
           data={[
@@ -146,8 +313,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.tieneNinios)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 8}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>¿Tiene otras mascotas en casa?</Text>
         <Radio
           data={["Si", "No"]}
@@ -158,8 +344,27 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.tieneMascotas)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 9}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           ¿Está dispuesto a adoptar una mascota con necesidades especiales o
           problemas de salud?
@@ -173,18 +378,37 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             setUserData(newData);
           }}
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext(userData.aceptaCuidadosEspeciales)}
+        />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 10} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 10}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
-            ¡Muchas gracias por contestar las preguntas!
+            ¡Muchas gracias por contestar el cuestionario!
           </Text>
-          <Text>Ya podes encontrar tu mascota soñada</Text>
+          <Text>Ya podés encontrar tu mascota soñada</Text>
           <TouchableOpacity
-            onPress={index ? handleActualizarDatos : handleSubmit}
+            onPress={handleActualizarDatos}
             style={styles.botonStart}
           >
-            {loadingFetch ? (
+            {isLoading ? (
               <ActivityIndicator color={"white"} />
             ) : (
               <Text style={styles.start}>Empezar</Text>
@@ -192,7 +416,7 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
           </TouchableOpacity>
         </View>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
+      {/* <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
         <View key={33} style={styles.lastContainer}>
           {!index ? (
             <>
@@ -203,7 +427,7 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
                 mascotas
               </Text>
               <TouchableOpacity onPress={handleSubmit} style={styles.start}>
-                {loadingFetch ? (
+                {isLoading ? (
                   <ActivityIndicator color={"white"} />
                 ) : (
                   <Text style={{ color: "white" }}>Continuar</Text>
@@ -225,7 +449,7 @@ const CuestionarioUsuarioRegistro = ({ route }) => {
             </>
           )}
         </View>
-      </RegisterModal>
+      </RegisterModal> */}
     </View>
   );
 };
@@ -239,6 +463,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "white",
   },
   lastContainer: {
     gap: 20,
@@ -257,10 +482,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "white",
   },
-  map: {
-    width: "90%",
-    aspectRatio: 1,
-    borderRadius: 10,
+  arrow: {
+    color: "white",
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });
 

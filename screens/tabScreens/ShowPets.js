@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "relative",
     alignItems: "center",
-    
   },
 
   corazonLike: {
