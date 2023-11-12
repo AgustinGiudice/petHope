@@ -5,14 +5,10 @@ import {
   Text,
   Animated,
   Easing,
-  View,
   useWindowDimensions,
-  TouchableOpacity,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const RegisterModal = ({ children, visible, setVisible }) => {
-  const [error, setError] = useState([]);
   const modalFadeIn = new Animated.Value(0);
   const modalFadeOut = new Animated.Value(1);
 
@@ -85,12 +81,12 @@ const RegisterModal = ({ children, visible, setVisible }) => {
       gap: 15,
       padding: 20,
     },
-    arrow: {
-      color: "white",
-      position: "absolute",
-      bottom: 20,
-      right: 20,
-    },
+    // arrow: {
+    //   color: "white",
+    //   position: "absolute",
+    //   bottom: 20,
+    //   right: 20,
+    // },
     error: {
       color: "red",
     },
@@ -126,7 +122,7 @@ const RegisterModal = ({ children, visible, setVisible }) => {
     <Modal
       transparent={false}
       visible={visible}
-      onRequestClose={() => setVisible((prev) => prev - 1)}//ojo con esto
+      onRequestClose={() => setVisible((prev) => prev - 1)} //ojo con esto
     >
       <Animated.View
         style={[
@@ -147,7 +143,7 @@ const RegisterModal = ({ children, visible, setVisible }) => {
         ]}
       >
         {children}
-        {error.length !== 0
+        {/* {error.length !== 0
           ? error.map((e) => {
               return (
                 <Text key={e} style={styles.error}>
@@ -155,8 +151,8 @@ const RegisterModal = ({ children, visible, setVisible }) => {
                 </Text>
               );
             })
-          : null}
-        {children.key == 99 ? (
+          : null} */}
+        {/* {children.key == 99 ? (
           <View style={styles.containerButtons}>
             <TouchableOpacity onPress={() => setVisible(21)}>
               <Text>Completar más tarde</Text>
@@ -175,7 +171,7 @@ const RegisterModal = ({ children, visible, setVisible }) => {
             style={styles.arrow}
             onPress={() => handleNext()}
           />
-        )}
+        )} */}
       </Animated.View>
     </Modal>
   );

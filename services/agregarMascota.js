@@ -24,7 +24,6 @@ export const agregarMascota = async (
         formData.append(key, petData[key]);
       }
     }
-    console.log(formData);
     const response = await fetchData(token, formData);
 
     if (response.status === 401 || response.status === 403) {
@@ -34,7 +33,6 @@ export const agregarMascota = async (
       throw new Error("Acceso no autorizado");
     }
     const data = await response.json();
-    console.log(data);
   } catch (error) {
     console.error("Error al crear mascota:", error);
   }

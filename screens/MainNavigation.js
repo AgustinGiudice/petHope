@@ -70,7 +70,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
+        initialRouteName={isLoggedIn ? "RegisterUser" : "RegisterUser"}
         //initialRouteName="test"
         screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >
@@ -85,7 +85,10 @@ function MainNavigation() {
         <Stack.Screen name="Tabs" component={TabNavigation} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="test" component={RegisterPet} />
-        <Stack.Screen name="CuestionarioUsuario" component={CuestionarioUsuarioRegistro} />
+        <Stack.Screen
+          name="CuestionarioUsuario"
+          component={CuestionarioUsuarioRegistro}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

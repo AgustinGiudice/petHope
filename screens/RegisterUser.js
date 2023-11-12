@@ -1,26 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
-import Radio from "../components/Radio";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import LoadingComponent from "../components/LoadingComponent";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
+import { TokenContext } from "../context/TokenContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { registrarUsuario } from "../services/registrarUsuario";
+import { login } from "../services/logIn";
 
-const CreateUserForm = ({ navigation, route }) => {
-  const { currentUser } = useContext(UserContext);
-  const { index } = route.params;
+const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
     nombre: "",
     apellido: "",
@@ -42,14 +37,14 @@ const CreateUserForm = ({ navigation, route }) => {
     tieneMascotas: null,
     tuvoMascotas: null,
     descripcion: null,
-    fechaDeNacimiento: null, //Después crear un date selector
+    fechaDeNacimiento: null,
   };
   const { setCurrentUser } = useContext(UserContext);
-  const [userData, setUserData] = useState(currentUser || initialUserData);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [indexModal, setIndexModal] = useState(index || 1);
+  const { setToken } = useContext(TokenContext);
+  const [userData, setUserData] = useState(initialUserData);
+  const [error, setError] = useState([]);
+  const [indexModal, setIndexModal] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingFetch, setLoadingFetch] = useState(false);
   const [date, setDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [region, setRegion] = useState({
@@ -60,11 +55,58 @@ const CreateUserForm = ({ navigation, route }) => {
   });
   const [formattedDate, setFormattedDate] = useState(null);
 
+  const handleNext = async (values) => {
+    let hasEmptyValues = false;
+    let passMatch = true;
+    let pass = "";
+    setError([]);
+
+    if (values) {
+      values.forEach((campo) => {
+        if (
+          (campo.valor === "" && campo.nombre !== "Descripción") ||
+          (!campo.valor && campo.nombre !== "Descripción")
+        ) {
+          if (campo.nombre === "Fecha de Nacimiento") {
+            setError((prev) => [...prev, `Elegí tu fecha de nacimiento`]);
+          } else {
+            setError((prev) => [
+              ...prev,
+              `Completar el campo de ${campo.nombre}`,
+            ]);
+          }
+          hasEmptyValues = true;
+        }
+        if (
+          campo.nombre === "Contraseña" ||
+          campo.nombre === "Repetir contraseña"
+        ) {
+          if (pass === "") {
+            pass = campo.valor;
+          } else if (pass !== campo.valor) {
+            setError((prev) => [...prev, `Las contraseñas no coinciden`]);
+            passMatch = false;
+          }
+        }
+      });
+    }
+    if (!hasEmptyValues && passMatch) {
+      if (indexModal === 9) {
+        setIsLoading(true);
+        await registrarUsuario(userData);
+        await handleLogin();
+        navigation.navigate("CuestionarioUsuario");
+      } else {
+        setIndexModal(indexModal + 1);
+      }
+    }
+  };
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        setError("Se negaron los permisos de localización");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
@@ -81,10 +123,9 @@ const CreateUserForm = ({ navigation, route }) => {
       setIsLoading(false);
     })();
   }, []);
+
   const handleActualizarDatos = async () => {
     setIsLoading(true);
-    const cache = await AsyncStorage.getItem("token");
-    console.log(cache.token);
 
     fetch(
       `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
@@ -113,7 +154,6 @@ const CreateUserForm = ({ navigation, route }) => {
       })
       .catch((error) => {
         console.error("Error actualizando la información:", error);
-        setErrorMsg("Error al actualizar la información");
       })
       .finally(() => {
         setIsLoading(false);
@@ -132,7 +172,6 @@ const CreateUserForm = ({ navigation, route }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("Response del login", data);
         if (data.token && data.usuario) {
           data.usuario.imagen && data.usuario.tuvoMascotas
             ? (data.usuario.completado = 100)
@@ -155,43 +194,12 @@ const CreateUserForm = ({ navigation, route }) => {
               setCurrentUser(usuario);
               //clean state
               setUserData(initialUserData);
-
-              navigation.navigate("Tabs", { usuario, token });
-            })
-            .finally(() => {
-              setLoadingFetch(false);
             });
         }
       })
       .catch((error) => {
         console.error("Error al iniciar sesión:", error);
       });
-  };
-  const handleSubmit = () => {
-    //Realizar la petición POST al backend para guardar los datos del usuario
-    setLoadingFetch(true);
-    console.log("Datos del usuario enviados", userData);
-    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Reiniciar los campos del formulario después de guardar los datos
-        console.log("Respuesta del back", data);
-        if (!index) {
-          handleLogin();
-        }
-      })
-      .catch((error) => {
-        console.error("Error al guardar el usuario:", error);
-        console.log(userData);
-        // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
-      })
-      .finally(setLoadingFetch(false));
   };
   if (isLoading) {
     <LoadingComponent />;
@@ -201,6 +209,12 @@ const CreateUserForm = ({ navigation, route }) => {
       <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
         <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
         <Text>Queremos que nos cuentes de vos</Text>
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
+        />
       </RegisterModal>
       <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
         <Text style={styles.title}>¿Cómo te llamas?</Text>
@@ -210,12 +224,31 @@ const CreateUserForm = ({ navigation, route }) => {
           placeholder="Nombre"
           atributo="nombre"
         />
-
         <Input
           value={userData.apellido}
           setValue={setUserData}
           placeholder="Apellido"
           atributo="apellido"
+        />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([
+              { nombre: "Nombre", valor: userData.nombre },
+              { nombre: "Apellido", valor: userData.apellido },
+            ])
+          }
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
@@ -226,17 +259,22 @@ const CreateUserForm = ({ navigation, route }) => {
           placeholder="E-mail"
           atributo="mail"
         />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
-        <Text style={styles.title}>
-          Contanos un poco mas de vos en una breve descripcion! &#40; Opcional
-          &#41;{" "}
-        </Text>
-        <Input
-          value={userData.descripcion}
-          setValue={setUserData}
-          placeholder="Descripcion"
-          atributo="descripcion"
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([{ nombre: "E-mail", valor: userData.mail }])
+          }
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
@@ -253,8 +291,56 @@ const CreateUserForm = ({ navigation, route }) => {
           placeholder="Repetír contraseña"
           atributo="repeatPass"
         />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([
+              { nombre: "Contraseña", valor: userData.pass },
+              { nombre: "Repetir contraseña", valor: userData.repeatPass },
+            ])
+          }
+        />
       </RegisterModal>
-
+      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+        <Text style={styles.title}>
+          Contanos un poco mas de vos en una breve descripcion! &#40; Opcional
+          &#41;{" "}
+        </Text>
+        <Input
+          value={userData.descripcion}
+          setValue={setUserData}
+          placeholder="Descripcion"
+          atributo="descripcion"
+        />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([{ nombre: "Descripción", valor: userData.descripcion }])
+          }
+        />
+      </RegisterModal>
       <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
         <Text style={styles.title}>Ingresá tu dirección</Text>
         <Input
@@ -274,6 +360,27 @@ const CreateUserForm = ({ navigation, route }) => {
           setValue={setUserData}
           atributo={"provincia"}
           placeholder={"Provincia"}
+        />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([
+              { nombre: "Dirección", valor: userData.direccion },
+              { nombre: "Ciudad", valor: userData.ciudad },
+              { nombre: "Provincia", valor: userData.provincia },
+            ])
+          }
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
@@ -299,6 +406,12 @@ const CreateUserForm = ({ navigation, route }) => {
             }}
           />
         </MapView>
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
+        />
       </RegisterModal>
       <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
         <Text style={styles.title}>Decinos cual es tu teléfono</Text>
@@ -307,6 +420,23 @@ const CreateUserForm = ({ navigation, route }) => {
           setValue={setUserData}
           placeholder="Teléfono"
           atributo="telefono"
+        />
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([{ nombre: "Teléfono", valor: userData.telefono }])
+          }
         />
       </RegisterModal>
       <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
@@ -342,6 +472,28 @@ const CreateUserForm = ({ navigation, route }) => {
             {date ? formattedDate : "Elegir fecha"}
           </Text>
         </TouchableOpacity>
+        {error.length !== 0
+          ? error.map((e) => {
+              return (
+                <Text key={e} style={{ color: "red" }}>
+                  {e}
+                </Text>
+              );
+            })
+          : null}
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() =>
+            handleNext([
+              {
+                nombre: "Fecha de Nacimiento",
+                valor: userData.fechaDeNacimiento,
+              },
+            ])
+          }
+        />
       </RegisterModal>
     </View>
   );
@@ -379,6 +531,12 @@ const styles = StyleSheet.create({
     width: "90%",
     aspectRatio: 1,
     borderRadius: 10,
+  },
+  arrow: {
+    color: "white",
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });
 

@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Image,
 } from "react-native";
 import Input from "../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
