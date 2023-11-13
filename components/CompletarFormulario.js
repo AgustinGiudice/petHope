@@ -6,7 +6,7 @@ const CompletarFormulario = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
   return (
     <View>
-      {currentUser.imagen ? (
+      {!currentUser.imagen ? (
         <Text>Terminá de completar tu perfil subiendo una foto tuya</Text>
       ) : (
         <Text>
