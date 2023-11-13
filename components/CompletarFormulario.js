@@ -1,12 +1,19 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 const CompletarFormulario = ({ navigation }) => {
+  const { currentUser } = useContext(UserContext);
   return (
     <View>
-      <Text>
-        Sin completar el cuestionario no te podemos mostrar las mascotas que son
-        ideales para vos
-      </Text>
+      {currentUser.imagen ? (
+        <Text>Terminá de completar tu perfil subiendo una foto tuya</Text>
+      ) : (
+        <Text>
+          Sin completar el cuestionario no te podemos mostrar las mascotas que
+          son ideales para vos
+        </Text>
+      )}
       <TouchableOpacity
         style={styles.surveyButton}
         onPress={() => {

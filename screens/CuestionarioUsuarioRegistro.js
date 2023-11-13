@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -34,7 +34,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
 
   const handleNext = async (value) => {
     setError([]);
-    if (!value) {
+    if (value === null) {
       setError(["Selecciona una opción"]);
     } else {
       setIndexModal(indexModal + 1);

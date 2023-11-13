@@ -39,7 +39,6 @@ const MorePersonalData = ({ navigation }) => {
 
   const handlePressPic = () => {
     setModalVisible(true);
-    console.log("Aca se va a poder modificar una foto");
   };
 
   const handleEditInformation = () => {
@@ -68,12 +67,6 @@ const MorePersonalData = ({ navigation }) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          data.usuario.imagen && data.usuario.tuvoMascotas
-            ? (data.usuario.completado = 100)
-            : data.usuario.imagen || data.usuario.tuvoMascotas
-            ? (data.usuario.completado = 66)
-            : (data.usuario.completado = 33);
-
           // actualizar el usuario en el contexto
           setCurrentUser(data.usuario);
 

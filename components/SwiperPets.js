@@ -25,7 +25,7 @@ const SwiperPets = ({
       }}
       onSwiped={() => setIndex(index + 1)}
       cardIndex={0}
-      backgroundColor={"#9A34EA"}
+      backgroundColor={"#f1f1f1"}
       stackSize={2}
       containerStyle={styles.container}
       verticalSwipe={false}

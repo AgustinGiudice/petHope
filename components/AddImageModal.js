@@ -6,13 +6,19 @@ import * as ImagePicker from "expo-image-picker";
 import { TokenContext } from "../context/TokenContext";
 import { UserContext } from "../context/UserContext";
 
-const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage }) => {
+const AddImageModal = ({
+  id,
+  isVisible,
+  setIsVisible,
+  setImages,
+  currentImage,
+}) => {
   const { token } = useContext(TokenContext);
   const [newImage, setNewImage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
-  
+
   const pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -69,7 +75,9 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage })
 
         // Realizar la solicitud POST con fetch
         fetch(
-          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/${currentUser.isRefugio ? "refugios" : "usuarios"}/upload-img/${id}`,
+          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/${
+            currentUser.isRefugio ? "refugios" : "usuarios"
+          }/upload-img/${id}`,
           {
             method: "PUT",
             body: formData,
@@ -90,12 +98,16 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage })
           })
           .then((data) => {
             // Procesar la respuesta si es necesario
-            console.log(data);
             if (data.imageUrl) {
               setImages(data.imageUrl);
+              currentUser.tuvoMascotas !== null
+                ? (currentUser.completado = 100)
+                : (currentUser.completado = 66);
+
               setCurrentUser({ ...currentUser, imagen: data.imageUrl });
             }
           })
+
           .catch((error) => {
             console.error(error);
           })
@@ -123,7 +135,9 @@ const AddImageModal = ({ id, isVisible, setIsVisible, setImages, currentImage })
         >
           <Icon name="times" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.titulo}>{currentImage ? "Editar mi imagen" : "Agregar una foto"}</Text>
+        <Text style={styles.titulo}>
+          {currentImage ? "Editar mi imagen" : "Agregar una foto"}
+        </Text>
         {error && <Text>{error}</Text>}
         {newImage && (
           <Image

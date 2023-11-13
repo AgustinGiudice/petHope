@@ -18,7 +18,7 @@ export const responderCuestonario = async (
     }
 
     const data = await response.json();
-    data.usuario.imagen && data.usuario.tuvoMascotas
+    data.usuario.imagen && data.usuario.tuvoMascotas !== null
       ? (data.usuario.completado = 100)
       : data.usuario.imagen || data.usuario.tuvoMascotas
       ? (data.usuario.completado = 66)
@@ -37,7 +37,7 @@ async function fetchData(userData, token) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorizarion: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(userData),
     });

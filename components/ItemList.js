@@ -15,13 +15,13 @@ import Constants from "expo-constants";
 const obtenerTipoMascota = (t) => {
   switch (t) {
     case 1:
-      return <FontAwesome5 name="dog" size={40} color="Black" />;
+      return <FontAwesome5 name="dog" size={40} color="black" />;
 
     case 2:
-      return <FontAwesome5 name="cat" size={40} color="Black" />;
+      return <FontAwesome5 name="cat" size={40} color="black" />;
 
     default:
-      return <FontAwesome5 name="dog" size={40} color="Black" />;
+      return <FontAwesome5 name="dog" size={40} color="black" />;
   }
 };
 
@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
   },
   dataItemArria3: {
     position: "absolute",
-    bottom: - screenHeight * 0.08,
-    flexDirection:"row",
-    width:screenWidth - 25,
-    justifyContent:"space-between"
+    bottom: -screenHeight * 0.08,
+    flexDirection: "row",
+    width: screenWidth - 25,
+    justifyContent: "space-between",
   },
   tag: {
     textAlign: "center",

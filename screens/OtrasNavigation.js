@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Logo3 from "../assets/logo3.png";
+import Logo from "../assets/logo.png";
 import { UserContext } from "../context/UserContext";
 
 function OtrasNavigation({ navigation }) {
@@ -22,7 +22,7 @@ function OtrasNavigation({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={Logo3} style={styles.logo} />
+      <Image source={Logo} style={styles.logo} />
 
       <View style={styles.btnsContainer}>
         <TouchableOpacity style={styles.botonContainer}>
@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
   logo: {
     width: 130,
     height: 130,
-    resizeMode: "contain",
+    backgroundColor: "#C69AE8",
+    padding: 5,
+    borderRadius: 200,
   },
   btnsContainer: {
     marginTop: 50,
