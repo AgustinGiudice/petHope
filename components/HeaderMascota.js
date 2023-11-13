@@ -2,34 +2,11 @@ import { View, Text, StyleSheet } from "react-native";
 import ButtonFilters from "./ButtonFilters";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
+import { cambioColorPaw } from "../functions/colorUtils";
 
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
-  const cambioColorPaw = (numColor) => {
-    let color;
 
-    switch (numColor) {
-      case 1:
-        color = "#0080ff";
-        break;
-      case 2:
-        color = "#33ff66";
-        break;
-      case 3:
-        color = "#ffdb4d";
-        break;
-      case 4:
-        color = "#ff944d";
-        break;
-      case 5:
-        color = "#ff4d4d";
-        break;
-      default:
-        color = "#ff4d4d";
-        break;
-    }
 
-    return color;
-  };
 
   return (
     <View style={styles.headerItem}>

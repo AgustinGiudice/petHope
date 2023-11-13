@@ -8,33 +8,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { BASE_URL } from "@env";
 import { TokenContext } from "../../context/TokenContext";
 import { UserContext } from "../../context/UserContext";
+import { cambioColorPaw } from "../../functions/colorUtils";
 
-const cambioColorPaw = (numColor) => {
-  let color;
-
-  switch (numColor) {
-    case 1:
-      color = "#0080ff";
-      break;
-    case 2:
-      color = "#33ff66";
-      break;
-    case 3:
-      color = "#ffdb4d";
-      break;
-    case 4:
-      color = "#ff944d";
-      break;
-    case 5:
-      color = "#ff4d4d";
-      break;
-    default:
-      color = "#ff4d4d";
-      break;
-  }
-
-  return color;
-};
 
 const obtenerTamanioTexto = (tamanio) => {
   switch (tamanio) {
