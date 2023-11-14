@@ -36,7 +36,15 @@ const MorePersonalData = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [errors, setErrors] = useState({
+    nombre: false,
+    apellido: false,
+    edad: false,
+    telefono: false,
+    mail: false,
+    descripcion: false
+  });
+  
   const handlePressPic = () => {
     setModalVisible(true);
   };
