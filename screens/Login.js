@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Image,
+  Keyboard,
 } from "react-native";
 import Input from "../components/Input";
 import { UserContext } from "../context/UserContext";
@@ -14,6 +15,29 @@ import { login } from "../services/logIn";
 import logo from "../assets/logo4.png";
 
 const LoginScreen = ({ navigation }) => {
+  const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardIsOpen(true);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardIsOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const [userData, setUserData] = useState({ mail: "", pass: "" });
   const [error, setError] = useState(""); // Estado para el mensaje de error
   const { setCurrentUser } = useContext(UserContext);
@@ -36,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={logo} style={styles.logo} />
+      {!keyboardIsOpen && <Image source={logo} style={styles.logo} />}
       <Text style={styles.title}>Iniciar Sesión</Text>
       <View style={styles.main}>
         <View style={styles.inputsContainer}>
