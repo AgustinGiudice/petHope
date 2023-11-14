@@ -12,7 +12,7 @@ export const login = async (
   try {
     const response = await fetchData(`${BASE_URL}api/refugios/login`, userData);
     const data = await response.json();
-    if (response.status === 401) {
+    if (response.status === 404) {
       const secondResponse = await fetchData(
         `${BASE_URL}api/usuarios/login`,
         userData
@@ -31,6 +31,9 @@ export const login = async (
       } else {
         setError(data2.mensaje);
       }
+    }
+    if (response.status === 401) {
+      setError(data.mensaje);
     }
 
     if (response.status === 200) {

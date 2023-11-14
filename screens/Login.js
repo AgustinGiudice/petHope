@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   Image,
 } from "react-native";
 import Input from "../components/Input";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 import { login } from "../services/logIn";
