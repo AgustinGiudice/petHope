@@ -13,6 +13,7 @@ import { UserContext } from "../context/UserContext";
 import { TokenContext } from "../context/TokenContext";
 import { login } from "../services/logIn";
 import logo from "../assets/logo4.png";
+import { COLORS } from "../styles";
 
 const LoginScreen = ({ navigation }) => {
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
@@ -86,12 +87,11 @@ const LoginScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
 
-        <Text
-          style={styles.registerTextContainer}
+        <TouchableOpacity
           onPress={() => navigation.navigate("RegisterChoice")}
         >
           <Text style={styles.registerText}>¿No tenes cuenta? Registrate!</Text>
-        </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -102,10 +102,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[400],
   },
   main: {
-    backgroundColor: "#eee",
+    backgroundColor: COLORS[50],
     width: "80%",
     aspectRatio: 1,
     borderRadius: 10,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#eee",
+    color: COLORS[50],
     padding: 30,
   },
   inputsContainer: {
@@ -127,19 +127,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loginButton: {
-    backgroundColor: "#9A34EA",
+    backgroundColor: COLORS[600],
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginHorizontal: 5,
   },
-  registerTextContainer: {
-    borderTopWidth: 1,
-    borderBottomColor: "black",
-    paddingTop: 20,
-  },
   registerText: {
-    color: "black",
+    color: COLORS[950],
     fontSize: 12,
   },
   errorText: {

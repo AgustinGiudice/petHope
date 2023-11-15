@@ -12,6 +12,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { registrarUsuario } from "../services/registrarUsuario";
+import { COLORS } from "../styles";
 
 const CreateUserForm = ({ navigation }) => {
   const initialUserData = {
@@ -168,17 +169,19 @@ const CreateUserForm = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
-        <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
-        <Text>Queremos que nos cuentes de vos</Text>
-        <FontAwesome
-          name="arrow-right"
-          size={40}
-          style={styles.arrow}
-          onPress={() => handleNext()}
-        />
-      </RegisterModal>
-      <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
+      <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
+      <Text>Queremos que nos cuentes de vos</Text>
+      <FontAwesome
+        name="arrow-right"
+        size={40}
+        style={styles.arrow}
+        onPress={() => handleNext()}
+      />
+      <RegisterModal
+        visible={indexModal === 2}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>¿Cómo te llamas?</Text>
         <Input
           value={userData.nombre}
@@ -213,7 +216,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 3}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Decinos cual es tu E-mail</Text>
         <Input
           value={userData.mail}
@@ -239,7 +246,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 4}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Ingresá una contraseña</Text>
         <Input
           value={userData.pass}
@@ -274,7 +285,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 5}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           Contanos un poco mas de vos en una breve descripcion! &#40; Opcional
           &#41;{" "}
@@ -303,7 +318,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 6} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 6}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Ingresá tu dirección</Text>
         <Input
           value={userData.direccion}
@@ -345,7 +364,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 7} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 7}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           Mové el cursor hasta que coincida con tu ubicación
         </Text>
@@ -375,7 +398,11 @@ const CreateUserForm = ({ navigation }) => {
           onPress={() => handleNext()}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 8} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 8}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Decinos cual es tu teléfono</Text>
         <Input
           value={userData.telefono}
@@ -401,7 +428,11 @@ const CreateUserForm = ({ navigation }) => {
           }
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 9} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 9}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Decinos cual es tu Fecha de nacimiento</Text>
         {showDatePicker && (
           <DateTimePicker
@@ -463,7 +494,7 @@ const CreateUserForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[400],
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -471,7 +502,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "white",
+    color: COLORS[50],
   },
   lastContainer: {
     gap: 20,

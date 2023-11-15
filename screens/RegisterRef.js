@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Constants from "expo-constants";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
 import MapView, { Marker } from "react-native-maps";
 import LoadingComponent from "../components/LoadingComponent";
 import * as Location from "expo-location";
+import { COLORS } from "../styles";
 
 const RegisterRef = ({ navigation }) => {
   const [indexModal, setIndexModal] = useState(0);
@@ -34,12 +35,13 @@ const RegisterRef = ({ navigation }) => {
     longitudeDelta: 0.00021,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        setError("Permission to access location was denied");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
@@ -56,6 +58,17 @@ const RegisterRef = ({ navigation }) => {
       setIsLoading(false);
     })();
   }, []);
+
+  const handleNext = async (value) => {
+    setError([]);
+    if (value === null) {
+      setError(["Selecciona una opción"]);
+    } else {
+      setIndexModal(indexModal + 1);
+    }
+  };
+
+
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del refugio
     fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios", {
@@ -74,15 +87,27 @@ const RegisterRef = ({ navigation }) => {
       })
       .catch((error) => {
         console.error("Error al guardar el refugio:", error);
-        // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario si la petición falla
       });
   };
+
   if (isLoading) {
     <LoadingComponent />;
   }
   return (
     <View style={styles.container}>
-      <RegisterModal visible={indexModal === 0} setVisible={setIndexModal}>
+      <Text style={styles.title}>¡Bienvenido a PetHope!</Text>
+      <Text>Queremos que nos cuentes de vos</Text>
+      <FontAwesome
+        name="arrow-right"
+        size={40}
+        style={styles.arrow}
+        onPress={() => handleNext()}
+      />
+      <RegisterModal
+        visible={indexModal === 1}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text>¿Cuál es el nombre del refugio?</Text>
         <Input
           value={refugioData.nombre}
@@ -91,7 +116,11 @@ const RegisterRef = ({ navigation }) => {
           atributo={"nombre"}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 1} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 2}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text>¿Cuáles son los datos de contacto?</Text>
         <Input
           value={refugioData.telefono}
@@ -106,7 +135,11 @@ const RegisterRef = ({ navigation }) => {
           atributo={"mail"}
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 2} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 3}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Ingresá una contraseña</Text>
         <Input
           value={refugioData.pass}
@@ -121,7 +154,11 @@ const RegisterRef = ({ navigation }) => {
           atributo="repeatPass"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 3} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 4}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>Por último</Text>
         <Text style={styles.title}>Te pedimos tu dirección</Text>
         <Input
@@ -143,7 +180,11 @@ const RegisterRef = ({ navigation }) => {
           atributo="provincia"
         />
       </RegisterModal>
-      <RegisterModal visible={indexModal === 4} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 5}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <Text style={styles.title}>
           Mové el cursor hasta que coincida con tu ubicación
         </Text>
@@ -167,7 +208,11 @@ const RegisterRef = ({ navigation }) => {
           />
         </MapView>
       </RegisterModal>
-      <RegisterModal visible={indexModal === 5} setVisible={setIndexModal}>
+      <RegisterModal
+        visible={indexModal === 6}
+        setVisible={setIndexModal}
+        setError={setError}
+      >
         <View key={33} style={styles.lastContainer}>
           <Text style={styles.title}>
             ¡Muchas gracias por contestar las preguntas!
@@ -184,7 +229,7 @@ const RegisterRef = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[400],
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -192,6 +237,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    color: COLORS[50],
   },
   map: {
     width: "90%",
@@ -209,6 +255,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: "center",
     color: "white",
+  },
+  arrow: {
+    color: "white",
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
 });
 
