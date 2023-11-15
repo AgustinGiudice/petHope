@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
   buttonsMain: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: 140,
   },
   buttonsSecondary: {
     flexDirection: "row",
