@@ -75,8 +75,6 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
         </View>
       </View>
       <View style={styles.dataItem}>
-        {/* <Text>Nivel de Cuidado: {item.nivelCuidado}</Text>
-        <Text style={styles.mascotaNombre}>{item.nombre}</Text> */}
         <View style={styles.dataItemArria}>
           <Text style={styles.tag}>{getRazaTexto(item.raza)}</Text>
           <Text style={styles.tag}>
@@ -105,6 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS[50],
     overflow: "hidden",
     minHeight: screenHeight,
+    maxHeight: screenHeight,
     paddingTop: Constants.statusBarHeight,
   },
   mascotaImagen: {
@@ -153,6 +152,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     backgroundColor: COLORS[700],
     width: screenWidth * 0.3,
+    height: screenHeight * 0.03,
     borderRadius: 5,
     color: COLORS[50],
     margin: 3,
