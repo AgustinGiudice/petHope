@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  TextInput,
+  Keyboard,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
@@ -36,7 +36,8 @@ const MorePersonalData = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+  const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
+
   const [errors, setErrors] = useState({
     nombre: "",
     apellido: "",
@@ -45,20 +46,41 @@ const MorePersonalData = ({ navigation }) => {
     mail: "",
     descripcion: "",
   });
-  
+
   const handlePressPic = () => {
     setModalVisible(true);
   };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardIsOpen(true);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardIsOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const handleEditInformation = () => {
     setIsEditing(true);
   };
 
   const handleSubmit = () => {
-
     setLoading(true);
     // Validar campos antes de enviar la solicitud
-    const { nombre, apellido, edad, telefono, mail, descripcion } = editableData;
+    const { nombre, apellido, edad, telefono, mail, descripcion } =
+      editableData;
     let hasErrors = false;
     const newErrors = {};
 
@@ -86,7 +108,7 @@ const MorePersonalData = ({ navigation }) => {
       newErrors.edad = "";
     }
 
-    // Validar teléfono 
+    // Validar teléfono
     if (!telefono || isNaN(Number(telefono))) {
       newErrors.telefono = "Teléfono debe ser un número";
       hasErrors = true;
@@ -102,12 +124,13 @@ const MorePersonalData = ({ navigation }) => {
       newErrors.mail = "";
     }
 
-    // Validar descripción 
+    // Validar descripción
     if (!descripcion) {
       newErrors.descripcion = "Descripción es requerida";
       hasErrors = true;
     } else if (descripcion.length > 150) {
-      newErrors.descripcion = "La descripción no puede superar los 150 caracteres";
+      newErrors.descripcion =
+        "La descripción no puede superar los 150 caracteres";
       hasErrors = true;
     } else {
       newErrors.descripcion = "";
@@ -119,7 +142,7 @@ const MorePersonalData = ({ navigation }) => {
       setLoading(false);
       return;
     }
-    
+
     const updatedUserData = {
       ...editableData,
       edad: Number(editableData.edad), // Convertir la edad de nuevo a número
@@ -191,24 +214,31 @@ const MorePersonalData = ({ navigation }) => {
               </View>
             </View>
           </View>
-          {userData.imagen === null ? (
-            <View style={styles.profilePic}>
-              <TouchableOpacity onPress={() => handlePressPic()}>
-                <FontAwesome5
-                  name="user-edit"
-                  size={screenHeight / 6}
-                  style={{ color: "#C69AE8" }}
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <Image
-              source={{ uri: userData.imagen }}
-              style={styles.profilePic}
-            />
-          )}
+          {!keyboardIsOpen ? (
+            userData.imagen === null ? (
+              <View style={styles.profilePic}>
+                <TouchableOpacity onPress={() => handlePressPic()}>
+                  <FontAwesome5
+                    name="user-edit"
+                    size={screenHeight / 6}
+                    style={{ color: "#C69AE8" }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Image
+                source={{ uri: userData.imagen }}
+                style={styles.profilePic}
+              />
+            )
+          ) : null}
         </View>
-        <View style={styles.dataContainer}>
+        <View
+          style={[
+            styles.dataContainer,
+            keyboardIsOpen && { marginTop: screenHeight * 0.1 },
+          ]}
+        >
           <TouchableOpacity
             onPress={() => handleEditInformation()}
             style={styles.changePic}
@@ -217,7 +247,7 @@ const MorePersonalData = ({ navigation }) => {
           </TouchableOpacity>
 
           {error && <Text style={{ color: "red" }}>{error}</Text>}
-          
+
           <View style={styles.column}>
             <ScrollView collapsable={true}>
               <View style={styles.textContainer}>
@@ -231,10 +261,10 @@ const MorePersonalData = ({ navigation }) => {
                   onChangeText={(text) =>
                     setEditableData({ ...editableData, nombre: text })
                   }
-                  />
-                  {errors.nombre !== "" && (
-                    <Text style={styles.errorText}>{errors.nombre}</Text>
-                  )}
+                />
+                {errors.nombre !== "" && (
+                  <Text style={styles.errorText}>{errors.nombre}</Text>
+                )}
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.fieldName}>Apellido</Text>
@@ -244,9 +274,9 @@ const MorePersonalData = ({ navigation }) => {
                   atributo="apellido"
                   disable={!isEditing}
                 />
-                  {errors.apellido !== "" && (
-                    <Text style={styles.errorText}>{errors.apellido}</Text>
-                  )}
+                {errors.apellido !== "" && (
+                  <Text style={styles.errorText}>{errors.apellido}</Text>
+                )}
               </View>
               <Text style={styles.fieldName}>Edad</Text>
               <View style={styles.textContainer}>
@@ -257,9 +287,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Edad"
                   disable={!isEditing}
                 />
-                  {errors.edad !== "" && (
-                    <Text style={styles.errorText}>{errors.edad}</Text>
-                  )}
+                {errors.edad !== "" && (
+                  <Text style={styles.errorText}>{errors.edad}</Text>
+                )}
               </View>
               <Text style={styles.fieldName}>Teléfono</Text>
               <View style={styles.textContainer}>
@@ -270,9 +300,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Teléfono"
                   disable={!isEditing}
                 />
-                  {errors.telefono !== "" && (
-                    <Text style={styles.errorText}>{errors.telefono}</Text>
-                  )}
+                {errors.telefono !== "" && (
+                  <Text style={styles.errorText}>{errors.telefono}</Text>
+                )}
               </View>
               <Text style={styles.fieldName}>E-mail</Text>
               <View style={styles.textContainer}>
@@ -283,9 +313,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="E-mail"
                   disable={!isEditing}
                 />
-                  {errors.mail !== "" && (
-                    <Text style={styles.errorText}>{errors.mail}</Text>
-                  )}
+                {errors.mail !== "" && (
+                  <Text style={styles.errorText}>{errors.mail}</Text>
+                )}
               </View>
               <Text style={styles.fieldName}>Descripcion</Text>
               <View style={styles.textContainer}>
@@ -296,9 +326,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Descripcion"
                   disable={!isEditing}
                 />
-                   {errors.descripcion !== "" && (
-                    <Text style={styles.errorText}>{errors.descripcion}</Text>
-                  )}
+                {errors.descripcion !== "" && (
+                  <Text style={styles.errorText}>{errors.descripcion}</Text>
+                )}
               </View>
             </ScrollView>
           </View>
