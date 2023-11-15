@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.3,
     height: screenHeight * 0.03,
     borderRadius: 5,
-    
     margin: 3,
     padding: screenHeight * 0.003,
   },
@@ -170,6 +169,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     color: COLORS[50],
+    fontSize: screenHeight * 0.013,
+    padding: screenHeight * 0.003,
   },
   gradient: {
     position: "absolute",
