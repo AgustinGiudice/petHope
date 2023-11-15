@@ -14,6 +14,8 @@ import { TokenContext } from "../../context/TokenContext";
 import { UserContext } from "../../context/UserContext";
 import { getRefugios } from "../../services/getRefugios";
 import { BASE_URL } from "@env";
+import HeaderMascota from "../../components/HeaderMascota";
+import Constants from "expo-constants";
 
 const Refugios = ({ navigation }) => {
   const { token } = useContext(TokenContext);
@@ -49,19 +51,7 @@ const Refugios = ({ navigation }) => {
       return (
         <>
           <View style={styles.container}>
-            <View style={styles.headerItem}>
-              <View style={styles.headerItem2}>
-                <View style={styles.headerItemsContenido}>
-                  <Text
-                    adjustsFontSizeToFit
-                    numberOfLines={1}
-                    style={styles.namePet}
-                  >
-                    Refugios
-                  </Text>
-                </View>
-              </View>
-            </View>
+            <HeaderMascota mascota={{ nombre: "Refugios" }} />
 
             <FlatList
               data={refugios}
@@ -99,20 +89,7 @@ const Refugios = ({ navigation }) => {
           >
             {selectedRefugio && (
               <>
-                <View style={styles.headerItem}>
-                  <View style={styles.headerItem2}>
-                    <View style={styles.headerItemsContenido}>
-                      <Text
-                        adjustsFontSizeToFit
-                        numberOfLines={1}
-                        style={styles.namePet}
-                      >
-                        {selectedRefugio.nombre}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-
+                <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 <View style={styles.modalContainer}>
                   <Image
                     source={selectedRefugio.imagen}
@@ -151,6 +128,7 @@ const Refugios = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E3E3E3",
+    paddingTop: Constants.statusBarHeight,
   },
   noticiaContainer: {
     marginTop: screenHeight * 0.042,
@@ -212,7 +190,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   modalDescription: {
-    fontSize: 16,
+    fontSize: screenHeight * 0.018,
     marginTop: 10,
     borderColor: "#9A34EA",
     borderBottomWidth: 1,
@@ -220,7 +198,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalLink: {
-    fontSize: 16,
+    fontSize: screenHeight * 0.018,
     marginTop: 10,
     borderColor: "#9A34EA",
     borderBottomWidth: 1,
@@ -239,7 +217,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: screenHeight* 0.018,
     textAlign: "center",
   },
   //HEADER ESTILOS
