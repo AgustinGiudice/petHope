@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   mascotaImagen: {
     width: "100%",
-    height: screenHeight * 0.63,
+    height: screenHeight * 0.68,
     borderRadius: 5,
     resizeMode: "cover",
     position: "relative",
