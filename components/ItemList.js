@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS[50],
     overflow: "hidden",
     minHeight: screenHeight,
+    maxHeight: screenHeight,
     paddingTop: Constants.statusBarHeight,
   },
   mascotaImagen: {
