@@ -98,26 +98,13 @@ const MatchesScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <HeaderMascota mascota={{ nombre: "Mensajes" }} />
-      {/* <View style={styles.header}>
-        <Picker
-          selectedValue={selectedState}
-          style={styles.picker}
-          onValueChange={(itemValue, itemIndex) => handleStateChange(itemValue)}
-        >
-          <Picker.Item label="Todos los estados" value="Todos los estados" />
-          <Picker.Item label="Estado 1" value="Estado 1" />
-          <Picker.Item label="Estado 2" value="Estado 2" />
-          <Picker.Item label="Estado 3" value="Estado 3" />
-        </Picker>
-      </View> */}
-
       <View>
         <FlatList
           data={matches}
-          contentContainerStyle={{ paddingBottom: 90 }}
+          contentContainerStyle={{ paddingBottom: 90, marginTop: height * 0.052 }}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={[styles.matchItem, { marginTop: height * 0.05 }]}
+              style={styles.matchItem}
               onPress={() =>
                 handleChatClick(
                   currentUser.id === item.refugio.id
