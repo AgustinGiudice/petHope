@@ -37,7 +37,7 @@ const MorePersonalData = ({ navigation }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
-
+  const maxNumCharacters= 150;
   const [errors, setErrors] = useState({
     nombre: "",
     apellido: "",
@@ -326,6 +326,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Descripcion"
                   disable={!isEditing}
                 />
+                <Text style={{ color: editableData.descripcion.length <= maxNumCharacters ? "gray" : "red", alignSelf: "flex-end" }}>
+                      {editableData.descripcion.length}/{maxNumCharacters}
+                  </Text>
                 {errors.descripcion !== "" && (
                   <Text style={styles.errorText}>{errors.descripcion}</Text>
                 )}
