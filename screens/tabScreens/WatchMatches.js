@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { BASE_URL } from "@env";
+import Constants from "expo-constants";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
@@ -9,6 +10,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
 import { screenWidth } from "../../hooks/useScreenResize";
 import {
@@ -23,8 +25,10 @@ import { TokenContext } from "../../context/TokenContext";
 import LoadingComponent from "../../components/LoadingComponent";
 import { getMatches } from "../../services/getMatches";
 import { cancelarMatch } from "../../services/cancelarMatch";
+import HeaderMascota from "../../components/HeaderMascota";
 
 const MatchesScreen = ({ navigation }) => {
+  const { width, height } = useWindowDimensions();
   const [isModalForMoreInfoVisible, setIsModalForMoreInfoVisible] =
     useState(false);
   const [isModalForUserInfoVisible, setIsModalForUserInfoVisible] =
@@ -93,6 +97,7 @@ const MatchesScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
+      <HeaderMascota mascota={{ nombre: "Mensajes" }} />
       {/* <View style={styles.header}>
         <Picker
           selectedValue={selectedState}
@@ -109,13 +114,22 @@ const MatchesScreen = ({ navigation }) => {
       <View>
         <FlatList
           data={matches}
+          contentContainerStyle={{ paddingBottom: 90 }}
           renderItem={({ item }) => (
-            <View style={styles.matchItem}>
+            <TouchableOpacity
+              style={[styles.matchItem, { marginTop: height * 0.05 }]}
+              onPress={() =>
+                handleChatClick(
+                  currentUser.id === item.refugio.id
+                    ? item.usuario
+                    : item.refugio,
+                  item.mascota,
+                  item.refugio
+                )
+              }
+            >
               <View style={styles.containerLeft}>
-                <View
-                  onPress={() => handleChatClick(item.mascota.refugioId)}
-                  style={styles.imagenContainer}
-                >
+                <View style={styles.imagenContainer}>
                   <Image
                     source={{ uri: item.mascota.pic }}
                     style={styles.mascotaImagen}
@@ -171,7 +185,7 @@ const MatchesScreen = ({ navigation }) => {
                   />
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           keyExtractor={(item) => item.id.toString()}
           style={styles.matchContainer}
@@ -252,22 +266,9 @@ const MatchesScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
     backgroundColor: "#E3E3E3",
     flex: 1,
-    overflow: "hidden",
-    alignItems: "center",
-    paddingTop: 40,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingRight: 10,
-  },
-  picker: {
-    height: 40,
-    width: 150,
+    paddingTop: Constants.statusBarHeight,
   },
   matchContainer: {
     width: screenWidth,
