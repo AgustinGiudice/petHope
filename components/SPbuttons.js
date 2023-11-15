@@ -9,6 +9,7 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { BASE_URL } from "@env";
 import { TokenContext } from "../context/TokenContext";
+import { COLORS } from "../styles";
 
 const SPbuttons = ({
   mascota_id,
@@ -75,7 +76,6 @@ const SPbuttons = ({
   };
 
   const [scaleValue, setScaleValue] = useState(new Animated.Value(0));
-
   useEffect(() => {
     // Iniciar la animación cuando el componente se monta
     Animated.timing(scaleValue, {
@@ -101,32 +101,43 @@ const SPbuttons = ({
       style={[
         containerStyle,
         {
-          width: width - width * 0.05,
-          height: height - height * 0.5,
+          width: width - width * 0.02,
+          height: height * 0.5,
           bottom: height - height * 1.365,
         },
       ]}
     >
-      <View style={styles.buttonsMain}>
+      <View
+        style={[styles.buttonsMain, { marginTop: height * 0.02, width: width *0.37}]}
+      >
         <TouchableOpacity
-          style={styles.backIcons}
+          style={[styles.backIcons2, { padding: height * 0.015 }]}
           onPress={() => postLike(mascota_id)}
         >
-          <AntDesign name="hearto" size={40} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.backIcons}>
-          <AntDesign name="close" size={40} color="white" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonsSecondary}>
-        <TouchableOpacity style={styles.backIcons2}>
-          <AntDesign name="sharealt" size={30} color="white" />
+          <AntDesign name="hearto" size={height * 0.048} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.backIcons2}
+          style={[styles.backIcons, { padding: height * 0.015 }]}
+        >
+          <AntDesign name="close" size={height * 0.048} color="white" />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={[
+          styles.buttonsSecondary,
+          { marginTop: -1 * height * 0.025, width: width * 0.7 },
+        ]}
+      >
+        <TouchableOpacity
+          style={[styles.backIcons2, { padding: height * 0.012 }]}
+        >
+          <AntDesign name="sharealt" size={height * 0.034} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.backIcons, { padding: height * 0.012 }]}
           onPress={() => setInfoPetModalIsVisible(true)}
         >
-          <AntDesign name="ellipsis1" size={30} color="white" />
+          <AntDesign name="ellipsis1" size={height * 0.034} color="white" />
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -135,41 +146,30 @@ const SPbuttons = ({
 
 const styles = StyleSheet.create({
   footerContainer: {
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[400],
     borderRadius: 500,
     position: "absolute",
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  text: {
-    color: "white",
-    fontSize: 30,
-  },
   buttonsMain: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: 140,
-    marginTop: 15,
   },
   buttonsSecondary: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: 270,
-    marginTop: -17,
   },
   backIcons: {
-    backgroundColor: "#9A34EA",
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    backgroundColor: COLORS[700],
+    borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
   },
   backIcons2: {
-    backgroundColor: "#9A34EA",
-    width: 45,
-    height: 45,
-    borderRadius: 22.5,
+    backgroundColor: COLORS[700],
+    borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
   },

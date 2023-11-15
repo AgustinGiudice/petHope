@@ -5,9 +5,6 @@ import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { cambioColorPaw } from "../functions/colorUtils";
 
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
-
-
-
   return (
     <View style={styles.headerItem}>
       <View style={styles.headerItem2}>
@@ -27,7 +24,7 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
               : " No tenemos más mascotas para mostrarte"}
           </Text>
           <View>
-            {mascota && (
+            {mascota.raza && (
               <>
                 <Ionicons
                   style={styles.pawIcon}

@@ -15,6 +15,7 @@ import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
 import RegisterPetNavigation from "./RegisterPetNavigation";
 import PetRefNavigation from "./PetRefNavigation";
+import { COLORS } from "../styles";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,13 +44,13 @@ function MyTabs() {
         initialRouteName="ShowRefugios"
         screenOptions={{
           tabBarStyle: {
-            backgroundColor: "#C69AE8",
+            backgroundColor: COLORS[400],
             height: 60,
             borderTopWidth: 0,
           }, // Establece el fondo de color violeta claro
           tabBarShowLabel: false, // Oculta las etiquetas de descripción
-          tabBarInactiveTintColor: "white", // Color del ícono cuando no está seleccionado
-          tabBarActiveTintColor: "black",
+          tabBarInactiveTintColor: COLORS[50], // Color del ícono cuando no está seleccionado
+          tabBarActiveTintColor: COLORS[700],
           unmountOnBlur: true,
         }}
       >
@@ -105,7 +106,7 @@ function MyTabs() {
                   style={{
                     width: 83,
                     height: 83,
-                    backgroundColor: "#9A34EA",
+                    backgroundColor: COLORS[700],
                     borderRadius: 50,
                     justifyContent: "center",
                     alignItems: "center",
@@ -182,7 +183,7 @@ function MyTabs() {
             width: getWidth() - 20,
             left: 10,
             height: 2,
-            backgroundColor: "black",
+            backgroundColor: COLORS[700],
             position: "absolute",
             bottom: 0,
             transform: [{ translateX: tabOffsetValue }],
@@ -195,7 +196,7 @@ function MyTabs() {
             left: 10,
             height: 1,
             opacity: 0.2,
-            backgroundColor: "black",
+            backgroundColor: COLORS[700],
             position: "absolute",
             bottom: 0,
             transform: [{ translateX: tabOffsetValue }],

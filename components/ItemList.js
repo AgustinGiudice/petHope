@@ -1,10 +1,8 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import {
-  getAnimalDescripcion,
   getEdadDescripcion,
   getTamanioDescripcion,
-  getSexoDescripcion,
 } from "../hooks/getDescripciones";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -12,6 +10,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import HeaderMascota from "./HeaderMascota";
 import Foundation from "react-native-vector-icons/Foundation";
 import Constants from "expo-constants";
+import { COLORS } from "../styles";
+
 const obtenerTipoMascota = (t) => {
   switch (t) {
     case 1:
@@ -67,7 +67,7 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
           ></LinearGradient>
         </View>
         <View style={styles.containerDistancia}>
-          <AntDesign name="enviromento" size={22} color="white" />
+          <AntDesign name="enviromento" size={22} color={COLORS[50]} />
           <Text style={styles.itemDistancia}>
             {" "}
             A {(item.distance / 1000).toFixed(2)} km de distancia.
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     zIndex: 1,
     gap: 3,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS[50],
     overflow: "hidden",
     minHeight: screenHeight,
     paddingTop: Constants.statusBarHeight,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     left: 10,
   },
   itemDistancia: {
-    fontSize: 20,
+    fontSize: screenHeight * 0.018,
     color: "white",
   },
   mascotaNombre: {
@@ -151,12 +151,13 @@ const styles = StyleSheet.create({
   tag: {
     textAlign: "center",
     textAlignVertical: "center",
-    backgroundColor: "#9A34EA",
+    backgroundColor: COLORS[700],
     width: screenWidth * 0.3,
-    height: 25,
     borderRadius: 5,
-    color: "white",
+    color: COLORS[50],
     margin: 3,
+    fontSize: screenHeight * 0.013,
+    padding: screenHeight * 0.003,
   },
   gradient: {
     position: "absolute",
