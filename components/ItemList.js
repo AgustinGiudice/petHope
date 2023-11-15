@@ -43,6 +43,12 @@ function getRazaTexto(raza) {
   return raza;
 }
 
+const factor = -0.00032967 * screenHeight + 0.945;
+
+  // Calcula el tamaño de la imagen
+  const imageSize = screenHeight * factor;
+  console.log("imageSize", imageSize);
+
 const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
   return (
     <View style={styles.mascotaItem}>
@@ -76,11 +82,15 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
       </View>
       <View style={styles.dataItem}>
         <View style={styles.dataItemArria}>
-          <Text style={styles.tag}>{getRazaTexto(item.raza)}</Text>
-          <Text style={styles.tag}>
-            Talla {getTamanioDescripcion(item.tamanio)}
-          </Text>
-          <Text style={styles.tag}>{getEdadDescripcion(item.edad)}</Text>
+          <View style={styles.tag}>
+            <Text style={styles.tag_text}>{getRazaTexto(item.raza)}</Text>
+          </View>
+          <View style={styles.tag}>
+            <Text style={styles.tag_text}>Talla {getTamanioDescripcion(item.tamanio)}</Text>
+          </View>
+          <View style={styles.tag}>
+            <Text style={styles.tag_text}>{getEdadDescripcion(item.edad)}</Text>
+          </View>
         </View>
 
         <View style={styles.dataItemArria3}>
@@ -108,7 +118,7 @@ const styles = StyleSheet.create({
   },
   mascotaImagen: {
     width: "100%",
-    height: screenHeight * 0.68,
+    height: imageSize,
     borderRadius: 5,
     resizeMode: "cover",
     position: "relative",
@@ -148,16 +158,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   tag: {
-    textAlign: "center",
-    textAlignVertical: "center",
     backgroundColor: COLORS[700],
     width: screenWidth * 0.3,
     height: screenHeight * 0.03,
     borderRadius: 5,
-    color: COLORS[50],
+    
     margin: 3,
-    fontSize: screenHeight * 0.013,
     padding: screenHeight * 0.003,
+  },
+  tag_text: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: COLORS[50],
   },
   gradient: {
     position: "absolute",
