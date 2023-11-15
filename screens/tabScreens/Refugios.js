@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import Constants from "expo-constants";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import LoadingComponent from "../../components/LoadingComponent";
 import { TokenContext } from "../../context/TokenContext";
@@ -53,24 +52,24 @@ const Refugios = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-
-            <View style={styles.headerItem}>
-              <View style={styles.headerItem2}>
-                <View style={styles.headerItemsContenido}>
-                  <Text
-                    adjustsFontSizeToFit
-                    numberOfLines={1}
-                    style={styles.namePet}
-                  >
-                    Refugios
-                  </Text>
-                </View>
-              </View>
+        <View style={styles.headerItem}>
+          <View style={styles.headerItem2}>
+            <View style={styles.headerItemsContenido}>
+              <Text
+                adjustsFontSizeToFit
+                numberOfLines={1}
+                style={styles.namePet}
+              >
+                Refugios
+              </Text>
             </View>
-        
+          </View>
+        </View>
+
         <FlatList
           data={refugios}
           keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={{ paddingBottom: 90 }}
           renderItem={({ item }) => (
             <View style={styles.noticiaContainer}>
               <Image source={item.imagen} style={styles.imagenNoticia} />
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E3E3E3",
   },
   noticiaContainer: {
-    marginTop: Constants.statusBarHeight,
+    marginTop: screenHeight * 0.042,
     margin: 10,
     padding: 10,
     borderRadius: 5,
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
   },
   textoBotonVerMas: {
     color: "white",
-    fontSize: 18,
+    fontSize: screenHeight * 0.015,
   },
   modalContainer: {
     flex: 1,

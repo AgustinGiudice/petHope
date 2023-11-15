@@ -12,7 +12,7 @@ import { TokenContext } from "../../context/TokenContext";
 import { getMascotas } from "../../services/getMascotas";
 import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
-
+import { COLORS } from "../../styles";
 import SwiperPets from "../../components/SwiperPets";
 
 const ShowPets = ({ navigation }) => {
@@ -172,7 +172,7 @@ const ShowPets = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    backgroundColor: "#eee",
+    backgroundColor: COLORS[50],
     flex: 1,
     overflow: "hidden",
     position: "relative",

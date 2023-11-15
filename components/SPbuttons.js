@@ -9,6 +9,7 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { BASE_URL } from "@env";
 import { TokenContext } from "../context/TokenContext";
+import { COLORS } from "../styles";
 
 const SPbuttons = ({
   mascota_id,
@@ -135,14 +136,14 @@ const SPbuttons = ({
 
 const styles = StyleSheet.create({
   footerContainer: {
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[400],
     borderRadius: 500,
     position: "absolute",
     alignItems: "center",
     justifyContent: "flex-start",
   },
   text: {
-    color: "white",
+    color: COLORS[50],
     fontSize: 30,
   },
   buttonsMain: {
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: -17,
   },
   backIcons: {
-    backgroundColor: "#9A34EA",
+    backgroundColor: COLORS[700],
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   backIcons2: {
-    backgroundColor: "#9A34EA",
+    backgroundColor: COLORS[700],
     width: 45,
     height: 45,
     borderRadius: 22.5,
