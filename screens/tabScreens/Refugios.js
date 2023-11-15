@@ -53,6 +53,21 @@ const Refugios = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
+
+            <View style={styles.headerItem}>
+              <View style={styles.headerItem2}>
+                <View style={styles.headerItemsContenido}>
+                  <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={styles.namePet}
+                  >
+                    Refugios
+                  </Text>
+                </View>
+              </View>
+            </View>
+        
         <FlatList
           data={refugios}
           keyExtractor={(item, index) => index.toString()}
@@ -233,7 +248,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#7A5FB5",
     width: screenWidth,
-    height: 50,
+    height: 70,
     borderRadius: 10,
     zIndex: 10,
     alignItems: "center",

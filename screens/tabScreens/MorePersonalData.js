@@ -36,7 +36,16 @@ const MorePersonalData = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  
+  const [errors, setErrors] = useState({
+    nombre: "",
+    apellido: "",
+    edad: "",
+    telefono: "",
+    mail: "",
+    descripcion: "",
+  });
+  
   const handlePressPic = () => {
     setModalVisible(true);
   };
@@ -46,7 +55,71 @@ const MorePersonalData = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
+
     setLoading(true);
+    // Validar campos antes de enviar la solicitud
+    const { nombre, apellido, edad, telefono, mail, descripcion } = editableData;
+    let hasErrors = false;
+    const newErrors = {};
+
+    // Validar nombre
+    if (!nombre) {
+      newErrors.nombre = "Nombre es requerido";
+      hasErrors = true;
+    } else {
+      newErrors.nombre = "";
+    }
+
+    // Validar apellido
+    if (!apellido) {
+      newErrors.apellido = "Apellido es requerido";
+      hasErrors = true;
+    } else {
+      newErrors.apellido = "";
+    }
+
+    // Validar edad este no habria que sacarlo?
+    if (!edad || isNaN(Number(edad))) {
+      newErrors.edad = "Edad debe ser un número";
+      hasErrors = true;
+    } else {
+      newErrors.edad = "";
+    }
+
+    // Validar teléfono 
+    if (!telefono || isNaN(Number(telefono))) {
+      newErrors.telefono = "Teléfono debe ser un número";
+      hasErrors = true;
+    } else {
+      newErrors.telefono = "";
+    }
+
+    // Validar correo electrónico
+    if (!mail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      newErrors.mail = "Correo electrónico inválido";
+      hasErrors = true;
+    } else {
+      newErrors.mail = "";
+    }
+
+    // Validar descripción 
+    if (!descripcion) {
+      newErrors.descripcion = "Descripción es requerida";
+      hasErrors = true;
+    } else if (descripcion.length > 150) {
+      newErrors.descripcion = "La descripción no puede superar los 150 caracteres";
+      hasErrors = true;
+    } else {
+      newErrors.descripcion = "";
+    }
+    //aca
+    setErrors(newErrors);
+
+    if (hasErrors) {
+      setLoading(false);
+      return;
+    }
+    
     const updatedUserData = {
       ...editableData,
       edad: Number(editableData.edad), // Convertir la edad de nuevo a número
@@ -144,6 +217,7 @@ const MorePersonalData = ({ navigation }) => {
           </TouchableOpacity>
 
           {error && <Text style={{ color: "red" }}>{error}</Text>}
+          
           <View style={styles.column}>
             <ScrollView collapsable={true}>
               <View style={styles.textContainer}>
@@ -154,7 +228,13 @@ const MorePersonalData = ({ navigation }) => {
                   atributo="nombre"
                   placeholder="Nombre"
                   disable={!isEditing}
-                />
+                  onChangeText={(text) =>
+                    setEditableData({ ...editableData, nombre: text })
+                  }
+                  />
+                  {errors.nombre !== "" && (
+                    <Text style={styles.errorText}>{errors.nombre}</Text>
+                  )}
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.fieldName}>Apellido</Text>
@@ -164,6 +244,9 @@ const MorePersonalData = ({ navigation }) => {
                   atributo="apellido"
                   disable={!isEditing}
                 />
+                  {errors.apellido !== "" && (
+                    <Text style={styles.errorText}>{errors.apellido}</Text>
+                  )}
               </View>
               <Text style={styles.fieldName}>Edad</Text>
               <View style={styles.textContainer}>
@@ -174,6 +257,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Edad"
                   disable={!isEditing}
                 />
+                  {errors.edad !== "" && (
+                    <Text style={styles.errorText}>{errors.edad}</Text>
+                  )}
               </View>
               <Text style={styles.fieldName}>Teléfono</Text>
               <View style={styles.textContainer}>
@@ -184,6 +270,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Teléfono"
                   disable={!isEditing}
                 />
+                  {errors.telefono !== "" && (
+                    <Text style={styles.errorText}>{errors.telefono}</Text>
+                  )}
               </View>
               <Text style={styles.fieldName}>E-mail</Text>
               <View style={styles.textContainer}>
@@ -194,6 +283,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="E-mail"
                   disable={!isEditing}
                 />
+                  {errors.mail !== "" && (
+                    <Text style={styles.errorText}>{errors.mail}</Text>
+                  )}
               </View>
               <Text style={styles.fieldName}>Descripcion</Text>
               <View style={styles.textContainer}>
@@ -204,6 +296,9 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Descripcion"
                   disable={!isEditing}
                 />
+                   {errors.descripcion !== "" && (
+                    <Text style={styles.errorText}>{errors.descripcion}</Text>
+                  )}
               </View>
             </ScrollView>
           </View>
@@ -361,6 +456,10 @@ const styles = StyleSheet.create({
   },
   confirmButtonText: {
     color: "white",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
   },
 });
 
