@@ -9,6 +9,7 @@ import AddImageModal from "../../../components/AddImageModal";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { BASE_URL } from "@env";
 import ConfirmationModal from "./ConfirmationModal";
+import { ActivityIndicator } from "react-native";
 
 
 const EditarMascota = ({ route, navigation }) => {
@@ -19,14 +20,19 @@ const EditarMascota = ({ route, navigation }) => {
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
   const [replaceImageModalVisible, setReplaceImageModalVisible] = useState(false);
   const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+  const [mascotaEliminada, setMascotaEliminada] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const handleDeleteConfirmation = () => {
     setConfirmationModalVisible(true);
   };
 
   const handleConfirmDelete = () => {
+    setLoading(true);
     handleDelete(mascota.id);
-    setConfirmationModalVisible(false);
+    setMascotaEliminada(true);
+    // setConfirmationModalVisible(false);
   };
 
   const handleCancelDelete = () => {
@@ -40,9 +46,14 @@ const EditarMascota = ({ route, navigation }) => {
     console.log(newData.imagen);
   };
 
-
+  const handleRedirect = () =>{
+    if(redirect){
+      navigation.navigate("RefShowPets");
+    }
+  }
   const handleDelete = async (idMascota) => {
     try {
+      setLoading(true);
       const response = await fetch(
         `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
         {
@@ -56,11 +67,13 @@ const EditarMascota = ({ route, navigation }) => {
       console.log(response);
       if (response.status === 200) {
         // Eliminación exitosa
-        setMascotaEliminada(true);
-        navigation.navigate("RefShowPets");
+        // navigation.navigate("RefShowPets");
+        setRedirect(true);
       } else {
         console.error("Error al eliminar la mascota.");
       }
+      setLoading(false);
+
     } catch (error) {
       console.error("Error al eliminar la mascota:", error);
     }
@@ -197,9 +210,11 @@ const EditarMascota = ({ route, navigation }) => {
 
           <ConfirmationModal
             isVisible={confirmationModalVisible}
-            message="¿Estás seguro de que quieres eliminar este registro?"
+            message=  {loading?  <ActivityIndicator color="white" />: "¿Estás seguro de que quieres eliminar este registro?"}   
             onConfirm={handleConfirmDelete}
+            onchangemessage={mascotaEliminada}
             onCancel={handleCancelDelete}
+            onRedirect={handleRedirect}
           />
 
     </View>

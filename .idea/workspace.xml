@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1aaa71c-b499-405a-a492-9d27af9a1382" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/RefShowPets.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/RefShowPets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/PetRefNavigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/PetRefNavigation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/ConfirmationModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/ConfirmationModal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/EditarMascota.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/EditarMascota.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
