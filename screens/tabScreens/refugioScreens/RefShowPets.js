@@ -39,6 +39,7 @@ const RefShowPets = ({ navigation }) => {
       );
     } else {
       return null; // Oculta las mascotas que no coincidan con la búsqueda
+      // return <View style={{ width: screenWidth / 2 }} key={item.id} />;
     }
   };
 

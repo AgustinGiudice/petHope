@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1aaa71c-b499-405a-a492-9d27af9a1382" name="Changes" comment="" />
+    <list default="true" id="b1aaa71c-b499-405a-a492-9d27af9a1382" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/RefShowPets.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/tabScreens/refugioScreens/RefShowPets.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

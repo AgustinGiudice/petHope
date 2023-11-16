@@ -7,15 +7,31 @@ import { useContext, useState } from "react";
 import HeaderMascota from "../../../components/HeaderMascota";
 import AddImageModal from "../../../components/AddImageModal";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { BASE_URL } from "@env";
+import ConfirmationModal from "./ConfirmationModal";
 
-const EditarMascota = ({ route }) => {
+
+const EditarMascota = ({ route, navigation }) => {
   const { mascota } = route.params;
   const [newPetData, setNewPetData] = useState(mascota);
   const [selectedPic, setSelectedPic] = useState(null);
   const { token } = useContext(TokenContext);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
-  const [replaceImageModalVisible, setReplaceImageModalVisible] =
-    useState(false);
+  const [replaceImageModalVisible, setReplaceImageModalVisible] = useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+
+  const handleDeleteConfirmation = () => {
+    setConfirmationModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    handleDelete(mascota.id);
+    setConfirmationModalVisible(false);
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmationModalVisible(false);
+  };
 
   const cambiarImagen = (img) => {
     const newData = newPetData;
@@ -33,7 +49,7 @@ const EditarMascota = ({ route }) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            authentication: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
         }
       );
@@ -41,6 +57,7 @@ const EditarMascota = ({ route }) => {
       if (response.status === 200) {
         // Eliminación exitosa
         setMascotaEliminada(true);
+        navigation.navigate("RefShowPets");
       } else {
         console.error("Error al eliminar la mascota.");
       }
@@ -171,13 +188,19 @@ const EditarMascota = ({ route }) => {
         currentImage={selectedPic}
       />
 
-
           <TouchableOpacity
             style={styles.buttondelete}
-            onPress={() => handleDelete(mascota.id)}
+            onPress={handleDeleteConfirmation}
             >
             <Text>  Eliminar Registro </Text>
           </TouchableOpacity>
+
+          <ConfirmationModal
+            isVisible={confirmationModalVisible}
+            message="¿Estás seguro de que quieres eliminar este registro?"
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+          />
 
     </View>
   );
