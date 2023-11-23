@@ -59,7 +59,7 @@ const Refugios = ({ navigation }) => {
               contentContainerStyle={{ paddingBottom: 90 }}
               renderItem={({ item }) => (
                 <View style={styles.noticiaContainer}>
-                  <Image source={item.imagen} style={styles.imagenNoticia} />
+                  <Image source={{ uri:item.imagen}} style={styles.imagenNoticia} />
                   <Text style={styles.nombreRef}>{item.nombre}</Text>
                   <Text style={styles.distanciaRef}>
                     A {item.distance.toFixed(2)} Km de distancia
@@ -92,7 +92,7 @@ const Refugios = ({ navigation }) => {
                 <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 <View style={styles.modalContainer}>
                   <Image
-                    source={selectedRefugio.imagen}
+                    source={{uri:selectedRefugio.imagen}}
                     style={styles.modalImage}
                   />
                   <View style={styles.dataRef}>

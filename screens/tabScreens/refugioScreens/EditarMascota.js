@@ -7,15 +7,37 @@ import { useContext, useState } from "react";
 import HeaderMascota from "../../../components/HeaderMascota";
 import AddImageModal from "../../../components/AddImageModal";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { BASE_URL } from "@env";
+import ConfirmationModal from "./ConfirmationModal";
+import { ActivityIndicator } from "react-native";
 
-const EditarMascota = ({ route }) => {
+
+const EditarMascota = ({ route, navigation }) => {
   const { mascota } = route.params;
   const [newPetData, setNewPetData] = useState(mascota);
   const [selectedPic, setSelectedPic] = useState(null);
   const { token } = useContext(TokenContext);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
-  const [replaceImageModalVisible, setReplaceImageModalVisible] =
-    useState(false);
+  const [replaceImageModalVisible, setReplaceImageModalVisible] = useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+  const [mascotaEliminada, setMascotaEliminada] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+
+  const handleDeleteConfirmation = () => {
+    setConfirmationModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setLoading(true);
+    handleDelete(mascota.id);
+    setMascotaEliminada(true);
+    // setConfirmationModalVisible(false);
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmationModalVisible(false);
+  };
 
   const cambiarImagen = (img) => {
     const newData = newPetData;
@@ -24,26 +46,34 @@ const EditarMascota = ({ route }) => {
     console.log(newData.imagen);
   };
 
-
+  const handleRedirect = () =>{
+    if(redirect){
+      navigation.navigate("RefShowPets");
+    }
+  }
   const handleDelete = async (idMascota) => {
     try {
+      setLoading(true);
       const response = await fetch(
         `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            authentication: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
         }
       );
       console.log(response);
       if (response.status === 200) {
         // Eliminación exitosa
-        setMascotaEliminada(true);
+        // navigation.navigate("RefShowPets");
+        setRedirect(true);
       } else {
         console.error("Error al eliminar la mascota.");
       }
+      setLoading(false);
+
     } catch (error) {
       console.error("Error al eliminar la mascota:", error);
     }
@@ -171,13 +201,21 @@ const EditarMascota = ({ route }) => {
         currentImage={selectedPic}
       />
 
-
           <TouchableOpacity
             style={styles.buttondelete}
-            onPress={() => handleDelete(mascota.id)}
+            onPress={handleDeleteConfirmation}
             >
             <Text>  Eliminar Registro </Text>
           </TouchableOpacity>
+
+          <ConfirmationModal
+            isVisible={confirmationModalVisible}
+            message=  {loading?  <ActivityIndicator color="white" />: "¿Estás seguro de que quieres eliminar este registro?"}   
+            onConfirm={handleConfirmDelete}
+            onchangemessage={mascotaEliminada}
+            onCancel={handleCancelDelete}
+            onRedirect={handleRedirect}
+          />
 
     </View>
   );
