@@ -136,11 +136,6 @@ const CreateUserForm = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.token && data.usuario) {
-          data.usuario.imagen && data.usuario.tuvoMascotas
-            ? (data.usuario.completado = 100)
-            : data.usuario.imagen || data.usuario.tuvoMascotas
-            ? (data.usuario.completado = 66)
-            : (data.usuario.completado = 33);
           const data_user = {
             token: data.token,
             usuario: data.usuario,

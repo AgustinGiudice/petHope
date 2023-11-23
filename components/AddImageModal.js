@@ -100,9 +100,6 @@ const AddImageModal = ({
             // Procesar la respuesta si es necesario
             if (data.imageUrl) {
               setImages(data.imageUrl);
-              currentUser.tuvoMascotas !== null
-                ? (currentUser.completado = 100)
-                : (currentUser.completado = 66);
 
               setCurrentUser({ ...currentUser, imagen: data.imageUrl });
             }

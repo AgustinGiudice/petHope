@@ -59,7 +59,10 @@ const Refugios = ({ navigation }) => {
               contentContainerStyle={{ paddingBottom: 90 }}
               renderItem={({ item }) => (
                 <View style={styles.noticiaContainer}>
-                  <Image source={{ uri:item.imagen}} style={styles.imagenNoticia} />
+                  <Image
+                    source={{ uri: item.imagen }}
+                    style={styles.imagenNoticia}
+                  />
                   <Text style={styles.nombreRef}>{item.nombre}</Text>
                   <Text style={styles.distanciaRef}>
                     A {item.distance.toFixed(2)} Km de distancia
@@ -92,7 +95,7 @@ const Refugios = ({ navigation }) => {
                 <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 <View style={styles.modalContainer}>
                   <Image
-                    source={{uri:selectedRefugio.imagen}}
+                    source={{ uri: selectedRefugio.imagen }}
                     style={styles.modalImage}
                   />
                   <View style={styles.dataRef}>
@@ -103,8 +106,7 @@ const Refugios = ({ navigation }) => {
                       Enlace de Donación: {selectedRefugio.linkDonacion}
                     </Text>
                     <Text style={styles.modalLink}>
-                      Mascotas Registradas:{" "}
-                      {selectedRefugio.mascotasRegistradas}
+                      Mascotas Registradas: {selectedRefugio.mascotas.length}
                     </Text>
                   </View>
                   <View style={styles.containerButton}>
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   },
   noticiaContainer: {
     marginTop: screenHeight * 0.042,
-    margin: 10,
+    marginHorizontal: 10,
     padding: 10,
     borderRadius: 5,
     backgroundColor: "white",
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   },
   imagenNoticia: {
     width: "100%",
-    height: 200,
+    aspectRatio: 1,
     resizeMode: "cover",
     borderRadius: 5,
   },
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
   },
   modalImage: {
     width: "100%",
-    height: 300,
+    aspectRatio: 1,
     resizeMode: "cover",
     borderRadius: 5,
   },
@@ -217,59 +219,8 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: "white",
-    fontSize: screenHeight* 0.018,
+    fontSize: screenHeight * 0.018,
     textAlign: "center",
-  },
-  //HEADER ESTILOS
-  headerItem: {
-    position: "relative",
-    backgroundColor: "#7A5FB5",
-    width: screenWidth,
-    height: 70,
-    borderRadius: 10,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  headerItem2: {
-    position: "absolute",
-    backgroundColor: "#C69AE8",
-    width: 1300,
-    height: 1300,
-    borderRadius: 630,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    bottom: -35,
-    elevation: 10, // Para Android
-    shadowColor: "black", // Para iOS
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  headerItemsContenido: {
-    flexDirection: "row",
-    width: screenWidth,
-    justifyContent: "space-between",
-    marginBottom: 30,
-    alignItems: "baseline",
-    paddingHorizontal: 30,
-    textAlign: "center",
-  },
-  buttonFilters: {
-    zIndex: 1,
-  },
-  namePet: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 28,
-    flex: 1,
-    paddingHorizontal: 3,
-    textAlign: "center",
-    textAlignVertical: "center",
   },
 });
 

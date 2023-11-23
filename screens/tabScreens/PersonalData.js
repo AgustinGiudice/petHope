@@ -11,6 +11,12 @@ const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { currentUser } = useContext(UserContext);
   const userData = currentUser;
+  userData.completado =
+    userData.imagen && userData.tuvoMascotas !== null
+      ? 100
+      : userData.imagen || userData.tuvoMascotas !== null
+      ? 66
+      : 33;
 
   if (!currentUser.estado) {
     currentUser.edad = calcularEdad(currentUser.fechaDeNacimiento);
@@ -51,29 +57,23 @@ const PersonalData = ({ navigation }) => {
     </View>
   );
 
-  useEffect(() => {});
-
-  const handlePressPic = () => {
-    setModalVisible(true);
-  };
   return (
     <>
       <View style={styles.container}>
-      
-          <AddImageModal
-            id={currentUser.id}
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            images={profilePic}
-            setImages={setProfilePic}
-            currentImage={profilePic}
-          />
-       
+        <AddImageModal
+          id={currentUser.id}
+          isVisible={modalVisible}
+          setIsVisible={setModalVisible}
+          images={profilePic}
+          setImages={setProfilePic}
+          currentImage={profilePic}
+        />
+
         <View style={styles.header}>
           {!currentUser.estado && porcentajes}
           {profilePic === null ? (
             <View>
-              <TouchableOpacity onPress={() => handlePressPic()}>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <FontAwesome5
                   name="user-edit"
                   size={screenHeight / 4}
@@ -83,11 +83,13 @@ const PersonalData = ({ navigation }) => {
             </View>
           ) : (
             <>
-            <TouchableOpacity  onPress={() => navigation.navigate("MorePersonalData")}>
-              <Image source={{ uri: profilePic }} style={styles.profilePic}  />
-            </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => handlePressPic()}
+                onPress={() => navigation.navigate("MorePersonalData")}
+              >
+                <Image source={{ uri: profilePic }} style={styles.profilePic} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setModalVisible(true)}
                 style={styles.changePic}
               >
                 <FontAwesome5
@@ -142,14 +144,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 20,
     position: "relative",
-    
   },
   containerCompletado: {
     width: "100%",
     alignItems: "center",
     gap: 5,
     paddingVertical: 10,
-    
   },
   textoCompletado: {
     fontWeight: "bold",
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 5,
-    
   },
   bar: {
     paddingVertical: 1,
@@ -167,7 +166,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: "#9A34EA",
     borderWidth: 1,
-    
   },
   titulo: {
     fontSize: 16,
@@ -196,7 +194,6 @@ const styles = StyleSheet.create({
     minHeight: screenHeight,
     padding: 20,
     width: "100%",
-    
   },
   textContainer: {
     borderColor: "#9A34EA",
@@ -210,7 +207,6 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     borderColor: "#9A34EA",
-    
   },
 });
 function calcularEdad(fechaNacimiento) {

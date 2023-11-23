@@ -18,11 +18,6 @@ export const responderCuestonario = async (
     }
 
     const data = await response.json();
-    data.usuario.imagen && data.usuario.tuvoMascotas !== null
-      ? (data.usuario.completado = 100)
-      : data.usuario.imagen || data.usuario.tuvoMascotas !== null
-      ? (data.usuario.completado = 66)
-      : (data.usuario.completado = 33);
     console.log("DATA QUE DEVUELVE XD", data)
     setCurrentUser(data.usuario);
     const new_obj = {

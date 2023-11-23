@@ -31,13 +31,10 @@ const ShowPets = ({ navigation }) => {
 
   const [filtros, setFiltros] = useState({
     sexo: 3,
-    distancia: 100000,
-    tipoMascota: 1,
-    tamaño: 2,
-    rangoDeEdad: 2,
-    // tipoMascota: currentUser.tipoAnimal,
-    // tamaño: currentUser.tamanioPreferido,
-    // rangoDeEdad: currentUser.edadPreferida,
+    distancia: 500,
+    tipoMascota: currentUser.tipoAnimal,
+    tamaño: currentUser.tamanioPreferido,
+    rangoDeEdad: currentUser.edadPreferida,
   });
 
   useEffect(() => {
@@ -52,19 +49,17 @@ const ShowPets = ({ navigation }) => {
     if (firstFetch) {
       url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
         currentUser.ubicacion.coordinates[0]
-      }&longitud=${
-        currentUser.ubicacion.coordinates[1]
-      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
-        filtros.tipoMascota
-      }&tamaño=2&rangoDeEdad=2&current=${index + 1}&vistos=${petVistos}`;
+      }&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${
+        filtros.distancia
+      }&cuidadosEspeciales=${
+        currentUser.aceptaCuidadosEspeciales
+      }&tipoMascota=${filtros.tipoMascota}&tamaño=${
+        filtros.tamaño
+      }&rangoDeEdad=${filtros.rangoDeEdad}&current=${
+        index + 1
+      }&vistos=${petVistos}`;
     } else {
-      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
-        currentUser.ubicacion.coordinates[0]
-      }&longitud=${
-        currentUser.ubicacion.coordinates[1]
-      }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
-        filtros.tipoMascota
-      }&tamaño=3&rangoDeEdad=3&current=${index}&vistos=${petVistos}`;
+      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
     }
     getMascotasVistas(setPetVistos).then(async () => {
       try {
@@ -87,11 +82,15 @@ const ShowPets = ({ navigation }) => {
         if (!firstFetch) {
           const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
             currentUser.ubicacion.coordinates[0]
-          }&longitud=${
-            currentUser.ubicacion.coordinates[1]
-          }&distancia=100000&cuidadosEspeciales=${true}&tipoMascota=${
-            filtros.tipoMascota
-          }&tamaño=3&rangoDeEdad=3&current=${index + 1}&vistos=${petVistos}`;
+          }&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${
+            filtros.distancia
+          }&cuidadosEspeciales=${
+            currentUser.aceptaCuidadosEspeciales
+          }&tipoMascota=${filtros.tipoMascota}&tamaño=${
+            filtros.tamaño
+          }&rangoDeEdad=${filtros.rangoDeEdad}&current=${
+            index + 1
+          }&vistos=${petVistos}`;
           await getMascotas(
             url,
             token,
@@ -121,7 +120,7 @@ const ShowPets = ({ navigation }) => {
             { minWidth: screenWidth, minHeight: screenHeight - 60 },
           ]}
         >
-          {currentUser.completado !== 100 ? (
+          {!currentUser.imagen || currentUser.tuvoMascotas === null ? (
             <CompletarFormulario navigation={navigation} />
           ) : mascotas.length === 0 || !mascotas[index] ? (
             <SinMascotas

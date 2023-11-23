@@ -6,22 +6,34 @@ const CompletarFormulario = ({ navigation }) => {
   const { currentUser } = useContext(UserContext);
   return (
     <View>
-      {!currentUser.imagen ? (
-        <Text>Terminá de completar tu perfil subiendo una foto tuya</Text>
+      {currentUser.tuvoMascotas !== null ? (
+        <>
+          <Text>Terminá de completar tu perfil subiendo una foto tuya</Text>
+          <TouchableOpacity
+            style={styles.surveyButton}
+            onPress={() => {
+              navigation.navigate("Perfil");
+            }}
+          >
+            <Text style={styles.surveyButtonText}>Ir al perfil</Text>
+          </TouchableOpacity>
+        </>
       ) : (
-        <Text>
-          Sin completar el cuestionario no te podemos mostrar las mascotas que
-          son ideales para vos
-        </Text>
+        <>
+          <Text>
+            Sin completar el cuestionario no te podemos mostrar las mascotas que
+            son ideales para vos
+          </Text>
+          <TouchableOpacity
+            style={styles.surveyButton}
+            onPress={() => {
+              navigation.navigate("CuestionarioUsuarioRegistro");
+            }}
+          >
+            <Text style={styles.surveyButtonText}>Cuestionario</Text>
+          </TouchableOpacity>
+        </>
       )}
-      <TouchableOpacity
-        style={styles.surveyButton}
-        onPress={() => {
-          navigation.navigate("CuestionarioUsuarioRegistro");
-        }}
-      >
-        <Text style={styles.surveyButtonText}>Cuestionario</Text>
-      </TouchableOpacity>
     </View>
   );
 };

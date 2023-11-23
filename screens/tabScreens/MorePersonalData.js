@@ -37,7 +37,7 @@ const MorePersonalData = ({ navigation }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
-  const maxNumCharacters= 150;
+  const maxNumCharacters = 150;
   const [errors, setErrors] = useState({
     nombre: "",
     apellido: "",
@@ -46,10 +46,6 @@ const MorePersonalData = ({ navigation }) => {
     mail: "",
     descripcion: "",
   });
-
-  const handlePressPic = () => {
-    setModalVisible(true);
-  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -181,23 +177,13 @@ const MorePersonalData = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        {userData.imagen ? (
-          <ChangeImageModal
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            images={profilePic}
-            setImages={setProfilePic}
-            selectedImage={profilePic}
-          />
-        ) : (
-          <AddImageModal
-            id={currentUser.id}
-            isVisible={modalVisible}
-            setIsVisible={setModalVisible}
-            images={profilePic}
-            setImages={setProfilePic}
-          />
-        )}
+        <AddImageModal
+          id={currentUser.id}
+          isVisible={modalVisible}
+          setIsVisible={setModalVisible}
+          images={profilePic}
+          setImages={setProfilePic}
+        />
         <View style={styles.header}>
           <FontAwesome
             name="arrow-left"
@@ -217,10 +203,10 @@ const MorePersonalData = ({ navigation }) => {
           {!keyboardIsOpen ? (
             userData.imagen === null ? (
               <View style={styles.profilePic}>
-                <TouchableOpacity onPress={() => handlePressPic()}>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
                   <FontAwesome5
                     name="user-edit"
-                    size={screenHeight / 6}
+                    size={screenHeight / 3}
                     style={{ color: "#C69AE8" }}
                   />
                 </TouchableOpacity>
@@ -229,6 +215,7 @@ const MorePersonalData = ({ navigation }) => {
               <Image
                 source={{ uri: userData.imagen }}
                 style={styles.profilePic}
+                
               />
             )
           ) : null}
@@ -326,9 +313,18 @@ const MorePersonalData = ({ navigation }) => {
                   placeholder="Descripcion"
                   disable={!isEditing}
                 />
-                <Text style={{ color: editableData.descripcion.length <= maxNumCharacters ? "gray" : "red", alignSelf: "flex-end" }}>
-                      {editableData.descripcion.length}/{maxNumCharacters}
-                  </Text>
+                <Text
+                  style={{
+                    color:
+                      editableData.descripcion.length <= maxNumCharacters
+                        ? "gray"
+                        : "red",
+                    alignSelf: "flex-end",
+                  }}
+                >
+                  {editableData.descripcion.length}/{maxNumCharacters}
+                           
+                </Text>
                 {errors.descripcion !== "" && (
                   <Text style={styles.errorText}>{errors.descripcion}</Text>
                 )}
