@@ -11,6 +11,7 @@ const SinMascotas = ({ filtros, setFiltros, setResetMatches }) => {
         filtros={filtros}
         setFiltros={setFiltros}
         setResetMatches={setResetMatches}
+        mascota={{ nombre: "No encontramos nada" }}
       />
       <View style={[styles.imgContainer, { height: width - 30 }]}>
         <Image source={img} style={styles.imagen} />

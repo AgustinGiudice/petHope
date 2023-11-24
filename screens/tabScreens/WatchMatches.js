@@ -101,7 +101,10 @@ const MatchesScreen = ({ navigation }) => {
       <View>
         <FlatList
           data={matches}
-          contentContainerStyle={{ paddingBottom: 90, marginTop: height * 0.052 }}
+          contentContainerStyle={{
+            paddingBottom: 90,
+            marginTop: height * 0.052,
+          }}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.matchItem}
@@ -138,12 +141,6 @@ const MatchesScreen = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.column_design}>
-                <MaterialIcons
-                  name="circle"
-                  size={18}
-                  color={item.estado == 1 ? "#4BB543" : "#FF5733"}
-                />
-
                 <View style={styles.containerIcons}>
                   <MaterialIcons
                     name="chat"

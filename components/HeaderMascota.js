@@ -19,9 +19,7 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
             </View>
           )}
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-            {mascota
-              ? mascota.nombre
-              : " No tenemos más mascotas para mostrarte"}
+            {mascota.nombre}
           </Text>
           <View>
             {mascota.raza && (
