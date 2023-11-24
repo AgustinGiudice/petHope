@@ -2,6 +2,9 @@ import { StyleSheet, useWindowDimensions } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import ItemList from "./ItemList";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 const SwiperPets = ({
   mascotas,
@@ -12,6 +15,41 @@ const SwiperPets = ({
   setResetMatches,
 }) => {
   const { width, height } = useWindowDimensions();
+  const { currentUser } = useContext(UserContext);
+  const handleReject = async () => {
+    try {
+      const cache = await AsyncStorage.getItem("mascotasVistas");
+      let mascotasVistas;
+      if (cache) {
+        mascotasVistas = JSON.parse(cache);
+      } else {
+        mascotasVistas = {
+          usuarios: [{ id: currentUser.id, idMascotas: [] }],
+        };
+      }
+      if (
+        mascotasVistas.usuarios.some((usuario) => usuario.id === currentUser.id)
+      ) {
+        const indice = mascotasVistas.usuarios.findIndex(
+          (usuario) => usuario.id === currentUser.id
+        );
+        mascotasVistas.usuarios[indice].idMascotas.push(mascotas[index].id);
+      } else {
+        mascotasVistas.usuarios.push({
+          id: currentUser.id,
+          idMascotas: [mascotas[index].id],
+        });
+      }
+      const cacheFinal = JSON.stringify(mascotasVistas);
+
+      await AsyncStorage.setItem("mascotasVistas", cacheFinal);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleLike = async () => {
+    console.log("like");
+  };
 
   return (
     <Swiper
@@ -27,6 +65,8 @@ const SwiperPets = ({
         );
       }}
       onSwiped={() => setIndex(index + 1)}
+      onSwipedRight={handleReject}
+      onSwipedLeft={handleLike}
       cardIndex={0}
       backgroundColor={"#f1f1f1"}
       stackSize={2}
