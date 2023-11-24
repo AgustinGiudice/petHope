@@ -47,7 +47,7 @@ const SwiperPets = ({
             <AntDesign
               name="close"
               size={height / 5}
-              color="rgba(250,50,50,1)"
+              color="rgba(153,82,203,1)"
             />
           ) /* Optional */,
           title: "NOPE",
@@ -56,7 +56,7 @@ const SwiperPets = ({
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "center",
-              backgroundColor: "rgba(250,250,250,0.45)",
+              backgroundColor: "rgba(195,154,232,0.45)",
             },
           },
         },
@@ -65,7 +65,7 @@ const SwiperPets = ({
             <AntDesign
               name="hearto"
               size={height / 5}
-              color="rgba(50,250,50,1)"
+              color="rgba(153,82,203,1)"
             />
           ) /* Optional */,
           title: "LIKE",
@@ -76,7 +76,7 @@ const SwiperPets = ({
               justifyContent: "center",
               right: -40,
               padding: 20,
-              backgroundColor: "rgba(250,250,250,0.45)",
+              backgroundColor: "rgba(195,154,232,0.45)",
             },
           },
         },
