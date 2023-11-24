@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 import img from "../assets/perrogato.jpg";
 import { Image } from "react-native";
 import HeaderMascota from "./HeaderMascota";
+import { COLORS } from "../styles";
 
 const SinMascotas = ({ filtros, setFiltros, setResetMatches }) => {
   const { width } = useWindowDimensions();
@@ -24,7 +25,7 @@ const SinMascotas = ({ filtros, setFiltros, setResetMatches }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: COLORS[50],
     flex: 1,
     alignItems: "center",
     gap: 20,
@@ -41,12 +42,12 @@ const styles = StyleSheet.create({
     marginTop: 60,
     padding: 20,
     borderRadius: 500,
-    backgroundColor: "#C69AE8",
+    backgroundColor: COLORS[300],
     borderWidth: 3,
-    borderColor: "#9A34EA",
+    borderColor: COLORS[600],
   },
   imagen: {
-    borderColor: "#9A34EA",
+    borderColor: COLORS[400],
     borderWidth: 2,
     borderRadius: 500,
     aspectRatio: 1,

@@ -31,19 +31,20 @@ const ShowPets = ({ navigation }) => {
 
   const [filtros, setFiltros] = useState({
     sexo: 3,
-    distancia: 500,
+    distancia: 10000,
     tipoMascota: currentUser.tipoAnimal,
     tamaño: currentUser.tamanioPreferido,
     rangoDeEdad: currentUser.edadPreferida,
   });
 
   useEffect(() => {
-    setIndex(0);
     setFirstFetch(false);
     setIsLoading(true);
+    setIndex(0);
   }, [resetMatches]);
 
   useEffect(() => {
+    console.log("Hola soy el useEffect, buenas tardes");
     // Obtener las mascotas
     let url;
     if (firstFetch) {
@@ -61,6 +62,7 @@ const ShowPets = ({ navigation }) => {
     } else {
       url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
     }
+    console.log(url);
     getMascotasVistas(setPetVistos).then(async () => {
       try {
         await getMascotas(

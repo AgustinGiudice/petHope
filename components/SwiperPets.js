@@ -1,6 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import ItemList from "./ItemList";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const SwiperPets = ({
   mascotas,
@@ -10,6 +11,8 @@ const SwiperPets = ({
   setIndex,
   setResetMatches,
 }) => {
+  const { width, height } = useWindowDimensions();
+
   return (
     <Swiper
       cards={mascotas}
@@ -31,6 +34,53 @@ const SwiperPets = ({
       verticalSwipe={false}
       showSecondCard={true}
       cardStyle={styles.card}
+      overlayLabelWrapperStyle={{
+        position: "absolute",
+        zIndex: 2,
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+      overlayLabels={{
+        right: {
+          element: (
+            <AntDesign
+              name="close"
+              size={height / 5}
+              color="rgba(250,50,50,1)"
+            />
+          ) /* Optional */,
+          title: "NOPE",
+          style: {
+            wrapper: {
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              backgroundColor: "rgba(250,250,250,0.45)",
+            },
+          },
+        },
+        left: {
+          element: (
+            <AntDesign
+              name="hearto"
+              size={height / 5}
+              color="rgba(50,250,50,1)"
+            />
+          ) /* Optional */,
+          title: "LIKE",
+          style: {
+            wrapper: {
+              flexDirection: "column",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              right: -40,
+              padding: 20,
+              backgroundColor: "rgba(250,250,250,0.45)",
+            },
+          },
+        },
+      }}
     />
   );
 };

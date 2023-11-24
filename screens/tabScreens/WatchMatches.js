@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { BASE_URL } from "@env";
 import Constants from "expo-constants";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,7 +11,6 @@ import {
   TouchableOpacity,
   useWindowDimensions,
 } from "react-native";
-import { screenWidth } from "../../hooks/useScreenResize";
 import {
   getAnimalDescripcion,
   getEdadDescripcion,
@@ -26,6 +24,7 @@ import LoadingComponent from "../../components/LoadingComponent";
 import { getMatches } from "../../services/getMatches";
 import { cancelarMatch } from "../../services/cancelarMatch";
 import HeaderMascota from "../../components/HeaderMascota";
+import { COLORS } from "../../styles";
 
 const MatchesScreen = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
@@ -172,7 +171,7 @@ const MatchesScreen = ({ navigation }) => {
             </TouchableOpacity>
           )}
           keyExtractor={(item) => item.id.toString()}
-          style={styles.matchContainer}
+          style={[styles.matchContainer, { width: width }]}
           onEndReachedThreshold={0.1}
           refreshing={refreshing}
           onRefresh={() =>
@@ -250,12 +249,11 @@ const MatchesScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E3E3E3",
+    backgroundColor: COLORS[200],
     flex: 1,
     paddingTop: Constants.statusBarHeight,
   },
   matchContainer: {
-    width: screenWidth,
     paddingHorizontal: 10,
   },
   letraGrande: {
@@ -266,7 +264,7 @@ const styles = StyleSheet.create({
   letraChica: {
     fontSize: 10,
     textAlign: "left",
-    color: "#9A34EA",
+    color: COLORS[600],
   },
   noMatchesText: {
     fontSize: 18,
@@ -274,7 +272,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   matchItem: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS[50],
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -318,7 +316,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: COLORS[50],
     padding: 20,
     borderRadius: 10,
   },
