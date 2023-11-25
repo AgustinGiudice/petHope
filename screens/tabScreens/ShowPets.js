@@ -51,12 +51,14 @@ const ShowPets = ({ navigation }) => {
 
     AsyncStorage.getItem("mascotasVistas").then(async (cache) => {
       let vistos;
-      cache = JSON.parse(cache);
-      if (cache.usuarios) {
-        const usuario = cache.usuarios.find(
-          (usuario) => usuario.id === currentUser.id
-        );
-        if (usuario !== undefined) vistos = usuario.idMascotas;
+      if (cache) {
+        cache = JSON.parse(cache);
+        if (cache.usuarios) {
+          const usuario = cache.usuarios.find(
+            (usuario) => usuario.id === currentUser.id
+          );
+          if (usuario !== undefined) vistos = usuario.idMascotas;
+        }
       }
       vistos = JSON.stringify(vistos);
       let url;
@@ -121,8 +123,6 @@ const ShowPets = ({ navigation }) => {
         }
       }
     });
-
-    //});
   }, [index]);
 
   {
