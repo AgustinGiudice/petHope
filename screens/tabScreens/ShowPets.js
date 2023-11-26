@@ -14,6 +14,8 @@ import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import { COLORS } from "../../styles";
 import SwiperPets from "../../components/SwiperPets";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { json } from "react-router-native";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -45,25 +47,37 @@ const ShowPets = ({ navigation }) => {
 
   useEffect(() => {
     console.log("Hola soy el useEffect, buenas tardes");
-    // Obtener las mascotas
-    let url;
-    if (firstFetch) {
-      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
-        currentUser.ubicacion.coordinates[0]
-      }&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${
-        filtros.distancia
-      }&cuidadosEspeciales=${
-        currentUser.aceptaCuidadosEspeciales
-      }&tipoMascota=${filtros.tipoMascota}&tamaño=${
-        filtros.tamaño
-      }&rangoDeEdad=${filtros.rangoDeEdad}&current=${
-        index + 1
-      }&vistos=${petVistos}`;
-    } else {
-      url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${petVistos}`;
-    }
-    console.log(url);
-    getMascotasVistas(setPetVistos).then(async () => {
+    // Obtener las mascotas.
+
+    AsyncStorage.getItem("mascotasVistas").then(async (cache) => {
+      let vistos;
+      if (cache) {
+        cache = JSON.parse(cache);
+        if (cache.usuarios) {
+          const usuario = cache.usuarios.find(
+            (usuario) => usuario.id === currentUser.id
+          );
+          if (usuario !== undefined) vistos = usuario.idMascotas;
+        }
+      }
+      vistos = JSON.stringify(vistos);
+      let url;
+      if (firstFetch) {
+        url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
+          currentUser.ubicacion.coordinates[0]
+        }&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${
+          filtros.distancia
+        }&cuidadosEspeciales=${
+          currentUser.aceptaCuidadosEspeciales
+        }&tipoMascota=${filtros.tipoMascota}&tamaño=${
+          filtros.tamaño
+        }&rangoDeEdad=${filtros.rangoDeEdad}&current=${
+          index + 1
+        }&vistos=${vistos}`;
+      } else {
+        url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${vistos}`;
+      }
+      console.log(url);
       try {
         await getMascotas(
           url,
@@ -92,7 +106,7 @@ const ShowPets = ({ navigation }) => {
             filtros.tamaño
           }&rangoDeEdad=${filtros.rangoDeEdad}&current=${
             index + 1
-          }&vistos=${petVistos}`;
+          }&vistos=${vistos}`;
           await getMascotas(
             url,
             token,
