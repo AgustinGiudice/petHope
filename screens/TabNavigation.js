@@ -17,6 +17,8 @@ import RegisterPetNavigation from "./RegisterPetNavigation";
 import PetRefNavigation from "./PetRefNavigation";
 import { COLORS } from "../styles";
 
+import Test from "./Test";
+
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {

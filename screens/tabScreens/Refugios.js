@@ -51,8 +51,9 @@ const Refugios = ({ navigation }) => {
       return (
         <>
           <View style={styles.container}>
-            <HeaderMascota mascota={{ nombre: "Refugios" }} />
 
+            <HeaderMascota mascota={{ nombre: "Refugios" }} />
+            <View style={styles.container2}>
             <FlatList
               data={refugios}
               keyExtractor={(item, index) => index.toString()}
@@ -81,6 +82,8 @@ const Refugios = ({ navigation }) => {
                 </View>
               )}
             />
+            </View>
+
           </View>
 
           {/* Modal para mostrar más información del refugio */}
@@ -91,7 +94,7 @@ const Refugios = ({ navigation }) => {
             onRequestClose={closeModal}
           >
             {selectedRefugio && (
-              <>
+              <View style={{top: 0}}>
                 <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 <View style={styles.modalContainer}>
                   <Image
@@ -118,7 +121,7 @@ const Refugios = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </>
+              </View>
             )}
           </Modal>
         </>
@@ -129,8 +132,14 @@ const Refugios = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#E3E3E3",
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: Constants.statusBarHeight ,
+  },
+  container2:{
+    marginTop: screenHeight * - 0.1
   },
   noticiaContainer: {
     marginTop: screenHeight * 0.042,
@@ -176,6 +185,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
+
   },
   modalTitle: {
     fontSize: 24,

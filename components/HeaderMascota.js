@@ -3,9 +3,12 @@ import ButtonFilters from "./ButtonFilters";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { cambioColorPaw } from "../functions/colorUtils";
-
+import Constants from "expo-constants";
+import isTablet from '../functions/isTablet';
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
   return (
+    <View style={styles.container}>
+
     <View style={styles.headerItem}>
       <View style={styles.headerItem2}>
         <View style={styles.headerItemsContenido}>
@@ -15,11 +18,13 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
                 filtros={filtros}
                 setFiltros={setFiltros}
                 setResetMatches={setResetMatches}
-              />
+                />
             </View>
           )}
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-            {mascota.nombre}
+            {mascota
+              ? mascota.nombre
+              : " No tenemos más mascotas para mostrarte"}
           </Text>
           <View>
             {mascota.raza && (
@@ -29,7 +34,7 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
                   name="paw"
                   size={45}
                   color={cambioColorPaw(mascota.nivelCuidado)}
-                />
+                  />
                 <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
               </>
             )}
@@ -37,30 +42,37 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
         </View>
       </View>
     </View>
+</View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    top: 100,
+  },
   headerItem: {
     position: "relative",
     backgroundColor: "#7A5FB5",
-    width: screenWidth,
-    height: screenHeight * 0.045,
+    width: 1,
+    height:1,
     borderRadius: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: "flex-end",
   },
   headerItem2: {
     position: "absolute",
     backgroundColor: "#C69AE8",
-    width: 1300,
-    height: 1300,
-    borderRadius: 630,
+    width:  isTablet() ?  1500 : 1300,
+    height:  isTablet() ?  1500 : 1300,
+    borderRadius: isTablet() ? 650 : 610,
     zIndex: 10,
     alignItems: "center",
     justifyContent: "flex-end",
-    bottom: -35,
+    bottom: 35,
     elevation: 10, // Para Android
     shadowColor: "black", // Para iOS
     shadowOffset: {
@@ -76,7 +88,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: screenHeight * 0.025,
     alignItems: "baseline",
-    paddingHorizontal: 30,
+    paddingHorizontal:  isTablet() ? 140 : 30  ,
+    
     textAlign: "center",
   },
   buttonFilters: {

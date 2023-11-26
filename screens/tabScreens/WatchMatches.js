@@ -25,6 +25,7 @@ import { getMatches } from "../../services/getMatches";
 import { cancelarMatch } from "../../services/cancelarMatch";
 import HeaderMascota from "../../components/HeaderMascota";
 import { COLORS } from "../../styles";
+import { screenWidth, screenHeight } from "../../hooks/useScreenResize";
 
 const MatchesScreen = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
@@ -96,13 +97,15 @@ const MatchesScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <HeaderMascota mascota={{ nombre: "Mensajes" }} />
-      <View>
+      <View style={styles.container1}>
+        <HeaderMascota mascota={{ nombre: "Mensajes" }} />
+      </View>
+      <View style={styles.container1}>
         <FlatList
           data={matches}
           contentContainerStyle={{
             paddingBottom: 90,
-            marginTop: height * 0.052,
+            marginTop: height * - 0.052,
           }}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -251,8 +254,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS[200],
     flex: 1,
-    paddingTop: Constants.statusBarHeight,
   },
+
   matchContainer: {
     paddingHorizontal: 10,
   },

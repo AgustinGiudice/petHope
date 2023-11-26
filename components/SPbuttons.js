@@ -10,6 +10,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { BASE_URL } from "@env";
 import { TokenContext } from "../context/TokenContext";
 import { COLORS } from "../styles";
+import isTablet from '../functions/isTablet';
 
 const SPbuttons = ({
   mascota_id,
@@ -102,13 +103,13 @@ const SPbuttons = ({
         containerStyle,
         {
           width: width - width * 0.02,
-          height: height * 0.5,
-          bottom: height - height * 1.365,
+          height: isTablet() ? height * 0.8: height * 0.5,
+          bottom:  isTablet()? height - height * 1.665  : height - height * 1.365,
         },
       ]}
     >
       <View
-        style={[styles.buttonsMain, { marginTop: height * 0.02, width: width *0.37}]}
+        style={[styles.buttonsMain, { marginTop: height * 0.02, width: isTablet()? width * 0.27 : width * 0.37}]}
       >
         <TouchableOpacity
           style={[styles.backIcons2, { padding: height * 0.015 }]}
@@ -125,7 +126,7 @@ const SPbuttons = ({
       <View
         style={[
           styles.buttonsSecondary,
-          { marginTop: -1 * height * 0.025, width: width * 0.7 },
+          { marginTop: -1 * height * 0.025, width:  isTablet()? width * 0.5 : width * 0.7 },
         ]}
       >
         <TouchableOpacity
