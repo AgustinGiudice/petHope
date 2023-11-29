@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
+  ScrollView
 } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import LoadingComponent from "../../components/LoadingComponent";
@@ -53,36 +54,37 @@ const Refugios = ({ navigation }) => {
           <View style={styles.container}>
 
             <HeaderMascota mascota={{ nombre: "Refugios" }} />
+            
             <View style={styles.container2}>
-            <FlatList
-              data={refugios}
-              keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={{ paddingBottom: 90 }}
-              renderItem={({ item }) => (
-                <View style={styles.noticiaContainer}>
-                  <Image
-                    source={{ uri: item.imagen }}
-                    style={styles.imagenNoticia}
-                  />
-                  <Text style={styles.nombreRef}>{item.nombre}</Text>
-                  <Text style={styles.distanciaRef}>
-                    A {item.distance.toFixed(2)} Km de distancia
-                  </Text>
-                  <Text style={styles.acepta}>Acepta {item.animal}</Text>
-                  <View style={styles.orderButton}>
-                    <TouchableOpacity style={styles.containerBotonVerMas}>
-                      <Text
-                        style={styles.textoBotonVerMas}
-                        onPress={() => openModal(item)}
-                      >
-                        Ver Más
-                      </Text>
-                    </TouchableOpacity>
+              <FlatList
+                data={refugios}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={{ paddingBottom: 90 }}
+                renderItem={({ item }) => (
+                  <View style={styles.noticiaContainer}>
+                    <Image
+                      source={{ uri: item.imagen }}
+                      style={styles.imagenNoticia}
+                    />
+                    <Text style={styles.nombreRef}>{item.nombre}</Text>
+                    <Text style={styles.distanciaRef}>
+                      A {item.distance.toFixed(2)} Km de distancia
+                    </Text>
+                    <Text style={styles.acepta}>Acepta {item.animal}</Text>
+                    <View style={styles.orderButton}>
+                      <TouchableOpacity style={styles.containerBotonVerMas}>
+                        <Text
+                          style={styles.textoBotonVerMas}
+                          onPress={() => openModal(item)}
+                        >
+                          Ver Más
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              )}
-            />
-            </View>
+                )}
+              />
+           </View>
 
           </View>
 
@@ -94,22 +96,33 @@ const Refugios = ({ navigation }) => {
             onRequestClose={closeModal}
           >
             {selectedRefugio && (
-              <View style={{top: 0}}>
+              <ScrollView style={{top: 0, flex:1}}>
+                <View style={{height:screenHeight * 0.07}}>
                 <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
+
+                </View>
                 <View style={styles.modalContainer}>
                   <Image
                     source={{ uri: selectedRefugio.imagen }}
                     style={styles.modalImage}
                   />
                   <View style={styles.dataRef}>
-                    <Text style={styles.modalDescription}>
-                      {selectedRefugio.descripcion}
+                    {selectedRefugio.descripcion && ( //si no tiene descripcion, no se ve el campo.
+                      <Text style={styles.modalDescription}>
+                        {selectedRefugio.descripcion}
+                      </Text>
+                    )}
+                    <Text style={styles.modalLink}>
+                      Mascotas Registradas: {selectedRefugio.mascotas.length}
                     </Text>
                     <Text style={styles.modalLink}>
                       Enlace de Donación: {selectedRefugio.linkDonacion}
                     </Text>
                     <Text style={styles.modalLink}>
-                      Mascotas Registradas: {selectedRefugio.mascotas.length}
+                      Facebook: {selectedRefugio.facebook}
+                    </Text>
+                    <Text style={styles.modalLink}>
+                      Instagram: {selectedRefugio.instagram}
                     </Text>
                   </View>
                   <View style={styles.containerButton}>
@@ -121,7 +134,7 @@ const Refugios = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </View>
+              </ScrollView>
             )}
           </Modal>
         </>
@@ -138,9 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E3E3E3",
     paddingTop: Constants.statusBarHeight ,
   },
-  container2:{
-    marginTop: screenHeight * - 0.1
-  },
+
   noticiaContainer: {
     marginTop: screenHeight * 0.042,
     marginHorizontal: 10,
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-
+    
   },
   modalTitle: {
     fontSize: 24,
@@ -200,6 +211,7 @@ const styles = StyleSheet.create({
   },
   dataRef: {
     padding: 10,
+    height:screenHeight * 0.25
   },
   modalDescription: {
     fontSize: screenHeight * 0.018,
@@ -222,6 +234,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 20,
+    marginBottom:30,
     backgroundColor: "#9A34EA",
     borderRadius: 5,
     padding: 10,
