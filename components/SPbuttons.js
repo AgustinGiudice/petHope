@@ -7,10 +7,10 @@ import {
   useWindowDimensions,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { BASE_URL } from "@env";
 import { TokenContext } from "../context/TokenContext";
 import { COLORS } from "../styles";
-import isTablet from '../functions/isTablet';
+import isTablet from "../functions/isTablet";
+import { setMascotaLike } from "../services/setMascotaLike";
 
 const SPbuttons = ({
   mascota_id,
@@ -20,30 +20,16 @@ const SPbuttons = ({
   setInfoPetModalIsVisible,
   setMascotas,
 }) => {
-  const [matchResponse, setMatchResponse] = useState(null); // Estado para almacenar la respuesta
   const { token } = useContext(TokenContext);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
-
   const { width, height } = useWindowDimensions();
 
   // POST
   const postLike = async () => {
     try {
-      const response = await fetch(`${BASE_URL}api/match`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          idMascota: mascota_id,
-          idUsuario: currentUserId,
-        }),
-      });
-
+      const response = await setMascotaLike(mascota_id, currentUserId, token);
       if (response.ok) {
         const data = await response.json();
-        setMatchResponse(data); // Actualiza el estado con la respuesta
 
         // Mostrar la animación de "like"
         setShowLikeAnimation(true);
@@ -103,13 +89,21 @@ const SPbuttons = ({
         containerStyle,
         {
           width: width - width * 0.02,
-          height: isTablet() ? height * 0.8: height * 0.5,
-          bottom:  isTablet()? height - height * 1.665  : height - height * 1.365,
+          height: isTablet() ? height * 0.8 : height * 0.5,
+          bottom: isTablet()
+            ? height - height * 1.665
+            : height - height * 1.365,
         },
       ]}
     >
       <View
-        style={[styles.buttonsMain, { marginTop: height * 0.02, width: isTablet()? width * 0.27 : width * 0.37}]}
+        style={[
+          styles.buttonsMain,
+          {
+            marginTop: height * 0.02,
+            width: isTablet() ? width * 0.27 : width * 0.37,
+          },
+        ]}
       >
         <TouchableOpacity
           style={[styles.backIcons2, { padding: height * 0.015 }]}
@@ -126,7 +120,10 @@ const SPbuttons = ({
       <View
         style={[
           styles.buttonsSecondary,
-          { marginTop: -1 * height * 0.025, width:  isTablet()? width * 0.5 : width * 0.7 },
+          {
+            marginTop: -1 * height * 0.025,
+            width: isTablet() ? width * 0.5 : width * 0.7,
+          },
         ]}
       >
         <TouchableOpacity
