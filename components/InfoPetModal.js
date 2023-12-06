@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {
   getEdadDescripcion,
   getTamanioDescripcion,
@@ -27,15 +26,9 @@ const InfoPetModal = ({
   setResetMatches,
   currentUserId,
 }) => {
-  const [images, setImages] = useState([
-    petInfo.pic,
-    petInfo.pic,
-    petInfo.pic,
-    petInfo.pic,
-  ]);
   const [selectedPic, setSelectedPic] = useState(null);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
-  const [addImageModalIsVisible, setAddImageModalIsVisible] = useState(false);
+  const placeholderImg = require("../assets/logo.png");
 
   const postLike = async () => {
     try {
@@ -79,17 +72,6 @@ const InfoPetModal = ({
     }
   };
 
-  const NoPic = () => {
-    return (
-      <TouchableOpacity
-        style={styles.image}
-        onPress={() => setAddImageModalIsVisible(true)}
-      >
-        <FontAwesome name="plus-square-o" color={"#fff"} size={125} />
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
       <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
@@ -103,7 +85,12 @@ const InfoPetModal = ({
             </TouchableOpacity>
             <Text style={styles.titulo}>{petInfo.nombre}</Text>
             <View style={styles.row}>
-              {images.map((image, key) => {
+              {petInfo.imagenes.length === 0 && (
+                <TouchableOpacity style={styles.imageContainer}>
+                  <Image source={placeholderImg} style={styles.image} />
+                </TouchableOpacity>
+              )}
+              {petInfo.imagenes.map((image, key) => {
                 return (
                   <TouchableOpacity
                     style={styles.imageContainer}

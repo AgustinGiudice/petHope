@@ -48,7 +48,6 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     console.log("Hola soy el useEffect, buenas tardes");
     // Obtener las mascotas.
-
     AsyncStorage.getItem("mascotasVistas").then(async (cache) => {
       let vistos;
       if (cache) {
@@ -77,7 +76,6 @@ const ShowPets = ({ navigation }) => {
       } else {
         url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}&distancia=${filtros.distancia}&cuidadosEspeciales=${currentUser.aceptaCuidadosEspeciales}&tipoMascota=${filtros.tipoMascota}&tamaño=${filtros.tamaño}&rangoDeEdad=${filtros.rangoDeEdad}&current=${index}&vistos=${vistos}`;
       }
-      console.log(url);
       try {
         await getMascotas(
           url,
