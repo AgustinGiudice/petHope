@@ -48,6 +48,7 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     console.log("Hola soy el useEffect, buenas tardes");
     // Obtener las mascotas.
+    //AsyncStorage.clear();
     AsyncStorage.getItem("mascotasVistas").then(async (cache) => {
       let vistos;
       if (cache) {
@@ -164,6 +165,7 @@ const ShowPets = ({ navigation }) => {
                 index={index}
                 setIndex={setIndex}
                 setResetMatches={setResetMatches}
+                setShowLikeAnimation={setShowLikeAnimation}
               />
               {!isLoading && (
                 <SPButtons

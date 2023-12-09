@@ -28,35 +28,33 @@ const SPbuttons = ({
   const postLike = async () => {
     try {
       const response = await setMascotaLike(mascota_id, currentUserId, token);
-      if (response.ok) {
-        const data = await response.json();
-
-        // Mostrar la animación de "like"
-        setShowLikeAnimation(true);
-
-        // Iniciar la animación
-        Animated.sequence([
-          Animated.timing(likeAnimationValue, {
-            toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
-            duration: 500, // Duración de la primera parte de la animación en milisegundos
-            useNativeDriver: false,
-          }),
-          Animated.timing(likeAnimationValue, {
-            toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
-            duration: 500, // Duración de la segunda parte de la animación en milisegundos
-            delay: 300, // Retardo entre la primera y la segunda parte de la animación
-            useNativeDriver: false,
-          }),
-        ]).start(() => {
-          // Reiniciar la animación y ocultarla cuando termine
-          likeAnimationValue.setValue(0);
-          setResetMatches(true);
-          setMascotas([]);
-          setShowLikeAnimation(false);
-        });
-      } else {
-        console.error("Error en la respuesta del backend:", response.status);
+      if (!response.ok) {
+        throw new Error("Error al likear mascota");
       }
+
+      // Mostrar la animación de "like"
+      setShowLikeAnimation(true);
+
+      // Iniciar la animación
+      Animated.sequence([
+        Animated.timing(likeAnimationValue, {
+          toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la primera parte de la animación en milisegundos
+          useNativeDriver: false,
+        }),
+        Animated.timing(likeAnimationValue, {
+          toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la segunda parte de la animación en milisegundos
+          delay: 300, // Retardo entre la primera y la segunda parte de la animación
+          useNativeDriver: false,
+        }),
+      ]).start(() => {
+        // Reiniciar la animación y ocultarla cuando termine
+        likeAnimationValue.setValue(0);
+        setResetMatches(true);
+        setMascotas([]);
+        setShowLikeAnimation(false);
+      });
     } catch (error) {
       console.error("Error al realizar la solicitud:", error);
     }

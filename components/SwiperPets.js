@@ -1,10 +1,12 @@
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions, Animated } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import ItemList from "./ItemList";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
+import { TokenContext } from "../context/TokenContext";
+import { useContext, useRef } from "react";
+import { setMascotaLike } from "../services/setMascotaLike";
 
 const SwiperPets = ({
   mascotas,
@@ -13,9 +15,13 @@ const SwiperPets = ({
   index,
   setIndex,
   setResetMatches,
+  setShowLikeAnimation,
 }) => {
   const { width, height } = useWindowDimensions();
   const { currentUser } = useContext(UserContext);
+  const { token } = useContext(TokenContext);
+  const likeAnimationValue = useRef(new Animated.Value(0)).current;
+
   const handleReject = async () => {
     try {
       const cache = await AsyncStorage.getItem("mascotasVistas");
@@ -48,7 +54,38 @@ const SwiperPets = ({
     }
   };
   const handleLike = async () => {
-    console.log("like");
+    try {
+      const response = await setMascotaLike(
+        mascotas[index].id,
+        currentUser.id,
+        token
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al likear mascota");
+      }
+      setShowLikeAnimation(true);
+
+      Animated.sequence([
+        Animated.timing(likeAnimationValue, {
+          toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la primera parte de la animación en milisegundos
+          useNativeDriver: false,
+        }),
+        Animated.timing(likeAnimationValue, {
+          toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la segunda parte de la animación en milisegundos
+          delay: 300, // Retardo entre la primera y la segunda parte de la animación
+          useNativeDriver: false,
+        }),
+      ]).start(() => {
+        likeAnimationValue.setValue(0);
+        setShowLikeAnimation(false);
+        setResetMatches(true);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

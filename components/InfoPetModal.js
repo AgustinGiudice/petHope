@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,9 @@ import {
   getTamanioDescripcion,
   getSexoDescripcion,
 } from "../hooks/getDescripciones";
-import { BASE_URL } from "@env";
 import { ScrollView } from "react-native-gesture-handler";
+import { TokenContext } from "../context/TokenContext";
+import { setMascotaLike } from "../services/setMascotaLike";
 
 const InfoPetModal = ({
   isVisible,
@@ -29,46 +30,36 @@ const InfoPetModal = ({
   const [selectedPic, setSelectedPic] = useState(null);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
   const placeholderImg = require("../assets/logo.png");
+  const { token } = useContext(TokenContext);
 
   const postLike = async () => {
     try {
-      const response = await fetch(`${BASE_URL}api/match`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          idMascota: petInfo.id,
-          idUsuario: currentUserId,
-        }),
-      });
+      const response = await setMascotaLike(petInfo.id, currentUserId, token);
 
-      if (response.ok) {
-        //const data = await response.json();
-        setShowLikeAnimation(true);
-
-        Animated.sequence([
-          Animated.timing(likeAnimationValue, {
-            toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
-            duration: 500, // Duración de la primera parte de la animación en milisegundos
-            useNativeDriver: false,
-          }),
-          Animated.timing(likeAnimationValue, {
-            toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
-            duration: 500, // Duración de la segunda parte de la animación en milisegundos
-            delay: 300, // Retardo entre la primera y la segunda parte de la animación
-            useNativeDriver: false,
-          }),
-        ]).start(() => {
-          likeAnimationValue.setValue(0);
-          setShowLikeAnimation(false);
-          setResetMatches(true);
-        });
-      } else {
-        console.error("Error en la respuesta del backend:", response.status);
+      if (!response.ok) {
+        throw new Error("Error al likear mascota");
       }
+      setShowLikeAnimation(true);
+
+      Animated.sequence([
+        Animated.timing(likeAnimationValue, {
+          toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la primera parte de la animación en milisegundos
+          useNativeDriver: false,
+        }),
+        Animated.timing(likeAnimationValue, {
+          toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
+          duration: 500, // Duración de la segunda parte de la animación en milisegundos
+          delay: 300, // Retardo entre la primera y la segunda parte de la animación
+          useNativeDriver: false,
+        }),
+      ]).start(() => {
+        likeAnimationValue.setValue(0);
+        setShowLikeAnimation(false);
+        setResetMatches(true);
+      });
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
+      console.error(error);
     }
   };
 
