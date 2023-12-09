@@ -10,12 +10,10 @@ import SinMascotas from "../../components/SinMascotas";
 import { UserContext } from "../../context/UserContext";
 import { TokenContext } from "../../context/TokenContext";
 import { getMascotas } from "../../services/getMascotas";
-import { getMascotasVistas } from "../../services/getMascotasVistas";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import { COLORS } from "../../styles";
 import SwiperPets from "../../components/SwiperPets";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { json } from "react-router-native";
 
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -25,7 +23,6 @@ const ShowPets = ({ navigation }) => {
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
   const [mascotas, setMascotas] = useState([]);
-  const [petVistos, setPetVistos] = useState("");
   const [index, setIndex] = useState(0); //Setea el numero actual para el fetch!!
   const [isLoading, setIsLoading] = useState(true);
   const [infoPetModalIsVisible, setInfoPetModalIsVisible] = useState(false);
