@@ -1,0 +1,47 @@
+GENERAL
+-Arreglar Header hacer de 0 en todas las vistas.
+-arreglar cache o token (puedo ir hacia atras y vuelvo a estar logueado despues de desloguearme)
+-poner numero de chats actvos en el menu de abajo (usuario y refugio)
+-Comprbar manejo de imagenes en todo el sistema. si se agregan, o cambian como debe ser en todas las vistas.
+-testear registro de usuario (rompe en algun punto) y de regugio  
+-Agregar cuesitonarios completo segun ppt que nos propocionaron para el usuario. recolectar esa data para el filtrado de que se muestra y que no, ademas de que se le permite fitlrar y que no al usuario todo en la ppt.
+- en varias funciones cuando se completa no se recarga la vista entonces no se refleja el cambio
+-Se duplican los match y por lo tanto los chat tambien.
+
+
+SHOWREFUGIOS
+-en "tablet" cambiar tamaño de imagenes en vista de los refugios cercanos y poner imagen mas chica, margenes laterales?
+
+
+PERFIL
+-Agregar btn para volver a hacer cuestionario. ---> (1 sola vez se puede usar. despues aviso de que tiene que esperar un mes)
+-Q se vea con otro color el contenido de perfil expandido
+-q se de a entendes mejor q cosa es editable y cual no, q se avise cuando no se puede editar. mejorar UX
+-en tablet no se ve nada. achicar contenido con margenes?  usar un scrollview??
+-CONFIRMAR MAIL DEL USUARIO MANDANDO UN MAIL DE CONFIRMACION
+
+SHOWPETS
+- Menu de abajo arreglarlo en tablet
+- Menu de abajo no se ve bien en todos los tamaños toca las etiquetas
+- hacer funciones de compartir publicacion
+- hacer funciones de denunciar publicacion
+- cuando doy like se queda pegada la app . y me deja dar like a algo qe ya se lo di. tambien me muertra el mismo contenido siempre
+- Cuando toco la cruz no pasa nada 
+- arreglar filtros y agregar los que faltan
+- margen en vista tablet para que se vea mejor?
+
+
+CHAT
+- imagenes no se ven.
+- cuando cancelo un chat se tiene que recargar la pagina
+-agregar denuncia en el chat
+- agregar funciona de ver refugio
+
+Menu
+- Agregar terminos y condiciones
+- funcion de todo el resto d botones
+
+BASE DE DATOS:
+-Vief Vilef
+-Vacunas
+-tabla de denuncia
