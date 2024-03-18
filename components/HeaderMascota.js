@@ -4,12 +4,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { screenWidth, screenHeight } from "../hooks/useScreenResize";
 import { cambioColorPaw } from "../functions/colorUtils";
 import Constants from "expo-constants";
-import isTablet from '../functions/isTablet';
+import isTablet from "../functions/isTablet";
 const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
   return (
     <View style={styles.container}>
-
-    <View style={styles.headerItem}>
       <View style={styles.headerItem2}>
         <View style={styles.headerItemsContenido}>
           {filtros && (
@@ -18,7 +16,7 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
                 filtros={filtros}
                 setFiltros={setFiltros}
                 setResetMatches={setResetMatches}
-                />
+              />
             </View>
           )}
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
@@ -34,7 +32,7 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
                   name="paw"
                   size={45}
                   color={cambioColorPaw(mascota.nivelCuidado)}
-                  />
+                />
                 <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
               </>
             )}
@@ -42,7 +40,6 @@ const HeaderMascota = ({ filtros, setFiltros, mascota, setResetMatches }) => {
         </View>
       </View>
     </View>
-</View>
   );
 };
 
@@ -58,7 +55,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#7A5FB5",
     width: 1,
-    height:1,
+    height: 1,
     borderRadius: 10,
     zIndex: 10,
     alignItems: "center",
@@ -66,8 +63,8 @@ const styles = StyleSheet.create({
   headerItem2: {
     position: "absolute",
     backgroundColor: "#C69AE8",
-    width:  isTablet() ?  1500 : 1300,
-    height:  isTablet() ?  1500 : 1300,
+    width: isTablet() ? 1500 : 1300,
+    height: isTablet() ? 1500 : 1300,
     borderRadius: isTablet() ? 650 : 610,
     zIndex: 10,
     alignItems: "center",
@@ -88,8 +85,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: screenHeight * 0.025,
     alignItems: "baseline",
-    paddingHorizontal:  isTablet() ? 140 : 30  ,
-    
+    paddingHorizontal: isTablet() ? 140 : 30,
+
     textAlign: "center",
   },
   buttonFilters: {

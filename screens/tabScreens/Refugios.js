@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import LoadingComponent from "../../components/LoadingComponent";
@@ -52,9 +52,8 @@ const Refugios = ({ navigation }) => {
       return (
         <>
           <View style={styles.container}>
-
             <HeaderMascota mascota={{ nombre: "Refugios" }} />
-            
+
             <View style={styles.container2}>
               <FlatList
                 data={refugios}
@@ -84,8 +83,7 @@ const Refugios = ({ navigation }) => {
                   </View>
                 )}
               />
-           </View>
-
+            </View>
           </View>
 
           {/* Modal para mostrar más información del refugio */}
@@ -96,10 +94,9 @@ const Refugios = ({ navigation }) => {
             onRequestClose={closeModal}
           >
             {selectedRefugio && (
-              <ScrollView style={{top: 0, flex:1}}>
-                <View style={{height:screenHeight * 0.07}}>
-                <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
-
+              <ScrollView style={{ top: 0, flex: 1 }}>
+                <View>
+                  <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 </View>
                 <View style={styles.modalContainer}>
                   <Image
@@ -145,11 +142,11 @@ const Refugios = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#E3E3E3",
-    paddingTop: Constants.statusBarHeight ,
+    paddingTop: Constants.statusBarHeight,
   },
 
   noticiaContainer: {
@@ -196,7 +193,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    
   },
   modalTitle: {
     fontSize: 24,
@@ -211,7 +207,7 @@ const styles = StyleSheet.create({
   },
   dataRef: {
     padding: 10,
-    height:screenHeight * 0.25
+    height: screenHeight * 0.25,
   },
   modalDescription: {
     fontSize: screenHeight * 0.018,
@@ -234,7 +230,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 20,
-    marginBottom:30,
+    marginBottom: 30,
     backgroundColor: "#9A34EA",
     borderRadius: 5,
     padding: 10,

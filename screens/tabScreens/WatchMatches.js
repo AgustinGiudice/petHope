@@ -105,7 +105,7 @@ const MatchesScreen = ({ navigation }) => {
           data={matches}
           contentContainerStyle={{
             paddingBottom: 90,
-            marginTop: height * - 0.052,
+            marginTop: height * -0.052,
           }}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -252,6 +252,8 @@ const MatchesScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Constants.statusBarHeight,
+
     backgroundColor: COLORS[200],
     flex: 1,
   },
