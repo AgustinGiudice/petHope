@@ -38,6 +38,7 @@ const Refugios = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log("SCREEN WIDTH" + screenWidth);
     const url = `${BASE_URL}api/refugios?latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}`;
 
     getRefugios(url, token, navigation, setRefugios, setCurrentUser).then(() =>
@@ -66,10 +67,10 @@ const Refugios = ({ navigation }) => {
                       style={styles.imagenNoticia}
                     />
                     <Text style={styles.nombreRef}>{item.nombre}</Text>
-                    <Text style={styles.distanciaRef}>
+                    <Text style={styles.data}>
                       A {item.distance.toFixed(2)} Km de distancia
                     </Text>
-                    <Text style={styles.acepta}>Acepta {item.animal}</Text>
+                    <Text style={styles.data}>Aloja {item.animal}</Text>
                     <View style={styles.orderButton}>
                       <TouchableOpacity style={styles.containerBotonVerMas}>
                         <Text
@@ -99,13 +100,16 @@ const Refugios = ({ navigation }) => {
                   <HeaderMascota mascota={{ nombre: selectedRefugio.nombre }} />
                 </View>
                 <View style={styles.modalContainer}>
-                  <Image
-                    source={{ uri: selectedRefugio.imagen }}
-                    style={styles.modalImage}
-                  />
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{ uri: selectedRefugio.imagen }}
+                      style={styles.modalImage}
+                    />
+                  </View>
+
                   <View style={styles.dataRef}>
                     {selectedRefugio.descripcion && ( //si no tiene descripcion, no se ve el campo.
-                      <Text style={styles.modalDescription}>
+                      <Text style={styles.modalLink}>
                         {selectedRefugio.descripcion}
                       </Text>
                     )}
@@ -147,12 +151,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#E3E3E3",
     paddingTop: Constants.statusBarHeight,
+    paddingHorizontal: screenWidth >= 500 ? 70 : 0,
   },
 
   noticiaContainer: {
     marginTop: screenHeight * 0.042,
     marginHorizontal: 10,
-    padding: 10,
+    padding: screenWidth >= 500 ? 50 : 10,
     borderRadius: 5,
     backgroundColor: "white",
     elevation: 3,
@@ -164,23 +169,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   nombreRef: {
-    fontSize: 20,
+    fontSize: screenWidth >= 500 ? 24 : 19,
+
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 8,
   },
-  descripcionNoticia: {
-    fontSize: 16,
-    marginTop: 5,
-  },
-  acepta: {
+  data: {
     marginBottom: 8,
+    fontSize: screenWidth >= 500 ? 19 : 14,
   },
   orderButton: {
     alignItems: "center",
   },
   containerBotonVerMas: {
-    width: 100,
+    width: 150,
     height: 35,
     backgroundColor: "#9A34EA",
     borderRadius: 5,
@@ -189,25 +192,29 @@ const styles = StyleSheet.create({
   },
   textoBotonVerMas: {
     color: "white",
-    fontSize: screenHeight * 0.015,
+    fontSize: screenHeight * 0.02,
   },
   modalContainer: {
     flex: 1,
+    paddingHorizontal: screenWidth >= 500 ? 55 : 5,
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
   },
+  imageContainer: {
+    alignItems: "center",
+  },
   modalImage: {
-    width: "100%",
-    aspectRatio: 1,
+    width: screenWidth >= 500 ? "80%" : "100%",
+    aspectRatio: screenWidth >= 500 ? 1.2 : 1,
     resizeMode: "cover",
     borderRadius: 5,
   },
   dataRef: {
     padding: 10,
-    height: screenHeight * 0.25,
+    height: screenHeight * 0.27,
   },
   modalDescription: {
     fontSize: screenHeight * 0.018,
@@ -218,7 +225,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalLink: {
-    fontSize: screenHeight * 0.018,
+    fontSize: screenWidth >= 500 ? screenHeight * 0.02 : screenHeight * 0.018,
+
     marginTop: 10,
     borderColor: "#9A34EA",
     borderBottomWidth: 1,

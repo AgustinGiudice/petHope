@@ -9,6 +9,7 @@ import { UserContext } from "../../context/UserContext";
 
 const PersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const { currentUser } = useContext(UserContext);
   const userData = currentUser;
   userData.completado =
@@ -57,6 +58,26 @@ const PersonalData = ({ navigation }) => {
     </View>
   );
 
+  const widthSize = () => {
+    if (screenWidth >= 500) {
+      setIsTablet(true);
+    } else {
+      setIsTablet(false);
+    }
+  };
+
+  useEffect(() => {
+    widthSize(); // Llama a la función widthSize al montar el componente
+    // const handleScreenResize = () => {
+    //   widthSize(); // Llama a la función widthSize cuando se detecta un cambio de tamaño en la pantalla
+    // };
+
+    // Dimensions.addEventListener("change", handleScreenResize);
+
+    // return () => {
+    //   Dimensions.removeEventListener("change", handleScreenResize);
+    // };
+  }, []);
   return (
     <>
       <View style={styles.container}>
@@ -101,6 +122,7 @@ const PersonalData = ({ navigation }) => {
             </>
           )}
         </View>
+
         <View style={styles.dataContainer}>
           <View style={styles.textContainer}>
             <Text>
@@ -136,14 +158,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     backgroundColor: "#F1E0FE",
+    flexDirection: screenWidth >= 500 ? "row" : "column",
   },
   header: {
     paddingTop: 30,
     backgroundColor: "white",
-    width: "100%",
+    width: screenWidth >= 500 ? "50%" : "100%",
     alignItems: "center",
     gap: 20,
     position: "relative",
+    height: screenWidth >= 500 ? "100%" : "60%",
+    justifyContent: screenWidth >= 500 ? "center" : "flex-start",
   },
   containerCompletado: {
     width: "100%",
@@ -176,7 +201,7 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     aspectRatio: 1,
-    width: screenWidth - 100,
+    width: 300,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -187,13 +212,14 @@ const styles = StyleSheet.create({
   changePic: {
     position: "absolute",
     bottom: 10,
-    right: 10,
+    left: 10,
   },
   dataContainer: {
     gap: 10,
     minHeight: screenHeight,
     padding: 20,
-    width: "100%",
+    width: screenWidth >= 500 ? "50%" : "100%",
+    justifyContent: screenWidth >= 500 ? "center" : "flex-start",
   },
   textContainer: {
     borderColor: "#9A34EA",

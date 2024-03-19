@@ -17,6 +17,8 @@ import AddImageModal from "../../components/AddImageModal";
 import ChangeImageModal from "../../components/ChangeImageModal";
 import Input from "../../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import HeaderMascota from "../../components/HeaderMascota";
+import Constants from "expo-constants";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -177,6 +179,9 @@ const MorePersonalData = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
+        <View style={styles.containerHeader}>
+          <HeaderMascota mascota={{ nombre: userData.nombre }} />
+        </View>
         <AddImageModal
           id={currentUser.id}
           isVisible={modalVisible}
@@ -191,15 +196,7 @@ const MorePersonalData = ({ navigation }) => {
             style={styles.arrow}
             onPress={() => navigation.navigate("PersonalData")}
           />
-          <View style={styles.headerItem}>
-            <View style={styles.headerItem2}>
-              <View style={styles.headerItemsContenido}>
-                <View>
-                  <Text style={styles.nameUser}>{userData.nombre}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+
           {!keyboardIsOpen ? (
             userData.imagen === null ? (
               <View style={styles.profilePic}>
@@ -215,11 +212,11 @@ const MorePersonalData = ({ navigation }) => {
               <Image
                 source={{ uri: userData.imagen }}
                 style={styles.profilePic}
-                
               />
             )
           ) : null}
         </View>
+        {/* PARTE 2 */}
         <View
           style={[
             styles.dataContainer,
@@ -363,14 +360,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
+    flexDirection: screenWidth >= 500 ? "row" : "column",
+
     alignItems: "center",
     gap: 5,
+    paddingTop: Constants.statusBarHeight,
+    height: "100%",
+  },
+  containerHeader: {
+    position: "absolute",
+    left: "50%",
+    top: 30,
   },
   header: {
     paddingTop: 10,
     backgroundColor: "white",
-    width: "100%",
+    width: screenWidth >= 500 ? "50%" : "100%",
+    height: screenWidth >= 500 ? "100%" : "50%",
     alignItems: "center",
+    justifyContent: "center",
     position: "relative",
   },
   profilePic: {
@@ -388,14 +396,16 @@ const styles = StyleSheet.create({
   dataContainer: {
     gap: 10,
     backgroundColor: "#eee",
-    minHeight: screenHeight / 1.5,
+    minHeight: "100%",
     paddingHorizontal: 20,
-    width: screenWidth,
+    width: screenWidth >= 500 ? "50%" : screenWidth,
+    justifyContent: screenWidth >= 500 ? "center" : "flex-start",
   },
   column: {
     justifyContent: "flex-start",
-    width: "70%",
-    maxHeight: screenHeight / 2 - 120,
+    width: "90%",
+    height: "100%",
+    maxHeight: screenWidth >= 500 ? "100%" : screenHeight / 2 - 110,
   },
   textContainer: {
     padding: 3,
@@ -420,47 +430,6 @@ const styles = StyleSheet.create({
     top: 100,
     left: 20,
     zIndex: 10,
-  },
-  headerItem: {
-    position: "relative",
-    backgroundColor: "#7A5FB5",
-    width: screenWidth,
-    height: 50,
-    borderRadius: 10,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  headerItem2: {
-    position: "absolute",
-    backgroundColor: "#C69AE8",
-    width: 1300,
-    height: 1300,
-    borderRadius: 630,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    bottom: -35,
-    elevation: 10, // Para Android
-    shadowColor: "black", // Para iOS
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  headerItemsContenido: {
-    flexDirection: "row",
-    justifyContent: "center",
-    width: screenWidth - screenWidth * 0.2,
-    padding: 10,
-    alignItems: "center",
-  },
-  nameUser: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 35,
   },
   confirmButton: {
     backgroundColor: "#9A34EA",
