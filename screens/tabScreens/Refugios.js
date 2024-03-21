@@ -72,13 +72,11 @@ const Refugios = ({ navigation }) => {
                     </Text>
                     <Text style={styles.data}>Aloja {item.animal}</Text>
                     <View style={styles.orderButton}>
-                      <TouchableOpacity style={styles.containerBotonVerMas}>
-                        <Text
-                          style={styles.textoBotonVerMas}
-                          onPress={() => openModal(item)}
-                        >
-                          Ver Más
-                        </Text>
+                      <TouchableOpacity
+                        style={styles.containerBotonVerMas}
+                        onPress={() => openModal(item)}
+                      >
+                        <Text style={styles.textoBotonVerMas}>Ver Más</Text>
                       </TouchableOpacity>
                     </View>
                   </View>

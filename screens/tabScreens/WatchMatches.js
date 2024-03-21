@@ -97,15 +97,13 @@ const MatchesScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.container1}>
-        <HeaderMascota mascota={{ nombre: "Mensajes" }} />
-      </View>
+      <HeaderMascota mascota={{ nombre: "Mensajes" }} />
       <View style={styles.container1}>
         <FlatList
           data={matches}
           contentContainerStyle={{
             paddingBottom: 90,
-            marginTop: height * -0.052,
+            marginTop: height * 0.05,
           }}
           renderItem={({ item }) => (
             <TouchableOpacity
