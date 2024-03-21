@@ -86,11 +86,9 @@ const SPbuttons = ({
       style={[
         containerStyle,
         {
-          width: width - width * 0.02,
-          height: isTablet() ? height * 0.8 : height * 0.5,
-          bottom: isTablet()
-            ? height - height * 1.665
-            : height - height * 1.365,
+          width: height * 0.5, // Tamaño del círculo (mitad de la altura de la pantalla)
+          height: height * 0.5, // Tamaño del círculo (mitad de la altura de la pantalla)
+          bottom: height * -0.36, // Pegado a la parte inferior de la pantalla
         },
       ]}
     >
@@ -99,7 +97,7 @@ const SPbuttons = ({
           styles.buttonsMain,
           {
             marginTop: height * 0.02,
-            width: isTablet() ? width * 0.27 : width * 0.37,
+            width: isTablet() ? width * 0.17 : width * 0.37,
           },
         ]}
       >
@@ -120,7 +118,7 @@ const SPbuttons = ({
           styles.buttonsSecondary,
           {
             marginTop: -1 * height * 0.025,
-            width: isTablet() ? width * 0.5 : width * 0.7,
+            width: isTablet() ? width * 0.27 : width * 0.7,
           },
         ]}
       >

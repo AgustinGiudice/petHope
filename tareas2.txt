@@ -29,14 +29,15 @@ SHOWPETS
 - Cuando toco la cruz no pasa nada 
 - arreglar filtros y agregar los que faltan
 - margen en vista tablet para que se vea mejor?
-
+-en el modal con mas data del pet se tiene q ver todas las fotos tipo historia de instagram
+-hacer tutorial la primera vez q entra a la vista para q sepa para que es cada cosa.
 
 CHAT
 - imagenes no se ven.
 - cuando cancelo un chat se tiene que recargar la pagina
 -agregar denuncia en el chat
 - agregar funciona de ver refugio
-
+- ARREGLAR MATCHESCOUNT
 Menu
 - Agregar terminos y condiciones
 - funcion de todo el resto d botones
