@@ -46,3 +46,8 @@ BASE DE DATOS:
 -Vief Vilef
 -Vacunas
 -tabla de denuncia
+
+
+
+REUFGIO
+-En la busqueda de mascotas las filas se ven mal

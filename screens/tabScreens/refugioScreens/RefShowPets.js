@@ -7,6 +7,8 @@ import { TokenContext } from "../../../context/TokenContext";
 import { UserContext } from "../../../context/UserContext";
 import { getMascotasRef } from "../../../services/getMascotasRef";
 import { BASE_URL } from "@env";
+import HeaderMascota from "../../../components/HeaderMascota";
+import Constants from "expo-constants";
 
 const RefShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,30 +51,23 @@ const RefShowPets = ({ navigation }) => {
 
   return (
     <>
-      <View style={styles.headerItem}>
-        <View style={styles.headerItem2}>
-          <View style={styles.headerItemsContenido}>
-            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-              Mascotas
-            </Text>
-          </View>
-        </View>
-      </View>
-
       <View style={styles.container}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar por nombre"
-          onChangeText={(text) => setSearchText(text)}
-          value={searchText}
-        />
-        <FlatList
-          style={styles.flatlist}
-          data={mascotasRef}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id} // Use toString to ensure it's a string
-          numColumns={2}
-        />
+        <HeaderMascota mascota={{ nombre: "Refugios" }} />
+        <View style={styles.container2}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar por nombre"
+            onChangeText={(text) => setSearchText(text)}
+            value={searchText}
+          />
+          <FlatList
+            style={styles.flatlist}
+            data={mascotasRef}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id} // Use toString to ensure it's a string
+            numColumns={2}
+          />
+        </View>
       </View>
     </>
   );
@@ -92,45 +87,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#E3E3E3",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: Constants.statusBarHeight,
+    // paddingHorizontal: screenWidth >= 500 ? 70 : 0,
   },
-  headerItem: {
-    position: "relative",
-    backgroundColor: "#7A5FB5",
-    width: screenWidth,
-    height: 50,
-    borderRadius: 10,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
+  container2: {
+    paddingTop: screenHeight * 0.02,
   },
-  headerItem2: {
-    position: "absolute",
-    backgroundColor: "#C69AE8",
-    width: 1300,
-    height: 1300,
-    borderRadius: 630,
-    zIndex: 10,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    bottom: -35,
-    elevation: 10, // Para Android
-    shadowColor: "black", // Para iOS
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  headerItemsContenido: {
-    flexDirection: "row",
-    width: screenWidth,
-    justifyContent: "space-between",
-    marginBottom: 30,
-    alignItems: "baseline",
-    paddingHorizontal: 30,
-    textAlign: "center",
-  },
+
   buttonFilters: {
     zIndex: 1,
   },

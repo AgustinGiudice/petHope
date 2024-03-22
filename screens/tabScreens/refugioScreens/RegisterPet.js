@@ -25,15 +25,15 @@ const RegisterPet = ({ navigation }) => {
     sexo: "",
     raza: "",
     edad: "",
-    nivelCuidado: 2,
+    nivelCuidado: null,
     cuidadosEspeciales: true,
     tamanio: "",
-    descripcion: "Descripcion de prueba",
+    descripcion: "",
     refugioId: currentUser.id,
   });
 
   const handleClick = () => {
-    agregarMascota(newPetData,images, token, navigation, setCurrentUser);
+    agregarMascota(newPetData, images, token, navigation, setCurrentUser);
   };
 
   return (
@@ -122,6 +122,22 @@ const RegisterPet = ({ navigation }) => {
               setNewPetData(newData);
             }}
             texto={"Tamaño"}
+          />
+          <Select
+            values={[1, 2, 3, 4, 5]}
+            setValues={(item) => {
+              const newData = { ...newPetData, nivelCuidado: item };
+              setNewPetData(newData);
+            }}
+            texto={"Nivel de Cuidado"}
+          />
+          <Input
+            value={newPetData.descripcion}
+            setValue={(value) =>
+              setNewPetData({ ...newPetData, descripcion: value })
+            }
+            placeholder="Descripción"
+            atributo="descripcion"
           />
         </View>
 

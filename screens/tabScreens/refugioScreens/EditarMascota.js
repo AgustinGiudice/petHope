@@ -11,15 +11,16 @@ import { BASE_URL } from "@env";
 import ConfirmationModal from "./ConfirmationModal";
 import { ActivityIndicator } from "react-native";
 
-
 const EditarMascota = ({ route, navigation }) => {
   const { mascota } = route.params;
   const [newPetData, setNewPetData] = useState(mascota);
   const [selectedPic, setSelectedPic] = useState(null);
   const { token } = useContext(TokenContext);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
-  const [replaceImageModalVisible, setReplaceImageModalVisible] = useState(false);
-  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+  const [replaceImageModalVisible, setReplaceImageModalVisible] =
+    useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] =
+    useState(false);
   const [mascotaEliminada, setMascotaEliminada] = useState(false);
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -46,11 +47,11 @@ const EditarMascota = ({ route, navigation }) => {
     console.log(newData.imagen);
   };
 
-  const handleRedirect = () =>{
-    if(redirect){
+  const handleRedirect = () => {
+    if (redirect) {
       navigation.navigate("RefShowPets");
     }
-  }
+  };
   const handleDelete = async (idMascota) => {
     try {
       setLoading(true);
@@ -60,7 +61,7 @@ const EditarMascota = ({ route, navigation }) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -73,16 +74,14 @@ const EditarMascota = ({ route, navigation }) => {
         console.error("Error al eliminar la mascota.");
       }
       setLoading(false);
-
     } catch (error) {
       console.error("Error al eliminar la mascota:", error);
     }
   };
 
-
   return (
     <View style={styles.container}>
-      <HeaderMascota mascota={mascota} />
+      {/* <HeaderMascota mascota={mascota} /> */}
       <View style={styles.row}>
         <View style={styles.column}>
           {mascota.imagen.map((image, key) => {
@@ -201,22 +200,27 @@ const EditarMascota = ({ route, navigation }) => {
         currentImage={selectedPic}
       />
 
-          <TouchableOpacity
-            style={styles.buttondelete}
-            onPress={handleDeleteConfirmation}
-            >
-            <Text>  Eliminar Registro </Text>
-          </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttondelete}
+        onPress={handleDeleteConfirmation}
+      >
+        <Text> Eliminar Registro </Text>
+      </TouchableOpacity>
 
-          <ConfirmationModal
-            isVisible={confirmationModalVisible}
-            message=  {loading?  <ActivityIndicator color="white" />: "¿Estás seguro de que quieres eliminar este registro?"}   
-            onConfirm={handleConfirmDelete}
-            onchangemessage={mascotaEliminada}
-            onCancel={handleCancelDelete}
-            onRedirect={handleRedirect}
-          />
-
+      <ConfirmationModal
+        isVisible={confirmationModalVisible}
+        message={
+          loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            "¿Estás seguro de que quieres eliminar este registro?"
+          )
+        }
+        onConfirm={handleConfirmDelete}
+        onchangemessage={mascotaEliminada}
+        onCancel={handleCancelDelete}
+        onRedirect={handleRedirect}
+      />
     </View>
   );
 };
