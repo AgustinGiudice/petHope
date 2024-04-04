@@ -11,6 +11,7 @@ export const login = async (
 ) => {
   try {
     const response = await fetchData(`${BASE_URL}api/refugios/login`, userData);
+
     const data = await response.json();
     if (response.status === 404) {
       const secondResponse = await fetchData(
@@ -54,6 +55,7 @@ export const login = async (
 
 async function fetchData(url, userData) {
   try {
+    console.log(url);
     return await fetch(url, {
       method: "POST",
       headers: {
@@ -75,7 +77,6 @@ async function handleStatus200(
   navigation,
   isRefugio
 ) {
-
   const data_user = {
     token: data.token,
     usuario: data.usuario,

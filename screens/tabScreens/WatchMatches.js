@@ -251,7 +251,6 @@ const MatchesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
-
     backgroundColor: COLORS[200],
     flex: 1,
   },

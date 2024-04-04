@@ -4,8 +4,10 @@ import MainStackNavigation from "./screens/MainNavigation";
 import UserState from "./context/UserContext";
 import CountMatchesContext from "./context/CountMatchesContext";
 import TokenState from "./context/TokenContext";
+import { StatusBar } from "react-native";
 
 export default function App() {
+  StatusBar.setBackgroundColor("#c69ae8");
   return (
     <UserState>
       <CountMatchesContext>

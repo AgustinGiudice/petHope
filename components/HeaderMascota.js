@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    top: 80,
+    top: 80 + Constants.statusBarHeight,
   },
   headerItem: {
     position: "relative",

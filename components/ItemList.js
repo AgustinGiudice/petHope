@@ -54,7 +54,6 @@ console.log("imageSize", imageSize);
 const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
   return (
     <>
-      <View style={styles.containerIL}>
         <View style={styles.mascotaItem}>
           <View style={styles.headerContainer}>
             <HeaderMascota
@@ -122,7 +121,6 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
             </View>
           </View>
         </View>
-      </View>
     </>
   );
 };
@@ -144,7 +142,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS[50],
     overflow: "hidden",
-    paddingTop: Constants.statusBarHeight,
     minHeight: screenHeight,
   },
   mascotaImagen: {

@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS[50],
     flex: 1,
-    alignItems: "center",
     gap: 20,
-    paddingTop: 20,
   },
   texto: {
     color: "#000",
