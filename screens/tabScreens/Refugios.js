@@ -39,7 +39,6 @@ const Refugios = ({ navigation }) => {
 
   useEffect(() => {
     const url = `${BASE_URL}api/refugios?latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}`;
-
     getRefugios(url, token, navigation, setRefugios, setCurrentUser).then(() =>
       setIsLoading(false)
     );
@@ -53,35 +52,32 @@ const Refugios = ({ navigation }) => {
         <>
           <View style={styles.container}>
             <HeaderMascota mascota={{ nombre: "Refugios" }} />
-
-            <View style={styles.container2}>
-              <FlatList
-                data={refugios}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={{ paddingBottom: 90 }}
-                renderItem={({ item }) => (
-                  <View style={styles.noticiaContainer}>
-                    <Image
-                      source={{ uri: item.imagen }}
-                      style={styles.imagenNoticia}
-                    />
-                    <Text style={styles.nombreRef}>{item.nombre}</Text>
-                    <Text style={styles.data}>
-                      A {item.distance.toFixed(2)} Km de distancia
-                    </Text>
-                    <Text style={styles.data}>Aloja {item.animal}</Text>
-                    <View style={styles.orderButton}>
-                      <TouchableOpacity
-                        style={styles.containerBotonVerMas}
-                        onPress={() => openModal(item)}
-                      >
-                        <Text style={styles.textoBotonVerMas}>Ver Más</Text>
-                      </TouchableOpacity>
-                    </View>
+            <FlatList
+              data={refugios}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={{ paddingBottom: 20 }}
+              renderItem={({ item }) => (
+                <View style={styles.noticiaContainer}>
+                  <Image
+                    source={{ uri: item.imagen }}
+                    style={styles.imagenNoticia}
+                  />
+                  <Text style={styles.nombreRef}>{item.nombre}</Text>
+                  <Text style={styles.data}>
+                    A {item.distance.toFixed(2)} Km de distancia
+                  </Text>
+                  <Text style={styles.data}>Aloja {item.animal}</Text>
+                  <View style={styles.orderButton}>
+                    <TouchableOpacity
+                      style={styles.containerBotonVerMas}
+                      onPress={() => openModal(item)}
+                    >
+                      <Text style={styles.textoBotonVerMas}>Ver Más</Text>
+                    </TouchableOpacity>
                   </View>
-                )}
-              />
-            </View>
+                </View>
+              )}
+            />
           </View>
 
           {/* Modal para mostrar más información del refugio */}
@@ -211,7 +207,6 @@ const styles = StyleSheet.create({
   },
   dataRef: {
     padding: 10,
-    height: screenHeight * 0.27,
   },
   modalDescription: {
     fontSize: screenHeight * 0.018,

@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BASE_URL } from "@env";
 
 export const getRefugios = async (
   url,
@@ -9,7 +8,7 @@ export const getRefugios = async (
   setCurrentUser
 ) => {
   try {
-    const response = await fetchData(url, token); //verificar si se necesita el await o no
+    const response = await fetchData(url, token); 
 
     if (response.status === 401 || response.status === 403) {
       await AsyncStorage.removeItem("token");
@@ -22,7 +21,6 @@ export const getRefugios = async (
     setRefugios(data);
   } catch (error) {
     console.error("Error al obtener Refugios:", error);
-  } finally {
   }
 };
 
@@ -37,7 +35,6 @@ async function fetchData(url, token) {
     });
     return response;
   } catch (error) {
-    console.log("No se pudo realizar la conexión con la API");
-    throw error;
+    console.log("No se pudo realizar la conexión con la API: ", error);
   }
 }
