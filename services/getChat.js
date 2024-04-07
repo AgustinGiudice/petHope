@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "@env";
 
 export const getChat = async (
   receiverId,
@@ -11,7 +12,7 @@ export const getChat = async (
 ) => {
   try {
     const response = await fetch(
-      `https://mascotas-back-31adf188c4e6.herokuapp.com/api/mensajes?receiver=${receiverId}&sender=${senderId}&mascota=${mascotaId}`,
+      `${BASE_URL}api/mensajes?receiver=${receiverId}&sender=${senderId}&mascota=${mascotaId}`,
       {
         method: "GET",
         headers: {

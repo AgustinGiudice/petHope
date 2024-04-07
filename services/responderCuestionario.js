@@ -18,7 +18,6 @@ export const responderCuestonario = async (
     }
 
     const data = await response.json();
-    console.log("DATA QUE DEVUELVE XD", data)
     setCurrentUser(data.usuario);
     const new_obj = {
       "token" : token,

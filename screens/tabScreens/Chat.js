@@ -26,6 +26,7 @@ import { UserContext } from "../../context/UserContext";
 import LoadingComponent from "../../components/LoadingComponent";
 import { getChat } from "../../services/getChat";
 import { TokenContext } from "../../context/TokenContext";
+import { BASE_URL } from "@env";
 
 const Chat = ({ route }) => {
   const { receiver, mascota } = route.params;
@@ -39,7 +40,7 @@ const Chat = ({ route }) => {
   const [isModalMascotaPicVisible, setIsModalMascotaPicVisible] =
     useState(false);
 
-  const socket = io("https://mascotas-back-31adf188c4e6.herokuapp.com/");
+  const socket = io(BASE_URL);
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");

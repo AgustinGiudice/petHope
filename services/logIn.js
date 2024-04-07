@@ -10,13 +10,18 @@ export const login = async (
   navigation
 ) => {
   try {
-    const response = await fetchData(`${BASE_URL}api/refugios/login`, userData);
+    const response = await fetchData(
+      `${BASE_URL}api/refugios/login`,
+      userData,
+      setError
+    );
 
     const data = await response.json();
     if (response.status === 404) {
       const secondResponse = await fetchData(
         `${BASE_URL}api/usuarios/login`,
-        userData
+        userData,
+        setError
       );
       const data2 = await secondResponse.json();
       if (secondResponse.status === 200) {
@@ -53,9 +58,8 @@ export const login = async (
   }
 };
 
-async function fetchData(url, userData) {
+async function fetchData(url, userData, setError) {
   try {
-    console.log(url);
     return await fetch(url, {
       method: "POST",
       headers: {
@@ -64,6 +68,7 @@ async function fetchData(url, userData) {
       body: JSON.stringify(userData),
     });
   } catch (error) {
+    setError("Error del servidor \nIntente nuevamente más tarde");
     console.error(error);
   }
 }
@@ -88,6 +93,7 @@ async function handleStatus200(
 
   const { usuario, token } = data;
   usuario.isRefugio = isRefugio;
+  console.log({ usuario });
   setCurrentUser(usuario);
   setUserData({ mail: "", pass: "" });
   setError("");

@@ -19,6 +19,7 @@ import Input from "../../components/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HeaderMascota from "../../components/HeaderMascota";
 import Constants from "expo-constants";
+import { BASE_URL } from "@env";
 
 const MorePersonalData = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -148,17 +149,14 @@ const MorePersonalData = ({ navigation }) => {
     };
     AsyncStorage.getItem("token").then((cache) => {
       const token = JSON.parse(cache);
-      fetch(
-        `https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/edit/${userData.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token.token}`,
-          },
-          body: JSON.stringify(updatedUserData),
-        }
-      )
+      fetch(`${BASE_URL}api/usuarios/edit/${userData.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.token}`,
+        },
+        body: JSON.stringify(updatedUserData),
+      })
         .then((response) => response.json())
         .then((data) => {
           // actualizar el usuario en el contexto

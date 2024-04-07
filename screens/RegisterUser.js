@@ -13,8 +13,9 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { registrarUsuario } from "../services/registrarUsuario";
 import { COLORS } from "../styles";
+import { logInOnSignUp } from "../services/logInOnSignUp";
 
-const CreateUserForm = ({ navigation }) => {
+const RegisterUser = ({ navigation }) => {
   const initialUserData = {
     nombre: "",
     apellido: "",
@@ -92,7 +93,8 @@ const CreateUserForm = ({ navigation }) => {
       if (indexModal === 9) {
         setIsLoading(true);
         await registrarUsuario(userData);
-        await handleLogin();
+        await logInOnSignUp(userData, setCurrentUser);
+        setUserData(userData);
         navigation.navigate("CuestionarioUsuario");
       } else {
         setIndexModal(indexModal + 1);
@@ -122,43 +124,6 @@ const CreateUserForm = ({ navigation }) => {
     })();
   }, []);
 
-  const handleLogin = () => {
-    fetch(
-      "https://mascotas-back-31adf188c4e6.herokuapp.com/api/usuarios/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.token && data.usuario) {
-          const data_user = {
-            token: data.token,
-            usuario: data.usuario,
-            matches: data.matches,
-          };
-          AsyncStorage.setItem("token", JSON.stringify(data_user))
-            .then(() => {
-              console.log("Token guardado correctamente:", data.token);
-              return AsyncStorage.getItem("token"); // Recuperar el token
-            })
-            .then((storedToken) => {
-              console.log("Token almacenado en AsyncStorage:", storedToken); //mostrar token en async storage
-              const { usuario, token } = data;
-              setCurrentUser(usuario);
-              //clean state
-              setUserData(initialUserData);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error("Error al iniciar sesión:", error);
-      });
-  };
   if (isLoading) {
     <LoadingComponent />;
   }
@@ -367,7 +332,7 @@ const CreateUserForm = ({ navigation }) => {
         <Text style={styles.title}>
           Mové el cursor hasta que coincida con tu ubicación
         </Text>
-        <MapView style={styles.map} region={region}>
+        <MapView style={styles.map} region={region} showsUserLocation={true}>
           <Marker
             coordinate={{
               latitude: region.latitude,
@@ -529,4 +494,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateUserForm;
+export default RegisterUser;

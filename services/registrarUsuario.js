@@ -1,7 +1,7 @@
 import { BASE_URL } from "@env";
 
 export const registrarUsuario = async (userData) => {
-  response = await fetchData(userData);
+  return await fetchData(userData);
 };
 
 async function fetchData(userData) {

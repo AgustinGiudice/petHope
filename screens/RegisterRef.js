@@ -7,6 +7,7 @@ import MapView, { Marker } from "react-native-maps";
 import LoadingComponent from "../components/LoadingComponent";
 import * as Location from "expo-location";
 import { COLORS } from "../styles";
+import { BASE_URL } from "@env";
 
 const RegisterRef = ({ navigation }) => {
   const [indexModal, setIndexModal] = useState(0);
@@ -68,10 +69,9 @@ const RegisterRef = ({ navigation }) => {
     }
   };
 
-
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del refugio
-    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/refugios", {
+    fetch(`${BASE_URL}api/refugios`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

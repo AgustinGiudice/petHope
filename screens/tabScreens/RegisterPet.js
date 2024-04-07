@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { BASE_URL } from "@env";
 
 const RegisterPet = ({ navigation }) => {
   const initialPetData = {
@@ -34,7 +35,7 @@ const RegisterPet = ({ navigation }) => {
       pic: "https://images.pexels.com/photos/4587971/pexels-photo-4587971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     };
 
-    fetch("https://mascotas-back-31adf188c4e6.herokuapp.com/api/mascotas", {
+    fetch(`${BASE_URL}api/mascotas`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

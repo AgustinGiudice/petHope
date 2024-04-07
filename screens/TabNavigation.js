@@ -17,11 +17,9 @@ import RegisterPetNavigation from "./RegisterPetNavigation";
 import PetRefNavigation from "./PetRefNavigation";
 import { COLORS } from "../styles";
 
-import Test from "./Test";
-
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+const TabNavigation = ({ navigation }) => {
   //Traer usuario y token
   const { currentUser } = useContext(UserContext);
 
@@ -34,12 +32,8 @@ function MyTabs() {
   function getWidth() {
     return width / 5;
   }
-  useEffect(() => {
-    console.log("usuario", currentUser);
-    console.log("is_REFUGIO DESDE TABNAVIGATION", currentUser.isRefugio);
-    // console.log("matchesCount", matchesCount);
-  }, [matchesCount]);
 
+  const isRefugio = currentUser ? currentUser.isRefugio : false;
   return (
     <>
       <Tab.Navigator
@@ -58,7 +52,7 @@ function MyTabs() {
       >
         <Tab.Screen
           name="ShowRefugios"
-          component={currentUser.isRefugio ? RegisterPetNavigation : Refugios}
+          component={isRefugio ? RegisterPetNavigation : Refugios}
           options={{
             headerShown: false,
             unmountOnBlur: true,
@@ -98,7 +92,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Paw"
-          component={currentUser.isRefugio ? PetRefNavigation : ShowPets}
+          component={isRefugio ? PetRefNavigation : ShowPets}
           options={{
             unmountOnBlur: true,
             headerShown: false,
@@ -207,8 +201,6 @@ function MyTabs() {
       )}
     </>
   );
-}
+};
 
-export default function TabNavigation() {
-  return <MyTabs />;
-}
+export default TabNavigation;

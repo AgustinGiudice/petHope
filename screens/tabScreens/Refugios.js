@@ -38,7 +38,6 @@ const Refugios = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("SCREEN WIDTH" + screenWidth);
     const url = `${BASE_URL}api/refugios?latitud=${currentUser.ubicacion.coordinates[0]}&longitud=${currentUser.ubicacion.coordinates[1]}`;
 
     getRefugios(url, token, navigation, setRefugios, setCurrentUser).then(() =>

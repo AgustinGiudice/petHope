@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import { TokenContext } from "../context/TokenContext";
 import { UserContext } from "../context/UserContext";
+import { BASE_URL } from "@env";
 
 const AddImageModal = ({
   id,
@@ -75,7 +76,7 @@ const AddImageModal = ({
 
         // Realizar la solicitud POST con fetch
         fetch(
-          `https://mascotas-back-31adf188c4e6.herokuapp.com/api/${
+          `${BASE_URL}api/${
             currentUser.isRefugio ? "refugios" : "usuarios"
           }/upload-img/${id}`,
           {

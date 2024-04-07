@@ -35,12 +35,10 @@ function MainNavigation() {
     AsyncStorage.getItem("token")
       .then((token) => {
         if (token) {
-          console.log("TOKEN:" + token);
           const token_parsed = JSON.parse(token);
           setIsLoggedIn(true);
           const usuario = token_parsed.usuario;
 
-          console.log("usuario parseado", usuario);
           setCurrentUser(usuario);
           if (usuario.hasOwnProperty("contadorMatch")) {
             usuario.isRefugio = false;
@@ -52,8 +50,9 @@ function MainNavigation() {
           console.log(count);
           setMatchesCount(count);
         } else {
-          console.log("no hay token");
+          setIsLoggedIn(false);
         }
+        console.log(isLoggedIn);
         setIsLoading(false); // Indica que hemos terminado de verificar la autenticación
       })
       .catch((error) => {
@@ -68,13 +67,17 @@ function MainNavigation() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <Stack.Navigator
         initialRouteName={isLoggedIn ? "Tabs" : "LoginScreen"}
         //initialRouteName="test"
         screenOptions={{ headerShown: false, detachPreviousScreen: true }}
       >
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ detachPreviousScreen: true, }}
+        />
         <Stack.Screen name="RegisterChoice" component={RegisterChoice} />
         <Stack.Screen name="RegisterUser" component={CreateUserForm} />
         <Stack.Screen
@@ -82,7 +85,11 @@ function MainNavigation() {
           component={CuestionarioUsuarioRegistro}
         />
         <Stack.Screen name="RegisterRef" component={RegisterRef} />
-        <Stack.Screen name="Tabs" component={TabNavigation} />
+        <Stack.Screen
+          name="Tabs"
+          component={TabNavigation}
+          options={{ freezeOnBlur: true }}
+        />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="test" component={RegisterPet} />
         <Stack.Screen
