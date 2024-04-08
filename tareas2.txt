@@ -7,7 +7,7 @@ GENERAL
 -Agregar cuesitonarios completo segun ppt que nos propocionaron para el usuario. recolectar esa data para el filtrado de que se muestra y que no, ademas de que se le permite fitlrar y que no al usuario todo en la ppt.
 - en varias funciones cuando se completa no se recarga la vista entonces no se refleja el cambio
 -Se duplican los match y por lo tanto los chat tambien.
-
+-
 
 SHOWREFUGIOS
 -en "tablet" cambiar tamaño de imagenes en vista de los refugios cercanos y poner imagen mas chica, margenes laterales?

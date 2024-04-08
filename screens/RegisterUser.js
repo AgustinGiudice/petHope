@@ -6,14 +6,11 @@ import RegisterModal from "../components/RegisterModal";
 import Input from "../components/Input";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import LoadingComponent from "../components/LoadingComponent";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserContext } from "../context/UserContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { registrarUsuario } from "../services/registrarUsuario";
 import { COLORS } from "../styles";
-import { logInOnSignUp } from "../services/logInOnSignUp";
 
 const RegisterUser = ({ navigation }) => {
   const initialUserData = {
@@ -39,7 +36,6 @@ const RegisterUser = ({ navigation }) => {
     descripcion: null,
     fechaDeNacimiento: null,
   };
-  const { setCurrentUser } = useContext(UserContext);
   const [userData, setUserData] = useState(initialUserData);
   const [error, setError] = useState([]);
   const [indexModal, setIndexModal] = useState(1);
@@ -93,9 +89,7 @@ const RegisterUser = ({ navigation }) => {
       if (indexModal === 9) {
         setIsLoading(true);
         await registrarUsuario(userData);
-        await logInOnSignUp(userData, setCurrentUser);
-        setUserData(userData);
-        navigation.navigate("CuestionarioUsuario");
+        navigation.navigate("RegisterComplete");
       } else {
         setIndexModal(indexModal + 1);
       }
