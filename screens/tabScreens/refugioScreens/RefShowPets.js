@@ -52,7 +52,7 @@ const RefShowPets = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <HeaderMascota mascota={{ nombre: "Refugios" }} />
+        <HeaderMascota mascota={{ nombre: "Mascotas" }} />
         <View style={styles.container2}>
           <TextInput
             style={styles.searchInput}

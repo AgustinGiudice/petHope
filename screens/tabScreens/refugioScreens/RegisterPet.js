@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
 import Constants from "expo-constants";
@@ -36,6 +43,10 @@ const RegisterPet = ({ navigation }) => {
     agregarMascota(newPetData, images, token, navigation, setCurrentUser);
   };
 
+  useEffect(() => {
+    console.log(newPetData);
+  }, [newPetData]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Publicar una mascota</Text>
@@ -69,76 +80,78 @@ const RegisterPet = ({ navigation }) => {
           )}
         </View>
         <View style={styles.inputsContainer}>
-          <Input
-            value={newPetData.nombre}
-            setValue={setNewPetData}
-            placeholder="Nombre"
-            atributo="nombre"
-          />
-          <Select
-            values={["Perro", "Gato"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.animal = item === "Perro" ? 1 : 2;
-              setNewPetData(newData);
-            }}
-            texto={"Animal"}
-          />
-          <Select
-            values={["Macho", "Hembra"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.sexo = item === "Macho" ? 1 : 2;
-              setNewPetData(newData);
-            }}
-            texto={"Sexo"}
-          />
-          <Select
-            values={["Cachorro", "Juvenil", "Adulto"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.edad =
-                item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
-              setNewPetData(newData);
-            }}
-            texto={"Edad"}
-          />
-          <Select
-            values={["Golden", "Husky"]}
-            //poner la lista de razas
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.raza = item;
-              setNewPetData(newData);
-            }}
-            texto={"Raza"}
-          />
-          <Select
-            values={["Pequeño", "Mediano", "Grande"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.tamanio =
-                item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
-              setNewPetData(newData);
-            }}
-            texto={"Tamaño"}
-          />
-          <Select
-            values={[1, 2, 3, 4, 5]}
-            setValues={(item) => {
-              const newData = { ...newPetData, nivelCuidado: item };
-              setNewPetData(newData);
-            }}
-            texto={"Nivel de Cuidado"}
-          />
-          <Input
-            value={newPetData.descripcion}
-            setValue={(value) =>
-              setNewPetData({ ...newPetData, descripcion: value })
-            }
-            placeholder="Descripción"
-            atributo="descripcion"
-          />
+          <ScrollView>
+            <Input
+              value={newPetData.nombre}
+              setValue={setNewPetData}
+              placeholder="Nombre"
+              atributo="nombre"
+            />
+
+            <Select
+              values={["Perro", "Gato"]}
+              setValues={(item) => {
+                const newData = newPetData;
+                newData.animal = item === "Perro" ? 1 : 2;
+                setNewPetData(newData);
+              }}
+              texto={"Animal"}
+            />
+            <Select
+              values={["Golden", "Husky"]}
+              //poner la lista de razas
+              setValues={(item) => {
+                const newData = newPetData;
+                newData.raza = item;
+                setNewPetData(newData);
+              }}
+              texto={"Raza"}
+            />
+            <Select
+              values={["Macho", "Hembra"]}
+              setValues={(item) => {
+                const newData = newPetData;
+                newData.sexo = item === "Macho" ? 1 : 2;
+                setNewPetData(newData);
+              }}
+              texto={"Sexo"}
+            />
+            <Select
+              values={["Cachorro", "Juvenil", "Adulto"]}
+              setValues={(item) => {
+                const newData = newPetData;
+                newData.edad =
+                  item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
+                setNewPetData(newData);
+              }}
+              texto={"Edad"}
+            />
+
+            <Select
+              values={["Pequeño", "Mediano", "Grande"]}
+              setValues={(item) => {
+                const newData = newPetData;
+                newData.tamanio =
+                  item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
+                setNewPetData(newData);
+              }}
+              texto={"Tamaño"}
+            />
+            <Select
+              values={[1, 2, 3, 4, 5]}
+              setValues={(item) => {
+                const newData = { ...newPetData, nivelCuidado: item };
+                setNewPetData(newData);
+              }}
+              texto={"Nivel de Cuidado"}
+            />
+            <Input
+              value={newPetData.descripcion}
+              setValue={setNewPetData}
+              placeholder="Descripcion"
+              atributo="descripcion"
+            />
+          </ScrollView>
         </View>
 
         <AddImageModal

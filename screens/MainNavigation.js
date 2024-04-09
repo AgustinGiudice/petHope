@@ -72,9 +72,9 @@ function MainNavigation() {
       <Stack.Navigator
         initialRouteName={
           isLoggedIn
-            ? currentUser.primer_login
+            ? primerLogin
               ? "Tabs"
-              : "Tabs"
+              : "RegisterComplete"
             : "LoginScreen"
         }
         //initialRouteName="test"

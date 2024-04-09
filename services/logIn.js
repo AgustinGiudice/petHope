@@ -10,6 +10,7 @@ export const login = async (
   navigation
 ) => {
   try {
+    console.log(BASE_URL);
     const response = await fetchData(
       `${BASE_URL}api/refugios/login`,
       userData,

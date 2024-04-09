@@ -60,6 +60,10 @@ const RegisterRef = ({ navigation }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log("ACTUALIZADO" + JSON.stringify(refugioData));
+  }, [refugioData]);
+
   const handleNext = async (value) => {
     setError([]);
     if (value === null) {
@@ -103,6 +107,7 @@ const RegisterRef = ({ navigation }) => {
         style={styles.arrow}
         onPress={() => handleNext()}
       />
+
       <RegisterModal
         visible={indexModal === 1}
         setVisible={setIndexModal}
@@ -114,6 +119,12 @@ const RegisterRef = ({ navigation }) => {
           setValue={setRefugioData}
           placeholder={"Nombre"}
           atributo={"nombre"}
+        />
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
         />
       </RegisterModal>
       <RegisterModal
@@ -134,6 +145,12 @@ const RegisterRef = ({ navigation }) => {
           placeholder={"E-mail"}
           atributo={"mail"}
         />
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
+        />
       </RegisterModal>
       <RegisterModal
         visible={indexModal === 3}
@@ -152,6 +169,12 @@ const RegisterRef = ({ navigation }) => {
           setValue={setRefugioData}
           placeholder="Repetír contraseña"
           atributo="repeatPass"
+        />
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
         />
       </RegisterModal>
       <RegisterModal
@@ -178,6 +201,12 @@ const RegisterRef = ({ navigation }) => {
           setValue={setRefugioData}
           placeholder="provincia"
           atributo="provincia"
+        />
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
         />
       </RegisterModal>
       <RegisterModal
@@ -207,6 +236,12 @@ const RegisterRef = ({ navigation }) => {
             }}
           />
         </MapView>
+        <FontAwesome
+          name="arrow-right"
+          size={40}
+          style={styles.arrow}
+          onPress={() => handleNext()}
+        />
       </RegisterModal>
       <RegisterModal
         visible={indexModal === 6}
