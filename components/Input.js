@@ -1,9 +1,13 @@
+import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-const Input = ({ value, setValue, placeholder, atributo, disable }) => {
+const Input = ({ value, setValue, placeholder, atributo, disable, width }) => {
   return (
     <TextInput
-      style={atributo === "descripcion" ? styles.textArea : styles.input}
+      style={[
+        atributo === "descripcion" ? styles.textArea : styles.input,
+        { width: width ? width : "80%" }, // Establece el ancho según la prop width o usa el 80% por defecto
+      ]}
       value={value}
       onChangeText={(value) => {
         if (atributo === "distancia") {
@@ -40,13 +44,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#9A34EA",
     paddingHorizontal: 5,
-    width: "80%",
   },
   textArea: {
     borderBottomWidth: 1,
     borderColor: "#9A34EA",
     paddingHorizontal: 5,
-    width: "80%",
   },
 });
 

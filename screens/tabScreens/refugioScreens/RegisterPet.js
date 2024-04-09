@@ -19,6 +19,7 @@ import AddImageModal from "../../../components/AddImageModal";
 import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
+import { BASE_URL } from "@env";
 
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
@@ -37,9 +38,51 @@ const RegisterPet = ({ navigation }) => {
     tamanio: "",
     descripcion: "",
     refugioId: currentUser.id,
+    vif: null,
+    vilef: null,
   });
 
+  //TRAER RAZAS
+  const [razas, setRazas] = useState([]);
+  const [loadingRazas, setLoadingRazas] = useState(false);
+
+  const handleAnimalChange = async (animal) => {
+    setNewPetData((prevData) => ({ ...prevData, animal }));
+    if (animal) {
+      let animalnumber = "";
+      if (animal == "Perro") {
+        animalnumber = 1;
+      } else {
+        animalnumber = 2;
+      }
+      setLoadingRazas(true);
+      console.log("ANIMAL" + animal);
+      try {
+        const response = await fetch(
+          `${BASE_URL}api/razas/allrazas?animal=${animalnumber}`,
+
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // body: JSON.stringify({ animal }),
+          }
+        );
+        const data = await response.json();
+        setRazas(data);
+        console.log("RAZAS NUEVASELREF" + JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching razas:", error);
+      }
+      setLoadingRazas(false);
+    } else {
+      setRazas([]);
+    }
+  };
+
   const handleClick = () => {
+    console.log("FUNCIONO");
     agregarMascota(newPetData, images, token, navigation, setCurrentUser);
   };
 
@@ -78,81 +121,130 @@ const RegisterPet = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
+          <FontAwesome
+            name="arrow-right"
+            size={40}
+            style={{
+              color: "#9A34EA",
+              position: "absolute",
+              bottom: 30,
+              right: 30,
+              zIndex: 999,
+            }}
+            onPress={handleClick}
+          />
         </View>
-        <View style={styles.inputsContainer}>
-          <ScrollView>
-            <Input
-              value={newPetData.nombre}
-              setValue={setNewPetData}
-              placeholder="Nombre"
-              atributo="nombre"
-            />
+        <ScrollView style={styles.inputsContainer}>
+          {/* <ScrollView style={styles.scrollRegisterPet}> */}
+          <Input
+            style={styles.inputRegisterPet}
+            value={newPetData.nombre}
+            setValue={setNewPetData}
+            placeholder="Nombre"
+            atributo="nombre"
+            width="100%"
+          />
 
-            <Select
-              values={["Perro", "Gato"]}
-              setValues={(item) => {
-                const newData = newPetData;
-                newData.animal = item === "Perro" ? 1 : 2;
+          <Select
+            style={styles.select}
+            values={["Perro", "Gato"]}
+            setValues={handleAnimalChange}
+            texto={"Animal"}
+            width="100%"
+          />
+          <Select
+            width="100%"
+            values={razas.map((raza) => raza.nombre)}
+            setValues={(item) => {
+              const selectedRaza = razas.find((raza) => raza.nombre === item); // Buscar la raza seleccionada por su nombre
+              if (selectedRaza) {
+                const newData = { ...newPetData, raza: selectedRaza.id }; // Guardar el ID de la raza seleccionada en newPetData
                 setNewPetData(newData);
-              }}
-              texto={"Animal"}
-            />
-            <Select
-              values={["Golden", "Husky"]}
-              //poner la lista de razas
-              setValues={(item) => {
-                const newData = newPetData;
-                newData.raza = item;
-                setNewPetData(newData);
-              }}
-              texto={"Raza"}
-            />
-            <Select
-              values={["Macho", "Hembra"]}
-              setValues={(item) => {
-                const newData = newPetData;
-                newData.sexo = item === "Macho" ? 1 : 2;
-                setNewPetData(newData);
-              }}
-              texto={"Sexo"}
-            />
-            <Select
-              values={["Cachorro", "Juvenil", "Adulto"]}
-              setValues={(item) => {
-                const newData = newPetData;
-                newData.edad =
-                  item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
-                setNewPetData(newData);
-              }}
-              texto={"Edad"}
-            />
+              }
+            }}
+            texto={"Raza"}
+            loading={loadingRazas}
+            disabled={!newPetData.animal}
+            placeholder={
+              !newPetData.animal ? "Seleccione tipo de animal" : undefined
+            }
+          />
+          <Select
+            width="100%"
+            values={["Macho", "Hembra"]}
+            setValues={(item) => {
+              const newData = newPetData;
+              newData.sexo = item === "Macho" ? 1 : 2;
+              setNewPetData(newData);
+            }}
+            texto={"Sexo"}
+          />
+          <Select
+            width="100%"
+            values={["Cachorro", "Juvenil", "Adulto"]}
+            setValues={(item) => {
+              const newData = newPetData;
+              newData.edad =
+                item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
+              setNewPetData(newData);
+            }}
+            texto={"Edad"}
+          />
 
-            <Select
-              values={["Pequeño", "Mediano", "Grande"]}
-              setValues={(item) => {
-                const newData = newPetData;
-                newData.tamanio =
-                  item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
-                setNewPetData(newData);
-              }}
-              texto={"Tamaño"}
-            />
-            <Select
-              values={[1, 2, 3, 4, 5]}
-              setValues={(item) => {
-                const newData = { ...newPetData, nivelCuidado: item };
-                setNewPetData(newData);
-              }}
-              texto={"Nivel de Cuidado"}
-            />
-            <Input
-              value={newPetData.descripcion}
-              setValue={setNewPetData}
-              placeholder="Descripcion"
-              atributo="descripcion"
-            />
-          </ScrollView>
-        </View>
+          <Select
+            width="100%"
+            values={["Pequeño", "Mediano", "Grande"]}
+            setValues={(item) => {
+              const newData = newPetData;
+              newData.tamanio =
+                item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
+              setNewPetData(newData);
+            }}
+            texto={"Tamaño"}
+          />
+          <Select
+            width="100%"
+            values={[1, 2, 3, 4, 5]}
+            setValues={(item) => {
+              const newData = { ...newPetData, nivelCuidado: item };
+              setNewPetData(newData);
+            }}
+            texto={"Nivel de Cuidado"}
+          />
+          <Select
+            width="100%"
+            values={["VIF: Si", "VIF: No"]}
+            setValues={(item) => {
+              const newData = {
+                ...newPetData,
+                vif: item === "Si" ? true : false,
+              };
+              setNewPetData(newData);
+            }}
+            texto={"Sufre VIF?"}
+          />
+          <Select
+            width="100%"
+            values={["VILEF: Si", "VILEF: No"]}
+            setValues={(item) => {
+              const newData = {
+                ...newPetData,
+                vilef: item === "Si" ? true : false,
+              };
+              setNewPetData(newData);
+            }}
+            texto={"Sufre VILEF?"}
+          />
+
+          <Input
+            width="100%"
+            value={newPetData.descripcion}
+            setValue={setNewPetData}
+            placeholder="Descripcion"
+            atributo="descripcion"
+          />
+          {/* </ScrollView> */}
+        </ScrollView>
 
         <AddImageModal
           isVisible={addImageModalVisible}
@@ -174,17 +266,6 @@ const RegisterPet = ({ navigation }) => {
           </View>
         </Modal>
       </View>
-      <FontAwesome
-        name="arrow-right"
-        size={40}
-        style={{
-          color: "#9A34EA",
-          position: "absolute",
-          bottom: 30,
-          right: 30,
-        }}
-        onPress={handleClick}
-      />
     </View>
   );
 };
@@ -206,21 +287,22 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    width: "100%",
-    paddingHorizontal: 25,
-    justifyContent: "flex-start",
+    paddingHorizontal: 10,
+    gap: 10,
   },
+
   inputsContainer: {
-    flexDirection: "column",
-    flex: 4,
+    // flexDirection: "column",
+    flex: 1,
+    width: "100%",
     backgroundColor: "#e3e3e3",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
+    // justifyContent: "flex-start",
+    // alignItems: "flex-end",
     borderRadius: 10,
     gap: 10,
   },
   column: {
-    flex: 3,
+    flex: 1,
     alignItems: "flex-end",
     gap: 2,
   },
