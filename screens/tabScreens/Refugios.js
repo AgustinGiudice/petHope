@@ -21,7 +21,6 @@ import Constants from "expo-constants";
 const Refugios = ({ navigation }) => {
   const { token } = useContext(TokenContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRefugio, setSelectedRefugio] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

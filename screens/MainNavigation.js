@@ -74,7 +74,7 @@ function MainNavigation() {
           isLoggedIn
             ? primerLogin
               ? "Tabs"
-              : "RegisterComplete"
+              : "CuestionarioUsuarioRegistro"
             : "LoginScreen"
         }
         //initialRouteName="test"
