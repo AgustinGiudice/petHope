@@ -73,8 +73,8 @@ function MainNavigation() {
         initialRouteName={
           isLoggedIn
             ? primerLogin
-              ? "Tabs"
-              : "CuestionarioUsuarioRegistro"
+              ? "CuestionarioUsuarioRegistro"
+              : "Tabs"
             : "LoginScreen"
         }
         //initialRouteName="test"

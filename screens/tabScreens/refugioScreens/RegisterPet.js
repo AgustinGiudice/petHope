@@ -16,17 +16,17 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
 import AddImageModal from "../../../components/AddImageModal";
+import { getRazas } from "../../../services/getRazas";
 import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
-import { BASE_URL } from "@env";
 import LoadingComponent from "../../../components/LoadingComponent";
 
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [selectedPic, setSelectedPic] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [confirmationModal, setConfirmationModal] = useState(true);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
@@ -60,32 +60,15 @@ const RegisterPet = ({ navigation }) => {
       }
       setNewPetData((prevData) => ({ ...prevData, animal: animalnumber }));
       setLoadingRazas(true);
-
-      try {
-        const response = await fetch(
-          `${BASE_URL}api/razas/allrazas?animal=${animalnumber}`,
-
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            // body: JSON.stringify({ animal }),
-          }
-        );
-        const data = await response.json();
-        setRazas(data);
-        console.log("RAZAS NUEVASELREF" + JSON.stringify(data));
-      } catch (error) {
-        console.error("Error fetching razas:", error);
-      }
-      setLoadingRazas(false);
+      getRazas(animalnumber, setRazas).then(() => {
+        setLoadingRazas(false);
+      });
     } else {
       setRazas([]);
     }
   };
 
-  const handleClick = () => {
+  const handleSubmit = () => {
     setIsLoading(true);
     setLoadingRazas(true);
     agregarMascota(newPetData, images, token, navigation, setCurrentUser).then(
@@ -95,6 +78,12 @@ const RegisterPet = ({ navigation }) => {
         setIsLoading(false);
       }
     );
+  };
+
+  const handleDelete = () => {
+    const newImages = images.filter((img) => img !== selectedPic);
+    setImages(newImages);
+    setSelectedPic(null);
   };
 
   useEffect(() => {
@@ -109,7 +98,7 @@ const RegisterPet = ({ navigation }) => {
         <View style={styles.container}>
           <Text style={styles.titulo}>Publicar una mascota</Text>
           <View style={styles.row}>
-            <View style={styles.column}>
+            <ScrollView contentContainerStyle={styles.column}>
               {images.map((image, key) => {
                 return (
                   <TouchableOpacity
@@ -136,21 +125,8 @@ const RegisterPet = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               )}
-              <FontAwesome
-                name="arrow-right"
-                size={40}
-                style={{
-                  color: "#9A34EA",
-                  position: "absolute",
-                  bottom: 30,
-                  right: 30,
-                  zIndex: 999,
-                }}
-                onPress={handleClick}
-              />
-            </View>
-            <ScrollView style={styles.inputsContainer}>
-              {/* <ScrollView style={styles.scrollRegisterPet}> */}
+            </ScrollView>
+            <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 100 }}>
               <Input
                 style={styles.inputRegisterPet}
                 value={newPetData.nombre}
@@ -228,30 +204,34 @@ const RegisterPet = ({ navigation }) => {
                 }}
                 texto={"Nivel de Cuidado"}
               />
-              <Select
-                width="100%"
-                values={["VIF: Si", "VIF: No"]}
-                setValues={(item) => {
-                  const newData = {
-                    ...newPetData,
-                    vif: item === "Si" ? true : false,
-                  };
-                  setNewPetData(newData);
-                }}
-                texto={"Sufre VIF?"}
-              />
-              <Select
-                width="100%"
-                values={["VILEF: Si", "VILEF: No"]}
-                setValues={(item) => {
-                  const newData = {
-                    ...newPetData,
-                    vilef: item === "Si" ? true : false,
-                  };
-                  setNewPetData(newData);
-                }}
-                texto={"Sufre VILEF?"}
-              />
+              {newPetData.animal === 2 && (
+                <>
+                  <Select
+                    width="100%"
+                    values={["VIF: Si", "VIF: No"]}
+                    setValues={(item) => {
+                      const newData = {
+                        ...newPetData,
+                        vif: item === "Si" ? true : false,
+                      };
+                      setNewPetData(newData);
+                    }}
+                    texto={"Sufre VIF?"}
+                  />
+                  <Select
+                    width="100%"
+                    values={["VILEF: Si", "VILEF: No"]}
+                    setValues={(item) => {
+                      const newData = {
+                        ...newPetData,
+                        vilef: item === "Si" ? true : false,
+                      };
+                      setNewPetData(newData);
+                    }}
+                    texto={"Sufre VILEF?"}
+                  />
+                </>
+              )}
 
               <Input
                 width="100%"
@@ -260,6 +240,9 @@ const RegisterPet = ({ navigation }) => {
                 placeholder="Descripcion"
                 atributo="descripcion"
               />
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Guardar</Text>
+              </TouchableOpacity>
             </ScrollView>
 
             <AddImageModal
@@ -277,11 +260,34 @@ const RegisterPet = ({ navigation }) => {
                   style={styles.imageSelected}
                 />
                 <TouchableOpacity
+                  onPress={handleDelete}
+                  style={styles.trashButton}
+                >
+                  <FontAwesome
+                    name="trash"
+                    size={40}
+                    style={{ color: "red" }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => setSelectedPic(null)}
                   style={styles.picModalCloseButton}
                 >
                   <Icon name="times" size={25} color="#9A34EA" />
                 </TouchableOpacity>
+              </View>
+            </Modal>
+            <Modal
+              isVisible={confirmationModal}
+              onBackdropPress={() => setConfirmationModal(false)}
+            >
+              <View style={styles.modalContainer}>
+                <FontAwesome
+                  name="check-circle"
+                  size={150}
+                  style={{ color: "green" }}
+                />
+                <Text>Mascota creada exitosamente</Text>
               </View>
             </Modal>
           </View>
@@ -299,6 +305,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 20,
+    paddingBottom: 25,
+    paddingHorizontal: 10,
   },
   titulo: {
     fontSize: 20,
@@ -308,24 +316,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    paddingHorizontal: 10,
     gap: 10,
-  },
-
-  inputsContainer: {
-    // flexDirection: "column",
-    flex: 1,
-    width: "100%",
-    backgroundColor: "#e3e3e3",
-    // justifyContent: "flex-start",
-    // alignItems: "flex-end",
-    borderRadius: 10,
-    gap: 10,
+    height: "auto",
   },
   column: {
-    flex: 1,
-    alignItems: "flex-end",
-    gap: 2,
+    gap: 5,
+    paddingBottom: 100,
   },
   imageContainer: {
     aspectRatio: 1,
@@ -348,6 +344,40 @@ const styles = StyleSheet.create({
   imageSelected: {
     width: "100%",
     aspectRatio: 1,
+  },
+  button: {
+    backgroundColor: "#9A34EA",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    alignSelf: "flex-end",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  trashButton: {
+    position: "absolute",
+    width: 42,
+    height: 42,
+    right: 5,
+    bottom: 5,
+    backgroundColor: "white",
+    padding: 2,
+    borderRadius: 3,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: 10,
+    display: "flex",
+    flexDirection: "column",
+    gap: 20,
   },
 });
 
