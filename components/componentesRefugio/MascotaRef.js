@@ -74,7 +74,7 @@ const MascotaRef = ({ mascota, navigation }) => {
             source={
               mascota.imagen.length !== 0
                 ? { uri: mascota.imagen[0].url }
-                : require("../../assets/refugio1.jpg")
+                : require("../../assets/default.jpg")
             }
             style={styles.image}
           />
