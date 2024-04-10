@@ -3,13 +3,9 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { screenHeight, screenWidth } from "../../hooks/useScreenResize";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Foundation from "react-native-vector-icons/Foundation";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { BASE_URL } from "@env";
 import { TokenContext } from "../../context/TokenContext";
 import { UserContext } from "../../context/UserContext";
 import { cambioColorPaw } from "../../functions/colorUtils";
-
 
 const obtenerTamanioTexto = (tamanio) => {
   switch (tamanio) {
@@ -53,56 +49,51 @@ const MascotaRef = ({ mascota, navigation }) => {
   const [mascotaEliminada, setMascotaEliminada] = useState(false);
   const { token } = useContext(TokenContext);
 
-
-
+  console.log(mascota);
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("EditarMascota", { mascota: mascota })
-      }
+      onPress={() => navigation.navigate("EditarMascota", { mascota: mascota })}
     >
-
-    <View style={styles.container}>
-      <View style={styles.headerPet}>
-        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
-          {mascota.nombre}
-        </Text>
-        <View>
-          <Ionicons
-            style={styles.pawIcon}
-            name="paw"
-            size={35}
-            color={cambioColorPaw(mascota.nivelCuidado)}
+      <View style={styles.container}>
+        <View style={styles.headerPet}>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.namePet}>
+            {mascota.nombre}
+          </Text>
+          <View>
+            <Ionicons
+              style={styles.pawIcon}
+              name="paw"
+              size={35}
+              color={cambioColorPaw(mascota.nivelCuidado)}
             />
-          <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
-        </View>
-      </View>
-      <View>
-        <Image
-          source={
-            mascota.imagen.length !== 0
-            ? { uri: mascota.imagen[0].url }
-            : require("../../assets/refugio1.jpg")
-          }
-          style={styles.image}
-          />
-
-      </View>
-      <View style={styles.heightdataContainer}>
-        <View style={styles.dataContainer}>
-          <View style={styles.data1}>
-            <Text style={styles.data}>
-              Talla {obtenerTamanioTexto(mascota.tamanio)}
-            </Text>
-            <Text style={styles.data}>
-              {obtenerEdadTexto(mascota.edad)}
-            </Text>
-            <Text style={styles.data}>{mascota.raza}</Text>
+            <Text style={styles.pawIconNumber}>{mascota.nivelCuidado}</Text>
           </View>
-          <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
+        </View>
+        <View>
+          <Image
+            source={
+              mascota.imagen.length !== 0
+                ? { uri: mascota.imagen[0].url }
+                : require("../../assets/refugio1.jpg")
+            }
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.heightdataContainer}>
+          <View style={styles.dataContainer}>
+            <View style={styles.data1}>
+              <Text style={styles.data}>
+                Talla {obtenerTamanioTexto(mascota.tamanio)}
+              </Text>
+              <Text style={styles.data}>{obtenerEdadTexto(mascota.edad)}</Text>
+              <Text style={styles.data}>
+                {mascota.raza && mascota.raza.nombre}
+              </Text>
+            </View>
+            <Text style={styles.data}>{obtenerSexoTexto(mascota.sexo)}</Text>
+          </View>
         </View>
       </View>
-    </View>
     </TouchableOpacity>
   );
 };
@@ -158,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "bold",
     color: "black",
-  }
+  },
 });
 
 export default MascotaRef;
