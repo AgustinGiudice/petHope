@@ -74,10 +74,11 @@ const RegisterPet = ({ navigation }) => {
     setLoadingRazas(true);
     agregarMascota(newPetData, images, token, navigation, setCurrentUser).then(
       () => {
+        console.log("aca");
         setNewPetData(initialPetData);
         setImages([]);
         setIsLoading(false);
-        confirmationModal(true);
+        setConfirmationModal(true);
       }
     );
   };
