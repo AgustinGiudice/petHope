@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
@@ -136,53 +137,53 @@ const RegisterPet = ({ navigation }) => {
                 width="100%"
               />
 
-              <Select
-                style={styles.select}
-                values={["Perro", "Gato"]}
-                setValues={handleAnimalChange}
-                texto={"Animal"}
-                width="100%"
-              />
-              <Select
-                width="100%"
-                values={razas.map((raza) => raza.nombre)}
-                setValues={(item) => {
-                  const selectedRaza = razas.find(
-                    (raza) => raza.nombre === item
-                  ); // Buscar la raza seleccionada por su nombre
-                  if (selectedRaza) {
-                    const newData = { ...newPetData, raza: selectedRaza.id }; // Guardar el ID de la raza seleccionada en newPetData
-                    setNewPetData(newData);
+                <Select
+                  style={styles.select}
+                  values={["Perro", "Gato"]}
+                  setValues={handleAnimalChange}
+                  texto={"Animal"}
+                  width="100%"
+                />
+                <Select
+                  width="100%"
+                  values={razas.map((raza) => raza.nombre)}
+                  setValues={(item) => {
+                    const selectedRaza = razas.find(
+                      (raza) => raza.nombre === item
+                    ); // Buscar la raza seleccionada por su nombre
+                    if (selectedRaza) {
+                      const newData = { ...newPetData, raza: selectedRaza.id }; // Guardar el ID de la raza seleccionada en newPetData
+                      setNewPetData(newData);
+                    }
+                  }}
+                  texto={"Raza"}
+                  loading={loadingRazas}
+                  disabled={!newPetData.animal}
+                  placeholder={
+                    !newPetData.animal ? "Seleccione tipo de animal" : undefined
                   }
-                }}
-                texto={"Raza"}
-                loading={loadingRazas}
-                disabled={!newPetData.animal}
-                placeholder={
-                  !newPetData.animal ? "Seleccione tipo de animal" : undefined
-                }
-              />
-              <Select
-                width="100%"
-                values={["Macho", "Hembra"]}
-                setValues={(item) => {
-                  const newData = newPetData;
-                  newData.sexo = item === "Macho" ? 1 : 2;
-                  setNewPetData(newData);
-                }}
-                texto={"Sexo"}
-              />
-              <Select
-                width="100%"
-                values={["Cachorro", "Juvenil", "Adulto"]}
-                setValues={(item) => {
-                  const newData = newPetData;
-                  newData.edad =
-                    item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
-                  setNewPetData(newData);
-                }}
-                texto={"Edad"}
-              />
+                />
+                <Select
+                  width="100%"
+                  values={["Macho", "Hembra"]}
+                  setValues={(item) => {
+                    const newData = newPetData;
+                    newData.sexo = item === "Macho" ? 1 : 2;
+                    setNewPetData(newData);
+                  }}
+                  texto={"Sexo"}
+                />
+                <Select
+                  width="100%"
+                  values={["Cachorro", "Juvenil", "Adulto"]}
+                  setValues={(item) => {
+                    const newData = newPetData;
+                    newData.edad =
+                      item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
+                    setNewPetData(newData);
+                  }}
+                  texto={"Edad"}
+                />
 
               <Select
                 width="100%"
