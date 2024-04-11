@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
@@ -22,9 +21,10 @@ import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
 import LoadingComponent from "../../../components/LoadingComponent";
-import Vacunas from "./Vacunas";
+
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedPic, setSelectedPic] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [confirmationModal, setConfirmationModal] = useState(false);
@@ -69,6 +69,48 @@ const RegisterPet = ({ navigation }) => {
     }
   };
 
+  const handleSubmit = () => {
+    let localError = [];
+    Object.keys(newPetData).forEach((key) => {
+      if (
+        (newPetData[key] === "" && key !== "descripcion") ||
+        (newPetData[key] === null && key !== "vilef" && key !== "vif")
+      ) {
+        if (key === "tamanio") {
+          localError.push(`Por favor corregir el campo tamaño`);
+        } else if (key === "nivelCuidado") {
+          localError.push(`Por favor corregir el campo nivel de cuidado`);
+        } else {
+          localError.push(`Por favor corregir el campo ${key}`);
+        }
+      }
+    });
+    if (images.length < 1) {
+      localError.push(`Carga por lo menos una foto de la mascota`);
+    }
+    if (localError.length !== 0) {
+      setError(localError);
+    } else {
+      localError = [];
+      setIsLoading(true);
+      setLoadingRazas(true);
+
+      navigation.navigate("Vacunas");
+      //   agregarMascota(
+      //     newPetData,
+      //     images,
+      //     token,
+      //     navigation,
+      //     setCurrentUser
+      //   ).then(() => {
+      //     setNewPetData(initialPetData);
+      //     setImages([]);
+      //     setIsLoading(false);
+      //     setConfirmationModal(true);
+      //   });
+    }
+  };
+
   const handleDelete = () => {
     const newImages = images.filter((img) => img !== selectedPic);
     setImages(newImages);
@@ -85,7 +127,12 @@ const RegisterPet = ({ navigation }) => {
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.titulo}>Publicar una mascota</Text>
+          <View style={styles.rowContainer}>
+            <Text style={styles.titulo}>Publicar una mascota</Text>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Siguiente</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.row}>
             <ScrollView contentContainerStyle={styles.column}>
               {images.map((image, key) => {
@@ -229,13 +276,6 @@ const RegisterPet = ({ navigation }) => {
                 placeholder="Descripcion"
                 atributo="descripcion"
               />
-              <TouchableOpacity
-                style={styles.button}
-                // onPress={handleSubmit}
-                onPress={() => navigation.navigate("Vacunas")}
-              >
-                <Text style={styles.buttonText}>Siguiente</Text>
-              </TouchableOpacity>
             </ScrollView>
 
             <AddImageModal
@@ -283,6 +323,22 @@ const RegisterPet = ({ navigation }) => {
                 <Text>Mascota creada exitosamente</Text>
               </View>
             </Modal>
+            <Modal
+              isVisible={error !== null}
+              onBackdropPress={() => setError(null)}
+            >
+              <View style={styles.modalContainer}>
+                <FontAwesome
+                  name="times-circle"
+                  size={150}
+                  style={{ color: "red" }}
+                />
+                {error &&
+                  error.map((e) => {
+                    return <Text key={e}>{e}</Text>;
+                  })}
+              </View>
+            </Modal>
           </View>
         </View>
       );
@@ -302,15 +358,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#9A34EA",
     fontWeight: "bold",
-    padding: 20,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    gap: 10,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   row: {
     flexDirection: "row",
     gap: 10,
-    height: "auto",
   },
   column: {
     gap: 5,
@@ -342,7 +403,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#9A34EA",
     borderRadius: 5,
     paddingVertical: 10,
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     alignSelf: "flex-end",
   },
   buttonText: {
@@ -363,7 +424,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    aspectRatio: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
@@ -371,6 +431,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 20,
+    paddingVertical: 20,
   },
 });
 

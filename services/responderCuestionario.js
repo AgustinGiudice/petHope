@@ -16,19 +16,23 @@ export const responderCuestonario = async (
       navigation.navigate("LoginScreen");
       throw new Error("Acceso no autorizado");
     }
+    if (response.status === 200) {
+      const data = await response.json();
+      setCurrentUser(data.usuario);
+      const new_obj = {
+        token: token,
+        usuario: data.usuario,
+      };
 
-    const data = await response.json();
-    setCurrentUser(data.usuario);
-    const new_obj = {
-      "token" : token,
-      "usuario" : data.usuario,
+      AsyncStorage.setItem("token", JSON.stringify(new_obj));
+
+      return true;
+    } else {
+      return false;
     }
-
-    AsyncStorage.setItem("token", JSON.stringify(new_obj));
-
-    navigation.navigate("Tabs");
   } catch (error) {
     console.error("Error al completar el formulario", error);
+    return false;
   }
 };
 
