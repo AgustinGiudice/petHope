@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
@@ -22,7 +21,7 @@ import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
 import LoadingComponent from "../../../components/LoadingComponent";
-import Vacunas from "./Vacunas";
+
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
@@ -95,18 +94,20 @@ const RegisterPet = ({ navigation }) => {
       localError = [];
       setIsLoading(true);
       setLoadingRazas(true);
-      agregarMascota(
-        newPetData,
-        images,
-        token,
-        navigation,
-        setCurrentUser
-      ).then(() => {
-        setNewPetData(initialPetData);
-        setImages([]);
-        setIsLoading(false);
-        setConfirmationModal(true);
-      });
+
+      navigation.navigate("Vacunas");
+      //   agregarMascota(
+      //     newPetData,
+      //     images,
+      //     token,
+      //     navigation,
+      //     setCurrentUser
+      //   ).then(() => {
+      //     setNewPetData(initialPetData);
+      //     setImages([]);
+      //     setIsLoading(false);
+      //     setConfirmationModal(true);
+      //   });
     }
   };
 
@@ -129,7 +130,7 @@ const RegisterPet = ({ navigation }) => {
           <View style={styles.rowContainer}>
             <Text style={styles.titulo}>Publicar una mascota</Text>
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Guardar</Text>
+              <Text style={styles.buttonText}>Siguiente</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
@@ -334,7 +335,7 @@ const RegisterPet = ({ navigation }) => {
                 />
                 {error &&
                   error.map((e) => {
-                    return <Text>{e}</Text>;
+                    return <Text key={e}>{e}</Text>;
                   })}
               </View>
             </Modal>
