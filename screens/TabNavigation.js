@@ -15,6 +15,7 @@ import { UserContext } from "../context/UserContext";
 //IMPORTS REFUGIOS
 import RegisterPetNavigation from "./RegisterPetNavigation";
 import PetRefNavigation from "./PetRefNavigation";
+import PerfilRefugio from "./tabScreens/refugioScreens/PerfilRefugio";
 import { COLORS } from "../styles";
 
 const Tab = createBottomTabNavigator();
@@ -72,7 +73,7 @@ const TabNavigation = ({ navigation }) => {
         />
         <Tab.Screen
           name="Perfil"
-          component={ProfileNavigation}
+          component={isRefugio ? PerfilRefugio : ProfileNavigation}
           options={{
             unmountOnBlur: true,
             headerShown: false,

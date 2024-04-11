@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import RegisterPet from "./tabScreens/refugioScreens/RegisterPet";
-
+import Vacunas from "./tabScreens/refugioScreens/Vacunas";
 const Stack = createStackNavigator();
 
 function RegisterPetNavigation() {
@@ -10,7 +10,7 @@ function RegisterPetNavigation() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="RegisterPet" component={RegisterPet} />
-      {/* <Stack.Screen name="Segundo" component={Chat} /> */}
+      <Stack.Screen name="Vacunas" component={Vacunas} />
     </Stack.Navigator>
   );
 }

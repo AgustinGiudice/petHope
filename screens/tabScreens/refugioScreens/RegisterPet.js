@@ -22,7 +22,7 @@ import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
 import LoadingComponent from "../../../components/LoadingComponent";
-
+import Vacunas from "./Vacunas";
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [selectedPic, setSelectedPic] = useState(null);
@@ -67,20 +67,6 @@ const RegisterPet = ({ navigation }) => {
     } else {
       setRazas([]);
     }
-  };
-
-  const handleSubmit = () => {
-    setIsLoading(true);
-    setLoadingRazas(true);
-    agregarMascota(newPetData, images, token, navigation, setCurrentUser).then(
-      () => {
-        console.log("aca");
-        setNewPetData(initialPetData);
-        setImages([]);
-        setIsLoading(false);
-        setConfirmationModal(true);
-      }
-    );
   };
 
   const handleDelete = () => {
@@ -243,8 +229,12 @@ const RegisterPet = ({ navigation }) => {
                 placeholder="Descripcion"
                 atributo="descripcion"
               />
-              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Guardar</Text>
+              <TouchableOpacity
+                style={styles.button}
+                // onPress={handleSubmit}
+                onPress={() => navigation.navigate("Vacunas")}
+              >
+                <Text style={styles.buttonText}>Siguiente</Text>
               </TouchableOpacity>
             </ScrollView>
 
