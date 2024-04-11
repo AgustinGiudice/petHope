@@ -5,7 +5,7 @@ import HeaderMascota from "./HeaderMascota";
 import { COLORS } from "../styles";
 
 const SinMascotas = ({ filtros, setFiltros, setResetMatches }) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   return (
     <View style={styles.container}>
       <HeaderMascota
@@ -14,12 +14,21 @@ const SinMascotas = ({ filtros, setFiltros, setResetMatches }) => {
         setResetMatches={setResetMatches}
         mascota={{ nombre: "No encontramos nada" }}
       />
-      <View style={[styles.imgContainer, { height: width - 30 }]}>
-        <Image source={img} style={styles.imagen} />
+      <View
+        style={{
+          minHeight: height - 120,
+          alignItems: "center",
+          gap: 30,
+          paddingVertical: 60,
+        }}
+      >
+        <View style={[styles.imgContainer, { height: width - 30 }]}>
+          <Image source={img} style={styles.imagen} />
+        </View>
+        <Text style={styles.texto}>
+          Probá cambiando el filtro de arriba o volvé más tarde
+        </Text>
       </View>
-      <Text style={styles.texto}>
-        Probá cambiando el filtro de arriba o volvé más tarde
-      </Text>
     </View>
   );
 };
