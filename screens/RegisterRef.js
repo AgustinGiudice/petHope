@@ -7,7 +7,7 @@ import MapView, { Marker } from "react-native-maps";
 import LoadingComponent from "../components/LoadingComponent";
 import * as Location from "expo-location";
 import { COLORS } from "../styles";
-import { BASE_URL } from "@env";
+import { registrarRefugio } from "../services/registrarRefugio";
 
 const RegisterRef = ({ navigation }) => {
   const [indexModal, setIndexModal] = useState(0);
@@ -60,10 +60,6 @@ const RegisterRef = ({ navigation }) => {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log("ACTUALIZADO" + JSON.stringify(refugioData));
-  }, [refugioData]);
-
   const handleNext = async (value) => {
     setError([]);
     if (value === null) {
@@ -75,23 +71,9 @@ const RegisterRef = ({ navigation }) => {
 
   const handleSubmit = () => {
     // Realizar la petición POST al backend para guardar los datos del refugio
-    fetch(`${BASE_URL}api/refugios`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(refugioData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Respuesta del backend:", data);
-        // Reiniciar los campos del formulario después de guardar los datos
-        setRefugioData(initialData);
-        navigation.navigate("Tabs");
-      })
-      .catch((error) => {
-        console.error("Error al guardar el refugio:", error);
-      });
+    setIsLoading(true);
+    registrarRefugio(refugioData, setRefugioData, initialData, navigation);
+    setIsLoading(false);
   };
 
   if (isLoading) {
@@ -214,49 +196,40 @@ const RegisterRef = ({ navigation }) => {
         setVisible={setIndexModal}
         setError={setError}
       >
-        <Text style={styles.title}>
-          Mové el cursor hasta que coincida con tu ubicación
-        </Text>
-        <MapView style={styles.map} region={region}>
-          <Marker
-            coordinate={{
-              latitude: region.latitude,
-              longitude: region.longitude,
-            }}
-            title="Mi Ubicación"
-            description="Estoy aquí"
-            draggable
-            onDragEnd={(e) => {
-              const { latitude, longitude } = e.nativeEvent.coordinate;
-              const newData = refugioData;
-              newData.latitud = latitude;
-              newData.longitud = longitude;
-              setRefugioData(newData);
-              setRegion({ ...region, latitude, longitude });
-            }}
-          />
-        </MapView>
-        <FontAwesome
-          name="arrow-right"
-          size={40}
-          style={styles.arrow}
-          onPress={() => handleNext()}
-        />
-      </RegisterModal>
-      <RegisterModal
-        visible={indexModal === 6}
-        setVisible={setIndexModal}
-        setError={setError}
-      >
-        <View key={33} style={styles.lastContainer}>
-          <Text style={styles.title}>
-            ¡Muchas gracias por contestar las preguntas!
-          </Text>
-          <Text>Ya podés empezar a cambiarle la vida a un animalito</Text>
-          <TouchableOpacity onPress={handleSubmit}>
-            <Text style={styles.start}>Empezar</Text>
-          </TouchableOpacity>
-        </View>
+        {region.latitude === 0 || region.longitude === 0 ? (
+          <LoadingComponent />
+        ) : (
+          <>
+            <Text style={styles.title}>
+              Mové el cursor hasta que coincida con tu ubicación
+            </Text>
+            <MapView style={styles.map} region={region}>
+              <Marker
+                coordinate={{
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                }}
+                title="Mi Ubicación"
+                description="Estoy aquí"
+                draggable
+                onDragEnd={(e) => {
+                  const { latitude, longitude } = e.nativeEvent.coordinate;
+                  const newData = refugioData;
+                  newData.latitud = latitude;
+                  newData.longitud = longitude;
+                  setRefugioData(newData);
+                  setRegion({ ...region, latitude, longitude });
+                }}
+              />
+            </MapView>
+            <FontAwesome
+              name="arrow-right"
+              size={40}
+              style={styles.arrow}
+              onPress={handleSubmit}
+            />
+          </>
+        )}
       </RegisterModal>
     </View>
   );

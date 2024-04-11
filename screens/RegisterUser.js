@@ -111,8 +111,8 @@ const RegisterUser = ({ navigation }) => {
         longitude: location.coords.longitude,
       });
       const newData = userData;
-      newData.latitud = region.latitude;
-      newData.longitud = region.longitude;
+      newData.latitud = location.coords.latitude;
+      newData.longitud = location.coords.longitude;
       setUserData(newData);
       setIsLoading(false);
     })();
