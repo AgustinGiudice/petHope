@@ -22,7 +22,7 @@ import { UserContext } from "../../../context/UserContext";
 import { TokenContext } from "../../../context/TokenContext";
 import { agregarMascota } from "../../../services/agregarMascota";
 import LoadingComponent from "../../../components/LoadingComponent";
-
+import Vacunas from "./Vacunas";
 const RegisterPet = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
