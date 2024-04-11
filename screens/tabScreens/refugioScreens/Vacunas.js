@@ -45,8 +45,8 @@ const Vacunas = ({ navigation }) => {
         },
         {
           nombre: "anual",
-          estado: "pendiente",
-          fechaAplicacion: null,
+          estado: "aplicada",
+          fechaAplicacion: "2025-05-21T00:00:00.000Z",
         },
       ],
     },
