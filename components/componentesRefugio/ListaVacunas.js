@@ -13,6 +13,8 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5"; // Asegúrate de tener este paquete instalado
 
 import DateTimePicker from "@react-native-community/datetimepicker"; // Importa el DatePicker
+//service de registrarVacunas
+import { registrarVacunas } from "../../services/registrarVacunas";
 
 const ListaVacunas = ({ vacunas }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -23,28 +25,35 @@ const ListaVacunas = ({ vacunas }) => {
   const [vacunaSeleccionadaId, setVacunaSeleccionadaId] = useState(null);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date()); // Estado para la fecha seleccionada
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false); // Nuevo estado para controlar la visibilidad del DateTimePicker
-
   // Activa o desactiva el modo de edición
   const toggleModoEdicion = () => {
     setModoEdicion(!modoEdicion);
   };
 
   // Agrega una vacuna al estado vacunasParaAgregar
-  const agregarVacuna = (vacunaId, dosisNombre) => {
-    const nuevaVacuna = {
-      mascotaId: "5e4b9002-9bff-419d-be73-d387b6effe97", // Asegúrate de reemplazar esto con el ID de la mascota actual
-      vacunaId: vacunaId,
-      fechaAplicacion: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
-      dosis: dosisNombre,
-    };
-    setVacunasParaAgregar([...vacunasParaAgregar, nuevaVacuna]);
-  };
+  // const agregarVacuna = (vacunaId, dosisNombre) => {
+  //   const nuevaVacuna = {
+  //     mascotaId: "5e4b9002-9bff-419d-be73-d387b6effe97", // Asegúrate de reemplazar esto con el ID de la mascota actual
+  //     vacunaId: vacunaId,
+  //     fechaAplicacion: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
+  //     dosis: dosisNombre,
+  //   };
+  //   setVacunasParaAgregar([...vacunasParaAgregar, nuevaVacuna]);
+  // };
 
   // Ejemplo de cómo manejar el envío de las vacunas agregadas al backend
   const enviarVacunas = () => {
     console.log(vacunasParaAgregar);
-    // Aquí podrías hacer un POST al backend con las vacunasParaAgregar
-    // Después de enviarlas, puedes limpiar el estado o manejar las respuestas como sea necesario
+    
+    registrarVacunas(vacunasParaAgregar).then((response) => {
+      if (response.success) {
+        Alert.alert("Vacunas enviadas", "Las vacunas se han enviado correctamente.");
+        setVacunasParaAgregar([]); // Limpia el estado de vacunasParaAgregar
+      } else {
+        Alert.alert("Error", "Ocurrió un error al enviar las vacunas.");
+      }
+    }
+    );
   };
 
   const onDosisChange = (itemValue) => {
