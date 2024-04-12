@@ -23,6 +23,7 @@ import { agregarMascota } from "../../../services/agregarMascota";
 import LoadingComponent from "../../../components/LoadingComponent";
 
 const RegisterPet = ({ navigation }) => {
+  const [mascotaId, setMascotaId] = useState(null);
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
   const [selectedPic, setSelectedPic] = useState(null);
@@ -69,7 +70,7 @@ const RegisterPet = ({ navigation }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let localError = [];
     Object.keys(newPetData).forEach((key) => {
       if (
@@ -90,24 +91,34 @@ const RegisterPet = ({ navigation }) => {
     }
     if (localError.length !== 0) {
       setError(localError);
-    } else {
-      localError = [];
-      setIsLoading(true);
-      setLoadingRazas(true);
+    }
 
-      navigation.navigate("Vacunas");
-      //   agregarMascota(
-      //     newPetData,
-      //     images,
-      //     token,
-      //     navigation,
-      //     setCurrentUser
-      //   ).then(() => {
-      //     setNewPetData(initialPetData);
-      //     setImages([]);
-      //     setIsLoading(false);
-      //     setConfirmationModal(true);
-      //   });
+    try {
+      // Espera a que agregarMascota se complete y obtén el ID de la nueva mascota.
+      const id = await agregarMascota(
+        newPetData,
+        images,
+        token,
+        navigation,
+        setCurrentUser
+      );
+      console.log("ID obtenido de agregarMascota:", id);
+
+      // Actualiza el estado con el nuevo ID de mascota.
+      setMascotaId(id);
+
+      // Limpia el estado y prepara para la siguiente acción.
+      setNewPetData(initialPetData);
+      setImages([]);
+      setIsLoading(false);
+      setConfirmationModal(true);
+
+      // Navega a la pantalla Vacunas, pasando el ID de mascota obtenido.
+      navigation.navigate("Vacunas", { mascotaId: mascotaId });
+    } catch (error) {
+      console.error("Error en agregarMascota:", error);
+      // Manejo del error, por ejemplo, mostrar un mensaje al usuario.
+      setIsLoading(false); // Asegúrate de detener cualquier indicador de carga.
     }
   };
 

@@ -36,24 +36,10 @@ const PerfilRefugio = ({ navigation }) => {
     web: userData.web,
   });
 
-  const [shelterData, setShelterData] = useState({
-    name: "Nombre del Refugio",
-    description: "Descripción del refugio...",
-    imageUrl: "https://via.placeholder.com/150", // URL de la imagen del refugio
-    // Otros datos editables del refugio
-  });
-
-  useEffect(() => {
-    console.log(currentUser);
-    console.log("EDITABLEDATA" + JSON.stringify(editableData));
-  }, []);
-
-  const handleEditProfile = () => {
-    // Lógica para editar el perfil del refugio
-  };
   const handleEditInformation = () => {
     setIsEditing(true);
   };
+
   const handleSubmit = () => {
     setLoading(true);
     // Validar campos antes de enviar la solicitud
@@ -153,9 +139,18 @@ const PerfilRefugio = ({ navigation }) => {
     });
   };
 
+  //BORRAR DESPUES
+  useEffect(() => {
+    // console.log(currentUser);
+    console.log("EDITABLEDATA" + JSON.stringify(editableData));
+  }, [editableData]);
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri: shelterData.imageUrl }} style={styles.image} />
+      <Image
+        source={require("../../../assets/refugio2.jpg")}
+        style={styles.image}
+      />
 
       <ScrollView collapsable={true} style={styles.contentContainer}>
         <View style={styles.textContainer}>

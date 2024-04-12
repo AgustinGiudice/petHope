@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import ListaVacunas from "../../../components/componentesRefugio/ListaVacunas";
-import { getVacunas } from "../../../services/vacunasService"; // Asegúrate de actualizar la ruta si es necesario
+import { getVacunas } from "../../../services/getVacunas";
+import Constants from "expo-constants";
+import { TokenContext } from "../../../context/TokenContext";
 
-const mascotaId = "5e4b9002-9bff-419d-be73-d387b6effe97"; // Ejemplo de ID de mascota, reemplaza o ajusta según necesites
-
-const Vacunas = ({ navigation }) => {
+const Vacunas = ({ route }) => {
+  const { token } = useContext(TokenContext);
   const [vacunas, setVacunas] = useState([]);
-
+  const { mascotaId } = route.params;
   useEffect(() => {
+    console.log("ID EN VACUNAS" + mascotaId);
     const cargarVacunas = async () => {
-      const vacunasData = await getVacunas(mascotaId);
+      const vacunasData = await getVacunas(token, mascotaId);
       setVacunas(vacunasData);
     };
 
     cargarVacunas();
-  }, []); // El arreglo vacío asegura que el efecto se ejecute solo una vez al montar el componente
+  }, [mascotaId]); // El arreglo vacío asegura que el efecto se ejecute solo una vez al montar el componente
 
   return (
     <View style={styles.container}>

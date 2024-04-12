@@ -33,6 +33,8 @@ export const agregarMascota = async (
       throw new Error("Acceso no autorizado");
     }
     const data = await response.json();
+    console.log("SOY EL ID" + data.mascotaId);
+    return data.mascotaId;
   } catch (error) {
     console.error("Error al crear mascota:", error);
   }
