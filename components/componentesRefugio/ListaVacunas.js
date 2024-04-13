@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Picker } from "@react-native-picker/picker";
 import {
   ScrollView,
@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/FontAwesome5"; // Asegúrate de tene
 import DateTimePicker from "@react-native-community/datetimepicker"; // Importa el DatePicker
 //service de registrarVacunas
 import { registrarVacunas } from "../../services/registrarVacunas";
+import { TokenContext } from "../../context/TokenContext";
 
 const ListaVacunas = ({ vacunas }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -25,6 +26,8 @@ const ListaVacunas = ({ vacunas }) => {
   const [vacunaSeleccionadaId, setVacunaSeleccionadaId] = useState(null);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date()); // Estado para la fecha seleccionada
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false); // Nuevo estado para controlar la visibilidad del DateTimePicker
+  const { token } = useContext(TokenContext);
+
   // Activa o desactiva el modo de edición
   const toggleModoEdicion = () => {
     setModoEdicion(!modoEdicion);
@@ -44,16 +47,18 @@ const ListaVacunas = ({ vacunas }) => {
   // Ejemplo de cómo manejar el envío de las vacunas agregadas al backend
   const enviarVacunas = () => {
     console.log(vacunasParaAgregar);
-    
-    registrarVacunas(vacunasParaAgregar).then((response) => {
+
+    registrarVacunas(vacunasParaAgregar, token).then((response) => {
       if (response.success) {
-        Alert.alert("Vacunas enviadas", "Las vacunas se han enviado correctamente.");
+        Alert.alert(
+          "Vacunas enviadas",
+          "Las vacunas se han enviado correctamente."
+        );
         setVacunasParaAgregar([]); // Limpia el estado de vacunasParaAgregar
       } else {
         Alert.alert("Error", "Ocurrió un error al enviar las vacunas.");
       }
-    }
-    );
+    });
   };
 
   const onDosisChange = (itemValue) => {

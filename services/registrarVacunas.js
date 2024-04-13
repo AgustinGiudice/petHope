@@ -1,15 +1,19 @@
 // vacunasService.js
 import { BASE_URL } from "@env"; // Asegúrate de que BASE_URL esté correctamente definido en tu .env
 
-export const registrarVacunas = async (vacunas) => {
+export const registrarVacunas = async (vacunas, token) => {
   try {
-    const response = await fetch(`${BASE_URL}api/vacunas/registro-vacunacion/multiple`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vacunas),
-    });
+    const response = await fetch(
+      `${BASE_URL}api/vacunas/registro-vacunacion/multiple`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(vacunas),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
