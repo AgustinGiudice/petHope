@@ -18,7 +18,7 @@ const Vacunas = ({ route }) => {
   useEffect(() => {
     console.log("ID EN VACUNAS" + mascotaId);
     const cargarVacunas = async () => {
-      const vacunasData = await getVacunas(token, mascotaId);
+      const vacunasData = await getVacunas(mascotaId, token);
       setVacunas(vacunasData);
     };
 

@@ -1,13 +1,14 @@
 // Servicio para obtener las vacunas de una mascota específica
 import { BASE_URL } from "@env"; // Asegúrate de que BASE_URL esté correctamente definido en tu .env
 
-export const getVacunas = async (mascotaId) => {
+export const getVacunas = async (mascotaId, token) => {
   try {
     const url = `${BASE_URL}api/vacunas/vacunas-detalladas2/${mascotaId}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
