@@ -68,6 +68,7 @@ const Chat = ({ route }) => {
   };
 
   useEffect(() => {
+    console.log("hola");
     getChat(
       receiver.id,
       currentUser.id,
@@ -77,6 +78,7 @@ const Chat = ({ route }) => {
       setCurrentUser,
       navigation
     );
+
     setIsLoading(false);
   }, []);
 

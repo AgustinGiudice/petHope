@@ -7,10 +7,9 @@ export const getMatches = async (
   setCurrentUser,
   token,
   setIsLoading,
-  setMatches,
+  setMatches
 ) => {
   try {
-
     const response = await fetch(`${BASE_URL}api/match/${currentUser.id}`, {
       method: "GET",
       headers: {
@@ -27,10 +26,12 @@ export const getMatches = async (
       navigation.navigate("LoginScreen");
       throw new Error("Acceso no autorizado");
     }
+
     const data = await response.json();
+    console.log(data);
     setIsLoading(false);
     setMatches(data);
   } catch (error) {
     console.error("Error al obtener los matches:", error);
-  } 
+  }
 };
