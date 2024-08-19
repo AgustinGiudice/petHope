@@ -13,6 +13,7 @@ export const getMascotas = async (
   setCurrentUser
 ) => {
   try {
+    console.log(url);
     const response = await fetchData(url, token); //verificar si se necesita el await o no
 
     if (response.status === 401 || response.status === 403) {
@@ -49,6 +50,7 @@ async function fetchData(url, token) {
     });
     return response;
   } catch (error) {
+    console.log(error);
     console.log("No se pudo realizar la conexión con la API");
     throw error;
   }

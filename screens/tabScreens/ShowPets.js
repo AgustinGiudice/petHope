@@ -30,7 +30,7 @@ const ShowPets = ({ navigation }) => {
 
   const [filtros, setFiltros] = useState({
     sexo: 3,
-    distancia: 10000,
+    distancia: 10000000,
     tipoMascota: currentUser.tipoAnimal,
     tamaño: currentUser.tamanioPreferido,
     rangoDeEdad: currentUser.edadPreferida,
@@ -45,7 +45,7 @@ const ShowPets = ({ navigation }) => {
   useEffect(() => {
     console.log("Hola soy el useEffect, buenas tardes");
     // Obtener las mascotas.
-    //AsyncStorage.clear();
+    // AsyncStorage.clear();
     AsyncStorage.getItem("mascotasVistas").then(async (cache) => {
       let vistos;
       if (cache) {
@@ -59,6 +59,7 @@ const ShowPets = ({ navigation }) => {
       }
       vistos = JSON.stringify(vistos);
       let url;
+      console.log(BASE_URL);
       if (firstFetch) {
         url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
           currentUser.ubicacion.coordinates[0]

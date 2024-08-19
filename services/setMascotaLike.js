@@ -14,6 +14,7 @@ export const setMascotaLike = async (idMascota, idUsuario, token) => {
       }),
     });
   } catch (error) {
+    console.log("error");
     console.log(error);
   }
 };
