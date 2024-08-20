@@ -61,18 +61,19 @@ const ButtonFilters = ({ filtros, setFiltros, setResetMatches }) => {
                 <Text style={styles.filterTitle}>{distancia / 1000} km</Text>
 
                 <Text style={styles.filterTitle}>Tipo de animal</Text>
+                
                 <Radio
                   defaultValue={
                     filtros.tipoMascota === 1
-                      ? "Perro"
+                      ? "Perros"
                       : filtros.tipoMascota === 2
                       ? "Gatos"
                       : "Ambos"
                   }
-                  data={["Perro", "Gato", "Ambos"]}
+                  data={["Perros", "Gatos", "Ambos"]}
                   handleSelect={(value) => {
                     const formatedValue =
-                      value === "Perro" ? 1 : value === "Gato" ? 2 : 3;
+                      value === "Perros" ? 1 : value === "Gatos" ? 2 : 3;
                     if (formatedValue !== filtros.tipoMascota) {
                       const newFiltro = filtros;
                       newFiltro.tipoMascota = formatedValue;

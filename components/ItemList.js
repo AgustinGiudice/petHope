@@ -9,9 +9,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { LinearGradient } from "expo-linear-gradient";
 import HeaderMascota from "./HeaderMascota";
 import Foundation from "react-native-vector-icons/Foundation";
-import Constants from "expo-constants";
 import { COLORS } from "../styles";
-import isTablet from "../functions/isTablet";
 
 const obtenerTipoMascota = (t) => {
   switch (t) {
@@ -21,8 +19,6 @@ const obtenerTipoMascota = (t) => {
     case 2:
       return <FontAwesome5 name="cat" size={40} color="black" />;
 
-    default:
-      return <FontAwesome5 name="dog" size={40} color="black" />;
   }
 };
 
@@ -39,10 +35,10 @@ const obtenerSexoTexto = (sexo) => {
 
 function getRazaTexto(raza) {
   if (raza === 2) {
-    return "Perro";
+    return "Gato";
   }
   if (raza === 1) {
-    return "Gato";
+    return "Perro";
   }
 }
 
@@ -114,7 +110,7 @@ const ItemList = ({ item, filtros, setFiltros, setResetMatches }) => {
               </View>
             </View>
             <View style={styles.dataItemArria3}>
-              <Text>{obtenerTipoMascota(item.anima)}</Text>
+              <Text>{obtenerTipoMascota(item.animal)}</Text>
               <Text>{obtenerSexoTexto(item.sexo)}</Text>
             </View>
           </View>
