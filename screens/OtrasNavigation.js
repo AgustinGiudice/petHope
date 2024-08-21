@@ -45,9 +45,6 @@ function OtrasNavigation({ navigation }) {
         <TouchableOpacity style={styles.botonContainer}>
           <Text style={styles.textoBtn}>Denunciar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.botonContainer}>
-          <Text style={styles.textoBtn}>Denunciar</Text>
-        </TouchableOpacity>
         <TouchableOpacity
           style={[styles.botonContainer, styles.btnCerrarSesion]}
           onPress={handleLogout}
