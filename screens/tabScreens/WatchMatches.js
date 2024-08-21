@@ -34,7 +34,7 @@ const MatchesScreen = ({ navigation }) => {
   const [isModalForUserInfoVisible, setIsModalForUserInfoVisible] =
     useState(false);
   const [matches, setMatches] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
@@ -87,107 +87,119 @@ const MatchesScreen = ({ navigation }) => {
   if (isLoading) {
     return <LoadingComponent />;
   }
+  console.log(matches.length);
   if (matches.length === 0) {
-    <View style={styles.container}>
-      <Text>¡Todavía no elegiste una mascota!</Text>
-      <TouchableOpacity>
-        <Text>Ver mascotas</Text>
-      </TouchableOpacity>
-    </View>;
+    return (
+      <View style={styles.container}>
+        <View style={styles.noMatchesContainer}>
+          <Text style={styles.letraGrande}>
+            ¡Todavía no elegiste una mascota!
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Paw")}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Ver mascotas</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
+
   return (
     <View style={styles.container}>
       <HeaderMascota mascota={{ nombre: "Mensajes" }} />
-      <View style={styles.container1}>
-        <FlatList
-          data={matches}
-          contentContainerStyle={{
-            paddingBottom: 90,
-            marginTop: height * 0.05,
-          }}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.matchItem}
-              onPress={() =>
-                handleChatClick(
-                  currentUser.id === item.refugio.id
-                    ? item.usuario
-                    : item.refugio,
-                  item.mascota,
-                  item.refugio
-                )
-              }
-            >
-              <View style={styles.containerLeft}>
-                <View style={styles.imagenContainer}>
-                  <Image
-                    source={{ uri: item.mascota.pic }}
-                    style={styles.mascotaImagen}
-                  />
-                </View>
+      <FlatList
+        data={matches}
+        contentContainerStyle={{
+          paddingBottom: 90,
+          marginTop: height * 0.1,
+          flex: 1,
+          minHeight: screenHeight - Constants.statusBarHeight - 60,
+          backgroundColor: COLORS[200],
+        }}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.matchItem}
+            onPress={() =>
+              handleChatClick(
+                currentUser.id === item.refugio.id
+                  ? item.usuario
+                  : item.refugio,
+                item.mascota,
+                item.refugio
+              )
+            }
+          >
+            <View style={styles.containerLeft}>
+              <View style={styles.imagenContainer}>
+                <Image
+                  source={{ uri: item.mascota.pic }}
+                  style={styles.mascotaImagen}
+                />
+              </View>
 
-                <View style={styles.column}>
-                  <Text style={styles.letraGrande} numberOfLines={1}>
-                    {item.mascota.nombre} - {item.refugio.nombre}
-                  </Text>
-                  <Text style={styles.letraChica}>
-                    {getAnimalDescripcion(item.mascota.animal)}{" "}
-                    {getEdadDescripcion(item.mascota.edad)}{" "}
-                    {getTamanioDescripcion(item.mascota.tamanio)}
-                  </Text>
-                  <Text style={styles.letraChica}>
-                    {getSexoDescripcion(item.mascota.sexo)}
-                  </Text>
-                </View>
+              <View style={styles.column}>
+                <Text style={styles.letraGrande} numberOfLines={1}>
+                  {item.mascota.nombre} - {item.refugio.nombre}
+                </Text>
+                <Text style={styles.letraChica}>
+                  {getAnimalDescripcion(item.mascota.animal)}{" "}
+                  {getEdadDescripcion(item.mascota.edad)}{" "}
+                  {getTamanioDescripcion(item.mascota.tamanio)}
+                </Text>
+                <Text style={styles.letraChica}>
+                  {getSexoDescripcion(item.mascota.sexo)}
+                </Text>
               </View>
-              <View style={styles.column_design}>
-                <View style={styles.containerIcons}>
-                  <MaterialIcons
-                    name="chat"
-                    size={25}
-                    onPress={() =>
-                      handleChatClick(
-                        currentUser.id === item.refugio.id
-                          ? item.usuario
-                          : item.refugio,
-                        item.mascota,
-                        item.refugio
-                      )
-                    }
-                  />
-                  <MaterialCommunityIcons
-                    name="dots-vertical"
-                    size={25}
-                    onPress={() =>
-                      openMoreInfoModal(
-                        currentUser.id == item.refugio.id
-                          ? item.usuario
-                          : item.refugio,
-                        item.id
-                      )
-                    }
-                  />
-                </View>
+            </View>
+            <View style={styles.column_design}>
+              <View style={styles.containerIcons}>
+                <MaterialIcons
+                  name="chat"
+                  size={25}
+                  onPress={() =>
+                    handleChatClick(
+                      currentUser.id === item.refugio.id
+                        ? item.usuario
+                        : item.refugio,
+                      item.mascota,
+                      item.refugio
+                    )
+                  }
+                />
+                <MaterialCommunityIcons
+                  name="dots-vertical"
+                  size={25}
+                  onPress={() =>
+                    openMoreInfoModal(
+                      currentUser.id == item.refugio.id
+                        ? item.usuario
+                        : item.refugio,
+                      item.id
+                    )
+                  }
+                />
               </View>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          style={[styles.matchContainer, { width: width }]}
-          onEndReachedThreshold={0.1}
-          refreshing={refreshing}
-          onRefresh={() =>
-            getMatches(
-              navigation,
-              currentUser,
-              setCurrentUser,
-              token,
-              setIsLoading,
-              setMatches,
-              setRefreshing
-            )
-          }
-        />
-      </View>
+            </View>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        style={[styles.matchContainer, { width: width }]}
+        onEndReachedThreshold={0.1}
+        refreshing={refreshing}
+        onRefresh={() =>
+          getMatches(
+            navigation,
+            currentUser,
+            setCurrentUser,
+            token,
+            setIsLoading,
+            setMatches,
+            setRefreshing
+          )
+        }
+      />
 
       <Modal
         isVisible={isModalForMoreInfoVisible}
@@ -252,7 +264,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     backgroundColor: COLORS[200],
-    flex: 1,
   },
 
   matchContainer: {
@@ -335,6 +346,25 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  noMatchesContainer: {
+    marginTop: 50,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 50,
+  },
+  button: {
+    backgroundColor: COLORS[600],
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: "center",
+  },
+  buttonText: {
+    color: COLORS[50],
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
