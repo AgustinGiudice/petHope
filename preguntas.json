@@ -3,13 +3,13 @@
     {
       "pregunta": "¿Cuántas veces al día debe ser alimentado un perro o gato adulto?",
       "opciones": ["Una vez", "Dos veces", "Tres veces", "Depende del animal"],
-      "correcta": 3,
+      "correcta": "Depende del animal",
       "dato": "Depende del animal. Dependerá del gasto energético que tenga tu compañero de cuatro patas, factores como la edad, la salud y el nivel de actividad del animal modificarán esto. Para asegurarte de que tu compañero está bien alimentado es mejor consultar con un veterinario especialista en nutrición."
     },
     {
       "pregunta": "¿Cuánto ejercicio necesita un perro promedio cada día?",
       "opciones": ["15 minutos", "30 minutos", "Al menos 1 hora"],
-      "correcta": 2,
+      "correcta": "Al menos 1 hora",
       "dato": "Más de 1 hora. Sin embargo esto variará dependiendo de su raza, edad y salud, pero la mayoría de los perros necesitan al menos una hora de ejercicio cada día. Para asegurarte de que tu compañero está haciendo el ejercicio necesario es mejor consultar con un veterinario."
     },
     {
@@ -17,9 +17,9 @@
       "opciones": [
         "Los perros no necesitan socializar con otros perros",
         "Los perros solo deben socializar con perros de la misma raza",
-        "Los perros solo deben socializar con perros de la misma raza"
+        "Los perros deben socializar con perros personas y otros animales"
       ],
-      "correcta": 2,
+      "correcta": "Los perros deben socializar con perros personas y otros animales",
       "dato": "Los perros deben ser socializados desde una edad temprana con personas y otros animales. Esto asegurará que sea un animal sociable y equilibrado. Si tu compañero muestra comportamientos anormales a la hora de sociabilizar es mejor consultar con un veterinario."
     },
     {
@@ -30,7 +30,7 @@
         "Ignorarlo",
         "Vender todos los muebles"
       ],
-      "correcta": 1,
+      "correcta": "Proporcionarle un rascador",
       "dato": "Proporcionarle un rascador. Los gatos tienen una necesidad natural de rascar, y proporcionarles un rascador puede ayudar a proteger tus muebles. Si tu gato tiene comportamientos anormales lo mejor es consultar con un veterinario especialista en felinos."
     },
     {
@@ -41,7 +41,7 @@
         "Solo los gatos necesitan",
         "Son necesaria para ambos"
       ],
-      "correcta": 3,
+      "correcta": "Son necesaria para ambos",
       "dato": "Son necesarias para ambos, perros y gatos. Las vacunas ayudan a protegerlos de varias enfermedades, permitiendo darle una mejor y más larga vida a tu compañero. Para saber más sobre los planes de vacunación es mejor consultar con un veterinario."
     },
     {
@@ -52,7 +52,7 @@
         "Medicarlo",
         "Prender una vela y esperar"
       ],
-      "correcta": 1,
+      "correcta": "Llevarlo al veterinario",
       "dato": "Llevarlo al veterinario. Si tu perro o gato se enferma, es importante buscar atención veterinaria lo antes posible y no medicarlo con medicamentos humanos si no son recetados por un veterinario."
     },
     {
@@ -62,7 +62,7 @@
         "No tiene efecto alguno en su salud",
         "Puede prevenir problemas de salud y comportamineto"
       ],
-      "correcta": 2,
+      "correcta": "No tiene efecto alguno en su salud",
       "dato": "Puede prevenir ciertos problemas de salud y comportamiento. La esterilización/castración puede ayudar a prevenir problemas de salud como ciertos tipos de cáncer, así como problemas de comportamiento, sin embargo siempre es mejor consultar con un veterinario y hacer los estudios prequirúrgicos necesarios."
     },
     {
@@ -73,7 +73,7 @@
         "Consultar a un profesional",
         "Ninguna de las anteriores"
       ],
-      "correcta": 2,
+      "correcta": "Consultar a un profesional",
       "dato": "Consultar a un profesional. Si tu perro o gato muestra signos de ansiedad o estrés, es importante buscar la ayuda de un profesional, como un veterinario especialista en comportamiento animal."
     },
     {
@@ -84,7 +84,7 @@
         "Solo los gatos necesitan",
         "Tanto los perros como los gatos necesitan cuidado dental"
       ],
-      "correcta": 3,
+      "correcta": "Tanto los perros como los gatos necesitan cuidado dental",
       "dato": "Ambos, perros y gatos, necesitan cuidado dental. Al igual que los humanos, los perros y gatos pueden desarrollar problemas dentales si no se cuidan sus dientes, es por eso que debes consultar a tu veterinario para saber como proteger sus dientes."
     },
     {
@@ -94,7 +94,7 @@
         "Los gatos deben dormir 48hs mínimo",
         "Tanto los perros como los gatos necesitan actividad física regular"
       ],
-      "correcta": 2,
+      "correcta": "Tanto los perros como los gatos necesitan actividad física regular",
       "dato": "Tanto los perros como los gatos necesitan actividad física regular. Variará dependiendo de su raza, edad y salud, pero la mayoría de los perros necesitan más de una hora de ejercicio cada día. Para asegurarte de que tu compañero está haciendo el ejercicio necesario es mejor consultar con un veterinario."
     },
     {
@@ -105,7 +105,7 @@
         "Los gatos maúllan solo los lunes",
         "Los gatos nunca maúllan"
       ],
-      "correcta": 1,
+      "correcta": "Los gatos maúllan por distintos motivos",
       "dato": "Los gatos maúllan por distintos motivos. Es importante detectar cuales son los comportamientos habituales de tu gato, si este por lo general no maúlla y empieza a maullar sin motivo aparente (o viceversa). Lo apropiado es que acudas a un veterinario especialista en felinos para poder saber el motivo de este cambio en su comportamiento."
     },
     {
@@ -115,7 +115,7 @@
         "Es un juguete inteligente para animales de compañía",
         "Es un medicamento experimental para animales"
       ],
-      "correcta": 0,
+      "correcta": "Es un dispositivo de reconocimiento y registro de tu compañero de cuatro patas",
       "dato": "El microchip es un dispositivo de reconocimiento y registro de animales. Este dispositivo se implanta bajo la piel del animal y puede ser escaneado para identificarlo."
     },
     {
@@ -126,7 +126,7 @@
         "Los gatos necesitan ser cepillados todos los lunes",
         "Los cuidados del pelaje dependen de la raza y salud"
       ],
-      "correcta": 3,
+      "correcta": "Los cuidados del pelaje dependen de la raza y salud",
       "dato": "Tanto perros como gatos pueden necesitar cuidados de pelaje, pero estos dependen de su raza y salud. Para conocer mejor las necesidades del cuidado de pelaje de tu compañero de cuatro patas es mejor consultar con un veterinario."
     },
     {
@@ -136,7 +136,7 @@
         "Consultar a un veterinario especialista en comportamiento animal",
         "Pegarle hasta que entienda que se tiene que calmar"
       ],
-      "correcta": 1,
+      "correcta": "Consultar a un veterinario especialista en comportamiento animal",
       "dato": "Si tu mascota se comporta de manera agresiva, debes consultar a un veterinario. La agresión puede ser un signo de varios problemas, incluyendo dolor, miedo, o ansiedad."
     },
     {
@@ -146,7 +146,7 @@
         "Buscarla inmediatamente",
         "Dejarla ir, probablemente encontrará un nuevo hogar"
       ],
-      "correcta": 1,
+      "correcta": "Buscarla inmediatamente",
       "dato": "Cuanto antes comiences a buscar, más probable será que encuentres a tu compañero de cuatro patas sano y salvo."
     },
     {
@@ -156,7 +156,7 @@
         "Solo las uñas de los perros necesitan ser cortadas, los gatos no lo necesitan",
         "Tanto perros como gatos necesitan que sus uñas sean cortadas, dependiendo del estilo de vida y salud"
       ],
-      "correcta": 2,
+      "correcta": "Tanto perros como gatos necesitan que sus uñas sean cortadas, dependiendo del estilo de vida y salud",
       "dato": "Tanto los perros como los gatos pueden necesitar que les corten las uñas, ya que si son demasiado largas pueden causar dolor y problemas de movilidad. Ante cualquier duda o problema a la hora de cortar las uñas, podes consultar con un veterinario."
     },
     {
@@ -166,7 +166,7 @@
         "Tratarlo con remedios caseros",
         "Llevarlo al veterinario para un tratamiento adecuado"
       ],
-      "correcta": 2,
+      "correcta": "Llevarlo al veterinario para un tratamiento adecuado",
       "dato": "Si tu mascota tiene parásitos como pulgas o gusanos, debes llevarla al veterinario para un tratamiento adecuado. Los parásitos pueden causar una variedad de problemas de salud y algunos pueden transmitirse a los humanos."
     },
     {
@@ -176,7 +176,7 @@
         "Los perros necesitan agua de charco para absorber mejor los nutrientes",
         "Tanto perros y gatos necesitan acceso constante a agua fresca y limpia"
       ],
-      "correcta": 2,
+      "correcta": "Tanto perros y gatos necesitan acceso constante a agua fresca y limpia",
       "dato": "Tanto perros como gatos necesitan acceso constante a agua fresca y limpia. La deshidratación puede ser peligrosa, sobre todo en verano."
     },
     {
@@ -186,31 +186,31 @@
         "Tratarlo con medicamentos para humanos",
         "Llevarlo al veterinario para un diagnóstico y tratamiento adecuados"
       ],
-      "correcta": 2,
+      "correcta": "Llevarlo al veterinario para un diagnóstico y tratamiento adecuados",
       "dato": "Si tu mascota muestra signos de dolor o malestar, tenes que llevarlo al veterinario para un diagnóstico y tratamiento adecuados."
     },
     {
       "pregunta": "¿Los perros pueden comer hueso cocinado?",
       "opciones": ["Si", "No"],
-      "correcta": 1,
+      "correcta": "No",
       "dato": "Son muchos los casos de emergencias a causa obstrucciones por huesos o cortes internos por las astillas de este, ante cualquier duda sobre la alimentación es mejor acudir a un veterinario."
     },
     {
       "pregunta": "¿Los gatos pueden ser veganos?",
       "opciones": ["Si", "No"],
-      "correcta": 1,
+      "correcta": "No",
       "dato": "No, los gatos son carnívoros estrictos, ante cualquier duda sobre la alimentación es mejor acudir a un veterinario"
     },
     {
       "pregunta": "¿Le puedo dar ibuprofeno a mi perro o gato? ",
       "opciones": ["Si", "No"],
-      "correcta": 1,
+      "correcta": "No",
       "dato": "Nunca es recomendable dar medicación a los animales si esta no es recetada por un veterinario."
     },
     {
       "pregunta": "¿Los gatos no necesitan collar?",
       "opciones": ["Si", "No"],
-      "correcta": 0,
+      "correcta": "Si",
       "dato": "Siempre es recomendable que los animales domésticos posean algún método de identificación, ya que permite identificarlos en caso de que se extravíen."
     },
     {
@@ -220,7 +220,7 @@
         "Los perros y gatos requieren dietas específicas para su especie",
         "Los perros pueden comer chocolates solo si son importados"
       ],
-      "correcta": 1,
+      "correcta": "Los perros y gatos requieren dietas específicas para su especie",
       "dato": "Los perros y gatos requieren dietas específicas para su especie, en algunos casos incluso dependiendo la raza. Para asegurarte de que tu compañero está bien alimentado es mejor consultar con un veterinario especialista en nutrición."
     },
     {
@@ -230,7 +230,7 @@
         "Es un nuevo genero musical para manejar el estrés de los animales",
         "Es una forma de reconocer a tu compañero de cuatro patas"
       ],
-      "correcta": 0,
+      "correcta": "Es una cirugía que previene la reproducción y algunos problemas de salud",
       "dato": "La esterilización/castración puede ayudar a prevenir problemas de salud como ciertos tipos de cáncer, así como problemas de comportamiento, sin embargo siempre es mejor consultar con un veterinario y hacer los estudios prequirúrgicos necesarios."
     },
     {
@@ -240,7 +240,7 @@
         "Los juguetes son importantes para la estimulación mental y física",
         "Los juguetes no son necesarios para las mascotas"
       ],
-      "correcta": 1,
+      "correcta": "Los juguetes son importantes para la estimulación mental y física",
       "dato": "Los juguetes son importantes para la estimulación mental y física de perros y gatos; pueden prevenir el aburrimiento y proporcionar una forma de ejercicio. Es importante que el juguete se adapte a tu compañero para evitar cualquier riesgo (como que lo trague por accidente). Ante cualquier duda o más información, es mejor consultar con un veterinario."
     }
   ]
