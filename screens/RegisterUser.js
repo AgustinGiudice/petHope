@@ -9,8 +9,9 @@ import LoadingComponent from "../components/LoadingComponent";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { registrarUsuario } from "../services/registrarUsuario";
+import { registrarUsuario, validarEmail } from "../services/registrarUsuario";
 import { COLORS } from "../styles";
+import { log } from "react-native-reanimated";
 
 const RegisterUser = ({ navigation }) => {
   const initialUserData = {
@@ -96,6 +97,17 @@ const RegisterUser = ({ navigation }) => {
     }
   };
 
+  // Nueva función para validar el email
+  const handleEmailValidation = async () => {
+    const { available, message } = await validarEmail(userData.mail);
+    if (!available) {
+      setError((prev) => [...prev, message]); // El mensaje del servidor indicará si el email ya está en uso.
+    } else {
+      setError([]);
+      setIndexModal(indexModal + 1);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -149,15 +161,13 @@ const RegisterUser = ({ navigation }) => {
           placeholder="Apellido"
           atributo="apellido"
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
+
         <FontAwesome
           name="arrow-right"
           size={40}
@@ -175,29 +185,24 @@ const RegisterUser = ({ navigation }) => {
         setVisible={setIndexModal}
         setError={setError}
       >
-        <Text style={styles.title}>Decinos cual es tu E-mail</Text>
+        <Text style={styles.title}>Decinos cuál es tu E-mail</Text>
         <Input
           value={userData.mail}
           setValue={setUserData}
           placeholder="E-mail"
           atributo="mail"
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}
           style={styles.arrow}
-          onPress={() =>
-            handleNext([{ nombre: "E-mail", valor: userData.mail }])
-          }
+          onPress={handleEmailValidation} // Validar el email antes de continuar
         />
       </RegisterModal>
       <RegisterModal
@@ -218,15 +223,12 @@ const RegisterUser = ({ navigation }) => {
           placeholder="Repetír contraseña"
           atributo="repeatPass"
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}
@@ -254,15 +256,12 @@ const RegisterUser = ({ navigation }) => {
           placeholder="Descripcion"
           atributo="descripcion"
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}
@@ -296,15 +295,12 @@ const RegisterUser = ({ navigation }) => {
           atributo={"provincia"}
           placeholder={"Provincia"}
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}
@@ -364,15 +360,12 @@ const RegisterUser = ({ navigation }) => {
           placeholder="Teléfono"
           atributo="telefono"
         />
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}
@@ -419,15 +412,12 @@ const RegisterUser = ({ navigation }) => {
             {date ? formattedDate : "Elegir fecha"}
           </Text>
         </TouchableOpacity>
-        {error.length !== 0
-          ? error.map((e) => {
-              return (
-                <Text key={e} style={{ color: "red" }}>
-                  {e}
-                </Text>
-              );
-            })
-          : null}
+        {error.length !== 0 &&
+          error.map((e, index) => (
+            <Text key={index} style={{ color: "red" }}>
+              {e}
+            </Text>
+          ))}
         <FontAwesome
           name="arrow-right"
           size={40}

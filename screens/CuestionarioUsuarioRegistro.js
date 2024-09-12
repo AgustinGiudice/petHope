@@ -139,13 +139,15 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
               setError={setError}
             >
               <Text style={styles.title}>{pregunta.pregunta}</Text>
-              <Radio
-                data={pregunta.opciones}
-                handleSelect={(value) => {
-                  handleResponse(value, pregunta.correcta);
-                }}
-                isDisabled={disable}
-              />
+              <View style={styles.containerRespuesta}>
+                <Radio
+                  data={pregunta.opciones}
+                  handleSelect={(value) => {
+                    handleResponse(value, pregunta.correcta);
+                  }}
+                  isDisabled={disable}
+                />
+              </View>
 
               {mensajeRespuesta === "CORRECTO" && (
                 <Text style={{ color: "green", marginTop: 10 }}>CORRECTO</Text>
@@ -560,6 +562,9 @@ const styles = StyleSheet.create({
     color: "white",
     aspectRatio: 1,
     paddingVertical: 20,
+  },
+  containerRespuesta: {
+    maxWidth: "89%",
   },
 });
 
