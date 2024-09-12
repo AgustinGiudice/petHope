@@ -1,14 +1,21 @@
-import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import Constants from "expo-constants";
 import Input from "../../../components/Input";
+import Input2 from "../../../components/Input2";
 import Select from "../../../components/Select";
 import { TokenContext } from "../../../context/TokenContext";
-import { useContext, useState } from "react";
-import HeaderMascota from "../../../components/HeaderMascota";
-import AddImageModal from "../../../components/AddImageModal";
+import { editarMascota } from "../../../services/editarMascota"; // Importar el servicio
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { BASE_URL } from "@env";
-import ConfirmationModal from "./ConfirmationModal";
 import { ActivityIndicator } from "react-native";
 
 const EditarMascota = ({ route, navigation }) => {
@@ -24,6 +31,7 @@ const EditarMascota = ({ route, navigation }) => {
   const [mascotaEliminada, setMascotaEliminada] = useState(false);
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // Nuevo estado para modo edición
 
   const handleDeleteConfirmation = () => {
     setConfirmationModalVisible(true);
@@ -33,7 +41,6 @@ const EditarMascota = ({ route, navigation }) => {
     setLoading(true);
     handleDelete(mascota.id);
     setMascotaEliminada(true);
-    // setConfirmationModalVisible(false);
   };
 
   const handleCancelDelete = () => {
@@ -41,10 +48,10 @@ const EditarMascota = ({ route, navigation }) => {
   };
 
   const cambiarImagen = (img) => {
-    const newData = newPetData;
-    const index = newData.imagen.find((imagen) => imagen === selectedPic);
+    const newData = { ...newPetData };
+    const index = newData.imagen.findIndex((imagen) => imagen === selectedPic);
     newData.imagen[index] = img;
-    console.log(newData.imagen);
+    setNewPetData(newData);
   };
 
   const handleRedirect = () => {
@@ -52,176 +59,197 @@ const EditarMascota = ({ route, navigation }) => {
       navigation.navigate("RefShowPets");
     }
   };
-  const handleDelete = async (idMascota) => {
+
+  const handleEditChange = (field, value) => {
+    setNewPetData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+    console.log("Edito la PETDATA", newPetData.nombre);
+    setIsEditing(true); // Activar el modo edición cuando haya cambios
+  };
+
+  const handleSaveChanges = async () => {
+    console.log("Guardando cambios...");
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(
-        `${BASE_URL}api/mascotas/deletePetsRef/${idMascota}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response);
-      if (response.status === 200) {
-        // Eliminación exitosa
-        // navigation.navigate("RefShowPets");
-        setRedirect(true);
-      } else {
-        console.error("Error al eliminar la mascota.");
-      }
-      setLoading(false);
+      const data = {
+        nombre: newPetData.nombre,
+        animal: newPetData.animal,
+        sexo: newPetData.sexo,
+        edad: newPetData.edad,
+        nivelCuidado: newPetData.nivelCuidado,
+        cuidadosEspeciales: newPetData.cuidadosEspeciales,
+        raza: newPetData.raza,
+        tamanio: newPetData.tamanio,
+        descripcion: newPetData.descripcion,
+        vif: newPetData.vif,
+        viLef: newPetData.viLef,
+      };
+      console.log("DATA", data);
+      await editarMascota(newPetData.id, data, token);
+      setIsEditing(false); // Desactivar el modo edición
+      navigation.goBack(); // Volver después de guardar
     } catch (error) {
-      console.error("Error al eliminar la mascota:", error);
+      console.error("Error al guardar cambios:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      {/* <HeaderMascota mascota={mascota} /> */}
-      <View style={styles.row}>
-        <View style={styles.column}>
-          {mascota.imagen.map((image, key) => {
-            return (
-              <TouchableOpacity
-                style={styles.imageContainer}
-                onPress={() => {
-                  setSelectedPic(image);
-                  setReplaceImageModalVisible(true);
-                }}
-                key={key}
-              >
-                <Image source={{ uri: image.url }} style={styles.image} />
-              </TouchableOpacity>
-            );
-          })}
-          {mascota.imagen.length < 4 && (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              {mascota.imagen.map((image, key) => (
+                <TouchableOpacity
+                  style={styles.imageContainer}
+                  onPress={() => {
+                    setSelectedPic(image);
+                    setReplaceImageModalVisible(true);
+                  }}
+                  key={key}
+                >
+                  <Image source={{ uri: image.url }} style={styles.image} />
+                </TouchableOpacity>
+              ))}
+              {mascota.imagen.length < 4 && (
+                <TouchableOpacity
+                  style={styles.imageContainer}
+                  onPress={() => setAddImageModalVisible(true)}
+                >
+                  <View
+                    style={[
+                      styles.image,
+                      { justifyContent: "center", alignItems: "center" },
+                    ]}
+                  >
+                    <MaterialIcons name="add-a-photo" size={30} color="white" />
+                  </View>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.inputsContainer}>
+              <Input2
+                value={newPetData.nombre} // Valor correcto desde el estado
+                setValue={(value) => handleEditChange("nombre", value)} // handleEditChange se encarga del cambio
+                placeholder="Nombre"
+              />
+
+              <Select
+                defaultValue={newPetData.animal === 1 ? "Perro" : "Gato"}
+                values={["Perro", "Gato"]}
+                setValues={(item) =>
+                  handleEditChange("animal", item === "Perro" ? 1 : 2)
+                }
+                texto={"Animal"}
+              />
+              <Select
+                defaultValue={newPetData.sexo === 1 ? "Macho" : "Hembra"}
+                values={["Macho", "Hembra"]}
+                setValues={(item) =>
+                  handleEditChange("sexo", item === "Macho" ? 1 : 2)
+                }
+                texto={"Sexo"}
+              />
+              <Select
+                defaultValue={
+                  newPetData.edad === 1
+                    ? "Cachorro"
+                    : newPetData.edad === 2
+                    ? "Juvenil"
+                    : "Adulto"
+                }
+                values={["Cachorro", "Juvenil", "Adulto"]}
+                setValues={(item) =>
+                  handleEditChange(
+                    "edad",
+                    item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3
+                  )
+                }
+                texto={"Edad"}
+              />
+              <Select
+                defaultValue={newPetData.raza}
+                values={["Golden", "Husky"]}
+                setValues={(item) => handleEditChange("raza", item)}
+                texto={"Raza"}
+              />
+              <Select
+                defaultValue={
+                  newPetData.tamanio === 1
+                    ? "Pequeño"
+                    : newPetData.tamanio === 2
+                    ? "Mediano"
+                    : "Grande"
+                }
+                values={["Pequeño", "Mediano", "Grande"]}
+                setValues={(item) =>
+                  handleEditChange(
+                    "tamanio",
+                    item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3
+                  )
+                }
+                texto={"Tamaño"}
+              />
+
+              {/* Mostrar los campos vif y vilef solo si el animal es un GATO (animal === 2) */}
+              {newPetData.animal === 2 && (
+                <>
+                  <View style={styles.selectColumn}>
+                    <Text style={styles.label}>VIF</Text>
+                    <Select
+                      defaultValue={newPetData.vif ? "Sí" : "No"}
+                      values={["Sí", "No"]}
+                      setValues={(item) =>
+                        handleEditChange("vif", item === "Sí")
+                      }
+                    />
+                  </View>
+                  <View style={styles.selectColumn}>
+                    <Text style={styles.label}>VI-LEF</Text>
+                    <Select
+                      defaultValue={newPetData.viLef ? "Sí" : "No"}
+                      values={["Sí", "No"]}
+                      setValues={(item) =>
+                        handleEditChange("viLef", item === "Sí")
+                      }
+                    />
+                  </View>
+                </>
+              )}
+
+              {/* Campo para la descripción */}
+              <Input
+                value={newPetData.descripcion}
+                setValue={(value) => handleEditChange("descripcion", value)}
+                placeholder="Descripción"
+                multiline
+              />
+            </View>
+          </View>
+
+          {/* Mostrar botón de confirmar si está en modo edición */}
+          {isEditing && (
             <TouchableOpacity
-              style={styles.imageContainer}
-              onPress={() => setAddImageModalVisible(true)}
+              style={styles.buttonConfirm}
+              onPress={handleSaveChanges}
             >
-              <View
-                style={[
-                  styles.image,
-                  { justifyContent: "center", alignItems: "center" },
-                ]}
-              >
-                <MaterialIcons name="add-a-photo" size={30} color="white" />
-              </View>
+              {loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>Confirmar Cambios</Text>
+              )}
             </TouchableOpacity>
           )}
         </View>
-        <View style={styles.inputsContainer}>
-          <Input
-            value={newPetData.nombre}
-            setValue={setNewPetData}
-            placeholder="Nombre"
-            atributo="nombre"
-          />
-          <Select
-            defaultValue={newPetData.animal === 1 ? "Perro" : "Gato"}
-            values={["Perro", "Gato"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.animal = item === "Perro" ? 1 : 2;
-              setNewPetData(newData);
-            }}
-            texto={"Animal"}
-          />
-          <Select
-            defaultValue={newPetData.sexo === 1 ? "Macho" : "Hembra"}
-            values={["Macho", "Hembra"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.sexo = item === "Macho" ? 1 : 2;
-              setNewPetData(newData);
-            }}
-            texto={"Sexo"}
-          />
-          <Select
-            defaultValue={
-              newPetData.edad === 1
-                ? "Cachorro"
-                : newPetData.edad === 2
-                ? "Juvenil"
-                : "Adulto"
-            }
-            values={["Cachorro", "Juvenil", "Adulto"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.edad =
-                item === "Cachorro" ? 1 : item === "Juvenil" ? 2 : 3;
-              setNewPetData(newData);
-            }}
-            texto={"Edad"}
-          />
-          <Select
-            defaultValue={newPetData.raza}
-            values={["Golden", "Husky"]}
-            //poner la lista de razas
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.raza = item;
-              setNewPetData(newData);
-            }}
-            texto={"Raza"}
-          />
-          <Select
-            defaultValue={
-              newPetData.animal === 1
-                ? "Pequeño"
-                : newPetData.animal === 2
-                ? "Mediano"
-                : "Grande"
-            }
-            values={["Pequeño", "Mediano", "Grande"]}
-            setValues={(item) => {
-              const newData = newPetData;
-              newData.tamanio =
-                item === "Pequeño" ? 1 : item === "Mediano" ? 2 : 3;
-              setNewPetData(newData);
-            }}
-            texto={"Tamaño"}
-          />
-        </View>
-      </View>
-      <AddImageModal
-        isVisible={addImageModalVisible}
-        setIsVisible={setAddImageModalVisible}
-        setImages={(img) => setImages([...images, img])}
-      />
-      <AddImageModal
-        isVisible={replaceImageModalVisible}
-        setIsVisible={setReplaceImageModalVisible}
-        setImages={(img) => cambiarImagen(img)}
-        currentImage={selectedPic}
-      />
-
-      <TouchableOpacity
-        style={styles.buttondelete}
-        onPress={handleDeleteConfirmation}
-      >
-        <Text> Eliminar Registro </Text>
-      </TouchableOpacity>
-
-      <ConfirmationModal
-        isVisible={confirmationModalVisible}
-        message={
-          loading ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            "¿Estás seguro de que quieres eliminar este registro?"
-          )
-        }
-        onConfirm={handleConfirmDelete}
-        onchangemessage={mascotaEliminada}
-        onCancel={handleCancelDelete}
-        onRedirect={handleRedirect}
-      />
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -233,12 +261,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 20,
-  },
-  titulo: {
-    fontSize: 20,
-    color: "#9A34EA",
-    fontWeight: "bold",
-    padding: 20,
   },
   row: {
     marginTop: "10%",
@@ -274,22 +296,24 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 10,
   },
-  picModalCloseButton: {
-    position: "absolute",
-    top: 5,
-    right: 5,
-  },
-  imageSelected: {
-    width: "100%",
-    aspectRatio: 1,
-  },
-  buttondelete: {
-    backgroundColor: "#FF3838",
+  buttonConfirm: {
+    backgroundColor: "#34A853",
     borderRadius: 5,
-    width: 150,
-    height: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  label: {
+    color: "#C69AE8",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

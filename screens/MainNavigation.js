@@ -57,7 +57,7 @@ function MainNavigation() {
         setIsLoading(false); // Indica que hemos terminado de verificar la autenticación
       })
       .catch((error) => {
-        console.error("Error al verificar la autenticación:", error);
+        console.error("Error al verificar la autenticación desde MainNavigation:", error);
         setIsLoading(false); // En caso de error, también terminamos de verificar
       });
   }, []);

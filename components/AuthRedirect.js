@@ -25,7 +25,7 @@ const AuthRedirect = () => {
         }
       })
       .catch((error) => {
-        console.error("Error al verificar la autenticación:", error);
+        console.error("Error al verificar la autenticación desde AuthRedirect:", error);
       })
 
 
