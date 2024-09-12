@@ -70,6 +70,29 @@ const MatchesScreen = ({ navigation }) => {
     setmatch_id(match);
   };
 
+  const handleCancelarMatch = async () => {
+    try {
+      // Llama a la función cancelarMatch
+      await cancelarMatch(match_id, token, navigation, setCurrentUser);
+
+      // Cierra el modal
+      setIsModalForMoreInfoVisible(false);
+
+      // Recarga la lista de matches
+      getMatches(
+        navigation,
+        currentUser,
+        setCurrentUser,
+        token,
+        setIsLoading,
+        setMatches,
+        setRefreshing
+      );
+    } catch (error) {
+      console.error("Error al cancelar el match: ", error);
+    }
+  };
+
   useEffect(() => {
     setRefreshing(true);
     getMatches(
@@ -90,18 +113,16 @@ const MatchesScreen = ({ navigation }) => {
   console.log(matches.length);
   if (matches.length === 0) {
     return (
-      <View style={styles.container}>
-        <View style={styles.noMatchesContainer}>
-          <Text style={styles.letraGrande}>
-            ¡Todavía no elegiste una mascota!
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Paw")}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Ver mascotas</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.noMatchesContainer}>
+        <Text style={styles.letraGrande}>
+          ¡Todavía no elegiste una mascota!
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Paw")}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Ver mascotas</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -222,11 +243,7 @@ const MatchesScreen = ({ navigation }) => {
               {currentUser.estado ? "Ver usuario" : "Ver refugio"}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              cancelarMatch(match_id, token, navigation, setCurrentUser)
-            }
-          >
+          <TouchableOpacity onPress={handleCancelarMatch}>
             <Text style={styles.modalText}>Cancelar match</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDenunciarRefugio}>

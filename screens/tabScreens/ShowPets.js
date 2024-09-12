@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
-
+  console.log(currentUser);
   const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
@@ -30,13 +30,14 @@ const ShowPets = ({ navigation }) => {
 
   const [filtros, setFiltros] = useState({
     sexo: 3,
-    distancia: 10000000,
+    distancia: 10000,
     tipoMascota: currentUser.tipoAnimal,
     tamaño: currentUser.tamanioPreferido,
     rangoDeEdad: currentUser.edadPreferida,
   });
-
+  console.log(filtros);
   useEffect(() => {
+    console.log("cambiando el index");
     setFirstFetch(false);
     setIsLoading(true);
     setIndex(0);
@@ -91,7 +92,6 @@ const ShowPets = ({ navigation }) => {
       } catch (error) {
         console.error("Error al obtener mascotas:", error);
       } finally {
-        setIsLoading(false);
         if (!firstFetch) {
           const url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
             currentUser.ubicacion.coordinates[0]
@@ -118,10 +118,12 @@ const ShowPets = ({ navigation }) => {
           );
           setFirstFetch(true);
         }
+        setIsLoading(false);
       }
     });
-  }, [index]);
+  }, [firstFetch]);
 
+  console.log(isLoading);
   {
     if (isLoading) {
       return <LoadingComponent />;

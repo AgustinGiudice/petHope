@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,13 +14,18 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Radio from "../components/Radio";
 import { responderCuestonario } from "../services/responderCuestionario";
 import LoadingComponent from "../components/LoadingComponent";
+import preguntasJson from "../preguntas.json";
 
 const CuestionarioUsuarioRegistro = ({ navigation }) => {
-  const [indexModal, setIndexModal] = useState(10);
+  const [indexModal, setIndexModal] = useState(0);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
   const [error, setError] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [mensajeRespuesta, setMensajeRespuesta] = useState(null);
+  const [disable, setDisable] = useState(false);
+  const [preguntas, setPreguntas] = useState();
+  const [respuestasCorrectas, setRespuestasCorrectas] = useState(1);
   const [userData, setUserData] = useState({
     espacioDisponible: null,
     aceptaCuidadosEspeciales: null,
@@ -32,9 +37,22 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
     tuvoMascotas: null,
     descripcion: null,
     fechaDeNacimiento: null,
+    respuestasCorrectas: null,
   });
 
+  const filtrarPreguntas = () => {
+    const preguntasAleatorias = [...preguntasJson.preguntas]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
+    setPreguntas(preguntasAleatorias);
+  };
+  if (!preguntas) {
+    filtrarPreguntas();
+  }
+
   const handleNext = async (value) => {
+    setDisable(false);
+    setMensajeRespuesta(null);
     setError([]);
     if (value === null) {
       setError(["Selecciona una opción"]);
@@ -42,6 +60,31 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
       setIndexModal(indexModal + 1);
     }
   };
+
+  const handleResponse = (value, correcta) => {
+    if (value == correcta) {
+      setDisable(true);
+      console.log("soy imbecil");
+      setMensajeRespuesta("CORRECTO");
+      setRespuestasCorrectas((prev) => prev + 1);
+
+      setUserData((prevData) => ({
+        ...prevData,
+        respuestasCorrectas: respuestasCorrectas,
+      }));
+    } else {
+      setDisable(true);
+
+      console.log("NO es correcta");
+      setMensajeRespuesta("INCORRECTO");
+    }
+  };
+
+  useEffect(() => {
+    if (preguntas) {
+      console.log(userData);
+    }
+  }, [respuestasCorrectas]);
 
   const handleActualizarDatos = async () => {
     setIsLoading(true);
@@ -59,7 +102,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
   };
 
   if (isLoading) {
-    <LoadingComponent />;
+    return <LoadingComponent />;
   } else {
     return (
       <View style={styles.container}>
@@ -86,6 +129,53 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
             onPress={() => handleNext("ok")}
           />
         </RegisterModal>
+
+        {preguntas &&
+          preguntas.map((pregunta, index) => (
+            <RegisterModal
+              key={index}
+              visible={indexModal === index + 10}
+              setVisible={setIndexModal}
+              setError={setError}
+            >
+              <Text style={styles.title}>{pregunta.pregunta}</Text>
+              <View style={styles.containerRespuesta}>
+                <Radio
+                  data={pregunta.opciones}
+                  handleSelect={(value) => {
+                    handleResponse(value, pregunta.correcta);
+                  }}
+                  isDisabled={disable}
+                />
+              </View>
+
+              {mensajeRespuesta === "CORRECTO" && (
+                <Text style={{ color: "green", marginTop: 10 }}>CORRECTO</Text>
+              )}
+              {mensajeRespuesta === "INCORRECTO" && (
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ color: "red" }}>INCORRECTO</Text>
+                  <Text style={{ color: "green", marginTop: 5 }}>
+                    Respuesta correcta: {pregunta.correcta}
+                  </Text>
+                </View>
+              )}
+              {error.length !== 0
+                ? error.map((e) => (
+                    <Text key={e} style={{ color: "red" }}>
+                      {e}
+                    </Text>
+                  ))
+                : null}
+              <FontAwesome
+                name="arrow-right"
+                size={40}
+                style={styles.arrow}
+                onPress={() => handleNext()}
+              />
+            </RegisterModal>
+          ))}
+
         <RegisterModal
           visible={indexModal === 1}
           setVisible={setIndexModal}
@@ -120,41 +210,9 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
             onPress={() => handleNext(userData.espacioDisponible)}
           />
         </RegisterModal>
+
         <RegisterModal
           visible={indexModal === 2}
-          setVisible={setIndexModal}
-          setError={setError}
-        >
-          <Text style={styles.title}>¿Cuál es tu ocupación?</Text>
-          <Radio
-            data={[
-              "Desocupado/a",
-              "Estudiante",
-              "Trabajador/a",
-              "Estudiante y Trabajador/a",
-            ]}
-            handleSelect={(value) => {
-              console.log(value);
-            }}
-          />
-          {error.length !== 0
-            ? error.map((e) => {
-                return (
-                  <Text key={e} style={{ color: "red" }}>
-                    {e}
-                  </Text>
-                );
-              })
-            : null}
-          <FontAwesome
-            name="arrow-right"
-            size={40}
-            style={styles.arrow}
-            onPress={() => handleNext("ok")}
-          />
-        </RegisterModal>
-        <RegisterModal
-          visible={indexModal === 3}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -187,7 +245,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 4}
+          visible={indexModal === 3}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -221,7 +279,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 5}
+          visible={indexModal === 4}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -261,7 +319,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 6}
+          visible={indexModal === 5}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -301,7 +359,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 7}
+          visible={indexModal === 6}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -344,7 +402,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 8}
+          visible={indexModal === 7}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -375,7 +433,7 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
           />
         </RegisterModal>
         <RegisterModal
-          visible={indexModal === 9}
+          visible={indexModal === 8}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -408,8 +466,32 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
             onPress={() => handleNext(userData.aceptaCuidadosEspeciales)}
           />
         </RegisterModal>
+
         <RegisterModal
-          visible={indexModal === 10}
+          visible={indexModal === 9}
+          setVisible={setIndexModal}
+          setError={setError}
+        >
+          <View style={styles.warningContainer}>
+            <Text style={styles.title}>
+              Ya casi terminamos, a continuación te presentaremos 5 preguntas
+              generales más.
+            </Text>
+            <Text style={styles.warning}>
+              Es importante que presetes atención a la respuesta ya que no
+              podrás cambiarla más adelante.
+            </Text>
+          </View>
+          <FontAwesome
+            name="arrow-right"
+            size={40}
+            style={styles.arrow}
+            onPress={() => handleNext("ok")}
+          />
+        </RegisterModal>
+
+        <RegisterModal
+          visible={indexModal === 15}
           setVisible={setIndexModal}
           setError={setError}
         >
@@ -430,40 +512,6 @@ const CuestionarioUsuarioRegistro = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </RegisterModal>
-        {/* <RegisterModal visible={indexModal === 11} setVisible={setIndexModal}>
-        <View key={33} style={styles.lastContainer}>
-          {!index ? (
-            <>
-              <Text style={styles.title}>¡Muchas gracias!</Text>
-              <Text>Ya podes continuar</Text>
-              <Text>
-                Acordate que, hasta que no completes el formulario, no vas a ver
-                mascotas
-              </Text>
-              <TouchableOpacity onPress={handleSubmit} style={styles.start}>
-                {isLoading ? (
-                  <ActivityIndicator color={"white"} />
-                ) : (
-                  <Text style={{ color: "white" }}>Continuar</Text>
-                )}
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <Text>
-                Te pedimos que llenes el formulario a la brevedad para poder
-                disfrutar todas las funcionalidades de PetHope
-              </Text>
-              <TouchableOpacity
-                style={styles.start}
-                onPress={() => navigation.navigate("Tabs")}
-              >
-                <Text style={{ color: "white" }}>Volver</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-      </RegisterModal> */}
       </View>
     );
   }
@@ -514,6 +562,9 @@ const styles = StyleSheet.create({
     color: "white",
     aspectRatio: 1,
     paddingVertical: 20,
+  },
+  containerRespuesta: {
+    maxWidth: "89%",
   },
 });
 
