@@ -11,6 +11,8 @@ import { TokenContext } from "../context/TokenContext";
 import { COLORS } from "../styles";
 import isTablet from "../functions/isTablet";
 import { setMascotaLike } from "../services/setMascotaLike";
+import { UserContext } from "../context/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SPbuttons = ({
   mascota_id,
@@ -23,19 +25,80 @@ const SPbuttons = ({
   const { token } = useContext(TokenContext);
   const likeAnimationValue = useRef(new Animated.Value(0)).current;
   const { width, height } = useWindowDimensions();
+  const { currentUser } = useContext(UserContext);
 
-  // POST
+  const handleReject = async () => {
+    try {
+      const cache = await AsyncStorage.getItem("mascotasVistas"); //Traigo las mascotas vistas del LocalStorage
+      let mascotasVistas;
+      if (cache) {
+        //Si existe algun registro
+        mascotasVistas = JSON.parse(cache); //Convierto el string a un objeto
+      } else {
+        mascotasVistas = {
+          //Si no existe, inicializo
+          usuarios: [{ id: currentUser.id, idMascotas: [] }],
+        };
+      }
+      if (
+        mascotasVistas.usuarios.some((usuario) => usuario.id === currentUser.id)
+      ) {
+        const indice = mascotasVistas.usuarios.findIndex(
+          (usuario) => usuario.id === currentUser.id
+        ); //Busco el indice que corresponda a mi Id
+        mascotasVistas.usuarios[indice].idMascotas.push(mascota_id);
+      } else {
+        //Si no es mi id hago lo siguiente
+        mascotasVistas.usuarios.push({
+          id: currentUser.id,
+          idMascotas: mascota_id,
+        });
+      }
+      const cacheFinal = JSON.stringify(mascotasVistas);
+
+      await AsyncStorage.setItem("mascotasVistas", cacheFinal);
+      setResetMatches(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const postLike = async () => {
     try {
-      const response = await setMascotaLike(mascota_id, currentUserId, token);
+      const response = await setMascotaLike(mascota_id, currentUser.id, token);
+
       if (!response.ok) {
         throw new Error("Error al likear mascota");
       }
-
-      // Mostrar la animación de "like"
       setShowLikeAnimation(true);
 
-      // Iniciar la animación
+      const cache = await AsyncStorage.getItem("mascotasVistas");
+      let mascotasVistas;
+      if (cache) {
+        mascotasVistas = JSON.parse(cache);
+      } else {
+        mascotasVistas = {
+          usuarios: [{ id: currentUser.id, idMascotas: [] }],
+        };
+      }
+      if (
+        mascotasVistas.usuarios.some((usuario) => usuario.id === currentUser.id)
+      ) {
+        const indice = mascotasVistas.usuarios.findIndex(
+          (usuario) => usuario.id === currentUser.id
+        );
+        mascotasVistas.usuarios[indice].idMascotas.push(mascota_id);
+      } else {
+        mascotasVistas.usuarios.push({
+          id: currentUser.id,
+          idMascotas: mascota_id,
+        });
+      }
+
+      const cacheFinal = JSON.stringify(mascotasVistas);
+
+      await AsyncStorage.setItem("mascotasVistas", cacheFinal);
+
       Animated.sequence([
         Animated.timing(likeAnimationValue, {
           toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
@@ -49,16 +112,50 @@ const SPbuttons = ({
           useNativeDriver: false,
         }),
       ]).start(() => {
-        // Reiniciar la animación y ocultarla cuando termine
         likeAnimationValue.setValue(0);
-        setResetMatches(true);
-        setMascotas([]);
         setShowLikeAnimation(false);
+        setResetMatches(true);
       });
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
+      console.error(error);
     }
   };
+
+  // POST
+  // const postLike = async () => {
+  //   try {
+  //     const response = await setMascotaLike(mascota_id, currentUserId, token);
+  //     if (!response.ok) {
+  //       throw new Error("Error al likear mascota");
+  //     }
+
+  //     // Mostrar la animación de "like"
+  //     setShowLikeAnimation(true);
+
+  //     // Iniciar la animación
+  //     Animated.sequence([
+  //       Animated.timing(likeAnimationValue, {
+  //         toValue: 1, // Ajusta el valor final de la animación (puede ser cualquier valor)
+  //         duration: 500, // Duración de la primera parte de la animación en milisegundos
+  //         useNativeDriver: false,
+  //       }),
+  //       Animated.timing(likeAnimationValue, {
+  //         toValue: 0, // Ajusta el valor final de la animación (puede ser cualquier valor)
+  //         duration: 500, // Duración de la segunda parte de la animación en milisegundos
+  //         delay: 300, // Retardo entre la primera y la segunda parte de la animación
+  //         useNativeDriver: false,
+  //       }),
+  //     ]).start(() => {
+  //       // Reiniciar la animación y ocultarla cuando termine
+  //       likeAnimationValue.setValue(0);
+  //       setResetMatches(true);
+  //       setMascotas([]);
+  //       setShowLikeAnimation(false);
+  //     });
+  //   } catch (error) {
+  //     console.error("Error al realizar la solicitud:", error);
+  //   }
+  // };
 
   const [scaleValue, setScaleValue] = useState(new Animated.Value(0));
   useEffect(() => {
@@ -109,6 +206,7 @@ const SPbuttons = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.backIcons, { padding: height * 0.015 }]}
+          onPress={() => handleReject(mascota_id)}
         >
           <AntDesign name="close" size={height * 0.048} color="white" />
         </TouchableOpacity>

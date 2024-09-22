@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ShowPets = ({ navigation }) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { token } = useContext(TokenContext);
-  console.log(currentUser);
+  // console.log(currentUser);
   const [resetMatches, setResetMatches] = useState(false);
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
@@ -35,7 +35,7 @@ const ShowPets = ({ navigation }) => {
     tamaño: currentUser.tamanioPreferido,
     rangoDeEdad: currentUser.edadPreferida,
   });
-  console.log(filtros);
+  // console.log(filtros);
   useEffect(() => {
     console.log("cambiando el index");
     setFirstFetch(false);
@@ -51,6 +51,10 @@ const ShowPets = ({ navigation }) => {
       let vistos;
       if (cache) {
         cache = JSON.parse(cache);
+        console.log(
+          "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------INICIAL" +
+            JSON.stringify(cache)
+        );
         if (cache.usuarios) {
           const usuario = cache.usuarios.find(
             (usuario) => usuario.id === currentUser.id
@@ -60,7 +64,7 @@ const ShowPets = ({ navigation }) => {
       }
       vistos = JSON.stringify(vistos);
       let url;
-      console.log(BASE_URL);
+      // console.log(BASE_URL);
       if (firstFetch) {
         url = `${BASE_URL}api/mascotas?sexo=${filtros.sexo}&latitud=${
           currentUser.ubicacion.coordinates[0]
@@ -123,7 +127,6 @@ const ShowPets = ({ navigation }) => {
     });
   }, [firstFetch]);
 
-  console.log(isLoading);
   {
     if (isLoading) {
       return <LoadingComponent />;
