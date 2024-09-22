@@ -114,7 +114,7 @@ const RegisterPet = ({ navigation }) => {
       setConfirmationModal(true);
 
       // Navega a la pantalla Vacunas, pasando el ID de mascota obtenido.
-      navigation.navigate("Vacunas", { mascotaId: mascotaId });
+      navigation.navigate("Vacunas", { mascotaId: id });
     } catch (error) {
       console.error("Error en agregarMascota:", error);
       // Manejo del error, por ejemplo, mostrar un mensaje al usuario.

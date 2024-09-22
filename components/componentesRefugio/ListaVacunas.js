@@ -16,6 +16,7 @@ import DateTimePicker from "@react-native-community/datetimepicker"; // Importa 
 //service de registrarVacunas
 import { registrarVacunas } from "../../services/registrarVacunas";
 import { TokenContext } from "../../context/TokenContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ListaVacunas = ({ vacunas }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -27,7 +28,7 @@ const ListaVacunas = ({ vacunas }) => {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date()); // Estado para la fecha seleccionada
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false); // Nuevo estado para controlar la visibilidad del DateTimePicker
   const { token } = useContext(TokenContext);
-
+  const navigation = useNavigation();
   // Activa o desactiva el modo de edición
   const toggleModoEdicion = () => {
     setModoEdicion(!modoEdicion);
@@ -55,6 +56,7 @@ const ListaVacunas = ({ vacunas }) => {
           "Las vacunas se han enviado correctamente."
         );
         setVacunasParaAgregar([]); // Limpia el estado de vacunasParaAgregar
+        navigation.navigate("Refugio");
       } else {
         Alert.alert("Error", "Ocurrió un error al enviar las vacunas.");
       }

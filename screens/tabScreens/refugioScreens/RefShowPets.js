@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, FlatList, TextInput } from "react-native";
 import MascotaRef from "../../../components/componentesRefugio/MascotaRef";
 import { screenHeight, screenWidth } from "../../../hooks/useScreenResize";
@@ -9,25 +9,33 @@ import { getMascotasRef } from "../../../services/getMascotasRef";
 import { BASE_URL } from "@env";
 import HeaderMascota from "../../../components/HeaderMascota";
 import Constants from "expo-constants";
+import { useFocusEffect } from "@react-navigation/native"; // Importar useFocusEffect
 
 const RefShowPets = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useContext(TokenContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [searchText, setSearchText] = useState(""); // Declarar el estado antes del useEffect
-
   const [mascotasRef, setMascotasRef] = useState([]);
 
-  useEffect(() => {
+  const fetchMascotas = async () => {
+    setIsLoading(true); // Mostrar loading mientras se fetchean los datos
     try {
       const url = `${BASE_URL}api/mascotas/petsRef/${currentUser.id}`;
-      getMascotasRef(url, token, navigation, setMascotasRef, setCurrentUser);
+      await getMascotasRef(url, token, navigation, setMascotasRef, setCurrentUser);
     } catch (error) {
       console.error("Error al obtener mascotas de refugio:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Ocultar loading cuando se obtienen los datos
     }
-  }, []);
+  };
+
+  // Utilizar useFocusEffect para refetch al volver a la pantalla
+  useFocusEffect(
+    useCallback(() => {
+      fetchMascotas(); // Refetch cuando la pantalla vuelve a estar en foco
+    }, [])
+  );
 
   const renderItem = ({ item }) => {
     if (
@@ -41,7 +49,6 @@ const RefShowPets = ({ navigation }) => {
       );
     } else {
       return null; // Oculta las mascotas que no coincidan con la búsqueda
-      // return <View style={{ width: screenWidth / 2 }} key={item.id} />;
     }
   };
 
@@ -72,10 +79,10 @@ const RefShowPets = ({ navigation }) => {
     </>
   );
 };
+
 const styles = StyleSheet.create({
   searchInput: {
     marginTop: screenHeight - screenHeight * 0.95,
-
     backgroundColor: "white",
     borderRadius: 5,
     padding: 10,
@@ -88,14 +95,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: Constants.statusBarHeight,
-    // paddingHorizontal: screenWidth >= 500 ? 70 : 0,
   },
   container2: {
     paddingTop: screenHeight * 0.02,
-  },
-
-  buttonFilters: {
-    zIndex: 1,
   },
   namePet: {
     color: "white",

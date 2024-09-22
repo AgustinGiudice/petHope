@@ -16,6 +16,7 @@ export const login = async (
       userData,
       setError
     );
+    console.log(response);
 
     const data = await response.json();
     if (response.status === 404) {
@@ -60,6 +61,7 @@ export const login = async (
 };
 
 async function fetchData(url, userData, setError) {
+  console.log(url);
   try {
     return await fetch(url, {
       method: "POST",
