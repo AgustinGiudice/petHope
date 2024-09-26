@@ -18,7 +18,7 @@ import { Picker } from "@react-native-picker/picker";
 import Constants from "expo-constants";
 
 const DetalleCartillaVacunacion = ({ route }) => {
-  const { mascotaId } = route.params;
+  const { mascotaId, mascotaTipo } = route.params;
   const { token } = useContext(TokenContext);
   const navigation = useNavigation();
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -30,20 +30,23 @@ const DetalleCartillaVacunacion = ({ route }) => {
   const [vacunaSeleccionadaId, setVacunaSeleccionadaId] = useState(null);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false);
-
+  const tipoAnimal = mascotaTipo === 1 ? "perro" : "gato";
   useEffect(() => {
     const cargarVacunasDetalladas = async () => {
       try {
         const vacunasData = await getVacunasDetalladas2(mascotaId, token);
-        setVacunasDetalladas(vacunasData);
+        // Filtrar las vacunas según el tipo de animal de la mascota
+        const vacunasFiltradas = vacunasData.filter(vacuna => vacuna.tipoAnimal === tipoAnimal);
+        setVacunasDetalladas(vacunasFiltradas);
       } catch (error) {
         console.error("Error al cargar las vacunas detalladas:", error);
         Alert.alert("Error", "No se pudieron cargar las vacunas detalladas.");
       }
     };
-
+  
     cargarVacunasDetalladas();
-  }, [mascotaId, token]);
+  }, [mascotaId, token, tipoAnimal]); // tipoAnimal debe ser un estado o una propiedad que determines de alguna forma
+  
 
   const toggleModoEdicion = () => {
     setModoEdicion(!modoEdicion);

@@ -17,6 +17,7 @@ import { TokenContext } from "../../../context/TokenContext";
 import { editarMascota } from "../../../services/editarMascota"; // Importar el servicio
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { ActivityIndicator } from "react-native";
+import { ScrollView } from "react-native-web";
 
 const EditarMascota = ({ route, navigation }) => {
   const { mascota } = route.params;
@@ -54,6 +55,9 @@ const EditarMascota = ({ route, navigation }) => {
     setNewPetData(newData);
   };
 
+const handleViewVacunas = () => {
+    navigation.navigate("DetalleCartillaVacunacion", { mascotaId: mascota.id, mascotaTipo: mascota.animal });
+  };
   const handleRedirect = () => {
     if (redirect) {
       navigation.navigate("RefShowPets");
@@ -133,6 +137,24 @@ const EditarMascota = ({ route, navigation }) => {
                   </View>
                 </TouchableOpacity>
               )}
+               <TouchableOpacity
+                style={styles.buttonViewVacunas}
+                onPress={handleViewVacunas}
+              >
+              <Text style={styles.buttonText}> Ir a cartilla de vacunación </Text>
+            </TouchableOpacity>
+            {isEditing && (
+            <TouchableOpacity
+              style={styles.buttonConfirm}
+              onPress={handleSaveChanges}
+            >
+              {loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>Confirmar cambios</Text>
+              )}
+            </TouchableOpacity>
+          )}
             </View>
             <View style={styles.inputsContainer}>
               <Input2
@@ -233,20 +255,6 @@ const EditarMascota = ({ route, navigation }) => {
               />
             </View>
           </View>
-
-          {/* Mostrar botón de confirmar si está en modo edición */}
-          {isEditing && (
-            <TouchableOpacity
-              style={styles.buttonConfirm}
-              onPress={handleSaveChanges}
-            >
-              {loading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={styles.buttonText}>Confirmar Cambios</Text>
-              )}
-            </TouchableOpacity>
-          )}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -268,6 +276,12 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 25,
     justifyContent: "flex-start",
+  },
+  row2: {
+    flexDirection: "row",
+    width: "100%",
+    paddingHorizontal: 25,
+    justifyContent: "space-between",
   },
   inputsContainer: {
     flexDirection: "column",
@@ -308,12 +322,23 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+    textAlign: "center",
   },
   label: {
     color: "#C69AE8",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonViewVacunas: {
+    backgroundColor: "#34A853",
+    borderRadius: 5,
+    width: 150,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    color: "white",
   },
 });
 
