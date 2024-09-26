@@ -24,6 +24,51 @@ const SwiperPets = ({
 
   const handleReject = async () => {
     try {
+      const cache = await AsyncStorage.getItem("mascotasVistas"); //Traigo las mascotas vistas del LocalStorage
+      let mascotasVistas;
+      if (cache) {
+        //Si existe algun registro
+        mascotasVistas = JSON.parse(cache); //Convierto el string a un objeto
+      } else {
+        mascotasVistas = {
+          //Si no existe, inicializo
+          usuarios: [{ id: currentUser.id, idMascotas: [] }],
+        };
+      }
+      if (
+        mascotasVistas.usuarios.some((usuario) => usuario.id === currentUser.id)
+      ) {
+        const indice = mascotasVistas.usuarios.findIndex(
+          (usuario) => usuario.id === currentUser.id
+        ); //Busco el indice que corresponda a mi Id
+        mascotasVistas.usuarios[indice].idMascotas.push(mascotas[index].id);
+      } else {
+        //Si no es mi id hago lo siguiente
+        mascotasVistas.usuarios.push({
+          id: currentUser.id,
+          idMascotas: [mascotas[index].id],
+        });
+      }
+      const cacheFinal = JSON.stringify(mascotasVistas);
+
+      await AsyncStorage.setItem("mascotasVistas", cacheFinal);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await setMascotaLike(
+        mascotas[index].id,
+        currentUser.id,
+        token
+      );
+      if (!response.ok) {
+        throw new Error("Error al likear mascota");
+      }
+      setShowLikeAnimation(true);
+
       const cache = await AsyncStorage.getItem("mascotasVistas");
       let mascotasVistas;
       if (cache) {
@@ -46,25 +91,10 @@ const SwiperPets = ({
           idMascotas: [mascotas[index].id],
         });
       }
+
       const cacheFinal = JSON.stringify(mascotasVistas);
 
       await AsyncStorage.setItem("mascotasVistas", cacheFinal);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleLike = async () => {
-    try {
-      const response = await setMascotaLike(
-        mascotas[index].id,
-        currentUser.id,
-        token
-      );
-
-      if (!response.ok) {
-        throw new Error("Error al likear mascota");
-      }
-      setShowLikeAnimation(true);
 
       Animated.sequence([
         Animated.timing(likeAnimationValue, {
